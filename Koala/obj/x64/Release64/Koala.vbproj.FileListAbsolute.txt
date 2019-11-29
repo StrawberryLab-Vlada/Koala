@@ -1,0 +1,8 @@
+C:\WORK\SourceCodes\Strawberrylab\Koala\Koala\bin\x64\Release64\Koala.dll
+C:\WORK\SourceCodes\Strawberrylab\Koala\Koala\bin\x64\Release64\Koala.pdb
+C:\WORK\SourceCodes\Strawberrylab\Koala\Koala\bin\x64\Release64\Koala.xml
+C:\WORK\SourceCodes\Strawberrylab\Koala\Koala\obj\x64\Release64\Koala.Resources.resources
+C:\WORK\SourceCodes\Strawberrylab\Koala\Koala\obj\x64\Release64\Koala.vbproj.GenerateResource.cache
+C:\WORK\SourceCodes\Strawberrylab\Koala\Koala\obj\x64\Release64\Koala.dll
+C:\WORK\SourceCodes\Strawberrylab\Koala\Koala\obj\x64\Release64\Koala.xml
+C:\WORK\SourceCodes\Strawberrylab\Koala\Koala\obj\x64\Release64\Koala.pdb

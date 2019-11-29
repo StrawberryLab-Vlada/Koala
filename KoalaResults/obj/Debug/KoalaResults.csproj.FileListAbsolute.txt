@@ -1,0 +1,7 @@
+C:\WORK\AppData\Roaming\Grasshopper\Libraries\KoalaResults.dll
+C:\WORK\AppData\Roaming\Grasshopper\Libraries\KoalaResults.pdb
+C:\WORK\SourceCodes\MyProject1\MyProject1\KoalaResults\obj\Debug\KoalaResults.csprojAssemblyReference.cache
+C:\WORK\SourceCodes\MyProject1\MyProject1\KoalaResults\obj\Debug\KoalaResults.Properties.Resources.resources
+C:\WORK\SourceCodes\MyProject1\MyProject1\KoalaResults\obj\Debug\KoalaResults.csproj.GenerateResource.cache
+C:\WORK\SourceCodes\MyProject1\MyProject1\KoalaResults\obj\Debug\KoalaResults.dll
+C:\WORK\SourceCodes\MyProject1\MyProject1\KoalaResults\obj\Debug\KoalaResults.pdb

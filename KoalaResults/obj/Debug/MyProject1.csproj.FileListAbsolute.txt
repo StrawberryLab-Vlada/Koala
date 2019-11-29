@@ -1,0 +1,10 @@
+C:\Users\vpribramsky\source\repos\MyProject1\MyProject1\bin\MyProject1.dll
+C:\Users\vpribramsky\source\repos\MyProject1\MyProject1\bin\MyProject1.pdb
+C:\Users\vpribramsky\source\repos\MyProject1\MyProject1\obj\Debug\MyProject1.csprojResolveAssemblyReference.cache
+C:\Users\vpribramsky\source\repos\MyProject1\MyProject1\obj\Debug\MyProject1.csproj.CoreCompileInputs.cache
+C:\Users\vpribramsky\source\repos\MyProject1\MyProject1\obj\Debug\MyProject1.dll
+C:\Users\vpribramsky\source\repos\MyProject1\MyProject1\obj\Debug\MyProject1.pdb
+C:\Users\vpribramsky\AppData\Roaming\Grasshopper\Libraries\MyProject1.dll
+C:\Users\vpribramsky\AppData\Roaming\Grasshopper\Libraries\MyProject1.pdb
+C:\Users\vpribramsky\source\repos\MyProject1\MyProject1\obj\Debug\MyProject1.Properties.Resources.resources
+C:\Users\vpribramsky\source\repos\MyProject1\MyProject1\obj\Debug\MyProject1.csproj.GenerateResource.Cache

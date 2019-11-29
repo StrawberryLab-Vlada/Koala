@@ -1,0 +1,6 @@
+C:\WORK\SourceCodes\Strawberrylab\Koala\KoalaResults\bin\x64\Release\KoalaResults.dll
+C:\WORK\SourceCodes\Strawberrylab\Koala\KoalaResults\bin\x64\Release\KoalaResults.pdb
+C:\WORK\SourceCodes\Strawberrylab\Koala\KoalaResults\obj\x64\Release\KoalaResults.Properties.Resources.resources
+C:\WORK\SourceCodes\Strawberrylab\Koala\KoalaResults\obj\x64\Release\KoalaResults.csproj.GenerateResource.cache
+C:\WORK\SourceCodes\Strawberrylab\Koala\KoalaResults\obj\x64\Release\KoalaResults.dll
+C:\WORK\SourceCodes\Strawberrylab\Koala\KoalaResults\obj\x64\Release\KoalaResults.pdb
