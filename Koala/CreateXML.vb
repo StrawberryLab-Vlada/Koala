@@ -667,8 +667,8 @@ Namespace Koala
                 oSB.AppendLine(ConCat_ht("3", "Concrete"))
                 oSB.AppendLine(ConCat_ht("4", "Steel"))
                 oSB.AppendLine(ConCat_ht("5", "Timber"))
-                oSB.AppendLine(ConCat_ht("6", "Steel fibre concrete"))
-                oSB.AppendLine(ConCat_ht("7", "Functionality"))
+                'oSB.AppendLine(ConCat_ht("6", "Steel fibre concrete"))
+                oSB.AppendLine(ConCat_ht("6", "Functionality"))
 
                 oSB.AppendLine("</h>")
 
@@ -688,10 +688,10 @@ Namespace Koala
                 oSB.AppendLine(ConCat_pv("3", IIf(materials.Contains("Concrete"), "1", "0")))
                 oSB.AppendLine(ConCat_pv("4", IIf(materials.Contains("Steel"), "1", "0")))
                 oSB.AppendLine(ConCat_pv("5", IIf(materials.Contains("Timber"), "1", "0")))
-                oSB.AppendLine(ConCat_pv("6", IIf(materials.Contains("Fiber Concrete"), "1", "0")))
+                'oSB.AppendLine(ConCat_pv("6", IIf(materials.Contains("Fiber Concrete"), "1", "0")))
                 'Functionality "PrDEx_DynamicAnalysis, PrDEx_Subsoil, PrDEx_ClimaticLoads, PrDEx_ConnectionsSteel_CAD, PrDEx_Parametric, PrDEx_MaterialSteel, PrDEx_GADrawings, " 
-                oSB.AppendLine(ConCat_pv("7", "PrDEx_Nonlinearity,PrDEx_SecondOrder, PrDEx_BeamLocalNonlinearity, PrDEx_SupportNonlinearity,PrDEx_InitialStress, PrDEx_StabilityAnalysis,PrDEx_InitialDeformationsAndCurvature,PrDEx_FrictionSupport"))
-
+                'oSB.AppendLine(ConCat_pv("6", "PrDEx_Nonlinearity,PrDEx_SecondOrder, PrDEx_BeamLocalNonlinearity, PrDEx_SupportNonlinearity,PrDEx_InitialStress, PrDEx_StabilityAnalysis,PrDEx_InitialDeformationsAndCurvature,PrDEx_FrictionSupport"))
+                'oSB.AppendLine(ConCat_pv("6", "PrDEx_InitialStress, PrDEx_Subsoil, PrDEx_Nonlinearity, PrDEx_InitialDeformationsAndCurvature, PrDEx_SecondOrder, PrDEx_BeamLocalNonlinearity, PrDEx_SupportNonlinearity, PrDEx_FrictionSupport, PrDEx_StabilityAnalysis, PrDEx_FrictionSupport, PrDEx_ConnectionsSteel_CAD, PrDEx_Parametric, PrDEx_MaterialSteel, PrDEx_GADrawings"))
 
 
                 oSB.AppendLine("</obj>")
@@ -1653,7 +1653,7 @@ Namespace Koala
             oSB.AppendLine("</obj>")
 
         End Sub
-        Sub WritePressOnlyBeamNL(ByRef oSB, i, pressonly(,))
+        Sub WritePressTensionOnlyBeamNL(ByRef oSB, i, beamnlocalnonlin(,))
             'write beam name as reference table
             oSB.AppendLine("<p2 t="""">")
             oSB.AppendLine("<h>")
@@ -1665,22 +1665,6 @@ Namespace Koala
             oSB.AppendLine(ConCat_pv("0", "{ECB5D684-7357-11D4-9F6C-00104BC3B443}"))
             oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_Beam.1"))
             'oSB.AppendLine(ConCat_pv("2", loads(iload, 1)))
-            oSB.AppendLine("</row>")
-            oSB.AppendLine("</p2>")
-            'end of reference table
-        End Sub
-        Sub WriteTensionOnlyBeamNL(ByRef oSB, i, tensionOnly(,))
-            'write beam name as reference table
-            oSB.AppendLine("<p2 t="""">")
-            oSB.AppendLine("<h>")
-            oSB.AppendLine("<h0 t=""Member Type""/>")
-            oSB.AppendLine("<h1 t=""Member Type Name""/>")
-            oSB.AppendLine("<h2 t=""Member Name""/>")
-            oSB.AppendLine("</h>")
-            oSB.AppendLine("<row id=""0"">")
-            oSB.AppendLine(ConCat_pv("0", "{ECB5D684-7357-11D4-9F6C-00104BC3B443}"))
-            oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_Beam.1"))
-            ' oSB.AppendLine(ConCat_pv("2", loads(iload, 1)))
             oSB.AppendLine("</row>")
             oSB.AppendLine("</p2>")
             'end of reference table

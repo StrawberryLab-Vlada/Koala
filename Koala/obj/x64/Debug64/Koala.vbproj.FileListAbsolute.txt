@@ -15,3 +15,12 @@ C:\WORK\SourceCodes\Koala\Koala\Koala\obj\x64\Debug64\Koala.vbproj.GenerateResou
 C:\WORK\SourceCodes\Koala\Koala\Koala\obj\x64\Debug64\Koala.dll
 C:\WORK\SourceCodes\Koala\Koala\Koala\obj\x64\Debug64\Koala.xml
 C:\WORK\SourceCodes\Koala\Koala\Koala\obj\x64\Debug64\Koala.pdb
+C:\WORK\SourceCodes\Koala\Koala\bin\x64\Debug64\Koala.dll
+C:\WORK\SourceCodes\Koala\Koala\bin\x64\Debug64\Koala.pdb
+C:\WORK\SourceCodes\Koala\Koala\bin\x64\Debug64\Koala.xml
+C:\WORK\SourceCodes\Koala\Koala\obj\x64\Debug64\Koala.Resources.resources
+C:\WORK\SourceCodes\Koala\Koala\obj\x64\Debug64\Koala.vbproj.GenerateResource.cache
+C:\WORK\SourceCodes\Koala\Koala\obj\x64\Debug64\Koala.dll
+C:\WORK\SourceCodes\Koala\Koala\obj\x64\Debug64\Koala.xml
+C:\WORK\SourceCodes\Koala\Koala\obj\x64\Debug64\Koala.pdb
+C:\WORK\SourceCodes\Koala\Koala\obj\x64\Debug64\Koala.vbprojAssemblyReference.cache

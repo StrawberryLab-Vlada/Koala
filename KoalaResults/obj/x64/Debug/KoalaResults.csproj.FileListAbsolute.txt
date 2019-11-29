@@ -26,3 +26,10 @@ C:\WORK\SourceCodes\Koala\Koala\KoalaResults\obj\x64\Debug\KoalaResults.Properti
 C:\WORK\SourceCodes\Koala\Koala\KoalaResults\obj\x64\Debug\KoalaResults.csproj.GenerateResource.cache
 C:\WORK\SourceCodes\Koala\Koala\KoalaResults\obj\x64\Debug\KoalaResults.dll
 C:\WORK\SourceCodes\Koala\Koala\KoalaResults\obj\x64\Debug\KoalaResults.pdb
+C:\WORK\SourceCodes\Koala\KoalaResults\bin\x64\Debug64\KoalaResults.dll
+C:\WORK\SourceCodes\Koala\KoalaResults\bin\x64\Debug64\KoalaResults.pdb
+C:\WORK\SourceCodes\Koala\KoalaResults\obj\x64\Debug\KoalaResults.Properties.Resources.resources
+C:\WORK\SourceCodes\Koala\KoalaResults\obj\x64\Debug\KoalaResults.csproj.GenerateResource.cache
+C:\WORK\SourceCodes\Koala\KoalaResults\obj\x64\Debug\KoalaResults.dll
+C:\WORK\SourceCodes\Koala\KoalaResults\obj\x64\Debug\KoalaResults.pdb
+C:\WORK\SourceCodes\Koala\KoalaResults\obj\x64\Debug\KoalaResults.csprojAssemblyReference.cache
