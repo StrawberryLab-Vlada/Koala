@@ -662,13 +662,11 @@ Namespace Koala
                 'header
                 oSB.AppendLine("<h>")
                 oSB.AppendLine(ConCat_ht("0", "Structure"))
-                oSB.AppendLine(ConCat_ht("1", "National code"))
-                oSB.AppendLine(ConCat_ht("2", "National annex"))
-                oSB.AppendLine(ConCat_ht("3", "Concrete"))
-                oSB.AppendLine(ConCat_ht("4", "Steel"))
-                oSB.AppendLine(ConCat_ht("5", "Timber"))
-                'oSB.AppendLine(ConCat_ht("6", "Steel fibre concrete"))
-                oSB.AppendLine(ConCat_ht("6", "Functionality"))
+                oSB.AppendLine(ConCat_ht("1", "Concrete"))
+                oSB.AppendLine(ConCat_ht("2", "Steel"))
+                oSB.AppendLine(ConCat_ht("3", "Timber"))
+                oSB.AppendLine(ConCat_ht("4", "Steel fibre concrete"))
+                oSB.AppendLine(ConCat_ht("5", "Functionality"))
 
                 oSB.AppendLine("</h>")
 
@@ -684,13 +682,14 @@ Namespace Koala
                     Case Else
                         Rhino.RhinoApp.WriteLine("KOALA: Structure type not recognized")
                 End Select
-
-                oSB.AppendLine(ConCat_pv("3", IIf(materials.Contains("Concrete"), "1", "0")))
-                oSB.AppendLine(ConCat_pv("4", IIf(materials.Contains("Steel"), "1", "0")))
-                oSB.AppendLine(ConCat_pv("5", IIf(materials.Contains("Timber"), "1", "0")))
-                'oSB.AppendLine(ConCat_pv("6", IIf(materials.Contains("Fiber Concrete"), "1", "0")))
+                oSB.AppendLine(ConCat_pv("1", IIf(materials.Contains("Concrete"), "1", "0")))
+                oSB.AppendLine(ConCat_pv("2", IIf(materials.Contains("Steel"), "1", "0")))
+                oSB.AppendLine(ConCat_pv("3", IIf(materials.Contains("Timber"), "1", "0")))
+                oSB.AppendLine(ConCat_pv("4", IIf(materials.Contains("Fiber Concrete"), "1", "0")))
+                oSB.AppendLine(ConCat_pv("5", "PrDEx_Nonlinearity, PrDEx_BeamLocalNonlinearity, PrDEx_StabilityAnalysis, PrDEx_MaterialSteel"))
                 'Functionality "PrDEx_DynamicAnalysis, PrDEx_Subsoil, PrDEx_ClimaticLoads, PrDEx_ConnectionsSteel_CAD, PrDEx_Parametric, PrDEx_MaterialSteel, PrDEx_GADrawings, " 
-                'oSB.AppendLine(ConCat_pv("6", "PrDEx_Nonlinearity,PrDEx_SecondOrder, PrDEx_BeamLocalNonlinearity, PrDEx_SupportNonlinearity,PrDEx_InitialStress, PrDEx_StabilityAnalysis,PrDEx_InitialDeformationsAndCurvature,PrDEx_FrictionSupport"))
+
+
                 'oSB.AppendLine(ConCat_pv("6", "PrDEx_InitialStress, PrDEx_Subsoil, PrDEx_Nonlinearity, PrDEx_InitialDeformationsAndCurvature, PrDEx_SecondOrder, PrDEx_BeamLocalNonlinearity, PrDEx_SupportNonlinearity, PrDEx_FrictionSupport, PrDEx_StabilityAnalysis, PrDEx_FrictionSupport, PrDEx_ConnectionsSteel_CAD, PrDEx_Parametric, PrDEx_MaterialSteel, PrDEx_GADrawings"))
 
 
