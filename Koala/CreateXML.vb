@@ -155,6 +155,12 @@ Namespace Koala
             pManager.Param(29).Optional = True
             pManager.AddTextParameter("Crosslinks", "Crosslinks", "List crosslinks", GH_ParamAccess.list)
             pManager.Param(30).Optional = True
+            pManager.AddTextParameter("PressTensionBeamNL", "PressTensionBeamNL", "List of press/tension only beam local NL", GH_ParamAccess.list)
+            pManager.Param(31).Optional = True
+            pManager.AddTextParameter("GapElementsBeamNL", "GapElementsBeamNL", "List of gap beam local NL", GH_ParamAccess.list)
+            pManager.Param(32).Optional = True
+            pManager.AddTextParameter("LimitForceBeamNL", "LimitForceBeamNL", "List of limit force beam local NL", GH_ParamAccess.list)
+            pManager.Param(33).Optional = True
         End Sub
 
         ''' <summary>
@@ -204,6 +210,9 @@ Namespace Koala
             Dim in_NonLinCombinations = New List(Of String)
             Dim in_StabCombinations = New List(Of String)
             Dim in_CrossLinks = New List(Of String)
+            Dim in_presstensionElem = New List(Of String)
+            Dim in_gapElem = New List(Of String)
+            Dim in_limitforceElem = New List(Of String)
 
 
             DA.GetData(Of String)(0, StructureType)
@@ -237,6 +246,9 @@ Namespace Koala
             DA.GetDataList(Of String)(28, in_NonLinCombinations)
             DA.GetDataList(Of String)(29, in_StabCombinations)
             DA.GetDataList(Of String)(30, in_CrossLinks)
+            DA.GetDataList(Of String)(31, in_presstensionElem)
+            DA.GetDataList(Of String)(32, in_gapElem)
+            DA.GetDataList(Of String)(33, in_limitforceElem)
 
 
 
@@ -270,6 +282,10 @@ Namespace Koala
             Dim SE_nonlincombinations(100000, 3) As String
             Dim SE_stabcombinations(100000, 2) As String
             Dim SE_Crosslinks(100000, 3) As String
+            Dim SE_gapselem(100000, 4) As String
+            Dim SE_presstensionelems(100000, 2) As String
+            Dim SE_limforceelem(1000000, 4) As String
+
 
             Dim SE_meshsize As Double
 
@@ -281,7 +297,7 @@ Namespace Koala
             Dim sectioncount As Long, nodesupportcount As Long, edgesupportcount As Long
             Dim lcasecount As Long, lgroupcount As Long, lloadcount As Long, sloadcount As Long, fploadcount As Long, flloadcount As Long, fsloadcount As Long
             Dim hingecount As Long, eloadscount As Long, pointLoadpointCount As Long, pointLoadbeamCount As Long, lincominationcount As Long, nonlincominationcount As Long
-            Dim stabcombicount As Long, crosslinkscount As Long
+            Dim stabcombicount As Long, crosslinkscount As Long, gapsnr As Long, ptelemnsnr As Long, lfelemnsnr As Long
             Dim stopWatch As New System.Diagnostics.Stopwatch()
             Dim time_elapsed As Double
             Dim oSB As System.Text.StringBuilder 'required for fast string building
@@ -323,6 +339,10 @@ Namespace Koala
             stabcombicount = 0
             lincominationcount = 0
             nonlincominationcount = 0
+            crosslinkscount = 0
+            lfelemnsnr = 0
+            gapsnr = 0
+            ptelemnsnr = 0
 
             'make some input parameters global variables for this component
             gl_UILanguage = UILanguage
@@ -558,6 +578,38 @@ Namespace Koala
                 Next i
             End If
 
+            If (in_gapElem IsNot Nothing) Then
+                gapsnr = in_gapElem.Count / 4
+                Rhino.RhinoApp.WriteLine("Number of load cases: " & lcasecount)
+                For i = 0 To gapsnr - 1
+                    For j = 0 To 1
+                        SE_gapselem(i, j) = in_gapElem(j + i * 4)
+                    Next j
+                Next i
+            End If
+
+            If (in_presstensionElem IsNot Nothing) Then
+                ptelemnsnr = in_presstensionElem.Count / 2
+                Rhino.RhinoApp.WriteLine("Number of load cases: " & lcasecount)
+                For i = 0 To ptelemnsnr - 1
+                    For j = 0 To 1
+                        SE_presstensionelems(i, j) = in_presstensionElem(j + i * 2)
+                    Next j
+                Next i
+            End If
+
+
+            If (in_limitforceElem IsNot Nothing) Then
+                lfelemnsnr = in_limitforceElem.Count / 3
+                Rhino.RhinoApp.WriteLine("Number of load cases: " & lcasecount)
+                For i = 0 To lfelemnsnr - 1
+                    For j = 0 To 1
+                        SE_limforceelem(i, j) = in_StabCombinations(j + i * 4)
+                    Next j
+                Next i
+            End If
+
+
             'write the XML file
             '---------------------------------------------------
             Rhino.RhinoApp.Write("Creating the XML file string in memory...")
@@ -568,7 +620,7 @@ Namespace Koala
     SE_fploads, fploadcount, SE_flloads, flloadcount, SE_fsloads, fsloadcount,
     SE_hinges, hingecount,
     SE_meshsize, SE_eLoads, eloadscount, SE_pointLoadPoint, pointLoadpointCount, SE_pointLoadBeam, pointLoadbeamCount,
-    SE_lincombinations, lincominationcount, SE_nonlincombinations, nonlincominationcount, SE_stabcombinations, stabcombicount, SE_Crosslinks, crosslinkscount)
+    SE_lincombinations, lincominationcount, SE_nonlincombinations, nonlincominationcount, SE_stabcombinations, stabcombicount, SE_Crosslinks, crosslinkscount, SE_gapselem, gapsnr, SE_presstensionelems, ptelemnsnr, SE_limforceelem, lfelemnsnr)
 
             Rhino.RhinoApp.Write(" Done." & Convert.ToChar(13))
 
@@ -637,7 +689,7 @@ Namespace Koala
     hinges(,), hingenr,
     meshsize, eloads(,), eloadsnr, pointLoadPoint(,), pointLoadpointCount, pointLoadBeam(,),
     pointLoadbeamCount, lincombinations(,), lincominationcount, nonlincombinations(,), nonlincominationcount,
-    stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount)
+    stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsnr, presstensionelems(,), ptelemnsnr, limforceelem(,), lfelemnsnr)
 
             Dim i As Long
             Dim c As String, cid As String, t As String, tid As String
@@ -687,12 +739,6 @@ Namespace Koala
                 oSB.AppendLine(ConCat_pv("3", IIf(materials.Contains("Timber"), "1", "0")))
                 oSB.AppendLine(ConCat_pv("4", IIf(materials.Contains("Fiber Concrete"), "1", "0")))
                 oSB.AppendLine(ConCat_pv("5", "PrDEx_Nonlinearity, PrDEx_BeamLocalNonlinearity, PrDEx_StabilityAnalysis, PrDEx_MaterialSteel"))
-                'Functionality "PrDEx_DynamicAnalysis, PrDEx_Subsoil, PrDEx_ClimaticLoads, PrDEx_ConnectionsSteel_CAD, PrDEx_Parametric, PrDEx_MaterialSteel, PrDEx_GADrawings, " 
-
-
-                'oSB.AppendLine(ConCat_pv("6", "PrDEx_InitialStress, PrDEx_Subsoil, PrDEx_Nonlinearity, PrDEx_InitialDeformationsAndCurvature, PrDEx_SecondOrder, PrDEx_BeamLocalNonlinearity, PrDEx_SupportNonlinearity, PrDEx_FrictionSupport, PrDEx_StabilityAnalysis, PrDEx_FrictionSupport, PrDEx_ConnectionsSteel_CAD, PrDEx_Parametric, PrDEx_MaterialSteel, PrDEx_GADrawings"))
-
-
                 oSB.AppendLine("</obj>")
 
                 oSB.AppendLine("</table>")
@@ -827,6 +873,94 @@ Namespace Koala
                         Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... beam: " + Str(i))
                     End If
                     Call WriteBeam(oSB, i, beams)
+                Next
+
+                oSB.AppendLine("</table>")
+                oSB.AppendLine("</container>")
+            End If
+
+            If ptelemnsnr > 0 Then
+                'output beams ---------------------------------------------------------------------
+                c = "{02AC59F3-478B-44C3-A350-E78DA69D7520}"
+                cid = "DataAddSupport.EP_NonlinearityInitStress.1"
+                t = "7E7FED2A-5579-4B4C-B0A9-4AD2F7E49F66"
+                tid = "DataAddSupport.EP_NonlinearityInitStress.1"
+
+                oSB.AppendLine("")
+                oSB.AppendLine("<container id=""" & c & """ t=""" & cid & """>")
+                oSB.AppendLine("<table id=""" & t & """ t=""" & tid & """>")
+
+                oSB.AppendLine("<h>")
+                oSB.AppendLine(ConCat_hh("0", "Name"))
+                oSB.AppendLine(ConCat_hh("1", "Reference table"))
+                oSB.AppendLine(ConCat_hh("2", "Type"))
+
+
+                For i = 0 To ptelemnsnr - 1
+                    If i > 0 And (i Mod 500 = 0) Then
+                        Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... beam: " + Str(i))
+                    End If
+                    Call WritePressTensionOnlyBeamNL(oSB, i, presstensionelems)
+                Next
+                oSB.AppendLine("</table>")
+                oSB.AppendLine("</container>")
+            End If
+
+            If gapsnr > 0 Then
+
+                'output beams ---------------------------------------------------------------------
+                c = "{02AC59F3-478B-44C3-A350-E78DA69D7520}"
+                cid = "DataAddSupport.EP_NonlinearityInitStress.1"
+                t = "5E881A0B-B102-4B8A-B77D-84ACAB22C003"
+                tid = "DataAddSupport.EP_NonlinearityInitStress.1"
+
+                oSB.AppendLine("")
+                oSB.AppendLine("<container id=""" & c & """ t=""" & cid & """>")
+                oSB.AppendLine("<table id=""" & t & """ t=""" & tid & """>")
+
+                oSB.AppendLine("<h>")
+                oSB.AppendLine(ConCat_hh("0", "Name"))
+                oSB.AppendLine(ConCat_hh("1", "Reference table"))
+                oSB.AppendLine(ConCat_hh("2", "Type"))
+                oSB.AppendLine(ConCat_hh("3", "Type"))
+                oSB.AppendLine(ConCat_hh("4", "Displacement"))
+                oSB.AppendLine(ConCat_hh("5", "Position"))
+
+                For i = 0 To gapsnr - 1
+                    If i > 0 And (i Mod 500 = 0) Then
+                        Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... beam: " + Str(i))
+                    End If
+                    Call WriteGapLocalBeamNL(oSB, i, gapselem)
+                Next
+
+                oSB.AppendLine("</table>")
+                oSB.AppendLine("</container>")
+            End If
+
+            If lfelemnsnr > 0 Then
+                'output beams ---------------------------------------------------------------------
+                c = "{02AC59F3-478B-44C3-A350-E78DA69D7520}"
+                cid = "DataAddSupport.EP_NonlinearityInitStress.1"
+                t = "5604D64C-4042-4F4D-84C3-9F948AAD465E"
+                tid = "DataAddSupport.EP_NonlinearityInitStress.1"
+
+                oSB.AppendLine("")
+                oSB.AppendLine("<container id=""" & c & """ t=""" & cid & """>")
+                oSB.AppendLine("<table id=""" & t & """ t=""" & tid & """>")
+
+                oSB.AppendLine("<h>")
+                oSB.AppendLine(ConCat_hh("0", "Name"))
+                oSB.AppendLine(ConCat_hh("1", "Reference table"))
+                oSB.AppendLine(ConCat_hh("2", "Type"))
+                oSB.AppendLine(ConCat_hh("3", "Direction"))
+                oSB.AppendLine(ConCat_hh("4", "Type"))
+                oSB.AppendLine(ConCat_hh("5", "Marginal force"))
+
+                For i = 0 To lfelemnsnr - 1
+                    If i > 0 And (i Mod 500 = 0) Then
+                        Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... beam: " + Str(i))
+                    End If
+                    Call WriteLimitForceBeamNL(oSB, i, limforceelem)
                 Next
 
                 oSB.AppendLine("</table>")
@@ -1653,8 +1787,11 @@ Namespace Koala
 
         End Sub
         Sub WritePressTensionOnlyBeamNL(ByRef oSB, i, beamnlocalnonlin(,))
+
+            oSB.AppendLine("<obj nm=""" & "PTBNL" & Trim(Str(i)) & """>")
+            oSB.AppendLine(ConCat_pv("0", "PTBNL" & Trim(Str(i)))) 'Name
             'write beam name as reference table
-            oSB.AppendLine("<p2 t="""">")
+            oSB.AppendLine("<p1 t="""">")
             oSB.AppendLine("<h>")
             oSB.AppendLine("<h0 t=""Member Type""/>")
             oSB.AppendLine("<h1 t=""Member Type Name""/>")
@@ -1663,14 +1800,23 @@ Namespace Koala
             oSB.AppendLine("<row id=""0"">")
             oSB.AppendLine(ConCat_pv("0", "{ECB5D684-7357-11D4-9F6C-00104BC3B443}"))
             oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_Beam.1"))
-            'oSB.AppendLine(ConCat_pv("2", loads(iload, 1)))
+            oSB.AppendLine(ConCat_pv("2", beamnlocalnonlin(i, 0)))
             oSB.AppendLine("</row>")
-            oSB.AppendLine("</p2>")
+            oSB.AppendLine("</p1>")
             'end of reference table
+            Select Case beamnlocalnonlin(i, 1)
+                Case "Press only"
+                    oSB.AppendLine(ConCat_pvt("2", "0", "Press only"))
+                Case "Tension only"
+                    oSB.AppendLine(ConCat_pvt("2", "1", "Tension only"))
+            End Select
+            oSB.AppendLine("</obj>")
         End Sub
         Sub WriteLimitForceBeamNL(ByRef oSB, i, LimitForce(,))
+            oSB.AppendLine("<obj nm=""" & "LFBNL" & Trim(Str(i)) & """>")
+            oSB.AppendLine(ConCat_pv("0", "LFBNL" & Trim(Str(i)))) 'Name
             'write beam name as reference table
-            oSB.AppendLine("<p2 t="""">")
+            oSB.AppendLine("<p1 t="""">")
             oSB.AppendLine("<h>")
             oSB.AppendLine("<h0 t=""Member Type""/>")
             oSB.AppendLine("<h1 t=""Member Type Name""/>")
@@ -1679,26 +1825,61 @@ Namespace Koala
             oSB.AppendLine("<row id=""0"">")
             oSB.AppendLine(ConCat_pv("0", "{ECB5D684-7357-11D4-9F6C-00104BC3B443}"))
             oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_Beam.1"))
-            ' oSB.AppendLine(ConCat_pv("2", loads(iload, 1)))
+            oSB.AppendLine(ConCat_pv("2", LimitForce(i, 0)))
             oSB.AppendLine("</row>")
-            oSB.AppendLine("</p2>")
+            oSB.AppendLine("</p1")
             'end of reference table
+            oSB.AppendLine(ConCat_pvt("2", "2", "Limit force"))
+            Select Case LimitForce(i, 1)
+                Case "Limit tension"
+                    oSB.AppendLine(ConCat_pvt("3", "0", "Limit tension"))
+                Case "Limit compression"
+                    oSB.AppendLine(ConCat_pvt("3", "1", "Limit compression"))
+            End Select
+            Select Case LimitForce(i, 2)
+                Case "Buckling"
+                    oSB.AppendLine(ConCat_pvt("4", "0", "Buckling ( results zero )"))
+                Case "Tension only"
+                    oSB.AppendLine(ConCat_pvt("4", "1", "Plastic yielding"))
+            End Select
+            oSB.AppendLine(ConCat_pv("5", LimitForce(i, 3)))
+
+            oSB.AppendLine("</obj>")
         End Sub
         Sub WriteGapLocalBeamNL(ByRef oSB, igap, gaps(,))
-            ''write beam name as reference table  
-            'oSB.AppendLine("<p2 t="""">")
-            'oSB.AppendLine("<h>")
-            'oSB.AppendLine("<h0 t=""Member Type""/>")
-            'oSB.AppendLine("<h1 t=""Member Type Name""/>")
-            'oSB.AppendLine("<h2 t=""Member Name""/>")
-            'oSB.AppendLine("</h>")
-            'oSB.AppendLine("<row id=""0"">")
-            'oSB.AppendLine(ConCat_pv("0", "{ECB5D684-7357-11D4-9F6C-00104BC3B443}"))
-            'oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_Beam.1"))
-            '' oSB.AppendLine(ConCat_pv("2", loads(iload, 1)))
-            'oSB.AppendLine("</row>")
-            'oSB.AppendLine("</p2>")
-            ''end of reference table
+            oSB.AppendLine("<obj nm=""" & "GBNL" & Trim(Str(igap)) & """>")
+            oSB.AppendLine(ConCat_pv("0", "GBNL" & Trim(Str(igap)))) 'Name
+            'write beam name as reference table
+            oSB.AppendLine("<p1 t="""">")
+            oSB.AppendLine("<h>")
+            oSB.AppendLine("<h0 t=""Member Type""/>")
+            oSB.AppendLine("<h1 t=""Member Type Name""/>")
+            oSB.AppendLine("<h2 t=""Member Name""/>")
+            oSB.AppendLine("</h>")
+            oSB.AppendLine("<row id=""0"">")
+            oSB.AppendLine(ConCat_pv("0", "{ECB5D684-7357-11D4-9F6C-00104BC3B443}"))
+            oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_Beam.1"))
+            oSB.AppendLine(ConCat_pv("2", gaps(igap, 0)))
+            oSB.AppendLine("</row>")
+            oSB.AppendLine("</p1")
+            'end of reference table
+            oSB.AppendLine(ConCat_pvt("2", "3", "Gap"))
+            Select Case gaps(igap, 1)
+                Case "Press only"
+                    oSB.AppendLine(ConCat_pvt("3", "0", "Press only"))
+                Case "Tension only"
+                    oSB.AppendLine(ConCat_pvt("3", "1", "Tension only"))
+                Case "Both directions"
+                    oSB.AppendLine(ConCat_pvt("3", "2", "Both directions"))
+            End Select
+            oSB.AppendLine(ConCat_pv("4", gaps(igap, 2)))
+            Select Case gaps(igap, 3)
+                Case "Begin"
+                    oSB.AppendLine(ConCat_pvt("4", "0", "Begin"))
+                Case "End"
+                    oSB.AppendLine(ConCat_pvt("4", "1", "End"))
+            End Select
+            oSB.AppendLine("</obj>")
         End Sub
 
         Sub WriteSurface(ByRef osb, isurface, surfaces(,)) 'write 1 surface to the XML stream

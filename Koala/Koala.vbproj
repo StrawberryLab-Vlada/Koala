@@ -114,8 +114,10 @@
       <DependentUpon>FreeSurfaceLoad.vb</DependentUpon>
     </Compile>
     <Compile Include="FreeSurfaceLoad.vb" />
+    <Compile Include="GapLocalBeamNL.vb" />
     <Compile Include="HelperTools.vb" />
     <Compile Include="Hinges.vb" />
+    <Compile Include="LimitForceLocalBeamNL.vb" />
     <Compile Include="LinearCombination.vb" />
     <Compile Include="LoadCasesAndGroups.vb" />
     <Compile Include="KoalaInfo.vb" />
@@ -142,6 +144,7 @@
     <Compile Include="Openings.vb" />
     <Compile Include="PointLoadOnBeam.vb" />
     <Compile Include="PointLoadOnStructNode.vb" />
+    <Compile Include="PressTensionOnlyBeamNl.vb" />
     <Compile Include="StabilityCombination.vb" />
     <Compile Include="SurfaceLoad.vb" />
   </ItemGroup>
@@ -177,8 +180,10 @@
     <Content Include="Resources\FreeLineLoad.bmp" />
     <Content Include="Resources\FreePointLoad.bmp" />
     <Content Include="Resources\FreeSurfaceLoad.bmp" />
+    <None Include="Resources\Gap.bmp" />
     <Content Include="Resources\Hinge.bmp" />
     <None Include="Resources\LinearCombination.bmp" />
+    <None Include="Resources\LimitForceBeamNL.bmp" />
     <Content Include="Resources\LineLoad.bmp" />
     <Content Include="Resources\LineSupport.bmp" />
     <Content Include="Resources\LoadCases.bmp" />
@@ -190,6 +195,7 @@
     <None Include="Resources\PointLoadBeam.bmp" />
     <None Include="Resources\NonLinearCombination.bmp" />
     <None Include="Resources\StabilityCombination.bmp" />
+    <None Include="Resources\PressOnly.bmp" />
     <Content Include="Resources\SurfaceLoad.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
