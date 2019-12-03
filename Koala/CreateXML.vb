@@ -582,7 +582,7 @@ Namespace Koala
                 gapsnr = in_gapElem.Count / 4
                 Rhino.RhinoApp.WriteLine("Number of load cases: " & lcasecount)
                 For i = 0 To gapsnr - 1
-                    For j = 0 To 1
+                    For j = 0 To 3
                         SE_gapselem(i, j) = in_gapElem(j + i * 4)
                     Next j
                 Next i
@@ -603,7 +603,7 @@ Namespace Koala
                 lfelemnsnr = in_limitforceElem.Count / 3
                 Rhino.RhinoApp.WriteLine("Number of load cases: " & lcasecount)
                 For i = 0 To lfelemnsnr - 1
-                    For j = 0 To 1
+                    For j = 0 To 3
                         SE_limforceelem(i, j) = in_StabCombinations(j + i * 4)
                     Next j
                 Next i
@@ -667,7 +667,7 @@ Namespace Koala
                         If System.Math.Abs(arrPoint(2) - nodes(currentnode, 3)) < epsilon Then
                             GetExistingNode = currentnode
                         Else
-                            currentnode = currentnode + 1
+                            currentnode += 1
                         End If
                     Else
                         currentnode = currentnode + 1
@@ -895,7 +895,7 @@ Namespace Koala
                 oSB.AppendLine(ConCat_hh("1", "Reference table"))
                 oSB.AppendLine(ConCat_hh("2", "Type"))
 
-
+                oSB.AppendLine("</h>")
                 For i = 0 To ptelemnsnr - 1
                     If i > 0 And (i Mod 500 = 0) Then
                         Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... beam: " + Str(i))
@@ -925,7 +925,7 @@ Namespace Koala
                 oSB.AppendLine(ConCat_hh("3", "Type"))
                 oSB.AppendLine(ConCat_hh("4", "Displacement"))
                 oSB.AppendLine(ConCat_hh("5", "Position"))
-
+                oSB.AppendLine("</h>")
                 For i = 0 To gapsnr - 1
                     If i > 0 And (i Mod 500 = 0) Then
                         Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... beam: " + Str(i))
@@ -955,7 +955,7 @@ Namespace Koala
                 oSB.AppendLine(ConCat_hh("3", "Direction"))
                 oSB.AppendLine(ConCat_hh("4", "Type"))
                 oSB.AppendLine(ConCat_hh("5", "Marginal force"))
-
+                oSB.AppendLine("</h>")
                 For i = 0 To lfelemnsnr - 1
                     If i > 0 And (i Mod 500 = 0) Then
                         Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... beam: " + Str(i))
@@ -1861,7 +1861,7 @@ Namespace Koala
             oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_Beam.1"))
             oSB.AppendLine(ConCat_pv("2", gaps(igap, 0)))
             oSB.AppendLine("</row>")
-            oSB.AppendLine("</p1")
+            oSB.AppendLine("</p1>")
             'end of reference table
             oSB.AppendLine(ConCat_pvt("2", "3", "Gap"))
             Select Case gaps(igap, 1)
@@ -1875,9 +1875,9 @@ Namespace Koala
             oSB.AppendLine(ConCat_pv("4", gaps(igap, 2)))
             Select Case gaps(igap, 3)
                 Case "Begin"
-                    oSB.AppendLine(ConCat_pvt("4", "0", "Begin"))
+                    oSB.AppendLine(ConCat_pvt("5", "0", "Begin"))
                 Case "End"
-                    oSB.AppendLine(ConCat_pvt("4", "1", "End"))
+                    oSB.AppendLine(ConCat_pvt("5", "1", "End"))
             End Select
             oSB.AppendLine("</obj>")
         End Sub
