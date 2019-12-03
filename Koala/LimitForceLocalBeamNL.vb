@@ -72,7 +72,7 @@ Namespace Koala
                 SE_LimitForce(itemcount, 0) = Strings.Trim(item)
                 SE_LimitForce(itemcount, 1) = Direction
                 SE_LimitForce(itemcount, 2) = Type
-                SE_LimitForce(itemcount, 3) = MarginalForce / 1000
+                SE_LimitForce(itemcount, 3) = MarginalForce * 1000
                 itemcount += 1
             Next
 

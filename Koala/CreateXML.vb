@@ -600,11 +600,11 @@ Namespace Koala
 
 
             If (in_limitforceElem IsNot Nothing) Then
-                lfelemnsnr = in_limitforceElem.Count / 3
+                lfelemnsnr = in_limitforceElem.Count / 4
                 Rhino.RhinoApp.WriteLine("Number of load cases: " & lcasecount)
                 For i = 0 To lfelemnsnr - 1
                     For j = 0 To 3
-                        SE_limforceelem(i, j) = in_StabCombinations(j + i * 4)
+                        SE_limforceelem(i, j) = in_limitforceElem(j + i * 4)
                     Next j
                 Next i
             End If
@@ -1827,7 +1827,7 @@ Namespace Koala
             oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_Beam.1"))
             oSB.AppendLine(ConCat_pv("2", LimitForce(i, 0)))
             oSB.AppendLine("</row>")
-            oSB.AppendLine("</p1")
+            oSB.AppendLine("</p1>")
             'end of reference table
             oSB.AppendLine(ConCat_pvt("2", "2", "Limit force"))
             Select Case LimitForce(i, 1)
