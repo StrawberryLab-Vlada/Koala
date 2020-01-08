@@ -3220,13 +3220,12 @@ Namespace Koala
             oSB.AppendLine("<h>")
             oSB.AppendLine("<h0 t=""Member Type""/>")
             oSB.AppendLine("<h1 t=""Member Type Name""/>")
-            oSB.AppendLine("<h2 t=""Member Id""/>") 'can be ignored
-            oSB.AppendLine("<h3 t=""Member Name""/>")
+            oSB.AppendLine("<h2 t=""Member Name""/>")
             oSB.AppendLine("</h>")
             oSB.AppendLine("<row id=""0"">")
             oSB.AppendLine(ConCat_pv("0", "{ECB5D684-7357-11D4-9F6C-00104BC3B443}"))
             oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_Beam.1"))
-            oSB.AppendLine(ConCat_pv("3", hinges(ihinge, 0)))
+            oSB.AppendLine(ConCat_pv("2", hinges(ihinge, 0)))
             oSB.AppendLine("</row>")
             oSB.AppendLine("</p1>")
             'end of reference table

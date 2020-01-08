@@ -17,7 +17,7 @@ Public Class KoalaInfo
     Public Overrides ReadOnly Property Description As String
         Get
             'Return a short string describing the purpose of this GHA library.
-            Return ""
+            Return "Plugin which convert Grasshopper model to SCIA Engineer application"
         End Get
     End Property
     Public Overrides ReadOnly Property Id As System.Guid
