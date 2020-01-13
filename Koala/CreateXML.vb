@@ -161,6 +161,8 @@ Namespace Koala
             pManager.Param(32).Optional = True
             pManager.AddTextParameter("LimitForceBeamNL", "LimitForceBeamNL", "List of limit force beam local NL", GH_ParamAccess.list)
             pManager.Param(33).Optional = True
+            pManager.AddTextParameter("ProjectInformation", "ProjectInformation", "Project informations", GH_ParamAccess.list)
+            pManager.Param(34).Optional = True
         End Sub
 
         ''' <summary>
@@ -213,6 +215,7 @@ Namespace Koala
             Dim in_presstensionElem = New List(Of String)
             Dim in_gapElem = New List(Of String)
             Dim in_limitforceElem = New List(Of String)
+            Dim projectInfo = New List(Of String)
 
 
             DA.GetData(Of String)(0, StructureType)
@@ -249,7 +252,7 @@ Namespace Koala
             DA.GetDataList(Of String)(31, in_presstensionElem)
             DA.GetDataList(Of String)(32, in_gapElem)
             DA.GetDataList(Of String)(33, in_limitforceElem)
-
+            DA.GetDataList(Of String)(34, projectInfo)
 
 
             Dim i As Long, j As Long
@@ -620,7 +623,7 @@ Namespace Koala
     SE_fploads, fploadcount, SE_flloads, flloadcount, SE_fsloads, fsloadcount,
     SE_hinges, hingecount,
     SE_meshsize, SE_eLoads, eloadscount, SE_pointLoadPoint, pointLoadpointCount, SE_pointLoadBeam, pointLoadbeamCount,
-    SE_lincombinations, lincominationcount, SE_nonlincombinations, nonlincominationcount, SE_stabcombinations, stabcombicount, SE_Crosslinks, crosslinkscount, SE_gapselem, gapsnr, SE_presstensionelems, ptelemnsnr, SE_limforceelem, lfelemnsnr)
+    SE_lincombinations, lincominationcount, SE_nonlincombinations, nonlincominationcount, SE_stabcombinations, stabcombicount, SE_Crosslinks, crosslinkscount, SE_gapselem, gapsnr, SE_presstensionelems, ptelemnsnr, SE_limforceelem, lfelemnsnr, projectInfo)
 
             Rhino.RhinoApp.Write(" Done." & Convert.ToChar(13))
 
@@ -689,7 +692,7 @@ Namespace Koala
     hinges(,), hingenr,
     meshsize, eloads(,), eloadsnr, pointLoadPoint(,), pointLoadpointCount, pointLoadBeam(,),
     pointLoadbeamCount, lincombinations(,), lincominationcount, nonlincombinations(,), nonlincominationcount,
-    stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsnr, presstensionelems(,), ptelemnsnr, limforceelem(,), lfelemnsnr)
+    stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsnr, presstensionelems(,), ptelemnsnr, limforceelem(,), lfelemnsnr, projectInfo)
 
             Dim i As Long
             Dim c As String, cid As String, t As String, tid As String
@@ -719,6 +722,11 @@ Namespace Koala
                 oSB.AppendLine(ConCat_ht("3", "Timber"))
                 oSB.AppendLine(ConCat_ht("4", "Steel fibre concrete"))
                 oSB.AppendLine(ConCat_ht("5", "Functionality"))
+                oSB.AppendLine(ConCat_ht("6", "Project"))
+                oSB.AppendLine(ConCat_ht("7", "Part"))
+                oSB.AppendLine(ConCat_ht("8", "Description"))
+                oSB.AppendLine(ConCat_ht("9", "Author"))
+                oSB.AppendLine(ConCat_ht("10", "Date"))
 
                 oSB.AppendLine("</h>")
 
@@ -739,6 +747,12 @@ Namespace Koala
                 oSB.AppendLine(ConCat_pv("3", IIf(materials.Contains("Timber"), "1", "0")))
                 oSB.AppendLine(ConCat_pv("4", IIf(materials.Contains("Fiber Concrete"), "1", "0")))
                 oSB.AppendLine(ConCat_pv("5", "PrDEx_Nonlinearity, PrDEx_BeamLocalNonlinearity, PrDEx_StabilityAnalysis, PrDEx_MaterialSteel"))
+                oSB.AppendLine(ConCat_pv("6", projectInfo(0)))
+                oSB.AppendLine(ConCat_pv("7", projectInfo(1)))
+                oSB.AppendLine(ConCat_pv("8", projectInfo(2)))
+                oSB.AppendLine(ConCat_pv("9", projectInfo(3)))
+                oSB.AppendLine(ConCat_pv("10", projectInfo(4)))
+
                 oSB.AppendLine("</obj>")
 
                 oSB.AppendLine("</table>")

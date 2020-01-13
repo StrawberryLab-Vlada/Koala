@@ -34,6 +34,12 @@ Namespace Koala
             pManager.AddTextParameter("NodePrefix", "NodePrefix", "Node prefix", GH_ParamAccess.item, "N2D")
             pManager.AddNumberParameter("Tolerance", "Tolerance", "Tolerance for duplicity nodes", GH_ParamAccess.item, 0.001)
             pManager.AddBooleanParameter("RemDuplNodes", "RemDuplNodes", "Set True if you want to remove duplicate nodes", GH_ParamAccess.item, False)
+            pManager.AddTextParameter("Type", "Type", "Type of element: Plate, Wall, Shell", GH_ParamAccess.item, "Plate")
+            pManager.AddTextParameter("MemberSystemPlane", "MemberSystemPlane", "System plane of the member: Centre, Top, Bottom", GH_ParamAccess.item, "Centre")
+            pManager.AddNumberParameter("Eccentricity z", "Eccentricity z", "Eccentricity of the plane", GH_ParamAccess.item, 0.0)
+            pManager.AddTextParameter("FEM nonlinear model", "FEM nonlinear model", "Nonlinear model: none, Press only, Membrane", GH_ParamAccess.item, "none")
+            pManager.AddTextParameter("Thickness type", "Thickness type", "type of the thickness: constant, variable", GH_ParamAccess.item, "constant")
+
         End Sub
 
         ''' <summary>
