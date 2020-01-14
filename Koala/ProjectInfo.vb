@@ -26,6 +26,7 @@ Namespace Koala
         ''' </summary>
         Protected Overrides Sub RegisterInputParams(pManager As GH_Component.GH_InputParamManager)
             pManager.AddTextParameter("Project name", "ProjectName", "Name of the project", GH_ParamAccess.item, "Project 1")
+            pManager.Param(0).Optional = True
             pManager.AddTextParameter("Part", "Part", "Name of the project", GH_ParamAccess.item, "Project 1")
             pManager.Param(1).Optional = True
             pManager.AddTextParameter("Description", "Description", "Description", GH_ParamAccess.item, "Your description for project")
@@ -34,6 +35,10 @@ Namespace Koala
             pManager.Param(3).Optional = True
             pManager.AddTextParameter("Date", "Date", "Date", GH_ParamAccess.item, "02-01-2020")
             pManager.Param(4).Optional = True
+            pManager.AddTextParameter("NationalCode", "NationalCode", "National code", GH_ParamAccess.item, "EC - EN")
+            pManager.Param(5).Optional = True
+            pManager.AddTextParameter("NationalAnnex", "NationalAnnex", "National annex", GH_ParamAccess.item, "Standard EN")
+            pManager.Param(6).Optional = True
         End Sub
 
         ''' <summary>
@@ -55,11 +60,15 @@ Namespace Koala
             Dim Description As String = " Version 1"
             Dim Author As String = "My name"
             Dim dateOfCreation As String = "01-02-2020"
+            Dim NationalCode As String = "EC - EN"
+            Dim NationalAnnex As String = "Standard EN"
             If (Not DA.GetData(Of String)(0, ProjectName)) Then Return
             DA.GetData(Of String)(1, Part)
             DA.GetData(Of String)(2, Description)
             DA.GetData(Of String)(3, Author)
             DA.GetData(Of String)(4, dateOfCreation)
+            DA.GetData(Of String)(5, NationalCode)
+            DA.GetData(Of String)(6, NationalAnnex)
 
 
             Dim FlatList As New List(Of System.Object)()
@@ -73,6 +82,8 @@ Namespace Koala
             FlatList.Add(Description)
             FlatList.Add(Author)
             FlatList.Add(dateOfCreation)
+            FlatList.Add(NationalCode)
+            FlatList.Add(NationalAnnex)
 
 
             DA.SetDataList(0, FlatList)

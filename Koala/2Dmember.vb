@@ -117,7 +117,7 @@ Namespace Koala
             Dim EdgeType As String
             Dim BoundaryShape As String
 
-            Dim line As String, SurfaceName As String, NodeList As String
+            Dim line As String, SurfaceIndex As String, NodeList As String
 
             Dim stopWatch As New System.Diagnostics.Stopwatch()
             Dim time_elapsed As Double
@@ -262,11 +262,11 @@ Namespace Koala
             'add internal nodes to the surfaces
             If InternalNodes IsNot Nothing And InternalNodes.Count <> 0 Then
                 For Each line In InternalNodes
-                    SurfaceName = Trim(line.Split("|")(0))
+                    SurfaceIndex = Trim(line.Split("|")(0))
                     NodeList = Trim(line.Split("|")(1))
 
                     For i = 0 To surfacecount - 1
-                        If SE_surfaces(i, 0) = SurfaceName Then
+                        If SurfaceIndex = i Then
                             SE_surfaces(i, 6) = NodeList
                             Exit For
                         End If

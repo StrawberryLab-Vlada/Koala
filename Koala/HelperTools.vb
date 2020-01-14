@@ -53,31 +53,31 @@
 
     End Sub
 
-    Function ConCat_ht(h, t)
+    Private Function ConCat_ht(h, t)
         ConCat_ht = "<h" & h & " t=""" & t & """/>"
     End Function
-    Function ConCat_hh(h, N)
+    Private Function ConCat_hh(h, N)
         ConCat_hh = "<h" & h & " h=""" & N & """/>"
     End Function
-    Function ConCat_pv(p, v)
+    Private Function ConCat_pv(p, v)
         ConCat_pv = "<p" & p & " v=""" & v & """/>"
     End Function
-    Function ConCat_pvt(p, v, t)
+    Private Function ConCat_pvt(p, v, t)
         ConCat_pvt = "<p" & p & " v=""" & v & """ t=""" & t & """/>"
     End Function
-    Function ConCat_pn(p, N)
+    Private Function ConCat_pn(p, N)
         ConCat_pn = "<p" & p & " n=""" & N & """/>"
     End Function
-    Function ConCat_pin(p, i, N)
+    Private Function ConCat_pin(p, i, N)
         ConCat_pin = "<p" & p & " i=""" & i & """ n=""" & N & """/>"
     End Function
-    Function ConCat_opentable(p, t)
+    Private Function ConCat_opentable(p, t)
         ConCat_opentable = "<p" & p & " t=""" & t & """>"
     End Function
-    Function ConCat_closetable(p)
+    Private Function ConCat_closetable(p)
         ConCat_closetable = "</p" & p & ">"
     End Function
-    Function ConCat_row(id)
+    Private Function ConCat_row(id)
         ConCat_row = "<row id=""" & CStr(id) & """>"
     End Function
 
@@ -88,7 +88,7 @@
     Public gl_UILanguage As String 'required until free loads geometry's definition is language-neutral in SCIA Engineer's XML
 
 
-    Function GetExistingNode(arrPoint, nodes(,), nnodes, epsilon)
+    Public Function GetExistingNode(arrPoint, nodes(,), nnodes, epsilon)
         Dim currentnode
         'Start with node not found, loop through all the nodes until one is found within tolerance
         'Not in use now, as it's quite slow compared to within SCIA Engineer
@@ -533,17 +533,22 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
 
             'header
             oSB.AppendLine("<h>")
+
+
             oSB.AppendLine(ConCat_ht("0", "Structure"))
-            oSB.AppendLine(ConCat_ht("1", "Concrete"))
-            oSB.AppendLine(ConCat_ht("2", "Steel"))
-            oSB.AppendLine(ConCat_ht("3", "Timber"))
-            oSB.AppendLine(ConCat_ht("4", "Steel fibre concrete"))
-            oSB.AppendLine(ConCat_ht("5", "Functionality"))
-            oSB.AppendLine(ConCat_ht("6", "Project"))
-            oSB.AppendLine(ConCat_ht("7", "Part"))
-            oSB.AppendLine(ConCat_ht("8", "Description"))
-            oSB.AppendLine(ConCat_ht("9", "Author"))
-            oSB.AppendLine(ConCat_ht("10", "Date"))
+            oSB.AppendLine(ConCat_ht("1", "Project"))
+            oSB.AppendLine(ConCat_ht("2", "Part"))
+            oSB.AppendLine(ConCat_ht("3", "Description"))
+            oSB.AppendLine(ConCat_ht("4", "Author"))
+            oSB.AppendLine(ConCat_ht("5", "Date"))
+            oSB.AppendLine(ConCat_ht("6", "Concrete"))
+            oSB.AppendLine(ConCat_ht("7", "Steel"))
+            oSB.AppendLine(ConCat_ht("8", "Timber"))
+            oSB.AppendLine(ConCat_ht("9", "Steel fibre concrete"))
+            oSB.AppendLine(ConCat_ht("10", "Functionality"))
+
+
+
 
             oSB.AppendLine("</h>")
 
@@ -559,26 +564,40 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
                 Case Else
                     Rhino.RhinoApp.WriteLine("KOALA: Structure type not recognized")
             End Select
-            oSB.AppendLine(ConCat_pv("1", IIf(materials.Contains("Concrete"), "1", "0")))
-            oSB.AppendLine(ConCat_pv("2", IIf(materials.Contains("Steel"), "1", "0")))
-            oSB.AppendLine(ConCat_pv("3", IIf(materials.Contains("Timber"), "1", "0")))
-            oSB.AppendLine(ConCat_pv("4", IIf(materials.Contains("Fiber Concrete"), "1", "0")))
-            oSB.AppendLine(ConCat_pv("5", "PrDEx_Nonlinearity, PrDEx_BeamLocalNonlinearity, PrDEx_StabilityAnalysis, PrDEx_MaterialSteel"))
-            'If projectInfo <> Nullable
-            oSB.AppendLine(ConCat_pv("6", projectInfo(0)))
-            oSB.AppendLine(ConCat_pv("7", projectInfo(1)))
-            oSB.AppendLine(ConCat_pv("8", projectInfo(2)))
-            oSB.AppendLine(ConCat_pv("9", projectInfo(3)))
-            oSB.AppendLine(ConCat_pv("10", projectInfo(4)))
+            If (projectInfo.Count <> 0) Then
+                oSB.AppendLine(ConCat_pv("1", projectInfo(0)))
+                oSB.AppendLine(ConCat_pv("2", projectInfo(1)))
+                oSB.AppendLine(ConCat_pv("3", projectInfo(2)))
+                oSB.AppendLine(ConCat_pv("4", projectInfo(3)))
+                oSB.AppendLine(ConCat_pv("5", projectInfo(4)))
 
+            Else
+                oSB.AppendLine(ConCat_pv("1", "-"))
+                oSB.AppendLine(ConCat_pv("2", "-"))
+                oSB.AppendLine(ConCat_pv("3", "-"))
+                oSB.AppendLine(ConCat_pv("4", "-"))
+                oSB.AppendLine(ConCat_pv("5", "-"))
+            End If
+            oSB.AppendLine(ConCat_pv("6", IIf(materials.Contains("Concrete"), "1", "0")))
+            oSB.AppendLine(ConCat_pv("7", IIf(materials.Contains("Steel"), "1", "0")))
+            oSB.AppendLine(ConCat_pv("8", IIf(materials.Contains("Timber"), "1", "0")))
+            oSB.AppendLine(ConCat_pv("9", IIf(materials.Contains("Fiber Concrete"), "1", "0")))
+            oSB.AppendLine(ConCat_pv("10", "PrDEx_Nonlinearity, PrDEx_BeamLocalNonlinearity, PrDEx_StabilityAnalysis, PrDEx_MaterialSteel"))
+            If (projectInfo.Count <> 0) Then
+                oSB.AppendLine(ConCat_pv("11", projectInfo(5)))
+                oSB.AppendLine(ConCat_pv("12", projectInfo(6)))
+            Else
+                oSB.AppendLine(ConCat_pv("11", "EC - EN"))
+                oSB.AppendLine(ConCat_pv("12", "Standard EN"))
+            End If
             oSB.AppendLine("</obj>")
 
-            oSB.AppendLine("</table>")
-            oSB.AppendLine("</container>")
+                oSB.AppendLine("</table>")
+                oSB.AppendLine("</container>")
 
-        End If
+            End If
 
-        If meshsize > 0 Then
+            If meshsize > 0 Then
 
             'output project information -----------------------------------------------------
             c = "{31450A87-BE7E-4EA0-BFD2-4544A3E7BA53}"
@@ -1467,7 +1486,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
 
     End Sub
 
-    Sub WriteNode(ByRef oSB, inode, nodes(,)) 'write 1 node to the XML stream
+    Private Sub WriteNode(ByRef oSB, inode, nodes(,)) 'write 1 node to the XML stream
 
         oSB.AppendLine("<obj nm=""" & Trim(nodes(inode, 0)) & """>")
 
@@ -1480,7 +1499,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
 
     End Sub
 
-    Sub WriteBeam(ByRef oSB, ibeam, beams(,)) 'write 1 beam to the XML stream
+    Private Sub WriteBeam(ByRef oSB, ibeam, beams(,)) 'write 1 beam to the XML stream
         'a beam consists of: Name, Section, Layer, LineShape, LCSType, LCSParam1, LCSParam2, LCSParam3
 
         Dim LineShape As String, LineType As String
@@ -1623,7 +1642,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
         oSB.AppendLine("</obj>")
 
     End Sub
-    Sub WritePressTensionOnlyBeamNL(ByRef oSB, i, beamnlocalnonlin(,))
+    Private Sub WritePressTensionOnlyBeamNL(ByRef oSB, i, beamnlocalnonlin(,))
 
         oSB.AppendLine("<obj nm=""" & "PTBNL" & Trim(Str(i)) & """>")
         oSB.AppendLine(ConCat_pv("0", "PTBNL" & Trim(Str(i)))) 'Name
@@ -1649,7 +1668,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
         End Select
         oSB.AppendLine("</obj>")
     End Sub
-    Sub WriteLimitForceBeamNL(ByRef oSB, i, LimitForce(,))
+    Private Sub WriteLimitForceBeamNL(ByRef oSB, i, LimitForce(,))
         oSB.AppendLine("<obj nm=""" & "LFBNL" & Trim(Str(i)) & """>")
         oSB.AppendLine(ConCat_pv("0", "LFBNL" & Trim(Str(i)))) 'Name
         'write beam name as reference table
@@ -1683,7 +1702,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
 
         oSB.AppendLine("</obj>")
     End Sub
-    Sub WriteGapLocalBeamNL(ByRef oSB, igap, gaps(,))
+    Private Sub WriteGapLocalBeamNL(ByRef oSB, igap, gaps(,))
         oSB.AppendLine("<obj nm=""" & "GBNL" & Trim(Str(igap)) & """>")
         oSB.AppendLine(ConCat_pv("0", "GBNL" & Trim(Str(igap)))) 'Name
         'write beam name as reference table
@@ -1719,7 +1738,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
         oSB.AppendLine("</obj>")
     End Sub
 
-    Sub WriteSurface(ByRef osb, isurface, surfaces(,)) 'write 1 surface to the XML stream
+    Private Sub WriteSurface(ByRef osb, isurface, surfaces(,)) 'write 1 surface to the XML stream
         Dim row_id As Long, inode As Long
         Dim iedge As Long
         Dim edges() As String, nodes() As String
@@ -1753,7 +1772,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
 
 
         Select Case surfaces(isurface, 7)
-            Case "Center"
+            Case "Centre"
                 osb.AppendLine(ConCat_pvt("6", "1", "Centre"))
             Case "Top"
                 osb.AppendLine(ConCat_pvt("6", "2", "Top"))
@@ -1808,26 +1827,28 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
 
         'loop through all nodes
         row_id = 0
-        nodes = Strings.Split(surfaces(isurface, 6), ";")
-        'internal nodes
-        If nodes.Count <> 0 Then
-            osb.AppendLine(ConCat_opentable("9", ""))
-            osb.AppendLine("<h>")
-            osb.AppendLine(ConCat_ht("0", "Node"))
-            osb.AppendLine("</h>")
+        If Not String.IsNullOrEmpty(surfaces(isurface, 6)) Then
+            nodes = Strings.Split(surfaces(isurface, 6), ";")
+            'internal nodes
+            If nodes.Count <> 0 And Not String.IsNullOrEmpty(nodes(0)) Then
+                osb.AppendLine(ConCat_opentable("9", ""))
+                osb.AppendLine("<h>")
+                osb.AppendLine(ConCat_ht("0", "Node"))
+                osb.AppendLine("</h>")
 
 
 
-            For inode = 0 To nodes.Count - 1
-                osb.AppendLine(ConCat_row(row_id))
-                osb.AppendLine(ConCat_pn("0", Trim(nodes(inode))))
-                osb.AppendLine("</row>")
-                row_id += 1
+                For inode = 0 To nodes.Count - 1
+                    osb.AppendLine(ConCat_row(row_id))
+                    osb.AppendLine(ConCat_pn("0", Trim(nodes(inode))))
+                    osb.AppendLine("</row>")
+                    row_id += 1
 
-            Next inode
+                Next inode
+            End If
+
+            osb.AppendLine(ConCat_closetable("9"))
         End If
-        osb.AppendLine(ConCat_closetable("9"))
-
 
 
 
@@ -1837,7 +1858,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
 
     End Sub
 
-    Sub WriteOpening(ByRef osb, iopening, openings(,)) 'write 1 opening to the XML stream
+    Private Sub WriteOpening(ByRef osb, iopening, openings(,)) 'write 1 opening to the XML stream
         Dim row_id As Long, inode As Long
         Dim iedge As Long
         Dim edges() As String
@@ -1905,7 +1926,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
 
     End Sub
 
-    Sub WriteSection(ByRef oSB, sectionname, sectioncode, sectiondef, sectionmat) 'write 1 profile: hot-rolled steel or concrete
+    Private Sub WriteSection(ByRef oSB, sectionname, sectioncode, sectiondef, sectionmat) 'write 1 profile: hot-rolled steel or concrete
 
         Dim sectiontype As String
         Dim formtype As String
@@ -2293,7 +2314,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
 
     End Sub
 
-    Sub WriteNodeSupport(ByRef oSB, isupport, supports(,)) 'write 1 nodal support to the XML stream
+    Private Sub WriteNodeSupport(ByRef oSB, isupport, supports(,)) 'write 1 nodal support to the XML stream
         Dim tt As String
 
         oSB.AppendLine("<obj nm=""Sn" & isupport & """>")
@@ -2317,7 +2338,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
 
     End Sub
 
-    Sub WriteEdgeSupport(ByRef oSB, isupport, supports(,)) 'write 1 edge support to the XML stream
+    Private Sub WriteEdgeSupport(ByRef oSB, isupport, supports(,)) 'write 1 edge support to the XML stream
         Dim tt As String
 
         oSB.AppendLine("<obj nm=""Sle" & isupport & """>")
@@ -2367,7 +2388,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
 
     End Sub
 
-    Sub WriteLGroup(ByRef oSB, igroup, groups(,)) 'write 1 load group to the XML stream
+    Private Sub WriteLGroup(ByRef oSB, igroup, groups(,)) 'write 1 load group to the XML stream
 
         oSB.AppendLine("<obj id=""" & Trim(Str(igroup)) & """ nm=""" & groups(igroup, 0) & """>")
         oSB.AppendLine(ConCat_pv("0", groups(igroup, 0)))
@@ -2387,7 +2408,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
         oSB.AppendLine("</obj>")
 
     End Sub
-    Sub WriteLinCombination(ByRef oSB, icombi, combinations(,)) 'write 1 combination to the XML stream
+    Private Sub WriteLinCombination(ByRef oSB, icombi, combinations(,)) 'write 1 combination to the XML stream
 
         oSB.AppendLine("<obj id=""" & Trim(Str(icombi)) & """ nm=""" & combinations(icombi, 0) & """>")
         oSB.AppendLine(ConCat_pv("0", combinations(icombi, 0)))
@@ -2440,7 +2461,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
         oSB.AppendLine(ConCat_closetable("2"))
         oSB.AppendLine("</obj>")
     End Sub
-    Sub WriteNonLinCombination(ByRef oSB, icombi, combinations(,)) 'write 1 nonlinear combination to the XML stream
+    Private Sub WriteNonLinCombination(ByRef oSB, icombi, combinations(,)) 'write 1 nonlinear combination to the XML stream
 
         oSB.AppendLine("<obj id=""" & Trim(Str(icombi)) & """ nm=""" & combinations(icombi, 0) & """>")
         oSB.AppendLine(ConCat_pv("0", combinations(icombi, 0)))
@@ -2473,7 +2494,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
         oSB.AppendLine(ConCat_closetable("2"))
         oSB.AppendLine("</obj>")
     End Sub
-    Sub WriteStabilityCombination(ByRef oSB, icombi, combinations(,)) 'write 1 nonlinear combination to the XML stream
+    Private Sub WriteStabilityCombination(ByRef oSB, icombi, combinations(,)) 'write 1 nonlinear combination to the XML stream
 
         oSB.AppendLine("<obj id=""" & Trim(Str(icombi)) & """ nm=""" & combinations(icombi, 0) & """>")
         oSB.AppendLine(ConCat_pv("0", combinations(icombi, 0)))
@@ -2500,7 +2521,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
         oSB.AppendLine(ConCat_closetable("1"))
         oSB.AppendLine("</obj>")
     End Sub
-    Sub WriteLCase(ByRef oSB, icase, cases(,)) 'write 1 load case to the XML stream
+    Private Sub WriteLCase(ByRef oSB, icase, cases(,)) 'write 1 load case to the XML stream
 
         oSB.AppendLine("<obj id=""" & Trim(Str(icase)) & """ nm=""" & cases(icase, 0) & """>")
         oSB.AppendLine(ConCat_pv("0", cases(icase, 0)))
@@ -2523,7 +2544,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
 
     End Sub
 
-    Sub WriteLLoad(ByRef oSB, iload, loads(,)) 'write 1 line load to the XML stream
+    Private Sub WriteLLoad(ByRef oSB, iload, loads(,)) 'write 1 line load to the XML stream
 
         oSB.AppendLine("<obj id=""" & Trim(Str(iload)) & """ nm=""" & "LL" & Trim(Str(iload)) & """>")
         oSB.AppendLine(ConCat_pv("0", "LL" & Trim(Str(iload))))
@@ -2601,7 +2622,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
 
     End Sub
 
-    Sub WriteELoad(ByRef oSB, iload, loads(,)) 'write 1 line load on surface ede  to the XML stream
+    Private Sub WriteELoad(ByRef oSB, iload, loads(,)) 'write 1 line load on surface ede  to the XML stream
 
 
         oSB.AppendLine("<obj id=""" & Trim(Str(iload)) & """ nm=""" & "ESL" & Trim(Str(iload)) & """>")
@@ -2684,7 +2705,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
         oSB.AppendLine("</obj>")
 
     End Sub
-    Sub WriteSLoad(ByRef oSB, iload, loads(,)) 'write 1 surface load to the XML stream
+    Private Sub WriteSLoad(ByRef oSB, iload, loads(,)) 'write 1 surface load to the XML stream
 
         oSB.AppendLine("<obj id=""" & Trim(Str(iload)) & """ nm=""" & "SF" & Trim(Str(iload)) & """>")
         oSB.AppendLine(ConCat_pv("0", "SF" & Trim(Str(iload))))
@@ -2729,7 +2750,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
         oSB.AppendLine("</obj>")
 
     End Sub
-    Sub WritePLoadsPoint(ByRef oSB, iload, loads(,))
+    Private Sub WritePLoadsPoint(ByRef oSB, iload, loads(,))
 
         oSB.AppendLine("<obj id=""" & Trim(Str(iload)) & """ nm=""" & "PLP" & Trim(Str(iload)) & """>")
 
@@ -2834,7 +2855,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
         oSB.AppendLine("</obj>")
     End Sub
 
-    Sub WriteFPLoad(ByRef oSB, scale, iload, loads(,)) 'write 1 free point load to the XML stream
+    Private Sub WriteFPLoad(ByRef oSB, scale, iload, loads(,)) 'write 1 free point load to the XML stream
         'a free point load consists of:
         'Load Case, Selection, Validity, coord sys (GCS/LCS), direction (X, Y, Z), value (kN), PointX, PointY, PointZ
 
@@ -2876,7 +2897,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
 
     End Sub
 
-    Sub WriteFLLoad(ByRef oSB, scale, iload, loads(,)) 'write 1 free line load to the XML stream
+    Private Sub WriteFLLoad(ByRef oSB, scale, iload, loads(,)) 'write 1 free line load to the XML stream
         'a free line load consists of:
         'load case, validity, selection, coord. system (GCS/LCS), direction (X, Y, Z), value (kN/m), LineShape
 
@@ -2984,7 +3005,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
 
     End Sub
 
-    Sub WriteFSLoad(ByRef oSB, scale, iload, loads(,)) 'write 1 free surface load to the XML stream
+    Private Sub WriteFSLoad(ByRef oSB, scale, iload, loads(,)) 'write 1 free surface load to the XML stream
         'a free line load consists of:
         'load case, validity, selection, coord. system (GCS/LCS), direction (X, Y, Z), value (kN/m), BoundaryShape
 
@@ -3082,7 +3103,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
 
     End Sub
 
-    Sub WriteHinge(ByRef oSB, ihinge, hinges(,)) 'write 1 hinge to the XML stream
+    Private Sub WriteHinge(ByRef oSB, ihinge, hinges(,)) 'write 1 hinge to the XML stream
         Dim tt As String
 
         oSB.AppendLine("<obj nm=""H" & ihinge & """>")
