@@ -2,7 +2,17 @@
 
 Module HelperTools
 
-    Public Sub AddOptionstoMenuDOF(menuItem As Param_Integer)
+    Public Sub AddOptionstoMenuDOFTransition(menuItem As Param_Integer)
+        menuItem.AddNamedValue("Free", 0)
+        menuItem.AddNamedValue("Rigid", 1)
+        menuItem.AddNamedValue("Flexible", 2)
+        menuItem.AddNamedValue("Rigid press only", 3)
+        menuItem.AddNamedValue("Ridig tension only", 4)
+        menuItem.AddNamedValue("Flexible press only", 5)
+        menuItem.AddNamedValue("Flexible tension only", 6)
+    End Sub
+
+    Public Sub AddOptionstoMenuDOFRotation(menuItem As Param_Integer)
         menuItem.AddNamedValue("Free", 0)
         menuItem.AddNamedValue("Rigid", 1)
         menuItem.AddNamedValue("Flexible", 2)
@@ -176,7 +186,7 @@ Module HelperTools
         Dim SE_surfaces(100000, 9) As String 'a surface consists of: Name, Type, Material, Thickness, Layer, BoundaryShape, InternalNodes
         Dim SE_openings(100000, 2) As String 'a surface consists of: Name, Reference surface, BoundaryShape
 
-        Dim SE_nodesupports(100000, 6) As String 'a nodal support consists of: Node name, X, Y, Z, RX, RY, RZ - 0 is free, 1 is blocked DOF
+        Dim SE_nodesupports(100000, 12) As String 'a nodal support consists of: Node name, X, Y, Z, RX, RY, RZ - 0 is free, 1 is blocked DOF
         Dim SE_edgesupports(100000, 8) As String 'an edge support consists of: Reference name, reference type, edge number, X, Y, Z, RX, RY, RZ - 0 is free, 1 is blocked DOF
         Dim SE_lcases(100000, 2) As String 'a load case consists of: Load case name, type (SW, Permanent, Variable), load group
         Dim SE_lgroups(100000, 2) As String 'a load group consists of: Load group name, type (Permanent, Variable), relation (Standard, Exclusive, Together)
@@ -317,11 +327,11 @@ Module HelperTools
         End If
 
         If (in_nodesupports IsNot Nothing) Then
-            nodesupportcount = in_nodesupports.Count / 7
+            nodesupportcount = in_nodesupports.Count / 13
             Rhino.RhinoApp.WriteLine("Number of node supports: " & nodesupportcount)
             For i = 0 To nodesupportcount - 1
-                For j = 0 To 6
-                    SE_nodesupports(i, j) = in_nodesupports(j + i * 7)
+                For j = 0 To 12
+                    SE_nodesupports(i, j) = in_nodesupports(j + i * 13)
                 Next j
             Next i
         End If
@@ -951,6 +961,12 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             oSB.AppendLine(ConCat_hh("5", "Rx"))
             oSB.AppendLine(ConCat_hh("6", "Ry"))
             oSB.AppendLine(ConCat_hh("7", "Rz"))
+            oSB.AppendLine(ConCat_hh("2", "Stiffness X"))
+            oSB.AppendLine(ConCat_hh("3", "Stiffness Y"))
+            oSB.AppendLine(ConCat_hh("4", "Stiffness Z"))
+            oSB.AppendLine(ConCat_hh("5", "Stiffness Rx"))
+            oSB.AppendLine(ConCat_hh("6", "Stiffness Ry"))
+            oSB.AppendLine(ConCat_hh("7", "Stiffness Rz"))
             oSB.AppendLine("</h>")
 
             For i = 0 To nodesupportnr - 1
@@ -2362,19 +2378,24 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
         oSB.AppendLine("<obj nm=""Sn" & isupport & """>")
         oSB.AppendLine(ConCat_pv("0", "Sn" & isupport)) 'Support name
         oSB.AppendLine(ConCat_pn("1", supports(isupport, 0))) 'Node name
-
-        If supports(isupport, 1) = 0 Then tt = "Free" Else tt = "Rigid"
+        tt = GetStringForDOF(supports(isupport, 1))
         oSB.AppendLine(ConCat_pvt("2", supports(isupport, 1), tt))
-        If supports(isupport, 2) = 0 Then tt = "Free" Else tt = "Rigid"
+        tt = GetStringForDOF(supports(isupport, 2))
         oSB.AppendLine(ConCat_pvt("3", supports(isupport, 2), tt))
-        If supports(isupport, 3) = 0 Then tt = "Free" Else tt = "Rigid"
+        tt = GetStringForDOF(supports(isupport, 3))
         oSB.AppendLine(ConCat_pvt("4", supports(isupport, 3), tt))
-        If supports(isupport, 4) = 0 Then tt = "Free" Else tt = "Rigid"
+        tt = GetStringForDOF(supports(isupport, 4))
         oSB.AppendLine(ConCat_pvt("5", supports(isupport, 4), tt))
-        If supports(isupport, 5) = 0 Then tt = "Free" Else tt = "Rigid"
+        tt = GetStringForDOF(supports(isupport, 5))
         oSB.AppendLine(ConCat_pvt("6", supports(isupport, 5), tt))
-        If supports(isupport, 6) = 0 Then tt = "Free" Else tt = "Rigid"
+        tt = GetStringForDOF(supports(isupport, 6))
         oSB.AppendLine(ConCat_pvt("7", supports(isupport, 6), tt))
+        oSB.AppendLine(ConCat_pv("8", supports(isupport, 7)))
+        oSB.AppendLine(ConCat_pv("9", supports(isupport, 8)))
+        oSB.AppendLine(ConCat_pv("10", supports(isupport, 9)))
+        oSB.AppendLine(ConCat_pv("11", supports(isupport, 10)))
+        oSB.AppendLine(ConCat_pv("12", supports(isupport, 11)))
+        oSB.AppendLine(ConCat_pv("13", supports(isupport, 12)))
 
         oSB.AppendLine("</obj>")
 
