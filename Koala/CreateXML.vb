@@ -1,5 +1,5 @@
 ﻿Imports System.Collections.Generic
-
+Imports System.Windows.Forms
 Imports Grasshopper.Kernel
 Imports Rhino.Geometry
 
@@ -206,7 +206,7 @@ Namespace Koala
             Dim FileName As String = " "
             Dim Scale As String = "1"
             Dim RemDuplNodes As Boolean = False
-            Dim AutoUpdate As Boolean = False
+            ' Dim AutoUpdate As Boolean = False
             Dim OnDemand As Boolean = False
             Dim in_LinCombinations = New List(Of String)
             Dim in_NonLinCombinations = New List(Of String)
@@ -217,7 +217,7 @@ Namespace Koala
             Dim in_limitforceElem = New List(Of String)
             Dim projectInfo = New List(Of String)
 
-
+            If (Not DA.GetData(Of String)(19, FileName)) Then Return
             DA.GetData(Of String)(0, StructureType)
             DA.GetData(Of String)(1, UILanguage)
             DA.GetDataList(Of String)(2, Materials)
@@ -237,10 +237,9 @@ Namespace Koala
             DA.GetDataList(Of String)(16, in_flloads)
             DA.GetDataList(Of String)(17, in_fsloads)
             DA.GetDataList(Of String)(18, in_hinges)
-            If (Not DA.GetData(Of String)(19, FileName)) Then Return
             DA.GetData(Of String)(20, Scale)
             DA.GetData(Of Boolean)(21, RemDuplNodes)
-            DA.GetData(Of Boolean)(22, AutoUpdate)
+            'DA.GetData(Of Boolean)(22, AutoUpdate)
             DA.GetData(Of Boolean)(23, OnDemand)
             DA.GetDataList(Of String)(24, in_edgeLoads)
             DA.GetDataList(Of String)(25, in_pointLoadsPoints)
@@ -270,7 +269,43 @@ Namespace Koala
 
         End Sub
 
-
+        Private mAutoUpdate As Boolean = False
+        Public Property AutoUpdate() As Boolean
+            Get
+                Return mAutoUpdate
+            End Get
+            Set(ByVal value As Boolean)
+                mAutoUpdate = value
+                If (mAutoUpdate) Then
+                    Message = "AutoUpdateEnabled"
+                Else
+                    Message = "AutoUpdateDisabled"
+                End If
+            End Set
+        End Property
+        Public Overrides Function Write(ByVal writer As GH_IO.Serialization.GH_IWriter) As Boolean
+            'First add our own field.
+            writer.SetBoolean("AutoUpdate", AutoUpdate)
+            'Then call the base class implementation.
+            Return MyBase.Write(writer)
+        End Function
+        Public Overrides Function Read(ByVal reader As GH_IO.Serialization.GH_IReader) As Boolean
+            'First read our own field.
+            AutoUpdate = reader.GetBoolean("AutoUpdate")
+            'Then call the base class implementation.
+            Return MyBase.Read(reader)
+        End Function
+        Protected Overrides Sub AppendAdditionalComponentMenuItems(ByVal menu As System.Windows.Forms.ToolStripDropDown)
+            'Append the item to the menu, making sure it's always enabled and checked if Absolute is True.
+            Dim item As ToolStripMenuItem = Menu_AppendItem(menu, "AutoUpdate", AddressOf Menu_AutoUpdateClicked, True, AutoUpdate)
+            'Specifically assign a tooltip text to the menu item.
+            item.ToolTipText = "When checked, XML file is updated automatically."
+        End Sub
+        Private Sub Menu_AutoUpdateClicked(ByVal sender As Object, ByVal e As EventArgs)
+            RecordUndoEvent("AutoUpdate")
+            AutoUpdate = Not AutoUpdate
+            ExpireSolution(True)
+        End Sub
 
 
         ''' <summary>

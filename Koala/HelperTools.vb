@@ -1,4 +1,46 @@
-﻿Module HelperTools
+﻿Imports Grasshopper.Kernel.Parameters
+
+Module HelperTools
+
+    Public Sub AddOptionstoMenuDOF(menuItem As Param_Integer)
+        menuItem.AddNamedValue("Free", 0)
+        menuItem.AddNamedValue("Rigid", 1)
+        menuItem.AddNamedValue("Flexible", 2)
+        menuItem.AddNamedValue("Rigid press only", 3)
+        menuItem.AddNamedValue("Ridig tension only", 4)
+        menuItem.AddNamedValue("Flexible press only", 5)
+        menuItem.AddNamedValue("Flexible tension only", 6)
+    End Sub
+
+    Public Sub AddOptionstoMenuMemberSystemLine(menuItem As Param_Integer)
+        'Centre,Top,Bottom,Left,Top left,Bottom left,Right,Top right,Bottom right
+    End Sub
+
+    Public Function GetStringForMemberSystemLine(item As Integer)
+
+    End Function
+
+    Public Function GetStringForDOF(item As Integer)
+        Select Case item
+            Case 0
+                Return "Free"
+            Case 1
+                Return "Rigid"
+            Case 2
+                Return "Flexible"
+            Case 3
+                Return "Rigid press only"
+            Case 4
+                Return "Ridig tension only"
+            Case 5
+                Return "Flexible press only"
+            Case 6
+                Return "Flexible tension only"
+            Case Else
+                Return "Free"
+        End Select
+
+    End Function
     Public Function GetExistingNode(arrPoint As Rhino.Geometry.Point3d, nodes(,) As String, nnodes As Long, epsilon As Double)
         Dim currentnode
         'Start with node not found, loop through all the nodes until one is found within tolerance
@@ -582,7 +624,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             oSB.AppendLine(ConCat_pv("7", IIf(materials.Contains("Steel"), "1", "0")))
             oSB.AppendLine(ConCat_pv("8", IIf(materials.Contains("Timber"), "1", "0")))
             oSB.AppendLine(ConCat_pv("9", IIf(materials.Contains("Fiber Concrete"), "1", "0")))
-            oSB.AppendLine(ConCat_pv("10", "PrDEx_Nonlinearity, PrDEx_BeamLocalNonlinearity, PrDEx_StabilityAnalysis, PrDEx_MaterialSteel"))
+            oSB.AppendLine(ConCat_pv("10", "PrDEx_InitialStress, PrDEx_Subsoil,PrDEx_InitialDeformationsAndCurvature, PrDEx_SecondOrder, PrDEx_Nonlinearity, PrDEx_BeamLocalNonlinearity,PrDEx_SupportNonlinearity, PrDEx_FrictionSupport, PrDEx_StabilityAnalysis, PrDEx_MaterialSteel"))
             If (projectInfo.Count <> 0) Then
                 oSB.AppendLine(ConCat_pv("11", projectInfo(5)))
                 oSB.AppendLine(ConCat_pv("12", projectInfo(6)))
@@ -592,12 +634,12 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             End If
             oSB.AppendLine("</obj>")
 
-                oSB.AppendLine("</table>")
-                oSB.AppendLine("</container>")
+            oSB.AppendLine("</table>")
+            oSB.AppendLine("</container>")
 
-            End If
+        End If
 
-            If meshsize > 0 Then
+        If meshsize > 0 Then
 
             'output project information -----------------------------------------------------
             c = "{31450A87-BE7E-4EA0-BFD2-4544A3E7BA53}"

@@ -139,6 +139,7 @@
     </Compile>
     <Compile Include="FreePointLoad.vb" />
     <Compile Include="FreeLineLoad.vb" />
+    <Compile Include="NodalSupport.vb" />
     <Compile Include="Nodes.vb" />
     <Compile Include="NodeSupport.vb" />
     <Compile Include="NonlinearCombination.vb" />
