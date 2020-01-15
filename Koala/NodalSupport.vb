@@ -81,18 +81,18 @@ Namespace Koala
             Dim TzStiffness As Double
 
             If (Not DA.GetDataList(Of String)(0, NodeSupports)) Then Return
-            DA.GetData(Of Integer)(1, Rx)
-            DA.GetData(Of Integer)(2, Ry)
-            DA.GetData(Of Integer)(3, Rz)
-            DA.GetData(Of Integer)(4, Tx)
-            DA.GetData(Of Integer)(5, Ty)
-            DA.GetData(Of Integer)(6, Tz)
-            DA.GetData(Of Double)(7, RxStiffness)
-            DA.GetData(Of Double)(8, RyStiffness)
-            DA.GetData(Of Double)(9, RzStiffness)
-            DA.GetData(Of Double)(10, TxStiffness)
-            DA.GetData(Of Double)(11, TyStiffness)
-            DA.GetData(Of Double)(12, TzStiffness)
+            DA.GetData(Of Integer)(1, Tx)
+            DA.GetData(Of Integer)(2, Ty)
+            DA.GetData(Of Integer)(3, Tz)
+            DA.GetData(Of Integer)(4, Rx)
+            DA.GetData(Of Integer)(5, Ry)
+            DA.GetData(Of Integer)(6, Rz)
+            DA.GetData(Of Double)(7, TxStiffness)
+            DA.GetData(Of Double)(8, TyStiffness)
+            DA.GetData(Of Double)(9, TzStiffness)
+            DA.GetData(Of Double)(10, RxStiffness)
+            DA.GetData(Of Double)(11, RyStiffness)
+            DA.GetData(Of Double)(12, RzStiffness)
 
 
             Dim FlatList As New List(Of System.Object)()
