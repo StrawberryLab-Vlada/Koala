@@ -25,7 +25,7 @@ Namespace Koala
         ''' Registers all the input parameters for this component.
         ''' </summary>
         Protected Overrides Sub RegisterInputParams(pManager As GH_Component.GH_InputParamManager)
-            pManager.AddIntegerParameter("Type", "Type", "Type of corss-link: Fixed, Hinged", GH_ParamAccess.item, 0)
+            pManager.AddIntegerParameter("Type", "Type", "Type of cross-link:  Right click and select from options", GH_ParamAccess.item, 0)
             AddOptionsToMenuCrosslinkType(pManager.Param(0))
             pManager.AddTextParameter("CoupledMembers", "CoupledMembers", "1stmember;2ndmember", GH_ParamAccess.list)
         End Sub

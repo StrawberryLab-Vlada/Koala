@@ -27,7 +27,7 @@ Namespace Koala
         Protected Overrides Sub RegisterInputParams(pManager As GH_Component.GH_InputParamManager)
             pManager.AddTextParameter("FileName", "FileName", "Name for the XML", GH_ParamAccess.item)
             pManager.AddTextParameter("ESAXMLPath", "ESAXMLPath", "Path to Esa_XML tool", GH_ParamAccess.item)
-            pManager.AddIntegerParameter("CalcType", "CalcType", "Type of calculation: LIN, NEL,STB", GH_ParamAccess.item, 0)
+            pManager.AddIntegerParameter("CalcType", "CalcType", "Type of calculation:  Right click and select from options", GH_ParamAccess.item, 0)
             AddOptionsToMenuCalculationType(pManager.Param(2))
             pManager.AddTextParameter("TemplateName", "TemplateName", "Template file name", GH_ParamAccess.item)
             pManager.AddTextParameter("OutputFile", "OutputFile", "Output file for results", GH_ParamAccess.item)

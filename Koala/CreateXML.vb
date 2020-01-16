@@ -93,10 +93,10 @@ Namespace Koala
         ''' Registers all the input parameters for this component.
         ''' </summary>
         Protected Overrides Sub RegisterInputParams(pManager As GH_Component.GH_InputParamManager)
-            pManager.AddIntegerParameter("StructureType", "StructureType", "Type of structure: Frame XZ, Frame XYZ, General XYZ", GH_ParamAccess.item, 8)
+            pManager.AddIntegerParameter("StructureType", "StructureType", "Type of structure:  Right click and select from options", GH_ParamAccess.item, 8)
             AddOptionstoMenuStructureType(pManager.Param(0))
             pManager.Param(0).Optional = True
-            pManager.AddIntegerParameter("UILanguage", "UILanguage", "UI language: English    = 0, Nederlands = 1, Français   = 2, Deutsch    = 3, Čeština    = 4,Slovenčina = 5", GH_ParamAccess.item, 0)
+            pManager.AddIntegerParameter("UILanguage", "UILanguage", "UI language:  Right click and select from options", GH_ParamAccess.item, 0)
             pManager.Param(1).Optional = True
             AddOptionsToMenuLanguage(pManager.Param(1))
             pManager.AddTextParameter("Materials", "Materials", "Materials: Conctrete, Steel, Timber", GH_ParamAccess.list, "Concrete")

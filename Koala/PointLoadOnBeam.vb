@@ -27,12 +27,16 @@ Namespace Koala
         Protected Overrides Sub RegisterInputParams(pManager As GH_Component.GH_InputParamManager)
             pManager.AddTextParameter("LoadCase", "LoadCase", "Name of load case", GH_ParamAccess.item, "LC2")
             pManager.AddTextParameter("BeamList", "BeamList", "List of beam names where to apply load", GH_ParamAccess.list)
-            pManager.AddTextParameter("CoordSys", "CoordSys", "Coordinate system: GCS or LCS", GH_ParamAccess.item, "GCS")
-            pManager.AddTextParameter("Direction", "Direction", "Direction of load: X,Y,Z", GH_ParamAccess.item, "Z")
-            pManager.AddNumberParameter("LoadValue", "LoadValue", "Value of Load in KN", GH_ParamAccess.item, -1)
-            pManager.AddTextParameter("CoordDefinition", "CoordDefinition", "CoordDefinition - Rela | Abso", GH_ParamAccess.item, "Rela")
+            pManager.AddIntegerParameter("CoordSys", "CoordSys", "Coordinate system: GCS or LCS", GH_ParamAccess.item, 0)
+            AddOptionsToMenuCoordSysPoint(pManager.Param(2))
+            pManager.AddIntegerParameter("Direction", "Direction", "Direction of load: X,Y,Z", GH_ParamAccess.item, 2)
+            AddOptionsToMenuDirection(pManager.Param(3))
+            pManager.AddIntegerParameter("LoadValue", "LoadValue", "Value of Load in KN", GH_ParamAccess.item, -1)
+            pManager.AddTextParameter("CoordDefinition", "CoordDefinition", "CoordDefinition - Rela | Abso", GH_ParamAccess.item, 0)
+            AddOptionsToMenuCoordDefinition(pManager.Param(5))
             pManager.AddNumberParameter("Position", "Position", "Position of load on beam", GH_ParamAccess.item, 0.5)
-            pManager.AddTextParameter("Origin", "Origin", "Origin of load: From start| From end", GH_ParamAccess.item, "From start")
+            pManager.AddTextParameter("Origin", "Origin", "Origin of load: From start| From end", GH_ParamAccess.item, 0)
+            AddOptionsToMenuOrigin(pManager.Param(7))
             pManager.AddIntegerParameter("Repeat", "Repeat", "Repeat", GH_ParamAccess.item, 1)
             pManager.AddNumberParameter("ey", "ey", "Eccentricity of load in y axis", GH_ParamAccess.item, 0)
             pManager.AddNumberParameter("ez", "ez", "Eccentricity of load in z axis", GH_ParamAccess.item, 0)
@@ -62,21 +66,25 @@ Namespace Koala
             Dim Repeat As Long = 1
             Dim ey As Double = 0.0
             Dim ez As Double = 0.0
-
+            Dim i As Integer
 
             If (Not DA.GetData(Of String)(0, LoadCase)) Then Return
             If (Not DA.GetDataList(Of String)(1, BeamList)) Then Return
-            If (Not DA.GetData(Of String)(2, CoordSys)) Then Return
-            If (Not DA.GetData(Of String)(3, Direction)) Then Return
+            If (Not DA.GetData(Of Integer)(2, i)) Then Return
+            CoordSys = GetStringFromCoordSysPoint(i)
+            If (Not DA.GetData(Of Integer)(3, i)) Then Return
+            Direction = GetStringFromDirection(i)
             If (Not DA.GetData(Of Double)(4, LoadValue)) Then Return
-            DA.GetData(Of String)(5, CoordDefinition)
+            DA.GetData(Of Integer)(5, i)
+            CoordDefinition = GetStringFromCoordDefinition(i)
             DA.GetData(Of Double)(6, Position)
-            DA.GetData(Of String)(7, Origin)
+            DA.GetData(Of Integer)(7, i)
+            Origin = GetStringFromOrigin(i)
             DA.GetData(Of Long)(8, Repeat)
             DA.GetData(Of Double)(9, ey)
             DA.GetData(Of Double)(10, ez)
 
-            Dim i As Long
+
 
             Dim SE_loads(BeamList.Count, 11)
             Dim FlatList As New List(Of System.Object)()

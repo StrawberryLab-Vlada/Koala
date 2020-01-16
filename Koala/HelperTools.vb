@@ -272,15 +272,177 @@ Module HelperTools
                 Return "Hinged"
             Case 2
                 Return "Coupler"
+            Case Else
+                Return "Fixed"
         End Select
     End Function
 
-    '    Direction X = "X"
-    'Y = "Y"
-    'Z = "Z"
-    'CoordinateSystem line load
-    '    GCS = "GCS"
-    'LCS = "LCS"
+
+    Public Sub AddOptionstoMenuLinCombiType(menuitem As Param_Integer)
+        menuitem.AddNamedValue("Envelope - ultimate", 0)
+        menuitem.AddNamedValue("Envelope - serviceability", 1)
+        menuitem.AddNamedValue("Linear - ultimate", 2)
+        menuitem.AddNamedValue("Linear - serviceability", 3)
+        menuitem.AddNamedValue("EN-ULS (STR/GEO) Set B", 4)
+        menuitem.AddNamedValue("EN-Accidental 1", 5)
+        menuitem.AddNamedValue("EN-Accidental 2", 6)
+        menuitem.AddNamedValue("EN-Seismic", 7)
+        menuitem.AddNamedValue("EN-SLS Characteristic", 8)
+        menuitem.AddNamedValue("EN-SLS Frequent", 9)
+        menuitem.AddNamedValue("EN-SLS Quasi-permanent", 10)
+        menuitem.AddNamedValue("EN-ULS (STR/GEO) Set C", 11)
+    End Sub
+
+    Public Function GetStringForLinCombiType(item As Integer)
+        Select Case item
+            Case 0
+                Return "Envelope - ultimate"
+            Case 1
+                Return "Envelope - serviceability"
+            Case 2
+                Return "Linear - ultimate"
+            Case 3
+                Return "Linear - serviceability"
+            Case 4
+                Return "EN-ULS (STR/GEO) Set B"
+            Case 5
+                Return "EN-Accidental 1"
+            Case 6
+                Return "EN-Accidental 2"
+            Case 7
+                Return "EN-Seismic"
+            Case 8
+                Return "EN-SLS Characteristic"
+            Case 9
+                Return "EN-SLS Frequent"
+            Case 10
+                Return "EN-SLS Quasi-permanent"
+            Case 11
+                Return "EN-ULS (STR/GEO) Set C"
+            Case Else
+                Return "Linear - ultimate"
+        End Select
+    End Function
+
+    Public Sub AddOptionstomenuItemNLCombiType(menuitem As Param_Integer)
+        menuitem.AddNamedValue("Ultimate", 0)
+        menuitem.AddNamedValue("Serviceability", 1)
+    End Sub
+
+    Public Function GetStringForNLCombiType(item As Integer) As String
+        Select Case item
+            Case 0
+                Return "Ultimate"
+            Case 1
+                Return "Serviceability"
+            Case Else
+                Return "Ultimate"
+        End Select
+    End Function
+
+    Public Sub AddOptionsToMenuDistributionOfLoad(menuitem As Param_Integer)
+        menuitem.AddNamedValue("Uniform", 0)
+        menuitem.AddNamedValue("Trapez", 1)
+    End Sub
+
+    Public Function GetStringFromDistributionOfLoad(item As Integer) As String
+        Select Case item
+            Case 0
+                Return "Uniform"
+            Case 1
+                Return "Trapez"
+            Case Else
+                Return "Uniform"
+        End Select
+    End Function
+
+    Public Sub AddOptionsToMenuDirection(menuitem As Param_Integer)
+        menuitem.AddNamedValue("X", 0)
+        menuitem.AddNamedValue("Y", 1)
+        menuitem.AddNamedValue("Z", 2)
+    End Sub
+
+    Public Function GetStringFromDirection(item As Integer) As String
+        Select Case item
+            Case 0
+                Return "X"
+            Case 1
+                Return "Y"
+            Case 2
+                Return "Z"
+            Case Else
+                Return "Z"
+        End Select
+    End Function
+
+    Public Sub AddOptionsToMenuOrigin(menuitem As Param_Integer)
+        menuitem.AddNamedValue("From start", 0)
+        menuitem.AddNamedValue("From end", 1)
+    End Sub
+
+    Public Function GetStringFromOrigin(item As Integer) As String
+        Select Case item
+            Case 0
+                Return "From start"
+            Case 1
+                Return "From end"
+            Case Else
+                Return "From start"
+        End Select
+    End Function
+
+
+    Public Sub AddOptionsToMenuCoordDefinition(menuitem As Param_Integer)
+        menuitem.AddNamedValue("Rela", 0)
+        menuitem.AddNamedValue("Abso", 1)
+    End Sub
+
+    Public Function GetStringFromCoordDefinition(item As Integer) As String
+        Select Case item
+            Case 0
+                Return "Rela"
+            Case 1
+                Return "Abso"
+            Case Else
+                Return "Rela"
+        End Select
+    End Function
+
+    Public Sub AddOptionsToMenuCoordSysLine(menuitem As Param_Integer)
+        menuitem.AddNamedValue("GCS - Length", 0)
+        menuitem.AddNamedValue("GCS - Projection", 1)
+        menuitem.AddNamedValue("LCS", 2)
+    End Sub
+
+    Public Function GetStringFromCoordSysLine(item As Integer) As String
+        Select Case item
+            Case 0
+                Return "GCS - Length"
+            Case 1
+                Return "GCS - Projection"
+            Case 2
+                Return "LCS"
+            Case Else
+                Return "GCS - Length"
+        End Select
+    End Function
+
+
+    Public Sub AddOptionsToMenuCoordSysPoint(menuitem As Param_Integer)
+        menuitem.AddNamedValue("GCS", 0)
+        menuitem.AddNamedValue("LCS", 1)
+    End Sub
+
+    Public Function GetStringFromCoordSysPoint(item As Integer) As String
+        Select Case item
+            Case 0
+                Return "GCS"
+            Case 1
+                Return "LCS"
+            Case Else
+                Return "GCS"
+        End Select
+    End Function
 
 
     Public Function GetExistingNode(arrPoint As Rhino.Geometry.Point3d, nodes(,) As String, nnodes As Long, epsilon As Double)
