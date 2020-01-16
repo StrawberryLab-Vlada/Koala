@@ -16,10 +16,6 @@ Module HelperTools
         menuItem.AddNamedValue("Free", 0)
         menuItem.AddNamedValue("Rigid", 1)
         menuItem.AddNamedValue("Flexible", 2)
-        menuItem.AddNamedValue("Rigid press only", 3)
-        menuItem.AddNamedValue("Ridig tension only", 4)
-        menuItem.AddNamedValue("Flexible press only", 5)
-        menuItem.AddNamedValue("Flexible tension only", 6)
     End Sub
 
     Public Sub AddOptionsToMenuLanguage(menuItem As Param_Integer)
@@ -559,6 +555,25 @@ Module HelperTools
     End Function
 
 
+    Public Sub AddOptionsToMenuHingePosition(menuitem As Param_Integer)
+        menuitem.AddNamedValue("Begin", 0)
+        menuitem.AddNamedValue("End", 1)
+        menuitem.AddNamedValue("Both", 2)
+
+    End Sub
+
+    Public Function GetStringFromHingePosition(item As Integer) As String
+        Select Case item
+            Case 0
+                Return "Begin"
+            Case 1
+                Return "End"
+            Case 2
+                Return "Both"
+            Case Else
+                Return "Both"
+        End Select
+    End Function
 
     Public Function GetExistingNode(arrPoint As Rhino.Geometry.Point3d, nodes(,) As String, nnodes As Long, epsilon As Double)
         Dim currentnode
@@ -2004,6 +2019,12 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             oSB.AppendLine(ConCat_hh("6", "fix"))
             oSB.AppendLine(ConCat_hh("7", "fiy"))
             oSB.AppendLine(ConCat_hh("8", "fiz"))
+            oSB.AppendLine(ConCat_hh("9", "Stiff - ux"))
+            oSB.AppendLine(ConCat_hh("10", "Stiff - uy"))
+            oSB.AppendLine(ConCat_hh("11", "Stiff - uz"))
+            oSB.AppendLine(ConCat_hh("12", "Stiff - fix"))
+            oSB.AppendLine(ConCat_hh("13", "Stiff - fiy"))
+            oSB.AppendLine(ConCat_hh("14", "Stiff - fiz"))
 
             oSB.AppendLine("</h>")
 
@@ -3695,27 +3716,36 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
         oSB.AppendLine("</p1>")
         'end of reference table
 
-        Select Case Strings.UCase(hinges(ihinge, 7))
-            Case "BEGIN"
+        Select Case hinges(ihinge, 1)
+            Case "Begin"
                 oSB.AppendLine(ConCat_pvt("2", "0", "Begin"))
-            Case "END"
+            Case "End"
                 oSB.AppendLine(ConCat_pvt("2", "1", "End"))
-            Case "BOTH"
+            Case "Both"
+                oSB.AppendLine(ConCat_pvt("2", "2", "Both"))
+            Case Else
                 oSB.AppendLine(ConCat_pvt("2", "2", "Both"))
         End Select
 
-        If hinges(ihinge, 1) = 0 Then tt = "Free" Else tt = "Rigid"
-        oSB.AppendLine(ConCat_pvt("3", hinges(ihinge, 1), tt))
-        If hinges(ihinge, 2) = 0 Then tt = "Free" Else tt = "Rigid"
-        oSB.AppendLine(ConCat_pvt("4", hinges(ihinge, 2), tt))
-        If hinges(ihinge, 3) = 0 Then tt = "Free" Else tt = "Rigid"
-        oSB.AppendLine(ConCat_pvt("5", hinges(ihinge, 3), tt))
-        If hinges(ihinge, 4) = 0 Then tt = "Free" Else tt = "Rigid"
-        oSB.AppendLine(ConCat_pvt("6", hinges(ihinge, 4), tt))
-        If hinges(ihinge, 5) = 0 Then tt = "Free" Else tt = "Rigid"
-        oSB.AppendLine(ConCat_pvt("7", hinges(ihinge, 5), tt))
-        If hinges(ihinge, 6) = 0 Then tt = "Free" Else tt = "Rigid"
-        oSB.AppendLine(ConCat_pvt("8", hinges(ihinge, 6), tt))
+
+        tt = GetStringForDOF(hinges(ihinge, 2))
+        oSB.AppendLine(ConCat_pvt("3", hinges(ihinge, 2), tt))
+        tt = GetStringForDOF(hinges(ihinge, 3))
+        oSB.AppendLine(ConCat_pvt("4", hinges(ihinge, 3), tt))
+        tt = GetStringForDOF(hinges(ihinge, 4))
+        oSB.AppendLine(ConCat_pvt("5", hinges(ihinge, 4), tt))
+        tt = GetStringForDOF(hinges(ihinge, 5))
+        oSB.AppendLine(ConCat_pvt("6", hinges(ihinge, 5), tt))
+        tt = GetStringForDOF(hinges(ihinge, 6))
+        oSB.AppendLine(ConCat_pvt("7", hinges(ihinge, 6), tt))
+        tt = GetStringForDOF(hinges(ihinge, 7))
+        oSB.AppendLine(ConCat_pvt("8", hinges(ihinge, 7), tt))
+        oSB.AppendLine(ConCat_pv("9", hinges(ihinge, 8)))
+        oSB.AppendLine(ConCat_pv("10", hinges(ihinge, 9)))
+        oSB.AppendLine(ConCat_pv("11", hinges(ihinge, 10)))
+        oSB.AppendLine(ConCat_pv("12", hinges(ihinge, 11)))
+        oSB.AppendLine(ConCat_pv("13", hinges(ihinge, 12)))
+        oSB.AppendLine(ConCat_pv("14", hinges(ihinge, 13)))
 
 
         oSB.AppendLine("</obj>")
