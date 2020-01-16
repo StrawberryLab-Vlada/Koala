@@ -34,9 +34,11 @@ Namespace Koala
             pManager.AddTextParameter("NodePrefix", "NodePrefix", "Node prefix", GH_ParamAccess.item, "N2D")
             pManager.AddNumberParameter("Tolerance", "Tolerance", "Tolerance for duplicity nodes", GH_ParamAccess.item, 0.001)
             pManager.AddBooleanParameter("RemDuplNodes", "RemDuplNodes", "Set True if you want to remove duplicate nodes", GH_ParamAccess.item, False)
-            pManager.AddTextParameter("MemberSystemPlane", "MemberSystemPlane", "System plane of the member: Centre, Top, Bottom", GH_ParamAccess.item, "Centre")
+            pManager.AddIntegerParameter("MemberSystemPlane", "MemberSystemPlane", "System plane of the member: Centre, Top, Bottom", GH_ParamAccess.item, 1)
+            AddOptionstoMenuMemberSystemPlane(pManager.Param(8))
             pManager.AddNumberParameter("Eccentricity z", "Eccentricity z", "Eccentricity of the plane", GH_ParamAccess.item, 0.0)
-            pManager.AddTextParameter("FEM nonlinear model", "FEM nonlinear model", "Nonlinear model: none, Press only, Membrane", GH_ParamAccess.item, "none")
+            pManager.AddIntegerParameter("FEM nonlinear model", "FEM nonlinear model", "Nonlinear model: none, Press only, Membrane", GH_ParamAccess.item, 0)
+            AddOptionstoMenuFEMNLType2D(pManager.Param(10))
             pManager.AddTextParameter("SurfaceNamePrefix", "SurfaceNamePrefix", "Surface name prefix", GH_ParamAccess.item, "S")
             'pManager.AddTextParameter("Type", "Type", "Type of element: Plate, Wall, Shell", GH_ParamAccess.item, "Plate")
         End Sub
@@ -68,7 +70,7 @@ Namespace Koala
             Dim EccentricityZ As Double = 0.0
             Dim FEMNLType As String = "none"
             Dim SurfaceNamePrefix As String = "S"
-
+            Dim i As Integer = 0
 
             If (Not DA.GetDataList(Of Brep)(0, Surfaces)) Then Return
             If (Not DA.GetData(Of String)(1, Material)) Then Return
@@ -78,13 +80,15 @@ Namespace Koala
             If (Not DA.GetData(Of String)(5, NodePrefix)) Then Return
             If (Not DA.GetData(Of Double)(6, Tolerance)) Then Return
             If (Not DA.GetData(Of Boolean)(7, RemDuplNodes)) Then Return
-            If (Not DA.GetData(Of String)(8, MemberPlane)) Then Return
+            If (Not DA.GetData(Of Integer)(8, i)) Then Return
+            MemberPlane = GetStringForMemberSystemLineOrPlane(i)
             If (Not DA.GetData(Of Double)(9, EccentricityZ)) Then Return
             If (Not DA.GetData(Of String)(10, FEMNLType)) Then Return
+            FEMNLType = GetStringForFEMNLType2D(i)
             If (Not DA.GetData(Of String)(11, SurfaceNamePrefix)) Then Return
 
 
-            Dim i As Long, j As Long
+            Dim j As Long
 
             Dim edgecount As Long, iedge As Long
             Dim edgenodelist As String, nodesinedge As Long

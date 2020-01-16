@@ -33,9 +33,12 @@ Namespace Koala
             pManager.AddTextParameter("NodePrefix", "NodePrefix", "Node prefix", GH_ParamAccess.item, "NB")
             pManager.AddNumberParameter("Tolerance", "Tolerance", "Tolerance for duplicity nodes", GH_ParamAccess.item, 0.001)
             pManager.AddBooleanParameter("RemDuplNodes", "RemDuplNodes", "Set True if you want to remove duplicate nodes", GH_ParamAccess.item, False)
-            pManager.AddTextParameter("StructuralType", "FEM StructuralType", "Type: general(0),beam,column,gable column,secondary column,rafter,purlin,roof bracing,wall bracing,girt,truss chord,truss diagonal,plate rib,beam slab", GH_ParamAccess.item, "general")
-            pManager.AddTextParameter("FEMtype", "FEM type", "Element type for FEM analysis:standard,axial force only", GH_ParamAccess.item, "standard")
-            pManager.AddTextParameter("MemberSystemLine", "MemberSystemLine", "Member system line at: Centre,Top,Bottom,Left,Top left,Bottom left,Right,Top right,Bottom right", GH_ParamAccess.item, "Centre")
+            pManager.AddIntegerParameter("StructuralType", "StructuralType", "Type: general,beam,column,gable column,secondary column,rafter,purlin,roof bracing,wall bracing,girt,truss chord,truss diagonal,plate rib,beam slab", GH_ParamAccess.item, 0)
+            AddOptionsToMenuBeamType(pManager.Param(7))
+            pManager.AddIntegerParameter("FEMtype", "FEM type", "Element type for FEM analysis:standard,axial force only", GH_ParamAccess.item, 0)
+            AddOptionsToMenuBeamFEMtype(pManager.Param(8))
+            pManager.AddIntegerParameter("MemberSystemLine", "MemberSystemLine", "Member system line at: Centre,Top,Bottom,Left,Top left,Bottom left,Right,Top right,Bottom right", GH_ParamAccess.item, 1)
+            AddOptionstoMenuMemberSystemLine(pManager.Param(9))
             pManager.AddNumberParameter("ey", "ey", "Eccentricity of load in y axis", GH_ParamAccess.item, 0)
             pManager.AddNumberParameter("ez", "ez", "Eccentricity of load in z axis", GH_ParamAccess.item, 0)
             pManager.AddTextParameter("BeamNamePrefix", "BeamNamePrefix", "Beam name prefix", GH_ParamAccess.item, "B")
@@ -62,9 +65,9 @@ Namespace Koala
             Dim stopWatch As New System.Diagnostics.Stopwatch()
             Dim time_elapsed As Double
 
-            Dim i As Long, j As Long
+            Dim j As Long
             Dim ivector As Long
-
+            Dim i As Integer
             Dim currentnode As Long
 
             Dim Curves = New List(Of Curve)
@@ -91,9 +94,12 @@ Namespace Koala
             If (Not DA.GetData(Of String)(4, NodePrefix)) Then Return
             If (Not DA.GetData(Of Double)(5, tolerance)) Then Return
             If (Not DA.GetData(Of Boolean)(6, RemDuplNodes)) Then Return
-            DA.GetData(Of String)(7, StructuralType)
-            DA.GetData(Of String)(8, FEMtype)
-            DA.GetData(Of String)(9, MemberSystemLine)
+            DA.GetData(Of Integer)(7, i)
+            StructuralType = GetStringForBeamType(i)
+            DA.GetData(Of Integer)(8, i)
+            FEMtype = GetStringForBeamFEMtype(i)
+            DA.GetData(Of Integer)(9, i)
+            MemberSystemLine = GetStringForMemberSystemLineOrPlane(i)
             DA.GetData(Of Double)(10, ey)
             DA.GetData(Of Double)(11, ez)
             DA.GetData(Of String)(12, BeamNamePrefix)

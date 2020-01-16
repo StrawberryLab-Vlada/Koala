@@ -22,15 +22,156 @@ Module HelperTools
         menuItem.AddNamedValue("Flexible tension only", 6)
     End Sub
 
-    Public Sub AddOptionstoMenuMemberSystemLine(menuItem As Param_Integer)
-        'Centre,Top,Bottom,Left,Top left,Bottom left,Right,Top right,Bottom right
+    Public Sub AddOptionsToMenuLanguage(menuItem As Param_Integer)
+        menuItem.AddNamedValue("English", 0)
+        menuItem.AddNamedValue("Nederlands", 1)
+        menuItem.AddNamedValue("Français", 2)
+        menuItem.AddNamedValue("Deutsch", 3)
+        menuItem.AddNamedValue("Čeština", 4)
+        menuItem.AddNamedValue("Slovenčina", 5)
+
     End Sub
-
-    Public Function GetStringForMemberSystemLine(item As Integer)
-
+    Public Function GetStringForLanguage(item As Integer) As String
+        Select Case item
+            Case 0
+                Return "English"
+            Case 1
+                Return "Nederlands"
+            Case 2
+                Return "Français"
+            Case 3
+                Return "Deutsch"
+            Case 4
+                Return "Čeština"
+            Case 5
+                Return "Slovenčina"
+            Case Else
+                Return "English"
+        End Select
     End Function
 
-    Public Function GetStringForDOF(item As Integer)
+    Public Sub AddOptionsToMenuCalculationType(menuItem As Param_Integer)
+        menuItem.AddNamedValue("LIN", 0)
+        menuItem.AddNamedValue("NEL", 1)
+        menuItem.AddNamedValue("STB", 2)
+    End Sub
+
+    Public Function GetStringForCalculationType(item As Integer) As String
+        Select Case item
+            Case 0
+                Return "LIN"
+            Case 1
+                Return "NEL"
+            Case 2
+                Return "STB"
+            Case Else
+                Return "LIN"
+        End Select
+    End Function
+
+    Public Sub AddOptionstoMenuMemberSystemLine(menuItem As Param_Integer)
+        menuItem.AddNamedValue("Centre", 1)
+        menuItem.AddNamedValue("Top", 2)
+        menuItem.AddNamedValue("Bottom", 4)
+        menuItem.AddNamedValue("Left", 8)
+        menuItem.AddNamedValue("Top left", 10)
+        menuItem.AddNamedValue("Bottom left", 12)
+        menuItem.AddNamedValue("Right", 16)
+        menuItem.AddNamedValue("Top right", 18)
+        menuItem.AddNamedValue("Bottom right", 20)
+
+    End Sub
+
+    Public Function GetStringForMemberSystemLineOrPlane(item As Integer) As String
+        Select Case item
+            Case 1
+                Return "Centre"
+            Case 2
+                Return "Top"
+            Case 4
+                Return "Bottom"
+            Case 8
+                Return "Left"
+            Case 12
+                Return "Top left"
+            Case 14
+                Return "Bottom left"
+            Case 16
+                Return "Right"
+            Case 18
+                Return "Top right"
+            Case 20
+                Return "Bottom right"
+            Case Else
+                Return "Centre"
+        End Select
+    End Function
+
+    Public Sub AddOptionstoMenuMemberSystemPlane(menuItem As Param_Integer)
+        menuItem.AddNamedValue("Centre", 1)
+        menuItem.AddNamedValue("Top",2)
+        menuItem.AddNamedValue("Bottom", 4)
+    End Sub
+
+
+
+    Public Sub AddOptionstoMenuFEMNLType2D(menuItem As Param_Integer)
+        menuItem.AddNamedValue("none", 0)
+        menuItem.AddNamedValue("Press only", 1)
+        menuItem.AddNamedValue("Membrane", 2)
+    End Sub
+
+    Public Function GetStringForFEMNLType2D(item As Integer) As String
+        Select Case item
+            Case 0
+                Return "none"
+            Case 1
+                Return "Press only"
+            Case 2
+                Return "Membrane"
+            Case Else
+                Return "none"
+        End Select
+    End Function
+
+    Public Sub AddOptionstoMenuStructureType(menuItem As Param_Integer)
+        menuItem.AddNamedValue("Beam", 0)
+        menuItem.AddNamedValue("Truss XZ", 1)
+        menuItem.AddNamedValue("Frame XZ", 2)
+        menuItem.AddNamedValue("Truss XYZ", 3)
+        menuItem.AddNamedValue("Frame XYZ", 4)
+        menuItem.AddNamedValue("Grid XY", 5)
+        menuItem.AddNamedValue("Plate XY", 6)
+        menuItem.AddNamedValue("Wall XY", 7)
+        menuItem.AddNamedValue("General XYZ", 8)
+    End Sub
+
+    Public Function GetStringForStructureType(item As Integer) As String
+        Select Case item
+            Case 0
+                Return "Beam"
+            Case 1
+                Return "Truss XZ"
+            Case 2
+                Return "Frame XZ"
+            Case 3
+                Return "Truss XYZ"
+            Case 4
+                Return "Frame XYZ"
+            Case 5
+                Return "Grid XY"
+            Case 6
+                Return "Plate XY"
+            Case 7
+                Return "Wall XY"
+            Case 8
+                Return "General XYZ"
+            Case Else
+                Return "General XYZ"
+        End Select
+    End Function
+
+    Public Function GetStringForDOF(item As Integer) As String
         Select Case item
             Case 0
                 Return "Free"
@@ -51,6 +192,97 @@ Module HelperTools
         End Select
 
     End Function
+
+    Public Sub AddOptionsToMenuBeamFEMtype(menuItem As Param_Integer)
+        menuItem.AddNamedValue("standard", 0)
+        menuItem.AddNamedValue("axial force only", 1)
+    End Sub
+
+    Public Function GetStringForBeamFEMtype(item As Integer) As String
+        Select Case item
+            Case 0
+                Return "standard"
+            Case 1
+                Return "axial force only"
+            Case Else
+                Return "standard"
+        End Select
+    End Function
+
+    Public Sub AddOptionsToMenuBeamType(menuItem As Param_Integer)
+        menuItem.AddNamedValue("general", 0)
+        menuItem.AddNamedValue("beam",1)
+        menuItem.AddNamedValue("column", 2)
+        menuItem.AddNamedValue("gable column", 3)
+        menuItem.AddNamedValue("secondary column",4)
+        menuItem.AddNamedValue("rafter", 5)
+        menuItem.AddNamedValue("purlin",6)
+        menuItem.AddNamedValue("roof bracing", 7)
+        menuItem.AddNamedValue("wall bracing",8)
+        menuItem.AddNamedValue("girt", 9)
+        menuItem.AddNamedValue("truss chord", 10)
+        menuItem.AddNamedValue("truss diagonal", 11)
+        menuItem.AddNamedValue("plate rib", 12)
+        menuItem.AddNamedValue("beam slab", 13)
+    End Sub
+    Public Function GetStringForBeamType(item As Integer) As String
+        Select Case item
+            Case 0
+                Return "general"
+            Case 1
+                Return "beam"
+            Case 2
+                Return "column"
+            Case 3
+                Return "gable column"
+            Case 4
+                Return "secondary column"
+            Case 5
+                Return "rafter"
+            Case 6
+                Return "purlin"
+            Case 7
+                Return "roof bracing"
+            Case 8
+                Return "wall bracing"
+            Case 9
+                Return "girt"
+            Case 10
+                Return "truss chord"
+            Case 11
+                Return "truss diagonal"
+            Case 12
+                Return "plate rib"
+            Case 13
+                Return "beam slab"
+            Case Else
+                Return "general"
+        End Select
+    End Function
+    Public Sub AddOptionsToMenuCrosslinkType(menuItem As Param_Integer)
+        menuItem.AddNamedValue("Fixed", 0)
+        menuItem.AddNamedValue("Hinged", 1)
+    End Sub
+
+    Public Function GetStringForCrosslinkType(item As Integer) As String
+        Select Case item
+            Case 0
+                Return "Fixed"
+            Case 1
+                Return "Hinged"
+            Case 2
+                Return "Coupler"
+        End Select
+    End Function
+
+    '    Direction X = "X"
+    'Y = "Y"
+    'Z = "Z"
+    'CoordinateSystem line load
+    '    GCS = "GCS"
+    'LCS = "LCS"
+
+
     Public Function GetExistingNode(arrPoint As Rhino.Geometry.Point3d, nodes(,) As String, nnodes As Long, epsilon As Double)
         Dim currentnode
         'Start with node not found, loop through all the nodes until one is found within tolerance
@@ -3234,4 +3466,107 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
 
 
     End Sub
+
+    Public Function RunCalculationWithEsaXML(FileName As String, ESAXMLPath As String, CalcType As String, TemplateName As String, OutputFile As String, ByRef time_elapsed As Double) As String
+
+        Dim stopWatch As New System.Diagnostics.Stopwatch()
+
+
+        'initialize stopwatch
+        stopWatch.Start()
+
+        Rhino.RhinoApp.WriteLine("")
+        Rhino.RhinoApp.WriteLine("===== KOALA SCIA Engineer plugin - running analysis =====")
+
+        'run ESA_XML
+        '---------------------------------------------------
+        Try
+            Dim myProcess As New System.Diagnostics.Process
+            Dim ESAXMLArgs As String
+            Dim strOut As String, strErr As String, intExit As Integer
+
+            myProcess.StartInfo.FileName = ESAXMLPath
+            ESAXMLArgs = CalcType & " " & TemplateName & " " & FileName & " -tTXT -o" & OutputFile
+            myProcess.StartInfo.Arguments = ESAXMLArgs
+            myProcess.StartInfo.UseShellExecute = False
+            'myProcess.StartInfo.RedirectStandardOutput = True
+            'myProcess.StartInfo.RedirectStandardError = True
+            'myProcess.StartInfo.CreateNoWindow = True
+
+            Rhino.RhinoApp.WriteLine("Starting SCIA Engineer...")
+            Rhino.RhinoApp.WriteLine("Arguments: " & ESAXMLArgs)
+            Rhino.RhinoApp.WriteLine("Please wait...")
+
+            myProcess.Start()
+            myProcess.WaitForExit()
+            intExit = myProcess.ExitCode
+            Rhino.RhinoApp.Write("SCIA Engineer finished with exit code: " & intExit)
+            'output anything that could come out of SCIA Engineer
+            'standard out
+            strOut = ""
+            Select Case intExit
+                Case 0
+                    Rhino.RhinoApp.WriteLine(" - Succeeded")
+                    strOut = " - Succeeded"
+                Case 1
+                    Rhino.RhinoApp.WriteLine(" - Unable To initialize MFC")
+                    strOut = " - Unable To initialize MFC"
+                Case 2
+                    Rhino.RhinoApp.WriteLine(" - Missing arguments")
+                    strOut = " - Missing arguments"
+                Case 3
+                    Rhino.RhinoApp.WriteLine(" - Invalid arguments")
+                    strOut = " - Invalid arguments"
+                Case 4
+                    Rhino.RhinoApp.WriteLine(" - Unable To open ProjectFile")
+                    strOut = " - Unable To open ProjectFile"
+                Case 5
+                    Rhino.RhinoApp.WriteLine(" - Calculation failed")
+                    strOut = " - Calculation failed"
+                Case 6
+                    Rhino.RhinoApp.WriteLine(" - Unable To initialize application environment")
+                    strOut = " - Unable To initialize application environment"
+                Case 7
+                    Rhino.RhinoApp.WriteLine(" - Error during update ProjectFile By XMLUpdateFile")
+                    strOut = " - Error during update ProjectFile By XMLUpdateFile"
+                Case 8
+                    Rhino.RhinoApp.WriteLine(" - Error during create export outputs")
+                    strOut = " - Error during create export outputs"
+                Case 9
+                    Rhino.RhinoApp.WriteLine(" - Error during create XML outputs")
+                    strOut = " - Error during create XML outputs"
+                Case 99
+                    Rhino.RhinoApp.WriteLine(" - Error during update ProjectFile By XLSX Update")
+                    strOut = " - Error during update ProjectFile By XLSX Update"
+                Case Else
+                    Rhino.RhinoApp.WriteLine(" - Unknown exit code")
+                    strOut = " - Unknown exit code"
+            End Select
+
+
+            'strOut = myProcess.StandardOutput.ReadToEnd
+            If strOut Is "" Then
+            Else
+                Rhino.RhinoApp.WriteLine("SCIA Engineer output message: " & strOut)
+
+            End If
+            'standard error
+            strErr = ""
+            'strErr = myProcess.StandardOutput.ReadToEnd
+            If strErr <> "" Then Rhino.RhinoApp.WriteLine("SCIA Engineer error message: " & strErr)
+
+            ' DA.SetData(1, OutputFile)
+        Catch ex As Exception
+            Rhino.RhinoApp.WriteLine("Encountered error launching esa_xml.exe: " & ex.Message)
+
+        End Try
+
+
+        'stop stopwatch
+        stopWatch.Stop()
+        time_elapsed = stopWatch.ElapsedMilliseconds
+        Rhino.RhinoApp.WriteLine("Done in " + Str(time_elapsed) + " ms.")
+        Return time_elapsed
+    End Function
+
 End Module

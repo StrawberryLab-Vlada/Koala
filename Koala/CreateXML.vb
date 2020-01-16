@@ -93,10 +93,12 @@ Namespace Koala
         ''' Registers all the input parameters for this component.
         ''' </summary>
         Protected Overrides Sub RegisterInputParams(pManager As GH_Component.GH_InputParamManager)
-            pManager.AddTextParameter("StructureType", "StructureType", "Type of structure: Frame XZ, Frame XYZ, General XYZ", GH_ParamAccess.item, "General XYZ")
+            pManager.AddIntegerParameter("StructureType", "StructureType", "Type of structure: Frame XZ, Frame XYZ, General XYZ", GH_ParamAccess.item, 8)
+            AddOptionstoMenuStructureType(pManager.Param(0))
             pManager.Param(0).Optional = True
-            pManager.AddTextParameter("UILanguage", "UILanguage", "UI language: English    = 0, Nederlands = 1, Français   = 2, Deutsch    = 3, Čeština    = 4,Slovenčina = 5", GH_ParamAccess.item, 0)
+            pManager.AddIntegerParameter("UILanguage", "UILanguage", "UI language: English    = 0, Nederlands = 1, Français   = 2, Deutsch    = 3, Čeština    = 4,Slovenčina = 5", GH_ParamAccess.item, 0)
             pManager.Param(1).Optional = True
+            AddOptionsToMenuLanguage(pManager.Param(1))
             pManager.AddTextParameter("Materials", "Materials", "Materials: Conctrete, Steel, Timber", GH_ParamAccess.list, "Concrete")
             pManager.Param(2).Optional = True
             pManager.AddNumberParameter("MeshSize", "MeshSize", "Size of mesh", GH_ParamAccess.item, 0.15)
@@ -137,32 +139,30 @@ Namespace Koala
             pManager.Param(20).Optional = True
             pManager.AddBooleanParameter("RemDuplNodes", "RemDuplNodes", "Output filename", GH_ParamAccess.item, False)
             pManager.Param(21).Optional = True
-            pManager.AddBooleanParameter("AutoUpdate", "AutoUpdate", "Automaticupdate", GH_ParamAccess.item, False)
-            pManager.Param(22).Optional = True
             pManager.AddBooleanParameter("OnDemand", "OnDemand", "Output filename on demand", GH_ParamAccess.item, False)
-            pManager.Param(23).Optional = True
+            pManager.Param(22).Optional = True
             pManager.AddTextParameter("Edgeloads", "Edgeloads", "List of line loads on 2D members", GH_ParamAccess.list)
-            pManager.Param(24).Optional = True
+            pManager.Param(23).Optional = True
             pManager.AddTextParameter("PointloadsonPoints", "PointloadsonPoints", "List of point line on nodes", GH_ParamAccess.list)
-            pManager.Param(25).Optional = True
+            pManager.Param(24).Optional = True
             pManager.AddTextParameter("PointloadsonBeams", "PointloadsonBeams", "List of point loads on beams", GH_ParamAccess.list)
-            pManager.Param(26).Optional = True
+            pManager.Param(25).Optional = True
             pManager.AddTextParameter("LinCombinations", "LinCombinations", "List of linear combinations", GH_ParamAccess.list)
-            pManager.Param(27).Optional = True
+            pManager.Param(26).Optional = True
             pManager.AddTextParameter("NonLinCombinations", "NonLinCombinations", "List of nonlinear combinations", GH_ParamAccess.list)
-            pManager.Param(28).Optional = True
+            pManager.Param(27).Optional = True
             pManager.AddTextParameter("StabilityCombinations", "StabilityCombinations", "List of stability combinations", GH_ParamAccess.list)
-            pManager.Param(29).Optional = True
+            pManager.Param(28).Optional = True
             pManager.AddTextParameter("Crosslinks", "Crosslinks", "List crosslinks", GH_ParamAccess.list)
-            pManager.Param(30).Optional = True
+            pManager.Param(29).Optional = True
             pManager.AddTextParameter("PressTensionBeamNL", "PressTensionBeamNL", "List of press/tension only beam local NL", GH_ParamAccess.list)
-            pManager.Param(31).Optional = True
+            pManager.Param(30).Optional = True
             pManager.AddTextParameter("GapElementsBeamNL", "GapElementsBeamNL", "List of gap beam local NL", GH_ParamAccess.list)
-            pManager.Param(32).Optional = True
+            pManager.Param(31).Optional = True
             pManager.AddTextParameter("LimitForceBeamNL", "LimitForceBeamNL", "List of limit force beam local NL", GH_ParamAccess.list)
-            pManager.Param(33).Optional = True
+            pManager.Param(32).Optional = True
             pManager.AddTextParameter("ProjectInformation", "ProjectInformation", "Project informations", GH_ParamAccess.list)
-            pManager.Param(34).Optional = True
+            pManager.Param(33).Optional = True
         End Sub
 
         ''' <summary>
@@ -216,10 +216,13 @@ Namespace Koala
             Dim in_gapElem = New List(Of String)
             Dim in_limitforceElem = New List(Of String)
             Dim projectInfo = New List(Of String)
+            Dim i As Integer = 0
 
             If (Not DA.GetData(Of String)(19, FileName)) Then Return
-            DA.GetData(Of String)(0, StructureType)
-            DA.GetData(Of String)(1, UILanguage)
+            DA.GetData(Of Integer)(0, i)
+            StructureType = GetStringForStructureType(i)
+            DA.GetData(Of Integer)(1, i)
+            UILanguage = GetStringForLanguage(i)
             DA.GetDataList(Of String)(2, Materials)
             DA.GetData(3, MeshSize)
             DA.GetDataList(Of String)(4, in_sections)
@@ -239,19 +242,18 @@ Namespace Koala
             DA.GetDataList(Of String)(18, in_hinges)
             DA.GetData(Of String)(20, Scale)
             DA.GetData(Of Boolean)(21, RemDuplNodes)
-            'DA.GetData(Of Boolean)(22, AutoUpdate)
-            DA.GetData(Of Boolean)(23, OnDemand)
-            DA.GetDataList(Of String)(24, in_edgeLoads)
-            DA.GetDataList(Of String)(25, in_pointLoadsPoints)
-            DA.GetDataList(Of String)(26, in_pointLoadsBeams)
-            DA.GetDataList(Of String)(27, in_LinCombinations)
-            DA.GetDataList(Of String)(28, in_NonLinCombinations)
-            DA.GetDataList(Of String)(29, in_StabCombinations)
-            DA.GetDataList(Of String)(30, in_CrossLinks)
-            DA.GetDataList(Of String)(31, in_presstensionElem)
-            DA.GetDataList(Of String)(32, in_gapElem)
-            DA.GetDataList(Of String)(33, in_limitforceElem)
-            DA.GetDataList(Of String)(34, projectInfo)
+            DA.GetData(Of Boolean)(22, OnDemand)
+            DA.GetDataList(Of String)(23, in_edgeLoads)
+            DA.GetDataList(Of String)(24, in_pointLoadsPoints)
+            DA.GetDataList(Of String)(25, in_pointLoadsBeams)
+            DA.GetDataList(Of String)(26, in_LinCombinations)
+            DA.GetDataList(Of String)(27, in_NonLinCombinations)
+            DA.GetDataList(Of String)(28, in_StabCombinations)
+            DA.GetDataList(Of String)(29, in_CrossLinks)
+            DA.GetDataList(Of String)(30, in_presstensionElem)
+            DA.GetDataList(Of String)(31, in_gapElem)
+            DA.GetDataList(Of String)(32, in_limitforceElem)
+            DA.GetDataList(Of String)(33, projectInfo)
 
             If AutoUpdate = False Then
                 If OnDemand = False Then

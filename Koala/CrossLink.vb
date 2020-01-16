@@ -25,7 +25,8 @@ Namespace Koala
         ''' Registers all the input parameters for this component.
         ''' </summary>
         Protected Overrides Sub RegisterInputParams(pManager As GH_Component.GH_InputParamManager)
-            pManager.AddTextParameter("Type", "Type", "Type of corss-link: Fixed, Hinged", GH_ParamAccess.item, "Fixed")
+            pManager.AddIntegerParameter("Type", "Type", "Type of corss-link: Fixed, Hinged", GH_ParamAccess.item, 0)
+            AddOptionsToMenuCrosslinkType(pManager.Param(0))
             pManager.AddTextParameter("CoupledMembers", "CoupledMembers", "1stmember;2ndmember", GH_ParamAccess.list)
         End Sub
 
@@ -43,11 +44,12 @@ Namespace Koala
         ''' to store data in output parameters.</param>
         Protected Overrides Sub SolveInstance(DA As IGH_DataAccess)
 
-            Dim i As Long
+            Dim i As Integer
             Dim Type As String = "Fixed"
             Dim CoupledMembers = New List(Of String)
 
-            If (Not DA.GetData(Of String)(0, Type)) Then Return
+            If (Not DA.GetData(Of Integer)(0, i)) Then Return
+            Type = GetStringForCrosslinkType(i)
             If (Not DA.GetDataList(Of String)(1, CoupledMembers)) Then Return
 
             Dim SE_Crosslinks(CoupledMembers.Count, 3) As String

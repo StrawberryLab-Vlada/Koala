@@ -108,7 +108,6 @@
     <Compile Include="CreateXML.vb" />
     <Compile Include="Cross-Sections.vb" />
     <Compile Include="CrossLink.vb" />
-    <Compile Include="CustomComponent.vb" />
     <Compile Include="EdgeLoad.vb" />
     <Compile Include="EdgeSupport.vb" />
     <Compile Include="FreeSurfaceLoad.Designer.vb">
@@ -139,7 +138,6 @@
     </Compile>
     <Compile Include="FreePointLoad.vb" />
     <Compile Include="FreeLineLoad.vb" />
-    <Compile Include="NodalSupport.vb" />
     <Compile Include="Nodes.vb" />
     <Compile Include="NodeSupport.vb" />
     <Compile Include="NonlinearCombination.vb" />
