@@ -422,6 +422,10 @@ Module HelperTools
                 Return "GCS - Projection"
             Case 2
                 Return "LCS"
+            Case 3
+                Return "Member LCS"
+            Case 4
+                Return "GCS"
             Case Else
                 Return "GCS - Length"
         End Select
@@ -443,6 +447,117 @@ Module HelperTools
                 Return "GCS"
         End Select
     End Function
+
+
+    Public Sub AddOptionsToMenuValidity(menuitem As Param_Integer)
+        menuitem.AddNamedValue("All", 0)
+        menuitem.AddNamedValue("Z equals 0", 1)
+    End Sub
+    Public Function GetStringFromuValidity(item As Integer) As String
+        Select Case item
+            Case 0
+                Return "All"
+            Case 1
+                Return "Z equals 0"
+            Case Else
+                Return "All"
+        End Select
+    End Function
+
+    Public Sub AddOptionsToMenuCoordSysFreeLine(menuitem As Param_Integer)
+        menuitem.AddNamedValue("GCS - Length", 0)
+        menuitem.AddNamedValue("GCS - Projection", 1)
+        menuitem.AddNamedValue("Member LCS", 3)
+    End Sub
+    Public Sub AddOptionsToMenuBeamNLTypePT(menuitem As Param_Integer)
+        menuitem.AddNamedValue("Press only", 0)
+        menuitem.AddNamedValue("Tension only", 1)
+    End Sub
+
+    Public Function GetStringFromBeamNLTypePT(item As Integer) As String
+        Select Case item
+            Case 0
+                Return "Press only"
+            Case 1
+                Return "Tension only"
+            Case Else
+                Return "Press only"
+        End Select
+    End Function
+    Public Sub AddOptionsToMenuCoordSysFreePoint(menuitem As Param_Integer)
+        menuitem.AddNamedValue("GCS", 4)
+        menuitem.AddNamedValue("Member LCS", 3)
+    End Sub
+
+    Public Sub AddOptionsToMenuBeamNLGapDirection(menuitem As Param_Integer)
+        menuitem.AddNamedValue("Both directions", 0)
+        menuitem.AddNamedValue("Press only", 1)
+        menuitem.AddNamedValue("Tension only", 1)
+    End Sub
+
+    Public Function GetStringFromBeamNLGapDirection(item As Integer) As String
+        Select Case item
+            Case 0
+                Return "Both directions"
+            Case 1
+                Return "Press only"
+            Case 2
+                Return "Tension only"
+            Case Else
+                Return "Both directions"
+        End Select
+    End Function
+    Public Sub AddOptionsToMenuBeamNLGapPosition(menuitem As Param_Integer)
+        menuitem.AddNamedValue("Begin", 0)
+        menuitem.AddNamedValue("End", 1)
+
+    End Sub
+
+    Public Function GetStringFromBeamNLGapPosition(item As Integer) As String
+        Select Case item
+            Case 0
+                Return "Begin"
+            Case 1
+                Return "End"
+            Case Else
+                Return "Begin"
+        End Select
+    End Function
+
+
+    Public Sub AddOptionsToMenuBeamNLLimitForceType(menuitem As Param_Integer)
+        menuitem.AddNamedValue("Buckling ( results zero )", 0)
+        menuitem.AddNamedValue("Plastic yielding", 1)
+
+    End Sub
+
+    Public Function GetStringFromBeamNLLimitForceType(item As Integer) As String
+        Select Case item
+            Case 0
+                Return "Buckling ( results zero )"
+            Case 1
+                Return "Plastic yielding"
+            Case Else
+                Return "Buckling ( results zero )"
+        End Select
+    End Function
+    Public Sub AddOptionsToMenuBeamNLLimnitForceDirection(menuitem As Param_Integer)
+        menuitem.AddNamedValue("Limit compression", 0)
+        menuitem.AddNamedValue("Limit tension", 1)
+
+    End Sub
+
+    Public Function GetStringFromBeamNLLimnitForceDirection(item As Integer) As String
+        Select Case item
+            Case 0
+                Return "Limit compression"
+            Case 1
+                Return "Limit tension"
+            Case Else
+                Return "Limit compression"
+        End Select
+    End Function
+
 
 
     Public Function GetExistingNode(arrPoint As Rhino.Geometry.Point3d, nodes(,) As String, nnodes As Long, epsilon As Double)

@@ -26,10 +26,11 @@ Namespace Koala
         ''' </summary>
         Protected Overrides Sub RegisterInputParams(pManager As GH_Component.GH_InputParamManager)
             pManager.AddTextParameter("BeamList", "BeamList", "List of beams where to apply gap", GH_ParamAccess.list)
-            pManager.AddTextParameter("Type", "Type", "Type: Both directions, Press only, Tension only ", GH_ParamAccess.item, "Both directions")
+            pManager.AddIntegerParameter("Type", "Type", "Type: Both directions, Press only, Tension only ", GH_ParamAccess.item, 0)
+            AddOptionsToMenuBeamNLGapDirection(pManager.Param(1))
             pManager.AddNumberParameter("Displacement mm", "Displacement mm", "Displacemnt in mm", GH_ParamAccess.item, 10)
-            pManager.AddTextParameter("Position", "Position", "Position: Begin, End", GH_ParamAccess.item, "Begin")
-
+            pManager.AddIntegerParameter("Position", "Position", "Position: Begin, End", GH_ParamAccess.item, 0)
+            AddOptionsToMenuBeamNLGapPosition(pManager.Param(3))
         End Sub
 
         ''' <summary>
@@ -46,16 +47,19 @@ Namespace Koala
         ''' to store data in output parameters.</param>
         Protected Overrides Sub SolveInstance(DA As IGH_DataAccess)
 
-            Dim i As Long
+            Dim i As Integer
             Dim Type As String = "Both directions"
             Dim BeamList = New List(Of String)
             Dim Displacement As Double = 0.01
             Dim Position As String = "Begin"
 
             If (Not DA.GetDataList(Of String)(0, BeamList)) Then Return
-            If (Not DA.GetData(Of String)(1, Type)) Then Return
+            If (Not DA.GetData(Of Integer)(1, i)) Then Return
+            Type = GetStringFromBeamNLGapDirection(i)
             DA.GetData(Of Double)(2, Displacement)
-            DA.GetData(Of String)(3, Position)
+            DA.GetData(Of Integer)(3, i)
+            Position = GetStringFromBeamNLGapPosition(i)
+
 
             Dim SE_Gaps(BeamList.Count, 4) As String
             Dim FlatList As New List(Of System.Object)()

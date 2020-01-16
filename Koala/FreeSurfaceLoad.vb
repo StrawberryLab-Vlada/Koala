@@ -26,10 +26,13 @@ Namespace Koala
         ''' </summary>
         Protected Overrides Sub RegisterInputParams(pManager As GH_Component.GH_InputParamManager)
             pManager.AddTextParameter("LoadCase", "LoadCase", "Name of load case", GH_ParamAccess.item, "LC2")
-            pManager.AddTextParameter("Validity", "Validity", "Validity: All,Z equals 0", GH_ParamAccess.item, "All")
+            pManager.AddIntegerParameter("Validity", "Validity", "Validity: All,Z equals 0", GH_ParamAccess.item, 0)
+            AddOptionsToMenuValidity(pManager.Param(1))
             pManager.AddTextParameter("Selection", "Selection", "Selection: Auto", GH_ParamAccess.item, "Auto")
-            pManager.AddTextParameter("CoordSys", "CoordSys", "Coordinate system: GCS - Length, GCS - Projection, Member LCS", GH_ParamAccess.item, "GCS - Length")
+            pManager.AddIntegerParameter("CoordSys", "CoordSys", "Coordinate system: GCS - Length, GCS - Projection, Member LCS", GH_ParamAccess.item, 0)
+            AddOptionsToMenuCoordSysFreeLine(pManager.Param(3))
             pManager.AddTextParameter("Direction", "Direction", "Direction of load: X,Y,Z", GH_ParamAccess.item, "Z")
+            AddOptionsToMenuDirection(pManager.Param(4))
             pManager.AddNumberParameter("LoadValue", "LoadValue", "Value of Load in KN/m", GH_ParamAccess.item, -1)
             pManager.AddCurveParameter("Boundaries", "Boundaries", "List of lines", GH_ParamAccess.list)
         End Sub
@@ -57,15 +60,19 @@ Namespace Koala
             Dim Direction As String = "Z"
             Dim LoadValue As Double = -1.0
             Dim Boundaries = New List(Of Curve)
+            Dim i As Integer
 
             If (Not DA.GetData(0, LoadCase)) Then Return
-            If (Not DA.GetData(1, Validity)) Then Return
+            If (Not DA.GetData(1, i)) Then Return
+            Validity = GetStringFromuValidity(i)
             If (Not DA.GetData(2, Selection)) Then Return
-            If (Not DA.GetData(3, CoordSys)) Then Return
-            If (Not DA.GetData(4, Direction)) Then Return
+            If (Not DA.GetData(3, i)) Then Return
+            CoordSys = GetStringFromCoordSysLine(i)
+            If (Not DA.GetData(4, i)) Then Return
+            Direction = GetStringFromDirection(i)
             If (Not DA.GetData(5, LoadValue)) Then Return
             If (Not DA.GetDataList(Of Curve)(6, Boundaries)) Then Return
-            Dim i As Long, j As Long
+            Dim j As Long
 
             Dim SE_fsloads(Boundaries.Count, 6)
             Dim FlatList As New List(Of System.Object)()

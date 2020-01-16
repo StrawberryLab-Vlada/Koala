@@ -26,7 +26,8 @@ Namespace Koala
         ''' </summary>
         Protected Overrides Sub RegisterInputParams(pManager As GH_Component.GH_InputParamManager)
             pManager.AddTextParameter("BeamList", "BeamList", "List of beams where to apply gap", GH_ParamAccess.list)
-            pManager.AddTextParameter("Type", "Type", "Type: Press only, Tension only ", GH_ParamAccess.item, "Press only")
+            pManager.AddIntegerParameter("Type", "Type", "Type: Press only, Tension only ", GH_ParamAccess.item, 0)
+            AddOptionsToMenuBeamNLTypePT(pManager.Param(1))
         End Sub
 
         ''' <summary>
@@ -43,13 +44,14 @@ Namespace Koala
         ''' to store data in output parameters.</param>
         Protected Overrides Sub SolveInstance(DA As IGH_DataAccess)
 
-            Dim i As Long
+            Dim i As Integer
             Dim Type As String = "Press only"
             Dim BeamList = New List(Of String)
 
 
             If (Not DA.GetDataList(Of String)(0, BeamList)) Then Return
-            If (Not DA.GetData(Of String)(1, Type)) Then Return
+            If (Not DA.GetData(Of Integer)(1, i)) Then Return
+            Type = GetStringFromBeamNLTypePT(i)
 
             Dim SE_elements(BeamList.Count, 2) As String
             Dim FlatList As New List(Of System.Object)()

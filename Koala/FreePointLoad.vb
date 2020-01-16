@@ -26,10 +26,13 @@ Namespace Koala
         ''' </summary>
         Protected Overrides Sub RegisterInputParams(pManager As GH_Component.GH_InputParamManager)
             pManager.AddTextParameter("LoadCase", "LoadCase", "Name of load case", GH_ParamAccess.item)
-            pManager.AddTextParameter("Validity", "Validity", "Validity: All,Z equals 0", GH_ParamAccess.item)
+            pManager.AddIntegerParameter("Validity", "Validity", "Validity: All,Z equals 0", GH_ParamAccess.item, 0)
+            AddOptionsToMenuValidity(pManager.Param(1))
             pManager.AddTextParameter("Selection", "Selection", "Selection: Auto", GH_ParamAccess.item)
-            pManager.AddTextParameter("CoordSys", "CoordSys", "Coordinate system: GCS or Member LCS", GH_ParamAccess.item)
-            pManager.AddTextParameter("Direction", "Direction", "Direction of load: X,Y,Z", GH_ParamAccess.item)
+            pManager.AddIntegerParameter("CoordSys", "CoordSys", "Coordinate system: GCS or Member LCS", GH_ParamAccess.item, 4)
+            AddOptionsToMenuCoordSysFreePoint(pManager.Param(3))
+            pManager.AddIntegerParameter("Direction", "Direction", "Direction of load: X,Y,Z", GH_ParamAccess.item, 0)
+            AddOptionsToMenuDirection(pManager.Param(4))
             pManager.AddNumberParameter("LoadValue", "LoadValue", "Value of Load in KN/m", GH_ParamAccess.item)
             pManager.AddPointParameter("Points", "Points", "List of points", GH_ParamAccess.list)
         End Sub
@@ -55,17 +58,20 @@ Namespace Koala
             Dim Direction As String = ""
             Dim LoadValue As Double = -1.0
             Dim Points = New List(Of Point3d)
-
+            Dim i As Integer
             If (Not DA.GetData(0, LoadCase)) Then Return
-            If (Not DA.GetData(1, Validity)) Then Return
+            If (Not DA.GetData(1, i)) Then Return
+            Validity = GetStringFromuValidity(i)
             If (Not DA.GetData(2, Selection)) Then Return
-            If (Not DA.GetData(3, CoordSys)) Then Return
-            If (Not DA.GetData(4, Direction)) Then Return
+            If (Not DA.GetData(3, i)) Then Return
+            CoordSys = GetStringFromCoordSysLine(i)
+            If (Not DA.GetData(4, i)) Then Return
+            Direction = GetStringFromDirection(i)
             If (Not DA.GetData(5, LoadValue)) Then Return
             If (Not DA.GetDataList(Of Point3d)(6, Points)) Then Return
 
 
-            Dim i As Long, j As Long
+            Dim j As Long
 
             Dim SE_fploads(Points.Count, 8)
             Dim FlatList As New List(Of System.Object)()
