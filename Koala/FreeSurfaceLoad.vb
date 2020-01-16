@@ -31,7 +31,7 @@ Namespace Koala
             pManager.AddTextParameter("Selection", "Selection", "Selection: Auto", GH_ParamAccess.item, "Auto")
             pManager.AddIntegerParameter("CoordSys", "CoordSys", "Coordinate system: GCS - Length, GCS - Projection, Member LCS", GH_ParamAccess.item, 0)
             AddOptionsToMenuCoordSysFreeLine(pManager.Param(3))
-            pManager.AddTextParameter("Direction", "Direction", "Direction of load: X,Y,Z", GH_ParamAccess.item, "Z")
+            pManager.AddIntegerParameter("Direction", "Direction", "Direction of load: X,Y,Z", GH_ParamAccess.item, 0)
             AddOptionsToMenuDirection(pManager.Param(4))
             pManager.AddNumberParameter("LoadValue", "LoadValue", "Value of Load in KN/m", GH_ParamAccess.item, -1)
             pManager.AddCurveParameter("Boundaries", "Boundaries", "List of lines", GH_ParamAccess.list)
