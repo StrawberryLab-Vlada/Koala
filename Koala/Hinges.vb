@@ -100,7 +100,7 @@ Namespace Koala
             'a hinge consists of: Beam name, ux, uy, uz, phix, phiy, phiz (0: free, 1: fixed), Position (Begin/End/Both)
 
             Dim item As String
-            Dim itemcount As Long
+
 
 
             'create fixed supports on first & last nodes, fully fixed

@@ -861,11 +861,11 @@ Module HelperTools
         End If
 
         If (in_edgesupports IsNot Nothing) Then
-            edgesupportcount = in_edgesupports.Count / 9
+            edgesupportcount = in_edgesupports.Count / 15
             Rhino.RhinoApp.WriteLine("Number of edge supports: " & edgesupportcount)
             For i = 0 To edgesupportcount - 1
-                For j = 0 To 8
-                    SE_edgesupports(i, j) = in_edgesupports(j + i * 9)
+                For j = 0 To 14
+                    SE_edgesupports(i, j) = in_edgesupports(j + i * 15)
                 Next j
             Next i
         End If
@@ -1485,12 +1485,12 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             oSB.AppendLine(ConCat_hh("5", "Rx"))
             oSB.AppendLine(ConCat_hh("6", "Ry"))
             oSB.AppendLine(ConCat_hh("7", "Rz"))
-            oSB.AppendLine(ConCat_hh("2", "Stiffness X"))
-            oSB.AppendLine(ConCat_hh("3", "Stiffness Y"))
-            oSB.AppendLine(ConCat_hh("4", "Stiffness Z"))
-            oSB.AppendLine(ConCat_hh("5", "Stiffness Rx"))
-            oSB.AppendLine(ConCat_hh("6", "Stiffness Ry"))
-            oSB.AppendLine(ConCat_hh("7", "Stiffness Rz"))
+            oSB.AppendLine(ConCat_hh("8", "Stiffness X"))
+            oSB.AppendLine(ConCat_hh("9", "Stiffness Y"))
+            oSB.AppendLine(ConCat_hh("10", "Stiffness Z"))
+            oSB.AppendLine(ConCat_hh("11", "Stiffness Rx"))
+            oSB.AppendLine(ConCat_hh("12", "Stiffness Ry"))
+            oSB.AppendLine(ConCat_hh("13", "Stiffness Rz"))
             oSB.AppendLine("</h>")
 
             For i = 0 To nodesupportnr - 1
@@ -1527,6 +1527,13 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             oSB.AppendLine(ConCat_hh("7", "Ry"))
             oSB.AppendLine(ConCat_hh("8", "Rz"))
             oSB.AppendLine(ConCat_hh("9", "System"))
+            oSB.AppendLine(ConCat_hh("10", "Stiffness X"))
+            oSB.AppendLine(ConCat_hh("11", "Stiffness Y"))
+            oSB.AppendLine(ConCat_hh("12", "Stiffness Z"))
+            oSB.AppendLine(ConCat_hh("13", "Stiffness Rx"))
+            oSB.AppendLine(ConCat_hh("14", "Stiffness Ry"))
+            oSB.AppendLine(ConCat_hh("15", "Stiffness Rz"))
+
             oSB.AppendLine("</h>")
 
             For i = 0 To edgesupportnr - 1
@@ -2947,13 +2954,17 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
         oSB.AppendLine("<row id=""0"">")
 
         'different reference depending whether it's towards a surface or an opening
-        If Strings.Trim(Strings.UCase(supports(isupport, 1))) = "SURFACE" Then
-            oSB.AppendLine(ConCat_pv("0", "{8708ED31-8E66-11D4-AD94-F6F5DE2BE344}"))
-            oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_Plane.1"))
-        ElseIf Strings.Trim(Strings.UCase(supports(isupport, 1))) = "OPENING" Then
-            oSB.AppendLine(ConCat_pv("0", "{EBA9B148-F564-4DB1-9E2D-F1937FFA4523}"))
-            oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_OpenSlab.1"))
-        End If
+        Select Case supports(isupport, 1)
+            Case "SURFACE"
+                oSB.AppendLine(ConCat_pv("0", "{8708ED31-8E66-11D4-AD94-F6F5DE2BE344}"))
+                oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_Plane.1"))
+            Case "OPENING"
+                oSB.AppendLine(ConCat_pv("0", "{EBA9B148-F564-4DB1-9E2D-F1937FFA4523}"))
+                oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_OpenSlab.1"))
+            Case Else
+                oSB.AppendLine(ConCat_pv("0", "{8708ED31-8E66-11D4-AD94-F6F5DE2BE344}"))
+                oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_Plane.1"))
+        End Select
 
         oSB.AppendLine(ConCat_pv("2", supports(isupport, 0)))
         oSB.AppendLine("</row>")
@@ -2962,21 +2973,26 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
 
         oSB.AppendLine(ConCat_pvt("2", CStr(CLng(supports(isupport, 2)) - 1), supports(isupport, 2))) 'Edge number minus 1 is the index
 
-        If supports(isupport, 3) = 0 Then tt = "Free" Else tt = "Rigid"
-        oSB.AppendLine(ConCat_pvt("3", supports(isupport, 3), tt))
-        If supports(isupport, 4) = 0 Then tt = "Free" Else tt = "Rigid"
-        oSB.AppendLine(ConCat_pvt("4", supports(isupport, 4), tt))
-        If supports(isupport, 5) = 0 Then tt = "Free" Else tt = "Rigid"
-        oSB.AppendLine(ConCat_pvt("5", supports(isupport, 5), tt))
-        If supports(isupport, 6) = 0 Then tt = "Free" Else tt = "Rigid"
-        oSB.AppendLine(ConCat_pvt("6", supports(isupport, 6), tt))
-        If supports(isupport, 7) = 0 Then tt = "Free" Else tt = "Rigid"
-        oSB.AppendLine(ConCat_pvt("7", supports(isupport, 7), tt))
-        If supports(isupport, 8) = 0 Then tt = "Free" Else tt = "Rigid"
-        oSB.AppendLine(ConCat_pvt("8", supports(isupport, 8), tt))
+        tt = GetStringForDOF(supports(isupport, 3))
+        oSB.AppendLine(ConCat_pvt("2", supports(isupport, 3), tt))
+        tt = GetStringForDOF(supports(isupport, 4))
+        oSB.AppendLine(ConCat_pvt("3", supports(isupport, 4), tt))
+        tt = GetStringForDOF(supports(isupport, 5))
+        oSB.AppendLine(ConCat_pvt("4", supports(isupport, 5), tt))
+        tt = GetStringForDOF(supports(isupport, 6))
+        oSB.AppendLine(ConCat_pvt("5", supports(isupport, 6), tt))
+        tt = GetStringForDOF(supports(isupport, 7))
+        oSB.AppendLine(ConCat_pvt("6", supports(isupport, 7), tt))
+        tt = GetStringForDOF(supports(isupport, 8))
+        oSB.AppendLine(ConCat_pvt("7", supports(isupport, 8), tt))
 
         oSB.AppendLine(ConCat_pvt("9", "0", "GCS")) 'Coordinate system
-
+        oSB.AppendLine(ConCat_pv("10", supports(isupport, 9)))
+        oSB.AppendLine(ConCat_pv("11", supports(isupport, 10)))
+        oSB.AppendLine(ConCat_pv("12", supports(isupport, 11)))
+        oSB.AppendLine(ConCat_pv("13", supports(isupport, 12)))
+        oSB.AppendLine(ConCat_pv("14", supports(isupport, 13)))
+        oSB.AppendLine(ConCat_pv("15", supports(isupport, 14)))
         oSB.AppendLine("</obj>")
 
     End Sub
