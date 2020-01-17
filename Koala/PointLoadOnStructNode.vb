@@ -27,8 +27,10 @@ Namespace Koala
         Protected Overrides Sub RegisterInputParams(pManager As GH_Component.GH_InputParamManager)
             pManager.AddTextParameter("LoadCase", "LoadCase", "Name of load case", GH_ParamAccess.item, "LC2")
             pManager.AddTextParameter("NodeList", "NodeList", "List of beam names where to apply load", GH_ParamAccess.list)
-            pManager.AddTextParameter("CoordSys", "CoordSys", "Coordinate system: GCS or LCS", GH_ParamAccess.item, "GCS")
-            pManager.AddTextParameter("Direction", "Direction", "Direction of load: X,Y,Z", GH_ParamAccess.item, "Z")
+            pManager.AddIntegerParameter("CoordSys", "CoordSys", "Coordinate system: GCS or LCS", GH_ParamAccess.item, 0)
+            AddOptionsToMenuCoordSysPoint(pManager.Param(2))
+            pManager.AddIntegerParameter("Direction", "Direction", "Direction of load: X,Y,Z", GH_ParamAccess.item, 2)
+            AddOptionsToMenuDirection(pManager.Param(3))
             pManager.AddNumberParameter("LoadValue", "LoadValue", "Value of Load in KN", GH_ParamAccess.item, -1)
         End Sub
 
@@ -51,16 +53,17 @@ Namespace Koala
             Dim CoordSys As String = "GCS"
             Dim Direction As String = "Z"
             Dim LoadValue As Double = -1.0
-
+            Dim i As Integer
 
 
             If (Not DA.GetData(0, LoadCase)) Then Return
             If (Not DA.GetDataList(Of String)(1, NodeList)) Then Return
-            If (Not DA.GetData(2, CoordSys)) Then Return
-            If (Not DA.GetData(3, Direction)) Then Return
+            If (Not DA.GetData(2, i)) Then Return
+            CoordSys = GetStringFromCoordSysPoint(i)
+            If (Not DA.GetData(3, i)) Then Return
+            Direction = GetStringFromDirection(i)
             If (Not DA.GetData(4, LoadValue)) Then Return
 
-            Dim i As Long
 
             Dim SE_loads(NodeList.Count, 5)
             Dim FlatList As New List(Of System.Object)()

@@ -25,7 +25,25 @@ Namespace Koala
         ''' Registers all the input parameters for this component.
         ''' </summary>
         Protected Overrides Sub RegisterInputParams(pManager As GH_Component.GH_InputParamManager)
-            pManager.AddTextParameter("NodeSupports", "NodeSupports", "Definition of nodal supports:N1;111000", GH_ParamAccess.list, "N1;111000")
+            pManager.AddTextParameter("ListOfNodes", "ListOfNodes", "List of node where support will be applied", GH_ParamAccess.list)
+            pManager.AddIntegerParameter("Rx", "Rx", "Rotation around X axis, Right click and select from options", GH_ParamAccess.item, 1)
+            AddOptionstoMenuDOFTransition(pManager.Param(1))
+            pManager.AddIntegerParameter("Ry", "Ry", "Rotation around y axis, Right click and select from options", GH_ParamAccess.item, 1)
+            AddOptionstoMenuDOFTransition(pManager.Param(2))
+            pManager.AddIntegerParameter("Rz", "Rz", "Rotation around X axis, Right click and select from options", GH_ParamAccess.item, 1)
+            AddOptionstoMenuDOFTransition(pManager.Param(3))
+            pManager.AddIntegerParameter("Tx", "Tx", "Translation in X axis, Right click and select from options", GH_ParamAccess.item, 1)
+            AddOptionstoMenuDOFRotation(pManager.Param(4))
+            pManager.AddIntegerParameter("Ty", "Ty", "Translation in Y axis, Right click and select from options", GH_ParamAccess.item, 1)
+            AddOptionstoMenuDOFRotation(pManager.Param(5))
+            pManager.AddIntegerParameter("Tz", "Tz", "Translation in Z axis, Right click and select from options", GH_ParamAccess.item, 1)
+            AddOptionstoMenuDOFRotation(pManager.Param(6))
+            pManager.AddNumberParameter("StiffnessRx", "StiffnessRx", "Stiffness for Rx", GH_ParamAccess.item, 0.0)
+            pManager.AddNumberParameter("StiffnessRy", "StiffnessRy", "Stiffness for Ry", GH_ParamAccess.item, 0.0)
+            pManager.AddNumberParameter("StiffnessRz", "StiffnessRz", "Stiffness for Rz", GH_ParamAccess.item, 0.0)
+            pManager.AddNumberParameter("StiffnessRx", "StiffnessTx", "Stiffness for Tx", GH_ParamAccess.item, 0.0)
+            pManager.AddNumberParameter("StiffnessTy", "StiffnessTy", "Stiffness for Ty", GH_ParamAccess.item, 0.0)
+            pManager.AddNumberParameter("StiffnessTz", "StiffnessTz", "Stiffness for Tz", GH_ParamAccess.item, 0.0)
         End Sub
 
         ''' <summary>
@@ -43,49 +61,51 @@ Namespace Koala
         Protected Overrides Sub SolveInstance(DA As IGH_DataAccess)
 
             Dim NodeSupports = New List(Of String)
+            Dim Rx As Integer
+            Dim Ry As Integer
+            Dim Rz As Integer
+            Dim Tx As Integer
+            Dim Ty As Integer
+            Dim Tz As Integer
+            Dim RxStiffness As Double
+            Dim RyStiffness As Double
+            Dim RzStiffness As Double
+            Dim TxStiffness As Double
+            Dim TyStiffness As Double
+            Dim TzStiffness As Double
+
             If (Not DA.GetDataList(Of String)(0, NodeSupports)) Then Return
-            Dim i As Long
+            DA.GetData(Of Integer)(1, Tx)
+            DA.GetData(Of Integer)(2, Ty)
+            DA.GetData(Of Integer)(3, Tz)
+            DA.GetData(Of Integer)(4, Rx)
+            DA.GetData(Of Integer)(5, Ry)
+            DA.GetData(Of Integer)(6, Rz)
+            DA.GetData(Of Double)(7, TxStiffness)
+            DA.GetData(Of Double)(8, TyStiffness)
+            DA.GetData(Of Double)(9, TzStiffness)
+            DA.GetData(Of Double)(10, RxStiffness)
+            DA.GetData(Of Double)(11, RyStiffness)
+            DA.GetData(Of Double)(12, RzStiffness)
 
-            Dim SE_nodesupports(NodeSupports.Count, 6)
+
             Dim FlatList As New List(Of System.Object)()
-            'a support consists of: Node name, X, Y, Z, RX, RY, RZ - 0 is free, 1 is blocked DOF
-
-            Dim item As String
-            Dim itemcount As Long
-            Dim supportnode As String, supportcode As String
-
-            'initialize some variables
-            itemcount = 0
-
             For Each item In NodeSupports
-                supportnode = item.Split(";")(0)
-                supportnode = supportnode.Trim
-                supportcode = item.Split(";")(1)
-                supportcode = supportcode.Trim
-                SE_nodesupports(itemcount, 0) = supportnode
-                For i = 1 To 6
-                    SE_nodesupports(itemcount, i) = Strings.Mid(supportcode, i, 1)
-                Next i
-
-                itemcount += 1
-
+                FlatList.Add(item)
+                FlatList.Add(Rx)
+                FlatList.Add(Ry)
+                FlatList.Add(Rz)
+                FlatList.Add(Tx)
+                FlatList.Add(Ty)
+                FlatList.Add(Tz)
+                FlatList.Add(RxStiffness)
+                FlatList.Add(RyStiffness)
+                FlatList.Add(RzStiffness)
+                FlatList.Add(TxStiffness)
+                FlatList.Add(TyStiffness)
+                FlatList.Add(TzStiffness)
             Next
-
-            'Flatten data for export as simple list
-            FlatList.Clear()
-
-            For i = 0 To itemcount - 1
-                FlatList.Add(SE_nodesupports(i, 0))
-                FlatList.Add(SE_nodesupports(i, 1))
-                FlatList.Add(SE_nodesupports(i, 2))
-                FlatList.Add(SE_nodesupports(i, 3))
-                FlatList.Add(SE_nodesupports(i, 4))
-                FlatList.Add(SE_nodesupports(i, 5))
-                FlatList.Add(SE_nodesupports(i, 6))
-            Next i
-
             DA.SetDataList(0, FlatList)
-
         End Sub
 
 

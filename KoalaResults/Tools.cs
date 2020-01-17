@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO;
 
 namespace GeneralTools
 {
@@ -13,7 +13,7 @@ namespace GeneralTools
 
         public List<string> FindMinMaxPerMember(List<string> SourceArray)
         {
-            List <string> MinMaxValues = new List<string>();
+            List<string> MinMaxValues = new List<string>();
 
             return MinMaxValues;
         }
@@ -24,7 +24,7 @@ namespace GeneralTools
             string[] HeaderCells = SeparateTableCells(SortedLines[0]);
 
             int ValuePosition = -1;
-            for (int i=0; i<HeaderCells.Length; i++)
+            for (int i = 0; i < HeaderCells.Length; i++)
             {
                 if (HeaderCells[i].Contains(ResultType))
                 {

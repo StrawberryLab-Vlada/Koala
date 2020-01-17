@@ -26,8 +26,10 @@ Namespace Koala
         ''' </summary>
         Protected Overrides Sub RegisterInputParams(pManager As GH_Component.GH_InputParamManager)
             pManager.AddTextParameter("BeamList", "BeamList", "List of beams where to apply gap", GH_ParamAccess.list)
-            pManager.AddTextParameter("Direction", "Direction", "Direction: Limit compression, Limit tension ", GH_ParamAccess.item, "Limit compression")
-            pManager.AddTextParameter("Type", "Type", "Type: Buckling ( results zero ), Plastic yielding", GH_ParamAccess.item, "Plastic yielding")
+            pManager.AddIntegerParameter("Direction", "Direction", "Direction: Limit compression, Limit tension ", GH_ParamAccess.item, 0)
+            AddOptionsToMenuBeamNLLimnitForceDirection(pManager.Param(1))
+            pManager.AddIntegerParameter("Type", "Type", "Type: Buckling ( results zero ), Plastic yielding", GH_ParamAccess.item, 1)
+            AddOptionsToMenuBeamNLLimitForceType(pManager.Param(2))
             pManager.AddNumberParameter("Marginal force [kN]", "Marginal force [kN]", "Marginal force [kN]", GH_ParamAccess.item, 100)
 
 
@@ -46,15 +48,17 @@ Namespace Koala
         ''' <param name="DA">The DA object can be used to retrieve data from input parameters and 
         ''' to store data in output parameters.</param>
         Protected Overrides Sub SolveInstance(DA As IGH_DataAccess)
-            Dim i As Long
+            Dim i As Integer
             Dim Type As String = "Plastic yielding"
             Dim BeamList = New List(Of String)
             Dim MarginalForce As Double = 100
             Dim Direction As String = "Limit compression"
 
             If (Not DA.GetDataList(Of String)(0, BeamList)) Then Return
-            DA.GetData(Of String)(1, Direction)
-            DA.GetData(Of String)(2, Type)
+            DA.GetData(Of Integer)(1, i)
+            Direction = GetStringFromBeamNLLimnitForceDirection(i)
+            DA.GetData(Of Integer)(2, i)
+            Type = GetStringFromBeamNLLimitForceType(i)
             DA.GetData(Of Double)(3, MarginalForce)
 
             Dim SE_LimitForce(BeamList.Count, 4) As String

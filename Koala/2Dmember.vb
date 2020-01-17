@@ -34,6 +34,13 @@ Namespace Koala
             pManager.AddTextParameter("NodePrefix", "NodePrefix", "Node prefix", GH_ParamAccess.item, "N2D")
             pManager.AddNumberParameter("Tolerance", "Tolerance", "Tolerance for duplicity nodes", GH_ParamAccess.item, 0.001)
             pManager.AddBooleanParameter("RemDuplNodes", "RemDuplNodes", "Set True if you want to remove duplicate nodes", GH_ParamAccess.item, False)
+            pManager.AddIntegerParameter("MemberSystemPlane", "MemberSystemPlane", "System plane of the member:  Right click and select from options", GH_ParamAccess.item, 1)
+            AddOptionstoMenuMemberSystemPlane(pManager.Param(8))
+            pManager.AddNumberParameter("Eccentricity z", "Eccentricity z", "Eccentricity of the plane", GH_ParamAccess.item, 0.0)
+            pManager.AddIntegerParameter("FEM nonlinear model", "FEM nonlinear model", "Nonlinear model: Right click and select from options", GH_ParamAccess.item, 0)
+            AddOptionstoMenuFEMNLType2D(pManager.Param(10))
+            pManager.AddTextParameter("SurfaceNamePrefix", "SurfaceNamePrefix", "Surface name prefix", GH_ParamAccess.item, "S")
+            'pManager.AddTextParameter("Type", "Type", "Type of element: Plate, Wall, Shell", GH_ParamAccess.item, "Plate")
         End Sub
 
         ''' <summary>
@@ -59,6 +66,11 @@ Namespace Koala
             Dim NodePrefix As String = "NS"
             Dim Tolerance As Double = 0.001
             Dim RemDuplNodes As Boolean = False
+            Dim MemberPlane As String = "Centre"
+            Dim EccentricityZ As Double = 0.0
+            Dim FEMNLType As String = "none"
+            Dim SurfaceNamePrefix As String = "S"
+            Dim i As Integer = 0
 
             If (Not DA.GetDataList(Of Brep)(0, Surfaces)) Then Return
             If (Not DA.GetData(Of String)(1, Material)) Then Return
@@ -68,8 +80,15 @@ Namespace Koala
             If (Not DA.GetData(Of String)(5, NodePrefix)) Then Return
             If (Not DA.GetData(Of Double)(6, Tolerance)) Then Return
             If (Not DA.GetData(Of Boolean)(7, RemDuplNodes)) Then Return
+            If (Not DA.GetData(Of Integer)(8, i)) Then Return
+            MemberPlane = GetStringForMemberSystemLineOrPlane(i)
+            If (Not DA.GetData(Of Double)(9, EccentricityZ)) Then Return
+            If (Not DA.GetData(Of String)(10, FEMNLType)) Then Return
+            FEMNLType = GetStringForFEMNLType2D(i)
+            If (Not DA.GetData(Of String)(11, SurfaceNamePrefix)) Then Return
 
-            Dim i As Long, j As Long
+
+            Dim j As Long
 
             Dim edgecount As Long, iedge As Long
             Dim edgenodelist As String, nodesinedge As Long
@@ -78,7 +97,7 @@ Namespace Koala
 
             Dim SE_nodes(100000, 3) As String  'a node consists of: Name, X, Y, Z > make the array a dynamic list later
             Dim FlatNodeList As New List(Of String)()
-            Dim SE_surfaces(Surfaces.Count, 6) As String 'a surface consists of: Name, Type, Material, Thickness, Layer, BoundaryShape, InternalNodes
+            Dim SE_surfaces(Surfaces.Count, 9) As String 'a surface consists of: Name, Type, Material, Thickness, Layer, BoundaryShape, InternalNodes
             Dim FlatSurfaceList As New List(Of String)()
 
             Dim nodecount As Long, surfacecount As Long
@@ -102,7 +121,7 @@ Namespace Koala
             Dim EdgeType As String
             Dim BoundaryShape As String
 
-            Dim line As String, SurfaceName As String, NodeList As String
+            Dim line As String, SurfaceIndex As String, NodeList As String
 
             Dim stopWatch As New System.Diagnostics.Stopwatch()
             Dim time_elapsed As Double
@@ -147,9 +166,9 @@ Namespace Koala
                     'Continue For
                 End If
 
-                surfacecount = surfacecount + 1
+                surfacecount += 1
 
-                SE_surfaces(surfacecount - 1, 0) = "S" '& surfacecount
+                SE_surfaces(surfacecount - 1, 0) = SurfaceNamePrefix
                 SE_surfaces(surfacecount - 1, 1) = SurfType
                 SE_surfaces(surfacecount - 1, 2) = Material
                 SE_surfaces(surfacecount - 1, 3) = Thickness / 1000
@@ -239,17 +258,19 @@ Namespace Koala
 
                 SE_surfaces(surfacecount - 1, 5) = BoundaryShape
                 SE_surfaces(i, 6) = "" 'initialize list of internal nodes to empty string
-
+                SE_surfaces(i, 7) = MemberPlane
+                SE_surfaces(i, 8) = EccentricityZ
+                SE_surfaces(i, 9) = FEMNLType
             Next brep 'iterate to next surface
 
             'add internal nodes to the surfaces
             If InternalNodes IsNot Nothing And InternalNodes.Count <> 0 Then
                 For Each line In InternalNodes
-                    SurfaceName = Trim(line.Split("|")(0))
+                    SurfaceIndex = Trim(line.Split("|")(0))
                     NodeList = Trim(line.Split("|")(1))
 
                     For i = 0 To surfacecount - 1
-                        If SE_surfaces(i, 0) = SurfaceName Then
+                        If SurfaceIndex = i Then
                             SE_surfaces(i, 6) = NodeList
                             Exit For
                         End If
@@ -270,7 +291,7 @@ Namespace Koala
             FlatSurfaceList.Clear()
 
             For i = 0 To surfacecount - 1
-                For j = 0 To 6
+                For j = 0 To 9
                     FlatSurfaceList.Add(SE_surfaces(i, j))
                 Next j
             Next i
@@ -282,62 +303,6 @@ Namespace Koala
             'rhino.RhinoApp.WriteLine("Koala: Done in " + str(time_elapsed) + " ms.")
 
         End Sub
-
-        '<Custom additional code> 
-        Private Sub GetTypeAndNodes(ByRef edge As Rhino.Geometry.Curve, ByRef EdgeType As String, ByRef arrPoints As Rhino.Collections.Point3dList)
-
-            Dim arc As Rhino.Geometry.Arc
-            Dim nurbscurve As Rhino.Geometry.NurbsCurve
-
-            If edge.IsArc() Then
-                EdgeType = "Arc"
-                'convert to arc
-                edge.TryGetArc(arc)
-                arrPoints.Clear()
-                arrPoints.Add(arc.StartPoint)
-                arrPoints.Add(arc.MidPoint)
-                arrPoints.Add(arc.EndPoint)
-            ElseIf edge.IsLinear() Then
-                EdgeType = "Line"
-                arrPoints.Clear()
-                arrPoints.Add(edge.PointAtStart)
-                arrPoints.Add(edge.PointAtEnd)
-            Else
-                EdgeType = "Spline"
-                'convert to Nurbs curve to get the Edit points
-                nurbscurve = edge.ToNurbsCurve
-                arrPoints = nurbscurve.GrevillePoints
-            End If
-
-        End Sub
-
-        Function GetExistingNode(arrPoint As Rhino.Geometry.Point3d, nodes(,) As String, nnodes As Long, epsilon As Double)
-            Dim currentnode
-            'Start with node not found, loop through all the nodes until one is found within tolerance
-            'Not in use now, as it's quite slow compared to within SCIA Engineer
-            GetExistingNode = -1
-            currentnode = 1
-
-            If nnodes Mod 50 = 0 And nnodes > 100 Then
-                Rhino.RhinoApp.WriteLine("Koala: Searching node " & CStr(nnodes))
-                'rhino.Display.DrawEventArgs
-            End If
-
-            While GetExistingNode = -1 And currentnode <= nnodes
-                If Math.Abs(arrPoint.X - nodes(currentnode - 1, 1)) < epsilon Then
-                    If Math.Abs(arrPoint.Y - nodes(currentnode - 1, 2)) < epsilon Then
-                        If Math.Abs(arrPoint.Z - nodes(currentnode - 1, 3)) < epsilon Then
-                            GetExistingNode = currentnode
-                        End If
-                    End If
-                End If
-                currentnode += 1
-
-            End While
-
-        End Function
-
-
 
         ''' <summary>
         ''' Provides an Icon for every component that will be visible in the User Interface.

@@ -1,5 +1,5 @@
 ﻿Imports System.Collections.Generic
-
+Imports System.Windows.Forms
 Imports Grasshopper.Kernel
 Imports Rhino.Geometry
 
@@ -27,10 +27,10 @@ Namespace Koala
         Protected Overrides Sub RegisterInputParams(pManager As GH_Component.GH_InputParamManager)
             pManager.AddTextParameter("FileName", "FileName", "Name for the XML", GH_ParamAccess.item)
             pManager.AddTextParameter("ESAXMLPath", "ESAXMLPath", "Path to Esa_XML tool", GH_ParamAccess.item)
-            pManager.AddTextParameter("CalcType", "CalcType", "Type of calculation: LIN, NEL,STB", GH_ParamAccess.item, "LIN")
+            pManager.AddIntegerParameter("CalcType", "CalcType", "Type of calculation:  Right click and select from options", GH_ParamAccess.item, 0)
+            AddOptionsToMenuCalculationType(pManager.Param(2))
             pManager.AddTextParameter("TemplateName", "TemplateName", "Template file name", GH_ParamAccess.item)
             pManager.AddTextParameter("OutputFile", "OutputFile", "Output file for results", GH_ParamAccess.item)
-            pManager.AddBooleanParameter("AutoUpdate", "AutoUpdate", "Automatic update", GH_ParamAccess.item, False)
             pManager.AddBooleanParameter("RunESAXML", "RunESAXML", "Run calculation: True, False - no", GH_ParamAccess.item, False)
 
 
@@ -56,20 +56,20 @@ Namespace Koala
             Dim CalcType As String = "LIN"
             Dim TemplateName As String = ""
             Dim OutputFile As String = ""
-            Dim AutoUpdate As Boolean = False
+
             Dim RunESAXML As Boolean = False
 
 
-
+            Dim i As Integer
             If (Not DA.GetData(0, FileName)) Then Return
             If (Not DA.GetData(1, ESAXMLPath)) Then Return
-            If (Not DA.GetData(2, CalcType)) Then Return
+            If (Not DA.GetData(2, i)) Then Return
+            CalcType = GetStringForCalculationType(i)
             If (Not DA.GetData(3, TemplateName)) Then Return
             If (Not DA.GetData(4, OutputFile)) Then Return
-            If (Not DA.GetData(5, AutoUpdate)) Then Return
-            If (Not DA.GetData(6, RunESAXML)) Then Return
+            If (Not DA.GetData(5, RunESAXML)) Then Return
 
-            Dim stopWatch As New System.Diagnostics.Stopwatch()
+
             Dim time_elapsed As Double
 
             'only run through if button is pressed
@@ -79,105 +79,52 @@ Namespace Koala
                     Exit Sub
                 End If
             End If
+            Dim strOut As String = ""
 
+            strOut = RunCalculationWithEsaXML(FileName, ESAXMLPath, CalcType, TemplateName, OutputFile, time_elapsed)
 
-            'initialize stopwatch
-            stopWatch.Start()
-
-            Rhino.RhinoApp.WriteLine("")
-            Rhino.RhinoApp.WriteLine("===== KOALA SCIA Engineer plugin - running analysis =====")
-
-            'run ESA_XML
-            '---------------------------------------------------
-            Try
-                Dim myProcess As New System.Diagnostics.Process
-                Dim ESAXMLArgs As String
-                Dim strOut As String, strErr As String, intExit As Integer
-
-                myProcess.StartInfo.FileName = ESAXMLPath
-                ESAXMLArgs = CalcType & " " & TemplateName & " " & FileName & " -tTXT -o" & OutputFile
-                myProcess.StartInfo.Arguments = ESAXMLArgs
-                myProcess.StartInfo.UseShellExecute = False
-                'myProcess.StartInfo.RedirectStandardOutput = True
-                'myProcess.StartInfo.RedirectStandardError = True
-                'myProcess.StartInfo.CreateNoWindow = True
-
-                Rhino.RhinoApp.WriteLine("Starting SCIA Engineer...")
-                Rhino.RhinoApp.WriteLine("Arguments: " & ESAXMLArgs)
-                Rhino.RhinoApp.WriteLine("Please wait...")
-
-                myProcess.Start()
-                myProcess.WaitForExit()
-                intExit = myProcess.ExitCode
-                Rhino.RhinoApp.Write("SCIA Engineer finished with exit code: " & intExit)
-                'output anything that could come out of SCIA Engineer
-                'standard out
-                strOut = ""
-                Select Case intExit
-                    Case 0
-                        Rhino.RhinoApp.WriteLine(" - Succeeded")
-                        strOut = " - Succeeded"
-                    Case 1
-                        Rhino.RhinoApp.WriteLine(" - Unable To initialize MFC")
-                        strOut = " - Unable To initialize MFC"
-                    Case 2
-                        Rhino.RhinoApp.WriteLine(" - Missing arguments")
-                        strOut = " - Missing arguments"
-                    Case 3
-                        Rhino.RhinoApp.WriteLine(" - Invalid arguments")
-                        strOut = " - Invalid arguments"
-                    Case 4
-                        Rhino.RhinoApp.WriteLine(" - Unable To open ProjectFile")
-                        strOut = " - Unable To open ProjectFile"
-                    Case 5
-                        Rhino.RhinoApp.WriteLine(" - Calculation failed")
-                        strOut = " - Calculation failed"
-                    Case 6
-                        Rhino.RhinoApp.WriteLine(" - Unable To initialize application environment")
-                        strOut = " - Unable To initialize application environment"
-                    Case 7
-                        Rhino.RhinoApp.WriteLine(" - Error during update ProjectFile By XMLUpdateFile")
-                        strOut = " - Error during update ProjectFile By XMLUpdateFile"
-                    Case 8
-                        Rhino.RhinoApp.WriteLine(" - Error during create export outputs")
-                        strOut = " - Error during create export outputs"
-                    Case 9
-                        Rhino.RhinoApp.WriteLine(" - Error during create XML outputs")
-                        strOut = " - Error during create XML outputs"
-                    Case 99
-                        Rhino.RhinoApp.WriteLine(" - Error during update ProjectFile By XLSX Update")
-                        strOut = " - Error during update ProjectFile By XLSX Update"
-                    Case Else
-                        Rhino.RhinoApp.WriteLine(" - Unknown exit code")
-                        strOut = " - Unknown exit code"
-                End Select
-
-
-                'strOut = myProcess.StandardOutput.ReadToEnd
-                If strOut <> "" Then
-                    Rhino.RhinoApp.WriteLine("SCIA Engineer output message: " & strOut)
-                    DA.SetData(0, strOut)
-                End If
-                'standard error
-                strErr = ""
-                'strErr = myProcess.StandardOutput.ReadToEnd
-                If strErr <> "" Then Rhino.RhinoApp.WriteLine("SCIA Engineer error message: " & strErr)
-
-                ' DA.SetData(1, OutputFile)
-            Catch ex As Exception
-                Rhino.RhinoApp.WriteLine("Encountered error launching esa_xml.exe: " & ex.Message)
-
-            End Try
-
-
-            'stop stopwatch
-            stopWatch.Stop()
-            time_elapsed = stopWatch.ElapsedMilliseconds
-            Rhino.RhinoApp.WriteLine("Done in " + Str(time_elapsed) + " ms.")
-
+            DA.SetData(0, strOut)
         End Sub
 
-        '<Custom additional code> 
+
+
+        Private mAutoUpdate As Boolean = False
+        Public Property AutoUpdate() As Boolean
+            Get
+                Return mAutoUpdate
+            End Get
+            Set(ByVal value As Boolean)
+                mAutoUpdate = value
+                If (mAutoUpdate) Then
+                    Message = "AutoUpdateEnabled"
+                Else
+                    Message = "AutoUpdateDisabled"
+                End If
+            End Set
+        End Property
+        Public Overrides Function Write(ByVal writer As GH_IO.Serialization.GH_IWriter) As Boolean
+            'First add our own field.
+            writer.SetBoolean("AutoUpdate", AutoUpdate)
+            'Then call the base class implementation.
+            Return MyBase.Write(writer)
+        End Function
+        Public Overrides Function Read(ByVal reader As GH_IO.Serialization.GH_IReader) As Boolean
+            'First read our own field.
+            AutoUpdate = reader.GetBoolean("AutoUpdate")
+            'Then call the base class implementation.
+            Return MyBase.Read(reader)
+        End Function
+        Protected Overrides Sub AppendAdditionalComponentMenuItems(ByVal menu As System.Windows.Forms.ToolStripDropDown)
+            'Append the item to the menu, making sure it's always enabled and checked if Absolute is True.
+            Dim item As ToolStripMenuItem = Menu_AppendItem(menu, "AutoUpdate", AddressOf Menu_AutoUpdateClicked, True, AutoUpdate)
+            'Specifically assign a tooltip text to the menu item.
+            item.ToolTipText = "When checked, XML file is updated automatically."
+        End Sub
+        Private Sub Menu_AutoUpdateClicked(ByVal sender As Object, ByVal e As EventArgs)
+            RecordUndoEvent("AutoUpdate")
+            AutoUpdate = Not AutoUpdate
+            ExpireSolution(True)
+        End Sub
 
 
 

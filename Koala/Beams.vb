@@ -33,12 +33,15 @@ Namespace Koala
             pManager.AddTextParameter("NodePrefix", "NodePrefix", "Node prefix", GH_ParamAccess.item, "NB")
             pManager.AddNumberParameter("Tolerance", "Tolerance", "Tolerance for duplicity nodes", GH_ParamAccess.item, 0.001)
             pManager.AddBooleanParameter("RemDuplNodes", "RemDuplNodes", "Set True if you want to remove duplicate nodes", GH_ParamAccess.item, False)
-            pManager.AddTextParameter("StructuralType", "FEM StructuralType", "Type: general(0),beam,column,gable column,secondary column,rafter,purlin,roof bracing,wall bracing,girt,truss chord,truss diagonal,plate rib,beam slab", GH_ParamAccess.item, "general")
-            pManager.AddTextParameter("FEMtype", "FEM type", "Element type for FEM analysis:standard,axial force only", GH_ParamAccess.item, "standard")
-            pManager.AddTextParameter("MemberSystemLine", "MemberSystemLine", "Member system line at: Centre,Top,Bottom,Left,Top left,Bottom left,Right,Top right,Bottom right", GH_ParamAccess.item, "Centre")
+            pManager.AddIntegerParameter("StructuralType", "StructuralType", "Type:  Right click and select from options", GH_ParamAccess.item, 0)
+            AddOptionsToMenuBeamType(pManager.Param(7))
+            pManager.AddIntegerParameter("FEMtype", "FEM type", "Element type for FEM analysis: Right click and select from options", GH_ParamAccess.item, 0)
+            AddOptionsToMenuBeamFEMtype(pManager.Param(8))
+            pManager.AddIntegerParameter("MemberSystemLine", "MemberSystemLine", "Member system line at: Right click and select from options", GH_ParamAccess.item, 1)
+            AddOptionstoMenuMemberSystemLine(pManager.Param(9))
             pManager.AddNumberParameter("ey", "ey", "Eccentricity of load in y axis", GH_ParamAccess.item, 0)
             pManager.AddNumberParameter("ez", "ez", "Eccentricity of load in z axis", GH_ParamAccess.item, 0)
-
+            pManager.AddTextParameter("BeamNamePrefix", "BeamNamePrefix", "Beam name prefix", GH_ParamAccess.item, "B")
 
 
         End Sub
@@ -62,14 +65,13 @@ Namespace Koala
             Dim stopWatch As New System.Diagnostics.Stopwatch()
             Dim time_elapsed As Double
 
-            Dim i As Long, j As Long
+            Dim j As Long
             Dim ivector As Long
-
+            Dim i As Integer
             Dim currentnode As Long
 
             Dim Curves = New List(Of Curve)
-            Dim NodePrefix As String
-            NodePrefix = "N"
+            Dim NodePrefix As String = "N"
             Dim zvectors = New List(Of Vector3d)
             Dim layers = New List(Of String)
             Dim sections = New List(Of String)
@@ -80,6 +82,7 @@ Namespace Koala
             Dim MemberSystemLine As String = "Centre"
             Dim ey As Double = 0.0
             Dim ez As Double = 0.0
+            Dim BeamNamePrefix As String = "B"
 
 
 
@@ -91,11 +94,15 @@ Namespace Koala
             If (Not DA.GetData(Of String)(4, NodePrefix)) Then Return
             If (Not DA.GetData(Of Double)(5, tolerance)) Then Return
             If (Not DA.GetData(Of Boolean)(6, RemDuplNodes)) Then Return
-            DA.GetData(Of String)(7, StructuralType)
-            DA.GetData(Of String)(8, FEMtype)
-            DA.GetData(Of String)(9, MemberSystemLine)
+            DA.GetData(Of Integer)(7, i)
+            StructuralType = GetStringForBeamType(i)
+            DA.GetData(Of Integer)(8, i)
+            FEMtype = GetStringForBeamFEMtype(i)
+            DA.GetData(Of Integer)(9, i)
+            MemberSystemLine = GetStringForMemberSystemLineOrPlane(i)
             DA.GetData(Of Double)(10, ey)
             DA.GetData(Of Double)(11, ez)
+            DA.GetData(Of String)(12, BeamNamePrefix)
 
             Dim SE_nodes(100000, 3) As String 'a node consists of: Name, X, Y, Z > make the array a dynamic list later
             Dim FlatNodeList As New List(Of String)()
@@ -181,7 +188,7 @@ Namespace Koala
                     Continue For
                 End If
 
-                SE_beams(i, 0) = "B" '& i + 1
+                SE_beams(i, 0) = BeamNamePrefix
 
                 If i <= maxsection Then
                     SE_beams(i, 1) = Sections(i)
@@ -289,58 +296,8 @@ Namespace Koala
             time_elapsed = stopWatch.ElapsedMilliseconds
             'rhino.RhinoApp.WriteLine("KoalaBeams: Done in " + str(time_elapsed) + " ms.")
         End Sub
-        Function GetExistingNode(arrPoint As Rhino.Geometry.Point3d, nodes(,) As String, nnodes As Long, epsilon As Double)
-            Dim currentnode
-            'Start with node not found, loop through all the nodes until one is found within tolerance
-            'Not in use now, as it's quite slow compared to within SCIA Engineer
-            GetExistingNode = -1
-            currentnode = 1
 
-            If nnodes Mod 50 = 0 And nnodes > 100 Then
-                Rhino.RhinoApp.WriteLine("Searching node " & CStr(nnodes))
-                'rhino.Display.DrawEventArgs
-            End If
 
-            While GetExistingNode = -1 And currentnode <= nnodes
-                If Math.Abs(arrPoint.X - nodes(currentnode - 1, 1)) < epsilon Then
-                    If Math.Abs(arrPoint.Y - nodes(currentnode - 1, 2)) < epsilon Then
-                        If Math.Abs(arrPoint.Z - nodes(currentnode - 1, 3)) < epsilon Then
-                            GetExistingNode = currentnode
-                        End If
-                    End If
-                End If
-                currentnode = currentnode + 1
-
-            End While
-
-        End Function
-
-        Private Sub GetTypeAndNodes(ByRef line As Rhino.Geometry.Curve, ByRef LineType As String, ByRef arrPoints As Rhino.Collections.Point3dList)
-
-            Dim arc As Rhino.Geometry.Arc
-            Dim nurbscurve As Rhino.Geometry.NurbsCurve
-
-            If line.IsArc() Then
-                LineType = "Arc"
-                'convert to arc
-                line.TryGetArc(arc)
-                arrPoints.Clear()
-                arrPoints.Add(arc.StartPoint)
-                arrPoints.Add(arc.MidPoint)
-                arrPoints.Add(arc.EndPoint)
-            ElseIf line.IsLinear() Then
-                LineType = "Line"
-                arrPoints.Clear()
-                arrPoints.Add(line.PointAtStart)
-                arrPoints.Add(line.PointAtEnd)
-            Else
-                LineType = "Spline"
-                'convert to Nurbs curve to get the Edit points
-                nurbscurve = line.ToNurbsCurve
-                arrPoints = nurbscurve.GrevillePoints
-            End If
-
-        End Sub
 
         ''' <summary>
         ''' Provides an Icon for every component that will be visible in the User Interface.

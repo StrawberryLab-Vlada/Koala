@@ -27,8 +27,10 @@ Namespace Koala
         Protected Overrides Sub RegisterInputParams(pManager As GH_Component.GH_InputParamManager)
             pManager.AddTextParameter("LoadCase", "LoadCase", "Name of load case", GH_ParamAccess.item, "LC2")
             pManager.AddTextParameter("SurfList", "SurfList", "List of 2D member names where to apply load", GH_ParamAccess.list)
-            pManager.AddTextParameter("CoordSys", "CoordSys", "Coordinate system: GCS - Length,GCS - Projection, LCS", GH_ParamAccess.item, "GCS - Length")
-            pManager.AddTextParameter("Direction", "Direction", "Direction of load: X,Y,Z", GH_ParamAccess.item, "Z")
+            pManager.AddIntegerParameter("CoordSys", "CoordSys", "Coordinate system: GCS - Length,GCS - Projection, LCS", GH_ParamAccess.item, 0)
+            AddOptionsToMenuCoordSysLine(pManager.Param(2))
+            pManager.AddIntegerParameter("Direction", "Direction", "Direction of load: X,Y,Z", GH_ParamAccess.item, 2)
+            AddOptionsToMenuDirection(pManager.Param(3))
             pManager.AddNumberParameter("LoadValue", "LoadValue", "Value of Load in KN/m", GH_ParamAccess.item, -4)
         End Sub
 
@@ -50,11 +52,13 @@ Namespace Koala
             Dim CoordSys As String = "GCS - Length"
             Dim Direction As String = "Z"
             Dim LoadValue As Double = -1.0
-
+            Dim i As Integer
             If (Not DA.GetData(0, LoadCase)) Then Return
             If (Not DA.GetDataList(Of String)(1, SurfList)) Then Return
-            If (Not DA.GetData(2, CoordSys)) Then Return
-            If (Not DA.GetData(3, Direction)) Then Return
+            If (Not DA.GetData(2, i)) Then Return
+            CoordSys = GetStringFromCoordSysLine(i)
+            If (Not DA.GetData(3, i)) Then Return
+            Direction = GetStringFromDirection(i)
             If (Not DA.GetData(4, LoadValue)) Then Return
 
 
@@ -85,7 +89,7 @@ Namespace Koala
             'Flatten data for export as simple list
 
             FlatList.Clear()
-            Dim i As Long
+
             For i = 0 To itemcount - 1
                 FlatList.Add(SE_surfloads(i, 0))
                 FlatList.Add(SE_surfloads(i, 1))

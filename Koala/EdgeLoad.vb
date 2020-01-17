@@ -27,15 +27,20 @@ Namespace Koala
         Protected Overrides Sub RegisterInputParams(pManager As GH_Component.GH_InputParamManager)
             pManager.AddTextParameter("LoadCase", "LoadCase", "Name of load case", GH_ParamAccess.item, "LC2")
             pManager.AddTextParameter("2DMemberEdgeList", "2DMemberEdgeList", "List of 2DMembers and their edges names where to apply load:S1;1", GH_ParamAccess.list)
-            pManager.AddTextParameter("CoordSys", "CoordSys", "Coordinate system: GCS - Length,GCS - Projection, LCS", GH_ParamAccess.item, "GCS - Length")
-            pManager.AddTextParameter("Direction", "Direction", "Direction of load: X,Y,Z", GH_ParamAccess.item, "Z")
-            pManager.AddTextParameter("Distribution", "Distribution", "Distribution of the load: Uniform | Trapez", GH_ParamAccess.item, "Uniform")
+            pManager.AddIntegerParameter("CoordSys", "CoordSys", "Coordinate system: GCS - Length,GCS - Projection, LCS", GH_ParamAccess.item, 0)
+            AddOptionsToMenuCoordSysLine(pManager.Param(2))
+            pManager.AddIntegerParameter("Direction", "Direction", "Direction of load: X,Y,Z", GH_ParamAccess.item, 2)
+            AddOptionsToMenuDirection(pManager.Param(3))
+            pManager.AddIntegerParameter("Distribution", "Distribution", "Distribution of the load: Uniform | Trapez", GH_ParamAccess.item, 0)
+            AddOptionsToMenuDistributionOfLoad(pManager.Param(4))
             pManager.AddNumberParameter("LoadValue1", "LoadValue1", "Value of Load in KN/m", GH_ParamAccess.item, -1)
             pManager.AddNumberParameter("LoadValue2", "LoadValue2", "Value of Load in KN/m", GH_ParamAccess.item, -1)
-            pManager.AddTextParameter("CoordDefinition", "CoordDefinition", "CoordDefinition - Rela | Abso", GH_ParamAccess.item, "Rela")
+            pManager.AddIntegerParameter("CoordDefinition", "CoordDefinition", "CoordDefinition - Rela | Abso", GH_ParamAccess.item, 0)
+            AddOptionsToMenuCoordDefinition(pManager.Param(7))
             pManager.AddNumberParameter("Position1", "Position1", "Start position of line load on beam", GH_ParamAccess.item, 0)
             pManager.AddNumberParameter("Position2", "Position2", "End position of loado n beam", GH_ParamAccess.item, 1)
-            pManager.AddTextParameter("Origin", "Origin", "Origin of load: From start| From end", GH_ParamAccess.item, "From start")
+            pManager.AddIntegerParameter("Origin", "Origin", "Origin of load: From start| From end", GH_ParamAccess.item, 0)
+            AddOptionsToMenuOrigin(pManager.Param(10))
             pManager.AddNumberParameter("ey", "ey", "Eccentricity of load in y axis", GH_ParamAccess.item, 0)
             pManager.AddNumberParameter("ez", "ez", "Eccentricity of load in z axis", GH_ParamAccess.item, 0)
         End Sub
@@ -67,13 +72,16 @@ Namespace Koala
             Dim Origin As String = "From start"
             Dim ey As Double = 0.0
             Dim ez As Double = 0.0
-
+            Dim i As Integer
 
             If (Not DA.GetData(0, LoadCase)) Then Return
             If (Not DA.GetDataList(Of String)(1, SurfEdgeList)) Then Return
-            If (Not DA.GetData(2, CoordSys)) Then Return
-            If (Not DA.GetData(3, Direction)) Then Return
-            If (Not DA.GetData(4, Distribution)) Then Return
+            If (Not DA.GetData(2, i)) Then Return
+            CoordSys = GetStringFromCoordSysLine(i)
+            If (Not DA.GetData(3, i)) Then Return
+            Direction = GetStringFromDirection(i)
+            If (Not DA.GetData(4, i)) Then Return
+            Distribution = GetStringFromDistributionOfLoad(i)
             If (Not DA.GetData(5, LoadValue1)) Then Return
             Select Case Distribution
                 Case "Uniform"
@@ -83,14 +91,15 @@ Namespace Koala
                 Case Else
                     LoadValue2 = LoadValue1
             End Select
-            DA.GetData(7, CoordDefinition)
+            DA.GetData(7, i)
+            CoordDefinition = GetStringFromCoordDefinition(i)
             DA.GetData(8, Position1)
             DA.GetData(9, Position2)
-            DA.GetData(10, Origin)
+            DA.GetData(10, i)
+            Origin = GetStringFromOrigin(i)
             DA.GetData(11, ey)
             DA.GetData(12, ez)
 
-            Dim i As Long
 
 
             Dim SE_loads(SurfEdgeList.Count, 14)

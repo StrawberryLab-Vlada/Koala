@@ -108,7 +108,6 @@
     <Compile Include="CreateXML.vb" />
     <Compile Include="Cross-Sections.vb" />
     <Compile Include="CrossLink.vb" />
-    <Compile Include="CustomComponent.vb" />
     <Compile Include="EdgeLoad.vb" />
     <Compile Include="EdgeSupport.vb" />
     <Compile Include="FreeSurfaceLoad.Designer.vb">
@@ -146,6 +145,7 @@
     <Compile Include="PointLoadOnBeam.vb" />
     <Compile Include="PointLoadOnStructNode.vb" />
     <Compile Include="PressTensionOnlyBeamNl.vb" />
+    <Compile Include="ProjectInfo.vb" />
     <Compile Include="StabilityCombination.vb" />
     <Compile Include="SurfaceLoad.vb" />
   </ItemGroup>
@@ -197,6 +197,7 @@
     <None Include="Resources\NonLinearCombination.bmp" />
     <None Include="Resources\StabilityCombination.bmp" />
     <None Include="Resources\PressOnly.bmp" />
+    <None Include="Resources\ProjectInfo.bmp" />
     <Content Include="Resources\SurfaceLoad.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
