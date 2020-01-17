@@ -3800,13 +3800,13 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
 
         Rhino.RhinoApp.WriteLine("")
         Rhino.RhinoApp.WriteLine("===== KOALA SCIA Engineer plugin - running analysis =====")
-
+        Dim strOut As String
         'run ESA_XML
         '---------------------------------------------------
         Try
             Dim myProcess As New System.Diagnostics.Process
             Dim ESAXMLArgs As String
-            Dim strOut As String, strErr As String, intExit As Integer
+            Dim strErr As String, intExit As Integer
 
             myProcess.StartInfo.FileName = ESAXMLPath
             ESAXMLArgs = CalcType & " " & TemplateName & " " & FileName & " -tTXT -o" & OutputFile
@@ -3830,40 +3830,40 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             Select Case intExit
                 Case 0
                     Rhino.RhinoApp.WriteLine(" - Succeeded")
-                    strOut = " - Succeeded"
+                    strOut = " Calculation Succeeded"
                 Case 1
                     Rhino.RhinoApp.WriteLine(" - Unable To initialize MFC")
-                    strOut = " - Unable To initialize MFC"
+                    strOut = "Unable To initialize MFC"
                 Case 2
                     Rhino.RhinoApp.WriteLine(" - Missing arguments")
-                    strOut = " - Missing arguments"
+                    strOut = "Missing arguments in commandline"
                 Case 3
                     Rhino.RhinoApp.WriteLine(" - Invalid arguments")
-                    strOut = " - Invalid arguments"
+                    strOut = "Invalid arguments in command line"
                 Case 4
                     Rhino.RhinoApp.WriteLine(" - Unable To open ProjectFile")
-                    strOut = " - Unable To open ProjectFile"
+                    strOut = "Unable To open ProjectFile"
                 Case 5
                     Rhino.RhinoApp.WriteLine(" - Calculation failed")
-                    strOut = " - Calculation failed"
+                    strOut = "Calculation failed"
                 Case 6
                     Rhino.RhinoApp.WriteLine(" - Unable To initialize application environment")
-                    strOut = " - Unable To initialize application environment"
+                    strOut = "Unable To initialize application environment"
                 Case 7
                     Rhino.RhinoApp.WriteLine(" - Error during update ProjectFile By XMLUpdateFile")
-                    strOut = " - Error during update ProjectFile By XMLUpdateFile"
+                    strOut = "Error during update ProjectFile By XMLUpdateFile"
                 Case 8
                     Rhino.RhinoApp.WriteLine(" - Error during create export outputs")
-                    strOut = " - Error during create export outputs"
+                    strOut = "Error during create export outputs"
                 Case 9
                     Rhino.RhinoApp.WriteLine(" - Error during create XML outputs")
-                    strOut = " - Error during create XML outputs"
+                    strOut = "Error during create XML outputs"
                 Case 99
                     Rhino.RhinoApp.WriteLine(" - Error during update ProjectFile By XLSX Update")
-                    strOut = " - Error during update ProjectFile By XLSX Update"
+                    strOut = "Error during update ProjectFile By XLSX Update"
                 Case Else
                     Rhino.RhinoApp.WriteLine(" - Unknown exit code")
-                    strOut = " - Unknown exit code"
+                    strOut = "Unknown exit code"
             End Select
 
 
@@ -3889,7 +3889,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
         stopWatch.Stop()
         time_elapsed = stopWatch.ElapsedMilliseconds
         Rhino.RhinoApp.WriteLine("Done in " + Str(time_elapsed) + " ms.")
-        Return time_elapsed
+        Return strOut
     End Function
 
 End Module
