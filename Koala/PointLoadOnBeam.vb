@@ -31,7 +31,7 @@ Namespace Koala
             AddOptionsToMenuCoordSysPoint(pManager.Param(2))
             pManager.AddIntegerParameter("Direction", "Direction", "Direction of load: X,Y,Z", GH_ParamAccess.item, 2)
             AddOptionsToMenuDirection(pManager.Param(3))
-            pManager.AddIntegerParameter("LoadValue", "LoadValue", "Value of Load in KN", GH_ParamAccess.item, -1)
+            pManager.AddNumberParameter("LoadValue", "LoadValue", "Value of Load in KN", GH_ParamAccess.item, -1)
             pManager.AddIntegerParameter("CoordDefinition", "CoordDefinition", "CoordDefinition - Rela | Abso", GH_ParamAccess.item, 0)
             AddOptionsToMenuCoordDefinition(pManager.Param(5))
             pManager.AddNumberParameter("Position", "Position", "Position of load on beam", GH_ParamAccess.item, 0.5)
