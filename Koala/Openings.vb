@@ -27,8 +27,8 @@ Namespace Koala
         Protected Overrides Sub RegisterInputParams(pManager As GH_Component.GH_InputParamManager)
             pManager.AddCurveParameter("ClosedCurves", "ClosedCurves", "List of curves defining opening", GH_ParamAccess.list)
             pManager.AddTextParameter("Surface", "Surface", "Name of surface where is opening", GH_ParamAccess.item)
-            pManager.AddTextParameter("NodePrefix", "NodePrefix", "Prefix of nodes defining opening", GH_ParamAccess.item)
-            pManager.AddNumberParameter("Tolerance", "Tolerance", "tolerance for geometry check", GH_ParamAccess.item)
+            pManager.AddTextParameter("NodePrefix", "NodePrefix", "Prefix of nodes defining opening", GH_ParamAccess.item, "NO")
+            pManager.AddNumberParameter("Tolerance", "Tolerance", "tolerance for geometry check", GH_ParamAccess.item, 0.001)
         End Sub
 
         ''' <summary>

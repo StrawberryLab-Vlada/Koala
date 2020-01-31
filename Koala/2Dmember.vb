@@ -83,7 +83,7 @@ Namespace Koala
             If (Not DA.GetData(Of Integer)(8, i)) Then Return
             MemberPlane = GetStringForMemberSystemLineOrPlane(i)
             If (Not DA.GetData(Of Double)(9, EccentricityZ)) Then Return
-            If (Not DA.GetData(Of String)(10, FEMNLType)) Then Return
+            If (Not DA.GetData(Of Integer)(10, i)) Then Return
             FEMNLType = GetStringForFEMNLType2D(i)
             If (Not DA.GetData(Of String)(11, SurfaceNamePrefix)) Then Return
 
