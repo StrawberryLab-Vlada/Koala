@@ -44,6 +44,7 @@ Namespace Koala
             pManager.AddNumberParameter("StiffnessRx", "StiffnessTx", "Stiffness for Tx", GH_ParamAccess.item, 0.0)
             pManager.AddNumberParameter("StiffnessTy", "StiffnessTy", "Stiffness for Ty", GH_ParamAccess.item, 0.0)
             pManager.AddNumberParameter("StiffnessTz", "StiffnessTz", "Stiffness for Tz", GH_ParamAccess.item, 0.0)
+            pManager.AddTextParameter("Angle", "Angle", "Angle [deg]:Rx20,Ry0,Rz20", GH_ParamAccess.item, "Rx0,Ry0,Rz0")
         End Sub
 
         ''' <summary>
@@ -73,6 +74,7 @@ Namespace Koala
             Dim TxStiffness As Double
             Dim TyStiffness As Double
             Dim TzStiffness As Double
+            Dim Angle As String = ""
 
             If (Not DA.GetDataList(Of String)(0, NodeSupports)) Then Return
             DA.GetData(Of Integer)(1, Tx)
@@ -87,7 +89,7 @@ Namespace Koala
             DA.GetData(Of Double)(10, RxStiffness)
             DA.GetData(Of Double)(11, RyStiffness)
             DA.GetData(Of Double)(12, RzStiffness)
-
+            DA.GetData(Of String)(13, Angle)
 
             Dim FlatList As New List(Of System.Object)()
             For Each item In NodeSupports
@@ -104,6 +106,7 @@ Namespace Koala
                 FlatList.Add(TxStiffness)
                 FlatList.Add(TyStiffness)
                 FlatList.Add(TzStiffness)
+                FlatList.Add(Angle)
             Next
             DA.SetDataList(0, FlatList)
         End Sub

@@ -40,6 +40,9 @@ Namespace Koala
             pManager.AddIntegerParameter("FEM nonlinear model", "FEM nonlinear model", "Nonlinear model: Right click and select from options", GH_ParamAccess.item, 0)
             AddOptionstoMenuFEMNLType2D(pManager.Param(10))
             pManager.AddTextParameter("SurfaceNamePrefix", "SurfaceNamePrefix", "Surface name prefix", GH_ParamAccess.item, "S")
+            pManager.AddIntegerParameter("SwapOrientation", "SwapOrientation", "Swap orientation of surface", GH_ParamAccess.item, 0)
+            AddOptionstoMenuSwapOrientation(pManager.Param(12))
+            pManager.AddNumberParameter("LCSangle", "LCSangle", "LCS angle[deg]", GH_ParamAccess.item, 0)
             'pManager.AddTextParameter("Type", "Type", "Type of element: Plate, Wall, Shell", GH_ParamAccess.item, "Plate")
         End Sub
 
@@ -71,6 +74,8 @@ Namespace Koala
             Dim FEMNLType As String = "none"
             Dim SurfaceNamePrefix As String = "S"
             Dim i As Integer = 0
+            Dim SwapOrientation As Integer = 0
+            Dim AngleLCS As Double = 0.0
 
             If (Not DA.GetDataList(Of Brep)(0, Surfaces)) Then Return
             If (Not DA.GetData(Of String)(1, Material)) Then Return
@@ -86,10 +91,12 @@ Namespace Koala
             If (Not DA.GetData(Of Integer)(10, i)) Then Return
             FEMNLType = GetStringForFEMNLType2D(i)
             If (Not DA.GetData(Of String)(11, SurfaceNamePrefix)) Then Return
-
-
+            If (Not DA.GetData(Of Integer)(12, SwapOrientation)) Then Return
+            ' SwapOrientation = GetStringFromSwapOrientation(i)
+            If (Not DA.GetData(Of Double)(13, AngleLCS)) Then Return
             Dim j As Long
 
+            AngleLCS = (AngleLCS * Math.PI) / 180
             Dim edgecount As Long, iedge As Long
             Dim edgenodelist As String, nodesinedge As Long
 
@@ -97,7 +104,7 @@ Namespace Koala
 
             Dim SE_nodes(100000, 3) As String  'a node consists of: Name, X, Y, Z > make the array a dynamic list later
             Dim FlatNodeList As New List(Of String)()
-            Dim SE_surfaces(Surfaces.Count, 9) As String 'a surface consists of: Name, Type, Material, Thickness, Layer, BoundaryShape, InternalNodes
+            Dim SE_surfaces(Surfaces.Count, 11) As String 'a surface consists of: Name, Type, Material, Thickness, Layer, BoundaryShape, InternalNodes
             Dim FlatSurfaceList As New List(Of String)()
 
             Dim nodecount As Long, surfacecount As Long
@@ -261,6 +268,8 @@ Namespace Koala
                 SE_surfaces(i, 7) = MemberPlane
                 SE_surfaces(i, 8) = EccentricityZ
                 SE_surfaces(i, 9) = FEMNLType
+                SE_surfaces(i, 10) = SwapOrientation
+                SE_surfaces(i, 11) = AngleLCS
             Next brep 'iterate to next surface
 
             'add internal nodes to the surfaces
@@ -291,7 +300,7 @@ Namespace Koala
             FlatSurfaceList.Clear()
 
             For i = 0 To surfacecount - 1
-                For j = 0 To 9
+                For j = 0 To 11
                     FlatSurfaceList.Add(SE_surfaces(i, j))
                 Next j
             Next i

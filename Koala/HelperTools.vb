@@ -575,6 +575,22 @@ Module HelperTools
         End Select
     End Function
 
+    Public Sub AddOptionstoMenuSwapOrientation(menuItem As Param_Integer)
+        menuItem.AddNamedValue("No", 0)
+        menuItem.AddNamedValue("Yes", 1)
+    End Sub
+
+    Public Function GetStringFromSwapOrientation(item As Integer) As String
+        Select Case item
+            Case 0
+                Return "No"
+            Case 1
+                Return "Yes"
+            Case Else
+                Return "No"
+        End Select
+    End Function
+
     Public Function GetExistingNode(arrPoint As Rhino.Geometry.Point3d, nodes(,) As String, nnodes As Long, epsilon As Double)
         Dim currentnode
         'Start with node not found, loop through all the nodes until one is found within tolerance
@@ -707,10 +723,10 @@ Module HelperTools
         'If LCSType = 0 > Standard definition of LCS with an angle > LCSParam1 is the angle in radian
         'If LCSType = 2 > Definition of LCS through a vector for local Z > LCSParam1/2/3 are the X, Y, Z components of the vector
 
-        Dim SE_surfaces(100000, 9) As String 'a surface consists of: Name, Type, Material, Thickness, Layer, BoundaryShape, InternalNodes
+        Dim SE_surfaces(100000, 12) As String 'a surface consists of: Name, Type, Material, Thickness, Layer, BoundaryShape, InternalNodes
         Dim SE_openings(100000, 2) As String 'a surface consists of: Name, Reference surface, BoundaryShape
 
-        Dim SE_nodesupports(100000, 12) As String 'a nodal support consists of: Node name, X, Y, Z, RX, RY, RZ - 0 is free, 1 is blocked DOF
+        Dim SE_nodesupports(100000, 13) As String 'a nodal support consists of: Node name, X, Y, Z, RX, RY, RZ - 0 is free, 1 is blocked DOF
         Dim SE_edgesupports(100000, 15) As String 'an edge support consists of: Reference name, reference type, edge number, X, Y, Z, RX, RY, RZ - 0 is free, 1 is blocked DOF
         Dim SE_lcases(100000, 2) As String 'a load case consists of: Load case name, type (SW, Permanent, Variable), load group
         Dim SE_lgroups(100000, 2) As String 'a load group consists of: Load group name, type (Permanent, Variable), relation (Standard, Exclusive, Together)
@@ -831,11 +847,11 @@ Module HelperTools
         End If
 
         If (in_surfaces IsNot Nothing) Then
-            surfacecount = in_surfaces.Count / 10
+            surfacecount = in_surfaces.Count / 12
             Rhino.RhinoApp.WriteLine("Number of surfaces: " & surfacecount)
             For i = 0 To surfacecount - 1
-                For j = 0 To 9
-                    SE_surfaces(i, j) = in_surfaces(j + i * 9)
+                For j = 0 To 11
+                    SE_surfaces(i, j) = in_surfaces(j + i * 12)
                 Next j
             Next i
         End If
@@ -851,11 +867,11 @@ Module HelperTools
         End If
 
         If (in_nodesupports IsNot Nothing) Then
-            nodesupportcount = in_nodesupports.Count / 13
+            nodesupportcount = in_nodesupports.Count / 14
             Rhino.RhinoApp.WriteLine("Number of node supports: " & nodesupportcount)
             For i = 0 To nodesupportcount - 1
-                For j = 0 To 12
-                    SE_nodesupports(i, j) = in_nodesupports(j + i * 13)
+                For j = 0 To 13
+                    SE_nodesupports(i, j) = in_nodesupports(j + i * 14)
                 Next j
             Next i
         End If
@@ -1416,6 +1432,8 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             oSB.AppendLine(ConCat_ht("7", "Eccentricity z"))
             oSB.AppendLine(ConCat_ht("8", "Table of geometry"))
             oSB.AppendLine(ConCat_ht("9", "Internal nodes"))
+            oSB.AppendLine(ConCat_ht("10", "Swap orientation"))
+            oSB.AppendLine(ConCat_ht("11", "LCS angle"))
 
 
             oSB.AppendLine("</h>")
@@ -1491,6 +1509,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             oSB.AppendLine(ConCat_hh("11", "Stiffness Rx"))
             oSB.AppendLine(ConCat_hh("12", "Stiffness Ry"))
             oSB.AppendLine(ConCat_hh("13", "Stiffness Rz"))
+            oSB.AppendLine(ConCat_hh("14", "Angle [deg]"))
             oSB.AppendLine("</h>")
 
             For i = 0 To nodesupportnr - 1
@@ -2418,6 +2437,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
 
         Next
 
+
         osb.AppendLine(ConCat_closetable("8"))
 
         'loop through all nodes
@@ -2445,6 +2465,8 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             osb.AppendLine(ConCat_closetable("9"))
         End If
 
+        osb.AppendLine(ConCat_pv("10", surfaces(isurface, 10)))
+        osb.AppendLine(ConCat_pv("11", surfaces(isurface, 11)))
 
 
 
@@ -2933,6 +2955,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
         oSB.AppendLine(ConCat_pv("11", supports(isupport, 10)))
         oSB.AppendLine(ConCat_pv("12", supports(isupport, 11)))
         oSB.AppendLine(ConCat_pv("13", supports(isupport, 12)))
+        oSB.AppendLine(ConCat_pv("14", supports(isupport, 13)))
 
         oSB.AppendLine("</obj>")
 
