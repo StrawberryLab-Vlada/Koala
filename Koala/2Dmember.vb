@@ -264,12 +264,12 @@ Namespace Koala
                 Next edge 'iterate to next edge
 
                 SE_surfaces(surfacecount - 1, 5) = BoundaryShape
-                SE_surfaces(i, 6) = "" 'initialize list of internal nodes to empty string
-                SE_surfaces(i, 7) = MemberPlane
-                SE_surfaces(i, 8) = EccentricityZ
-                SE_surfaces(i, 9) = FEMNLType
-                SE_surfaces(i, 10) = SwapOrientation
-                SE_surfaces(i, 11) = AngleLCS
+                SE_surfaces(surfacecount - 1, 6) = "" 'initialize list of internal nodes to empty string
+                SE_surfaces(surfacecount - 1, 7) = MemberPlane
+                SE_surfaces(surfacecount - 1, 8) = EccentricityZ
+                SE_surfaces(surfacecount - 1, 9) = FEMNLType
+                SE_surfaces(surfacecount - 1, 10) = SwapOrientation
+                SE_surfaces(surfacecount - 1, 11) = AngleLCS
             Next brep 'iterate to next surface
 
             'add internal nodes to the surfaces
