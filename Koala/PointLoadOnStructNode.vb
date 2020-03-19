@@ -26,7 +26,7 @@ Namespace Koala
         ''' </summary>
         Protected Overrides Sub RegisterInputParams(pManager As GH_Component.GH_InputParamManager)
             pManager.AddTextParameter("LoadCase", "LoadCase", "Name of load case", GH_ParamAccess.item, "LC2")
-            pManager.AddTextParameter("NodeList", "NodeList", "List of beam names where to apply load", GH_ParamAccess.list)
+            pManager.AddTextParameter("NodeList", "NodeList", "List of Node names where to apply load", GH_ParamAccess.list)
             pManager.AddIntegerParameter("CoordSys", "CoordSys", "Coordinate system: GCS or LCS", GH_ParamAccess.item, 0)
             AddOptionsToMenuCoordSysPoint(pManager.Param(2))
             pManager.AddIntegerParameter("Direction", "Direction", "Direction of load: X,Y,Z", GH_ParamAccess.item, 2)
