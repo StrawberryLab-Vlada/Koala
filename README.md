@@ -1,3 +1,5 @@
+[![Build Status](https://jarabroz.visualstudio.com/Koala/_apis/build/status/jarabroz.Koala?branchName=master)](https://jarabroz.visualstudio.com/Koala/_build/latest?definitionId=1&branchName=master)
+
 # Initial page
 
 ## Getting Super Powers
