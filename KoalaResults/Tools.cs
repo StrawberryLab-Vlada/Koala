@@ -101,21 +101,5 @@ namespace GeneralTools
             string[] cells = SingleCell.Split(' ');
             return cells[0];
         }
-
-        public void LaunchSEn(string SEn, string Temp, string Project)
-        {
-            /*string SCIA_path = "c:\\Program Files (x86)\\SCIA\\Engineer19.0\\";
-            string Temp_path = "c:\\Users\\vpribramsky\\ESA19.0\\Temp\\";
-            string Model_path = "g:\\API.esa";*/
-
-            string MyAppPath = AppDomain.CurrentDomain.BaseDirectory;   //= System.IO.Path.GetDirectoryName(Assembly.GetEntryAssembly().Location);
-            SCIA.OpenAPI.Environment env = new SCIA.OpenAPI.Environment(SEn, Temp, "1.0.0.0");
-
-            env.RunSCIAEngineer(SCIA.OpenAPI.Environment.GuiMode.ShowWindowShowNormal); //eEPShowWindowHide
-            Console.WriteLine($"SEn opened");
-
-            SCIA.OpenAPI.EsaProject proj = env.OpenProject(Project);
-            Console.WriteLine($"Proj opened");
-        }
     }
 }

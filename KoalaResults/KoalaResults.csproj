@@ -70,10 +70,6 @@
     <Reference Include="RhinoCommon, Version=6.23.20055.13110, Culture=neutral, PublicKeyToken=552281e97c755530, processorArchitecture=MSIL">
       <HintPath>..\packages\RhinoCommon.6.23.20055.13111\lib\net45\RhinoCommon.dll</HintPath>
     </Reference>
-    <Reference Include="SCIA.OpenAPI">
-      <HintPath>..\..\..\..\..\..\Program Files\SCIA\Engineer19.1\SCIA.OpenAPI.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
