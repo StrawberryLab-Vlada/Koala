@@ -1121,7 +1121,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
 
         oSB.Appendline("<?xml version=""1.0"" encoding=""UTF-8"" standalone=""yes""?>")
         oSB.AppendLine("<project xmlns=""http://www.scia.cz"">")
-        oSB.AppendLine("<def uri=" & fileNameXMLdef & """/>")
+        oSB.AppendLine("<def uri=""" & fileNameXMLdef & """/>")
 
         If structtype <> "" Or materials.count <> 0 Then
             'output project information -----------------------------------------------------
