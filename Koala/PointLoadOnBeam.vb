@@ -63,7 +63,7 @@ Namespace Koala
             Dim CoordDefinition As String = "Rela"
             Dim Position As Double = 0.5
             Dim Origin As String = "From start"
-            Dim Repeat As Long = 1
+            Dim Repeat As Integer = 1
             Dim ey As Double = 0.0
             Dim ez As Double = 0.0
             Dim i As Integer
@@ -80,7 +80,7 @@ Namespace Koala
             DA.GetData(Of Double)(6, Position)
             DA.GetData(Of Integer)(7, i)
             Origin = GetStringFromOrigin(i)
-            DA.GetData(Of Long)(8, Repeat)
+            DA.GetData(Of Integer)(8, Repeat)
             DA.GetData(Of Double)(9, ey)
             DA.GetData(Of Double)(10, ez)
 

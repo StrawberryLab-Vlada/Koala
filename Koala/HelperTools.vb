@@ -1,4 +1,5 @@
-﻿Imports Grasshopper.Kernel.Parameters
+﻿Imports System.IO
+Imports Grasshopper.Kernel.Parameters
 
 Module HelperTools
 
@@ -105,7 +106,7 @@ Module HelperTools
 
     Public Sub AddOptionstoMenuMemberSystemPlane(menuItem As Param_Integer)
         menuItem.AddNamedValue("Centre", 1)
-        menuItem.AddNamedValue("Top",2)
+        menuItem.AddNamedValue("Top", 2)
         menuItem.AddNamedValue("Bottom", 4)
     End Sub
 
@@ -207,14 +208,14 @@ Module HelperTools
 
     Public Sub AddOptionsToMenuBeamType(menuItem As Param_Integer)
         menuItem.AddNamedValue("general", 0)
-        menuItem.AddNamedValue("beam",1)
+        menuItem.AddNamedValue("beam", 1)
         menuItem.AddNamedValue("column", 2)
         menuItem.AddNamedValue("gable column", 3)
-        menuItem.AddNamedValue("secondary column",4)
+        menuItem.AddNamedValue("secondary column", 4)
         menuItem.AddNamedValue("rafter", 5)
-        menuItem.AddNamedValue("purlin",6)
+        menuItem.AddNamedValue("purlin", 6)
         menuItem.AddNamedValue("roof bracing", 7)
-        menuItem.AddNamedValue("wall bracing",8)
+        menuItem.AddNamedValue("wall bracing", 8)
         menuItem.AddNamedValue("girt", 9)
         menuItem.AddNamedValue("truss chord", 10)
         menuItem.AddNamedValue("truss diagonal", 11)
@@ -1070,13 +1071,16 @@ Module HelperTools
         '---------------------------------------------------
         Rhino.RhinoApp.Write("Creating the XML file string in memory...")
 
+        Dim fileNameXMLdef As String
+        fileNameXMLdef = Path.GetFileName(FileName) + ".def"
+
         Call WriteXMLFile(oSB, Scale, StructureType, Materials, SE_sections, sectioncount, SE_nodes, nodecount, SE_beams, beamcount, SE_surfaces, surfacecount,
 SE_openings, openingcount, SE_nodesupports, nodesupportcount, SE_edgesupports, edgesupportcount,
 SE_lcases, lcasecount, SE_lgroups, lgroupcount, SE_lloads, lloadcount, SE_sloads, sloadcount,
 SE_fploads, fploadcount, SE_flloads, flloadcount, SE_fsloads, fsloadcount,
 SE_hinges, hingecount,
 SE_meshsize, SE_eLoads, eloadscount, SE_pointLoadPoint, pointLoadpointCount, SE_pointLoadBeam, pointLoadbeamCount,
-SE_lincombinations, lincominationcount, SE_nonlincombinations, nonlincominationcount, SE_stabcombinations, stabcombicount, SE_Crosslinks, crosslinkscount, SE_gapselem, gapsnr, SE_presstensionelems, ptelemnsnr, SE_limforceelem, lfelemnsnr, projectInfo)
+SE_lincombinations, lincominationcount, SE_nonlincombinations, nonlincominationcount, SE_stabcombinations, stabcombicount, SE_Crosslinks, crosslinkscount, SE_gapselem, gapsnr, SE_presstensionelems, ptelemnsnr, SE_limforceelem, lfelemnsnr, projectInfo, fileNameXMLdef)
 
         Rhino.RhinoApp.Write(" Done." & Convert.ToChar(13))
 
@@ -1084,6 +1088,13 @@ SE_lincombinations, lincominationcount, SE_nonlincombinations, nonlincominationc
 
         objstream = oSB.ToString()
         System.IO.File.WriteAllText(FileName, objstream)
+
+
+        Dim XmlDefOutputPath As String
+        XmlDefOutputPath = FileName + ".def"
+        Dim xmlDef As String
+        xmlDef = My.Resources.koala_xml
+        System.IO.File.WriteAllText(XmlDefOutputPath, xmlDef)
 
         Rhino.RhinoApp.Write(" Done." & Convert.ToChar(13))
 
@@ -1101,7 +1112,7 @@ fploads(,), fploadnr, flloads(,), flloadnr, fsloads(,), fsloadnr,
 hinges(,), hingenr,
 meshsize, eloads(,), eloadsnr, pointLoadPoint(,), pointLoadpointCount, pointLoadBeam(,),
 pointLoadbeamCount, lincombinations(,), lincominationcount, nonlincombinations(,), nonlincominationcount,
-stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsnr, presstensionelems(,), ptelemnsnr, limforceelem(,), lfelemnsnr, projectInfo)
+stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsnr, presstensionelems(,), ptelemnsnr, limforceelem(,), lfelemnsnr, projectInfo,fileNameXMLdef)
 
         Dim i As Long
         Dim c As String, cid As String, t As String, tid As String
@@ -1110,7 +1121,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
 
         oSB.Appendline("<?xml version=""1.0"" encoding=""UTF-8"" standalone=""yes""?>")
         oSB.AppendLine("<project xmlns=""http://www.scia.cz"">")
-        oSB.AppendLine("<def uri=""koala.xml.def""/>")
+        oSB.AppendLine("<def uri=" & fileNameXMLdef & """/>")
 
         If structtype <> "" Or materials.count <> 0 Then
             'output project information -----------------------------------------------------
@@ -1175,13 +1186,13 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             oSB.AppendLine(ConCat_pv("8", IIf(materials.Contains("Timber"), "1", "0")))
             oSB.AppendLine(ConCat_pv("9", IIf(materials.Contains("Fiber Concrete"), "1", "0")))
             oSB.AppendLine(ConCat_pv("10", "PrDEx_InitialStress, PrDEx_Subsoil,PrDEx_InitialDeformationsAndCurvature, PrDEx_SecondOrder, PrDEx_Nonlinearity, PrDEx_BeamLocalNonlinearity,PrDEx_SupportNonlinearity, PrDEx_FrictionSupport, PrDEx_StabilityAnalysis, PrDEx_MaterialSteel"))
-            If (projectInfo.Count <> 0) Then
-                oSB.AppendLine(ConCat_pv("11", projectInfo(5)))
-                oSB.AppendLine(ConCat_pv("12", projectInfo(6)))
-            Else
-                oSB.AppendLine(ConCat_pv("11", "EC - EN"))
-                oSB.AppendLine(ConCat_pv("12", "Standard EN"))
-            End If
+            'If (projectInfo.Count <> 0) Then
+            '    oSB.AppendLine(ConCat_pv("11", projectInfo(5)))
+            '    oSB.AppendLine(ConCat_pv("12", projectInfo(6)))
+            'Else
+            '    oSB.AppendLine(ConCat_pv("11", "EC - EN"))
+            '    oSB.AppendLine(ConCat_pv("12", "Standard EN"))
+            'End If
             oSB.AppendLine("</obj>")
 
             oSB.AppendLine("</table>")

@@ -196,6 +196,7 @@
     <Content Include="Resources\Hinge.bmp" />
     <None Include="Resources\LinearCombination.bmp" />
     <None Include="Resources\LimitForceBeamNL.bmp" />
+    <Content Include="Resources\koala.xml.def" />
     <Content Include="Resources\LineLoad.bmp" />
     <Content Include="Resources\LineSupport.bmp" />
     <Content Include="Resources\LoadCases.bmp" />
