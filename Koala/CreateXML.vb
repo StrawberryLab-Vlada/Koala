@@ -134,7 +134,6 @@ Namespace Koala
             pManager.AddTextParameter("Hinges", "Hinges", "List of hinges", GH_ParamAccess.list)
             pManager.Param(18).Optional = True
             pManager.AddTextParameter("FileName", "FileName", "Output filename", GH_ParamAccess.item, " ")
-            pManager.Param(19).Optional = True
             pManager.AddTextParameter("Scale", "Scale", "Scale", GH_ParamAccess.item, "1")
             pManager.Param(20).Optional = True
             pManager.AddBooleanParameter("RemDuplNodes", "RemDuplNodes", "Output filename", GH_ParamAccess.item, False)
