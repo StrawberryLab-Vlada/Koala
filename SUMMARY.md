@@ -9,4 +9,5 @@
 ## Changelog
 
 * [Changelog](changelog/changelog.md)
+* [Versions history](changelog/versions-history.md)
 
