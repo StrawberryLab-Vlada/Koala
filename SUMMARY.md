@@ -1,4 +1,12 @@
 # Table of contents
 
-* [Initial page](README.md)
+* [Koala](README.md)
+
+## Manual
+
+* [Untitled](manual/untitled.md)
+
+## Changelog
+
+* [Changelog](changelog/changelog.md)
 
