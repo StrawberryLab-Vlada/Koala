@@ -713,7 +713,11 @@ Module HelperTools
 
     End Function
 
-    Public Sub CreateXMLFile(FileName As String, StructureType As String, Materials As List(Of String), UILanguage As String, MeshSize As Double, in_sections As List(Of String), in_nodes As List(Of String), in_beams As List(Of String), in_surfaces As List(Of String), in_openings As List(Of String), in_nodesupports As List(Of String), in_edgesupports As List(Of String), in_lcases As List(Of String), in_lgroups As List(Of String), in_lloads As List(Of String), in_sloads As List(Of String), in_fploads As List(Of String), in_flloads As List(Of String), in_fsloads As List(Of String), in_hinges As List(Of String), in_edgeLoads As List(Of String), in_pointLoadsPoints As List(Of String), in_pointLoadsBeams As List(Of String), Scale As String, in_LinCombinations As List(Of String), in_NonLinCombinations As List(Of String), in_StabCombinations As List(Of String), in_CrossLinks As List(Of String), in_presstensionElem As List(Of String), in_gapElem As List(Of String), in_limitforceElem As List(Of String), projectInfo As List(Of String))
+    Public Sub CreateXMLFile(FileName As String, StructureType As String, Materials As List(Of String), UILanguage As String, MeshSize As Double, in_sections As List(Of String), in_nodes As List(Of String), in_beams As List(Of String), in_surfaces As List(Of String),
+                             in_openings As List(Of String), in_nodesupports As List(Of String), in_edgesupports As List(Of String), in_lcases As List(Of String), in_lgroups As List(Of String), in_lloads As List(Of String), in_sloads As List(Of String),
+                             in_fploads As List(Of String), in_flloads As List(Of String), in_fsloads As List(Of String), in_hinges As List(Of String), in_edgeLoads As List(Of String), in_pointLoadsPoints As List(Of String), in_pointLoadsBeams As List(Of String),
+                             Scale As String, in_LinCombinations As List(Of String), in_NonLinCombinations As List(Of String), in_StabCombinations As List(Of String),
+                             in_CrossLinks As List(Of String), in_presstensionElem As List(Of String), in_gapElem As List(Of String), in_limitforceElem As List(Of String), projectInfo As List(Of String), in_layers As List(Of String))
         Dim i As Long, j As Long
 
 
@@ -741,12 +745,14 @@ Module HelperTools
         Dim SE_pointLoadPoint(100000, 5) As String 'a hinge consists of: Beam name, ux, uy, uz, phix, phiy, phiz (0: free, 1: fixed), Position (Begin/End/Both)
         Dim SE_pointLoadBeam(100000, 11) As String 'a hinge consists of: Beam name, ux, uy, uz, phix, phiy, phiz (0: free, 1: fixed), Position (Begin/End/Both)
         Dim SE_lincombinations(100000, 3) As String
-        Dim SE_nonlincombinations(100000, 3) As String
+        Dim SE_nonlincombinations(100000, 4) As String
         Dim SE_stabcombinations(100000, 2) As String
         Dim SE_Crosslinks(100000, 3) As String
         Dim SE_gapselem(100000, 4) As String
         Dim SE_presstensionelems(100000, 2) As String
         Dim SE_limforceelem(1000000, 4) As String
+        Dim SE_layers(1000000, 3) As String
+        Dim SE_layersCount As Integer = 0
 
 
         Dim SE_meshsize As Double
@@ -1016,11 +1022,11 @@ Module HelperTools
             Next i
         End If
         If (in_NonLinCombinations IsNot Nothing) Then
-            nonlincominationcount = in_NonLinCombinations.Count / 3
+            nonlincominationcount = in_NonLinCombinations.Count / 4
             Rhino.RhinoApp.WriteLine("Number of load cases: " & lcasecount)
             For i = 0 To nonlincominationcount - 1
-                For j = 0 To 2
-                    SE_nonlincombinations(i, j) = in_NonLinCombinations(j + i * 3)
+                For j = 0 To 3
+                    SE_nonlincombinations(i, j) = in_NonLinCombinations(j + i * 4)
                 Next j
             Next i
         End If
@@ -1066,6 +1072,16 @@ Module HelperTools
             Next i
         End If
 
+        If ((in_layers IsNot Nothing)) Then
+            SE_layersCount = in_layers.Count / 3
+            Rhino.RhinoApp.WriteLine("Number of layers: " & SE_layersCount)
+            For i = 0 To SE_layersCount - 1
+                For j = 0 To 2
+                    SE_layers(i, j) = in_layers(j + i * 2)
+                Next j
+            Next i
+        End If
+
 
         'write the XML file
         '---------------------------------------------------
@@ -1080,7 +1096,9 @@ SE_lcases, lcasecount, SE_lgroups, lgroupcount, SE_lloads, lloadcount, SE_sloads
 SE_fploads, fploadcount, SE_flloads, flloadcount, SE_fsloads, fsloadcount,
 SE_hinges, hingecount,
 SE_meshsize, SE_eLoads, eloadscount, SE_pointLoadPoint, pointLoadpointCount, SE_pointLoadBeam, pointLoadbeamCount,
-SE_lincombinations, lincominationcount, SE_nonlincombinations, nonlincominationcount, SE_stabcombinations, stabcombicount, SE_Crosslinks, crosslinkscount, SE_gapselem, gapsnr, SE_presstensionelems, ptelemnsnr, SE_limforceelem, lfelemnsnr, projectInfo, fileNameXMLdef)
+SE_lincombinations, lincominationcount, SE_nonlincombinations, nonlincominationcount, SE_stabcombinations,
+stabcombicount, SE_Crosslinks, crosslinkscount, SE_gapselem, gapsnr, SE_presstensionelems, ptelemnsnr, SE_limforceelem,
+lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers, SE_layersCount)
 
         Rhino.RhinoApp.Write(" Done." & Convert.ToChar(13))
 
@@ -1112,7 +1130,7 @@ fploads(,), fploadnr, flloads(,), flloadnr, fsloads(,), fsloadnr,
 hinges(,), hingenr,
 meshsize, eloads(,), eloadsnr, pointLoadPoint(,), pointLoadpointCount, pointLoadBeam(,),
 pointLoadbeamCount, lincombinations(,), lincominationcount, nonlincombinations(,), nonlincominationcount,
-stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsnr, presstensionelems(,), ptelemnsnr, limforceelem(,), lfelemnsnr, projectInfo,fileNameXMLdef)
+stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsnr, presstensionelems(,), ptelemnsnr, limforceelem(,), lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers(,), SE_layersCount)
 
         Dim i As Long
         Dim c As String, cid As String, t As String, tid As String
@@ -1198,6 +1216,35 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             oSB.AppendLine("</table>")
             oSB.AppendLine("</container>")
 
+        End If
+
+        If SE_layersCount > 0 Then
+            c = "{D3885EC4-BAE5-11D4-B3FA-00104BC3B531}"
+            cid = "EP_DSG_Elements.EP_DataLayer.1"
+            t = "06959627-BC30-413C-97DC-B412E4F7E9DA"
+            tid = "EP_DSG_Elements.EP_DataLayer.1"
+
+            oSB.AppendLine("")
+            oSB.AppendLine("<container id=""" & c & """ t=""" & cid & """>")
+            oSB.AppendLine("<table id=""" & t & """ t=""" & tid & """>")
+
+            oSB.AppendLine("<h>")
+            oSB.AppendLine(ConCat_hh("0", "Name"))
+            oSB.AppendLine(ConCat_hh("1", "Comment"))
+            oSB.AppendLine(ConCat_hh("2", "Structural model only"))
+            oSB.AppendLine(ConCat_hh("3", "Current used activity"))
+            oSB.AppendLine("</h>")
+
+            For i = 0 To SE_layersCount - 1
+                If i > 0 And i Mod 100 = 0 Then
+                    Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... layer: " + Str(i))
+                End If
+                Call WriteLayer(oSB, i, SE_layers)
+
+            Next
+
+            oSB.AppendLine("</table>")
+            oSB.AppendLine("</container>")
         End If
 
         If meshsize > 0 Then
@@ -1682,6 +1729,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             oSB.AppendLine(ConCat_hh("0", "Name"))
             oSB.AppendLine(ConCat_hh("1", "Type"))
             oSB.AppendLine(ConCat_hh("2", " Load cases"))
+            oSB.AppendLine(ConCat_hh("3", "Description"))
 
             oSB.AppendLine("</h>")
             For i = 0 To nonlincominationcount - 1
@@ -2106,9 +2154,31 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             oSB.AppendLine("</table>")
             oSB.AppendLine("</container>")
         End If
+
+
+
         'close XML file--------------------------------------------------------------------
         oSB.AppendLine("</project>")
 
+    End Sub
+
+    Private Sub WriteLayer(oSB As Object, i As Long, sE_layers(,) As Object)
+
+        oSB.AppendLine("<obj id = """ & i.ToString() & """" & " nm=""" & sE_layers(i, 0) & """>")
+        oSB.AppendLine(ConCat_pv("0", sE_layers(i, 0)))
+        oSB.AppendLine(ConCat_pv("1", sE_layers(i, 1)))
+        Select Case sE_layers(i, 2)
+            Case "yes"
+                oSB.AppendLine(ConCat_pv("2", "1"))
+            Case "no"
+                oSB.AppendLine(ConCat_pv("2", "0"))
+            Case Else
+                oSB.AppendLine(ConCat_pv("2", "0"))
+        End Select
+        oSB.AppendLine(ConCat_pv("3", "1"))
+
+
+        oSB.AppendLine("</obj>")
     End Sub
 
     Private Sub WriteNode(ByRef oSB, inode, nodes(,)) 'write 1 node to the XML stream
@@ -2131,8 +2201,8 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
 
         Dim node1 As String, node2 As String, node3 As String
 
-        oSB.AppendLine("<obj nm=""" & beams(ibeam, 0) & Trim(Str(ibeam)) & """>")
-        oSB.AppendLine(ConCat_pv("0", beams(ibeam, 0) & Trim(Str(ibeam)))) 'Name
+        oSB.AppendLine("<obj nm=""" & beams(ibeam, 0) & """>")
+        oSB.AppendLine(ConCat_pv("0", beams(ibeam, 0))) 'Name
 
         LineShape = beams(ibeam, 3)
         LineType = Strings.Trim(LineShape.Split(";")(0))
@@ -2368,8 +2438,8 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
         Dim iedge As Long
         Dim edges() As String, nodes() As String
 
-        osb.AppendLine("<obj nm=""" & surfaces(isurface, 0) & Trim(Str(isurface)) & """>")
-        osb.AppendLine(ConCat_pv("0", surfaces(isurface, 0) & Trim(Str(isurface))))
+        osb.AppendLine("<obj nm=""" & surfaces(isurface, 0) & """>")
+        osb.AppendLine(ConCat_pv("0", surfaces(isurface, 0)))
         osb.AppendLine(ConCat_pn("1", surfaces(isurface, 4))) 'layer
         Select Case surfaces(isurface, 1)
             Case "Shell"
@@ -3123,6 +3193,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
         oSB.AppendLine(ConCat_ht("0", "Name"))
         oSB.AppendLine(ConCat_ht("1", "Coeff."))
         oSB.AppendLine(ConCat_ht("2", "Load case ID"))
+        'description
         oSB.AppendLine("</h>")
         For Each item In parts
             Coeff = item.Split("*")(0)
@@ -3135,6 +3206,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             i += 1
         Next item
         oSB.AppendLine(ConCat_closetable("2"))
+        oSB.AppendLine(ConCat_pv("3", combinations(icombi, 3)))
         oSB.AppendLine("</obj>")
     End Sub
     Private Sub WriteStabilityCombination(ByRef oSB, icombi, combinations(,)) 'write 1 nonlinear combination to the XML stream

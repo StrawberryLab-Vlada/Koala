@@ -29,7 +29,7 @@ Namespace Koala
             pManager.AddIntegerParameter("Type", "Type", "Type of combination: Right click and select", GH_ParamAccess.item, 0)
             AddOptionstomenuItemNLCombiType(pManager.Param(1))
             pManager.AddTextParameter("CombinationInput", "CombinationInput", "Content of combination, eg: 1.5*LC1;2*LC2", GH_ParamAccess.item, "1.5*LC1;2*LC2")
-
+            pManager.AddTextParameter("Description", "Description", "Description of combination", GH_ParamAccess.item, "")
         End Sub
 
         ''' <summary>
@@ -48,16 +48,19 @@ Namespace Koala
             Dim Name As String = "NC1"
             Dim Type As String = "Ultimate"
             Dim Content As String = "1*LC2"
+            Dim Description As String = ""
             Dim i As Integer
             If (Not DA.GetData(Of String)(0, Name)) Then Return
             If (Not DA.GetData(Of Integer)(1, i)) Then Return
             Type = GetStringForNLCombiType(i)
             If (Not DA.GetData(Of String)(2, Content)) Then Return
+            DA.GetData(Of String)(3, Description)
 
             Dim FlatList As New List(Of System.Object) From {
                 Name,
                 Type,
-                Content
+                Content,
+                Description
             }
             DA.SetDataList(0, FlatList)
         End Sub

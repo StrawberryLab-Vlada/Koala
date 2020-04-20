@@ -188,7 +188,7 @@ Namespace Koala
                     Continue For
                 End If
 
-                SE_beams(i, 0) = BeamNamePrefix
+                SE_beams(i, 0) = BeamNamePrefix + i.ToString()
 
                 If i <= maxsection Then
                     SE_beams(i, 1) = Sections(i)

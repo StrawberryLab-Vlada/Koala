@@ -181,7 +181,7 @@ Namespace My.Resources
         End Property
         
         '''<summary>
-        '''  Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-16&quot; standalone=&quot;yes&quot;?&gt;
+        '''  Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
         '''
         '''&lt;def_project xmlns=&quot;http://www.scia.cz&quot;&gt;
         '''   
@@ -189,11 +189,21 @@ Namespace My.Resources
         '''      &lt;def_table id=&quot;10753FD4-0179-4825-89F9-ADAEAE8699D0&quot; name=&quot;XML\default&quot; type=&quot;vertical&quot; clsid=&quot;{CB23B6EA-630A-11D4-A3F1-000000000000}&quot; progid=&quot;ProjectData.EP_ProjectData.1&quot; size=&quot;13&quot;&gt;
         '''
         '''       
-        '''         &lt;def_property  [rest of string was truncated]&quot;;.
+        '''         &lt;def_property x [rest of string was truncated]&quot;;.
         '''</summary>
         Friend ReadOnly Property koala_xml() As String
             Get
                 Return ResourceManager.GetString("koala_xml", resourceCulture)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property Layers() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Layers", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
         

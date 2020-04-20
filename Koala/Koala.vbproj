@@ -119,6 +119,7 @@
     <Compile Include="GapLocalBeamNL.vb" />
     <Compile Include="HelperTools.vb" />
     <Compile Include="Hinges.vb" />
+    <Compile Include="Layers.vb" />
     <Compile Include="LimitForceLocalBeamNL.vb" />
     <Compile Include="LinearCombination.vb" />
     <Compile Include="LoadCasesAndGroups.vb" />
@@ -197,6 +198,7 @@
     <None Include="Resources\LinearCombination.bmp" />
     <None Include="Resources\LimitForceBeamNL.bmp" />
     <Content Include="Resources\koala.xml.def" />
+    <None Include="Resources\Layers.bmp" />
     <Content Include="Resources\LineLoad.bmp" />
     <Content Include="Resources\LineSupport.bmp" />
     <Content Include="Resources\LoadCases.bmp" />

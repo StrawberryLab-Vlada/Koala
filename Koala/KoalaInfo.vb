@@ -35,7 +35,7 @@ Public Class KoalaInfo
     Public Overrides ReadOnly Property AuthorContact As String
         Get
             'Return a string representing your preferred contact details.
-            Return "j.broz@scia.net"
+            Return "garage@scia.net"
         End Get
     End Property
 End Class

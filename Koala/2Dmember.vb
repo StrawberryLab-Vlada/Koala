@@ -128,7 +128,7 @@ Namespace Koala
             Dim EdgeType As String
             Dim BoundaryShape As String
 
-            Dim line As String, SurfaceIndex As String, NodeList As String
+            Dim line As String, SurfaceName As String, NodeList As String
 
             Dim stopWatch As New System.Diagnostics.Stopwatch()
             Dim time_elapsed As Double
@@ -175,7 +175,7 @@ Namespace Koala
 
                 surfacecount += 1
 
-                SE_surfaces(surfacecount - 1, 0) = SurfaceNamePrefix
+                SE_surfaces(surfacecount - 1, 0) = SurfaceNamePrefix + surfacecount.ToString()
                 SE_surfaces(surfacecount - 1, 1) = SurfType
                 SE_surfaces(surfacecount - 1, 2) = Material
                 SE_surfaces(surfacecount - 1, 3) = Thickness / 1000
@@ -223,7 +223,7 @@ Namespace Koala
                                 If currentnode = -1 Then
                                     'create it, then add it to the edge information
                                     nodecount = nodecount + 1
-                                    SE_nodes(nodecount - 1, 0) = NodePrefix & nodecount
+                                    SE_nodes(nodecount - 1, 0) = NodePrefix & nodecount.ToString()
                                     If FirstNode = "" Then
                                         'store the position of the first node to later check if the surface is closed
                                         FirstNode = SE_nodes(nodecount - 1, 0)
@@ -275,11 +275,11 @@ Namespace Koala
             'add internal nodes to the surfaces
             If InternalNodes IsNot Nothing And InternalNodes.Count <> 0 Then
                 For Each line In InternalNodes
-                    SurfaceIndex = Trim(line.Split("|")(0))
+                    SurfaceName = Trim(line.Split("|")(0))
                     NodeList = Trim(line.Split("|")(1))
 
                     For i = 0 To surfacecount - 1
-                        If SurfaceIndex = i Then
+                        If SurfaceName = SE_surfaces(i, 0) Then
                             SE_surfaces(i, 6) = NodeList
                             Exit For
                         End If

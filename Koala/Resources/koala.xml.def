@@ -1687,7 +1687,7 @@
 
         </def_subtable>
       </def_property>
-
+      <def_property x="3" name="Description" type="string" id="{4578F280-83EE-11D4-B37D-000000000000}"/>
     </def_table>
   </def_container>
   <def_container id="{B6CCD4B2-DDDC-11D5-AA60-0050FC1D5C09}" clsid="{B6CCD4B2-DDDC-11D5-AA60-0050FC1D5C09}" progid="DataSetSciaTom.EP_StabilityCombi.1" library="yes">
@@ -1842,6 +1842,22 @@
 
 
       <def_property x="5" name="Marginal force" type="real" id="{86F30F39-8AE3-4704-9B0A-C22CEC0FC975}"/>
+
+    </def_table>
+  </def_container>
+
+  <def_container id="{D3885EC4-BAE5-11D4-B3FA-00104BC3B531}" clsid="{D3885EC4-BAE5-11D4-B3FA-00104BC3B531}" progid="EP_DSG_Elements.EP_DataLayer.1" library="yes">
+    <def_table id="06959627-BC30-413C-97DC-B412E4F7E9DA" name="XML\default" type="vertical" clsid="{D3885EC4-BAE5-11D4-B3FA-00104BC3B531}" progid="EP_DSG_Elements.EP_DataLayer.1" size="4">
+
+      <def_property x="0" name="Name" type="string" id="{4364BC01-AAB7-11D4-B3D9-00104BC3B531}"/>
+
+
+      <def_property x="1" name="Comment" type="string" id="{30A0A548-B4F3-43F1-9164-DBB4DB8274ED}"/>
+
+
+      <def_property x="2" name="Structural model only" type="bool" flag="167772160" id="{B10E3C17-5025-4505-812D-324EF5283C0D}"/>
+
+      <def_property x="3" name="Current used activity" type="bool" flag="167772160" id="{215AFA19-2065-4D57-9C9C-C48B456ABD43}"/>
 
     </def_table>
   </def_container>

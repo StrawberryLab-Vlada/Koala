@@ -84,7 +84,7 @@ Koala
 </member>
 <member name="P:Koala.My.Resources.Resources.koala_xml">
 <summary>
-  Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-16&quot; standalone=&quot;yes&quot;?&gt;
+  Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
 
 &lt;def_project xmlns=&quot;http://www.scia.cz&quot;&gt;
    
@@ -92,7 +92,12 @@ Koala
       &lt;def_table id=&quot;10753FD4-0179-4825-89F9-ADAEAE8699D0&quot; name=&quot;XML\default&quot; type=&quot;vertical&quot; clsid=&quot;{CB23B6EA-630A-11D4-A3F1-000000000000}&quot; progid=&quot;ProjectData.EP_ProjectData.1&quot; size=&quot;13&quot;&gt;
 
        
-         &lt;def_property  [rest of string was truncated]&quot;;.
+         &lt;def_property x [rest of string was truncated]&quot;;.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources.Layers">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
 </member>
 <member name="P:Koala.My.Resources.Resources.LimitForceBeamNL">
@@ -637,6 +642,45 @@ Koala
  </summary>
 </member>
 <member name="P:Koala.Koala.Hinges.ComponentGuid">
+ <summary>
+ Each component must have a unique Guid to identify it. 
+ It is vital this Guid doesn't change otherwise old ghx files 
+ that use the old ID will partially fail during loading.
+ </summary>
+</member>
+<member name="M:Koala.Koala.Layers.#ctor">
+ <summary>
+ Each implementation of GH_Component must provide a public 
+ constructor without any arguments.
+ Category represents the Tab in which the component will appear, 
+ Subcategory the panel. If you use non-existing tab or panel names, 
+ new tabs/panels will automatically be created.
+ </summary>
+</member>
+<member name="M:Koala.Koala.Layers.RegisterInputParams(Grasshopper.Kernel.GH_Component.GH_InputParamManager)">
+ <summary>
+ Registers all the input parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.Layers.RegisterOutputParams(Grasshopper.Kernel.GH_Component.GH_OutputParamManager)">
+ <summary>
+ Registers all the output parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.Layers.SolveInstance(Grasshopper.Kernel.IGH_DataAccess)">
+ <summary>
+ This is the method that actually does the work.
+ </summary>
+ <param name="DA">The DA object can be used to retrieve data from input parameters and 
+ to store data in output parameters.</param>
+</member>
+<member name="P:Koala.Koala.Layers.Icon">
+ <summary>
+ Provides an Icon for every component that will be visible in the User Interface.
+ Icons need to be 24x24 pixels.
+ </summary>
+</member>
+<member name="P:Koala.Koala.Layers.ComponentGuid">
  <summary>
  Each component must have a unique Guid to identify it. 
  It is vital this Guid doesn't change otherwise old ghx files 
