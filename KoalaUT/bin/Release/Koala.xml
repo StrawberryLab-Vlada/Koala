@@ -1,0 +1,1277 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+Koala
+</name>
+</assembly>
+<members>
+<member name="T:Koala.My.Resources.Resources">
+<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources.ResourceManager">
+<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources.Culture">
+<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources._2DMember">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources.Analysis">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources.Beam">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources.CreateXML">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources.Cross_link">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources.Cross_section">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources.EdgeLoad">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources.FreeLineLoad">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources.FreePointLoad">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources.FreeSurfaceLoad">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources.Gap">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources.Hinge">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources.koala_xml">
+<summary>
+  Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot;?&gt;
+
+&lt;def_project xmlns=&quot;http://www.scia.cz&quot;&gt;
+   
+   &lt;def_container id=&quot;{AC021036-C943-4B46-88E4-72CFB9D9391C}&quot; clsid=&quot;{AC021036-C943-4B46-88E4-72CFB9D9391C}&quot; progid=&quot;EP_GraphicDsObjects.EP_BaseDataProjectHeader.1&quot; hetero=&quot;yes&quot;&gt;
+      &lt;def_table id=&quot;10753FD4-0179-4825-89F9-ADAEAE8699D0&quot; name=&quot;XML\default&quot; type=&quot;vertical&quot; clsid=&quot;{CB23B6EA-630A-11D4-A3F1-000000000000}&quot; progid=&quot;ProjectData.EP_ProjectData.1&quot; size=&quot;13&quot;&gt;
+
+       
+         &lt;def_property x [rest of string was truncated]&quot;;.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources.Layers">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources.LimitForceBeamNL">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources.LinearCombination">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources.LineLoad">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources.LineSupport">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources.LoadCases">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources.LoadGroup">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources.Node">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources.NodeSupport">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources.NonLinearCombination">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources.Opening">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources.PointLoadBeam">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources.PointLoadPoint">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources.PressOnly">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources.ProjectInfo">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources.StabilityCombination">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources.SurfaceLoad">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="M:Koala.Koala._2Dmember.#ctor">
+ <summary>
+ Each implementation of GH_Component must provide a public 
+ constructor without any arguments.
+ Category represents the Tab in which the component will appear, 
+ Subcategory the panel. If you use non-existing tab or panel names, 
+ new tabs/panels will automatically be created.
+ </summary>
+</member>
+<member name="M:Koala.Koala._2Dmember.RegisterInputParams(Grasshopper.Kernel.GH_Component.GH_InputParamManager)">
+ <summary>
+ Registers all the input parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala._2Dmember.RegisterOutputParams(Grasshopper.Kernel.GH_Component.GH_OutputParamManager)">
+ <summary>
+ Registers all the output parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala._2Dmember.SolveInstance(Grasshopper.Kernel.IGH_DataAccess)">
+ <summary>
+ This is the method that actually does the work.
+ </summary>
+ <param name="DA">The DA object can be used to retrieve data from input parameters and 
+ to store data in output parameters.</param>
+</member>
+<member name="P:Koala.Koala._2Dmember.Icon">
+ <summary>
+ Provides an Icon for every component that will be visible in the User Interface.
+ Icons need to be 24x24 pixels.
+ </summary>
+</member>
+<member name="P:Koala.Koala._2Dmember.ComponentGuid">
+ <summary>
+ Each component must have a unique Guid to identify it. 
+ It is vital this Guid doesn't change otherwise old ghx files 
+ that use the old ID will partially fail during loading.
+ </summary>
+</member>
+<member name="M:Koala.Koala.Analysis.#ctor">
+ <summary>
+ Each implementation of GH_Component must provide a public 
+ constructor without any arguments.
+ Category represents the Tab in which the component will appear, 
+ Subcategory the panel. If you use non-existing tab or panel names, 
+ new tabs/panels will automatically be created.
+ </summary>
+</member>
+<member name="M:Koala.Koala.Analysis.RegisterInputParams(Grasshopper.Kernel.GH_Component.GH_InputParamManager)">
+ <summary>
+ Registers all the input parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.Analysis.RegisterOutputParams(Grasshopper.Kernel.GH_Component.GH_OutputParamManager)">
+ <summary>
+ Registers all the output parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.Analysis.SolveInstance(Grasshopper.Kernel.IGH_DataAccess)">
+ <summary>
+ This is the method that actually does the work.
+ </summary>
+ <param name="DA">The DA object can be used to retrieve data from input parameters and 
+ to store data in output parameters.</param>
+</member>
+<member name="P:Koala.Koala.Analysis.Icon">
+ <summary>
+ Provides an Icon for every component that will be visible in the User Interface.
+ Icons need to be 24x24 pixels.
+ </summary>
+</member>
+<member name="P:Koala.Koala.Analysis.ComponentGuid">
+ <summary>
+ Each component must have a unique Guid to identify it. 
+ It is vital this Guid doesn't change otherwise old ghx files 
+ that use the old ID will partially fail during loading.
+ </summary>
+</member>
+<member name="M:Koala.Koala.BeamLoads.#ctor">
+ <summary>
+ Each implementation of GH_Component must provide a public 
+ constructor without any arguments.
+ Category represents the Tab in which the component will appear, 
+ Subcategory the panel. If you use non-existing tab or panel names, 
+ new tabs/panels will automatically be created.
+ </summary>
+</member>
+<member name="M:Koala.Koala.BeamLoads.RegisterInputParams(Grasshopper.Kernel.GH_Component.GH_InputParamManager)">
+ <summary>
+ Registers all the input parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.BeamLoads.RegisterOutputParams(Grasshopper.Kernel.GH_Component.GH_OutputParamManager)">
+ <summary>
+ Registers all the output parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.BeamLoads.SolveInstance(Grasshopper.Kernel.IGH_DataAccess)">
+ <summary>
+ This is the method that actually does the work.
+ </summary>
+ <param name="DA">The DA object can be used to retrieve data from input parameters and 
+ to store data in output parameters.</param>
+</member>
+<member name="P:Koala.Koala.BeamLoads.Icon">
+ <summary>
+ Provides an Icon for every component that will be visible in the User Interface.
+ Icons need to be 24x24 pixels.
+ </summary>
+</member>
+<member name="P:Koala.Koala.BeamLoads.ComponentGuid">
+ <summary>
+ Each component must have a unique Guid to identify it. 
+ It is vital this Guid doesn't change otherwise old ghx files 
+ that use the old ID will partially fail during loading.
+ </summary>
+</member>
+<member name="M:Koala.Koala.Beams.#ctor">
+ <summary>
+ Each implementation of GH_Component must provide a public 
+ constructor without any arguments.
+ Category represents the Tab in which the component will appear, 
+ Subcategory the panel. If you use non-existing tab or panel names, 
+ new tabs/panels will automatically be created.
+ </summary>
+</member>
+<member name="M:Koala.Koala.Beams.RegisterInputParams(Grasshopper.Kernel.GH_Component.GH_InputParamManager)">
+ <summary>
+ Registers all the input parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.Beams.RegisterOutputParams(Grasshopper.Kernel.GH_Component.GH_OutputParamManager)">
+ <summary>
+ Registers all the output parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.Beams.SolveInstance(Grasshopper.Kernel.IGH_DataAccess)">
+ <summary>
+ This is the method that actually does the work.
+ </summary>
+ <param name="DA">The DA object can be used to retrieve data from input parameters and 
+ to store data in output parameters.</param>
+</member>
+<member name="P:Koala.Koala.Beams.Icon">
+ <summary>
+ Provides an Icon for every component that will be visible in the User Interface.
+ Icons need to be 24x24 pixels.
+ </summary>
+</member>
+<member name="P:Koala.Koala.Beams.ComponentGuid">
+ <summary>
+ Each component must have a unique Guid to identify it. 
+ It is vital this Guid doesn't change otherwise old ghx files 
+ that use the old ID will partially fail during loading.
+ </summary>
+</member>
+<member name="M:Koala.Koala.CreateXML.#ctor">
+ <summary>
+ Each implementation of GH_Component must provide a public 
+ constructor without any arguments.
+ Category represents the Tab in which the component will appear, 
+ Subcategory the panel. If you use non-existing tab or panel names, 
+ new tabs/panels will automatically be created.
+ </summary>
+</member>
+<member name="M:Koala.Koala.CreateXML.RegisterInputParams(Grasshopper.Kernel.GH_Component.GH_InputParamManager)">
+ <summary>
+ Registers all the input parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.CreateXML.RegisterOutputParams(Grasshopper.Kernel.GH_Component.GH_OutputParamManager)">
+ <summary>
+ Registers all the output parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.CreateXML.SolveInstance(Grasshopper.Kernel.IGH_DataAccess)">
+ <summary>
+ This is the method that actually does the work.
+ </summary>
+ <param name="DA">The DA object can be used to retrieve data from input parameters and 
+ to store data in output parameters.</param>
+</member>
+<member name="P:Koala.Koala.CreateXML.Icon">
+ <summary>
+ Provides an Icon for every component that will be visible in the User Interface.
+ Icons need to be 24x24 pixels.
+ </summary>
+</member>
+<member name="P:Koala.Koala.CreateXML.ComponentGuid">
+ <summary>
+ Each component must have a unique Guid to identify it. 
+ It is vital this Guid doesn't change otherwise old ghx files 
+ that use the old ID will partially fail during loading.
+ </summary>
+</member>
+<member name="M:Koala.Koala.Cross_Sections.#ctor">
+ <summary>
+ Each implementation of GH_Component must provide a public 
+ constructor without any arguments.
+ Category represents the Tab in which the component will appear, 
+ Subcategory the panel. If you use non-existing tab or panel names, 
+ new tabs/panels will automatically be created.
+ </summary>
+</member>
+<member name="M:Koala.Koala.Cross_Sections.RegisterInputParams(Grasshopper.Kernel.GH_Component.GH_InputParamManager)">
+ <summary>
+ Registers all the input parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.Cross_Sections.RegisterOutputParams(Grasshopper.Kernel.GH_Component.GH_OutputParamManager)">
+ <summary>
+ Registers all the output parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.Cross_Sections.SolveInstance(Grasshopper.Kernel.IGH_DataAccess)">
+ <summary>
+ This is the method that actually does the work.
+ </summary>
+ <param name="DA">The DA object can be used to retrieve data from input parameters and 
+ to store data in output parameters.</param>
+</member>
+<member name="P:Koala.Koala.Cross_Sections.Icon">
+ <summary>
+ Provides an Icon for every component that will be visible in the User Interface.
+ Icons need to be 24x24 pixels.
+ </summary>
+</member>
+<member name="P:Koala.Koala.Cross_Sections.ComponentGuid">
+ <summary>
+ Each component must have a unique Guid to identify it. 
+ It is vital this Guid doesn't change otherwise old ghx files 
+ that use the old ID will partially fail during loading.
+ </summary>
+</member>
+<member name="M:Koala.Koala.CrossLink.#ctor">
+ <summary>
+ Each implementation of GH_Component must provide a public 
+ constructor without any arguments.
+ Category represents the Tab in which the component will appear, 
+ Subcategory the panel. If you use non-existing tab or panel names, 
+ new tabs/panels will automatically be created.
+ </summary>
+</member>
+<member name="M:Koala.Koala.CrossLink.RegisterInputParams(Grasshopper.Kernel.GH_Component.GH_InputParamManager)">
+ <summary>
+ Registers all the input parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.CrossLink.RegisterOutputParams(Grasshopper.Kernel.GH_Component.GH_OutputParamManager)">
+ <summary>
+ Registers all the output parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.CrossLink.SolveInstance(Grasshopper.Kernel.IGH_DataAccess)">
+ <summary>
+ This is the method that actually does the work.
+ </summary>
+ <param name="DA">The DA object can be used to retrieve data from input parameters and 
+ to store data in output parameters.</param>
+</member>
+<member name="P:Koala.Koala.CrossLink.Icon">
+ <summary>
+ Provides an Icon for every component that will be visible in the User Interface.
+ Icons need to be 24x24 pixels.
+ </summary>
+</member>
+<member name="P:Koala.Koala.CrossLink.ComponentGuid">
+ <summary>
+ Each component must have a unique Guid to identify it. 
+ It is vital this Guid doesn't change otherwise old ghx files 
+ that use the old ID will partially fail during loading.
+ </summary>
+</member>
+<member name="M:Koala.Koala.EdgeLoad.#ctor">
+ <summary>
+ Each implementation of GH_Component must provide a public 
+ constructor without any arguments.
+ Category represents the Tab in which the component will appear, 
+ Subcategory the panel. If you use non-existing tab or panel names, 
+ new tabs/panels will automatically be created.
+ </summary>
+</member>
+<member name="M:Koala.Koala.EdgeLoad.RegisterInputParams(Grasshopper.Kernel.GH_Component.GH_InputParamManager)">
+ <summary>
+ Registers all the input parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.EdgeLoad.RegisterOutputParams(Grasshopper.Kernel.GH_Component.GH_OutputParamManager)">
+ <summary>
+ Registers all the output parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.EdgeLoad.SolveInstance(Grasshopper.Kernel.IGH_DataAccess)">
+ <summary>
+ This is the method that actually does the work.
+ </summary>
+ <param name="DA">The DA object can be used to retrieve data from input parameters and 
+ to store data in output parameters.</param>
+</member>
+<member name="P:Koala.Koala.EdgeLoad.Icon">
+ <summary>
+ Provides an Icon for every component that will be visible in the User Interface.
+ Icons need to be 24x24 pixels.
+ </summary>
+</member>
+<member name="P:Koala.Koala.EdgeLoad.ComponentGuid">
+ <summary>
+ Each component must have a unique Guid to identify it. 
+ It is vital this Guid doesn't change otherwise old ghx files 
+ that use the old ID will partially fail during loading.
+ </summary>
+</member>
+<member name="M:Koala.Koala.EdgeSupport.#ctor">
+ <summary>
+ Each implementation of GH_Component must provide a public 
+ constructor without any arguments.
+ Category represents the Tab in which the component will appear, 
+ Subcategory the panel. If you use non-existing tab or panel names, 
+ new tabs/panels will automatically be created.
+ </summary>
+</member>
+<member name="M:Koala.Koala.EdgeSupport.RegisterInputParams(Grasshopper.Kernel.GH_Component.GH_InputParamManager)">
+ <summary>
+ Registers all the input parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.EdgeSupport.RegisterOutputParams(Grasshopper.Kernel.GH_Component.GH_OutputParamManager)">
+ <summary>
+ Registers all the output parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.EdgeSupport.SolveInstance(Grasshopper.Kernel.IGH_DataAccess)">
+ <summary>
+ This is the method that actually does the work.
+ </summary>
+ <param name="DA">The DA object can be used to retrieve data from input parameters and 
+ to store data in output parameters.</param>
+</member>
+<member name="P:Koala.Koala.EdgeSupport.Icon">
+ <summary>
+ Provides an Icon for every component that will be visible in the User Interface.
+ Icons need to be 24x24 pixels.
+ </summary>
+</member>
+<member name="P:Koala.Koala.EdgeSupport.ComponentGuid">
+ <summary>
+ Each component must have a unique Guid to identify it. 
+ It is vital this Guid doesn't change otherwise old ghx files 
+ that use the old ID will partially fail during loading.
+ </summary>
+</member>
+<member name="M:Koala.Koala.FreeSurfaceLoad.#ctor">
+ <summary>
+ Each implementation of GH_Component must provide a public 
+ constructor without any arguments.
+ Category represents the Tab in which the component will appear, 
+ Subcategory the panel. If you use non-existing tab or panel names, 
+ new tabs/panels will automatically be created.
+ </summary>
+</member>
+<member name="M:Koala.Koala.FreeSurfaceLoad.RegisterInputParams(Grasshopper.Kernel.GH_Component.GH_InputParamManager)">
+ <summary>
+ Registers all the input parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.FreeSurfaceLoad.RegisterOutputParams(Grasshopper.Kernel.GH_Component.GH_OutputParamManager)">
+ <summary>
+ Registers all the output parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.FreeSurfaceLoad.SolveInstance(Grasshopper.Kernel.IGH_DataAccess)">
+ <summary>
+ This is the method that actually does the work.
+ </summary>
+ <param name="DA">The DA object can be used to retrieve data from input parameters and 
+ to store data in output parameters.</param>
+</member>
+<member name="P:Koala.Koala.FreeSurfaceLoad.Icon">
+ <summary>
+ Provides an Icon for every component that will be visible in the User Interface.
+ Icons need to be 24x24 pixels.
+ </summary>
+</member>
+<member name="P:Koala.Koala.FreeSurfaceLoad.ComponentGuid">
+ <summary>
+ Each component must have a unique Guid to identify it. 
+ It is vital this Guid doesn't change otherwise old ghx files 
+ that use the old ID will partially fail during loading.
+ </summary>
+</member>
+<member name="M:Koala.Koala.GapLocalBeamNL.#ctor">
+ <summary>
+ Each implementation of GH_Component must provide a public 
+ constructor without any arguments.
+ Category represents the Tab in which the component will appear, 
+ Subcategory the panel. If you use non-existing tab or panel names, 
+ new tabs/panels will automatically be created.
+ </summary>
+</member>
+<member name="M:Koala.Koala.GapLocalBeamNL.RegisterInputParams(Grasshopper.Kernel.GH_Component.GH_InputParamManager)">
+ <summary>
+ Registers all the input parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.GapLocalBeamNL.RegisterOutputParams(Grasshopper.Kernel.GH_Component.GH_OutputParamManager)">
+ <summary>
+ Registers all the output parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.GapLocalBeamNL.SolveInstance(Grasshopper.Kernel.IGH_DataAccess)">
+ <summary>
+ This is the method that actually does the work.
+ </summary>
+ <param name="DA">The DA object can be used to retrieve data from input parameters and 
+ to store data in output parameters.</param>
+</member>
+<member name="P:Koala.Koala.GapLocalBeamNL.Icon">
+ <summary>
+ Provides an Icon for every component that will be visible in the User Interface.
+ Icons need to be 24x24 pixels.
+ </summary>
+</member>
+<member name="P:Koala.Koala.GapLocalBeamNL.ComponentGuid">
+ <summary>
+ Each component must have a unique Guid to identify it. 
+ It is vital this Guid doesn't change otherwise old ghx files 
+ that use the old ID will partially fail during loading.
+ </summary>
+</member>
+<member name="M:Koala.Koala.Hinges.#ctor">
+ <summary>
+ Each implementation of GH_Component must provide a public 
+ constructor without any arguments.
+ Category represents the Tab in which the component will appear, 
+ Subcategory the panel. If you use non-existing tab or panel names, 
+ new tabs/panels will automatically be created.
+ </summary>
+</member>
+<member name="M:Koala.Koala.Hinges.RegisterInputParams(Grasshopper.Kernel.GH_Component.GH_InputParamManager)">
+ <summary>
+ Registers all the input parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.Hinges.RegisterOutputParams(Grasshopper.Kernel.GH_Component.GH_OutputParamManager)">
+ <summary>
+ Registers all the output parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.Hinges.SolveInstance(Grasshopper.Kernel.IGH_DataAccess)">
+ <summary>
+ This is the method that actually does the work.
+ </summary>
+ <param name="DA">The DA object can be used to retrieve data from input parameters and 
+ to store data in output parameters.</param>
+</member>
+<member name="P:Koala.Koala.Hinges.Icon">
+ <summary>
+ Provides an Icon for every component that will be visible in the User Interface.
+ Icons need to be 24x24 pixels.
+ </summary>
+</member>
+<member name="P:Koala.Koala.Hinges.ComponentGuid">
+ <summary>
+ Each component must have a unique Guid to identify it. 
+ It is vital this Guid doesn't change otherwise old ghx files 
+ that use the old ID will partially fail during loading.
+ </summary>
+</member>
+<member name="M:Koala.Koala.Layers.#ctor">
+ <summary>
+ Each implementation of GH_Component must provide a public 
+ constructor without any arguments.
+ Category represents the Tab in which the component will appear, 
+ Subcategory the panel. If you use non-existing tab or panel names, 
+ new tabs/panels will automatically be created.
+ </summary>
+</member>
+<member name="M:Koala.Koala.Layers.RegisterInputParams(Grasshopper.Kernel.GH_Component.GH_InputParamManager)">
+ <summary>
+ Registers all the input parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.Layers.RegisterOutputParams(Grasshopper.Kernel.GH_Component.GH_OutputParamManager)">
+ <summary>
+ Registers all the output parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.Layers.SolveInstance(Grasshopper.Kernel.IGH_DataAccess)">
+ <summary>
+ This is the method that actually does the work.
+ </summary>
+ <param name="DA">The DA object can be used to retrieve data from input parameters and 
+ to store data in output parameters.</param>
+</member>
+<member name="P:Koala.Koala.Layers.Icon">
+ <summary>
+ Provides an Icon for every component that will be visible in the User Interface.
+ Icons need to be 24x24 pixels.
+ </summary>
+</member>
+<member name="P:Koala.Koala.Layers.ComponentGuid">
+ <summary>
+ Each component must have a unique Guid to identify it. 
+ It is vital this Guid doesn't change otherwise old ghx files 
+ that use the old ID will partially fail during loading.
+ </summary>
+</member>
+<member name="M:Koala.Koala.LimitForceLocalBeamNL.#ctor">
+ <summary>
+ Each implementation of GH_Component must provide a public 
+ constructor without any arguments.
+ Category represents the Tab in which the component will appear, 
+ Subcategory the panel. If you use non-existing tab or panel names, 
+ new tabs/panels will automatically be created.
+ </summary>
+</member>
+<member name="M:Koala.Koala.LimitForceLocalBeamNL.RegisterInputParams(Grasshopper.Kernel.GH_Component.GH_InputParamManager)">
+ <summary>
+ Registers all the input parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.LimitForceLocalBeamNL.RegisterOutputParams(Grasshopper.Kernel.GH_Component.GH_OutputParamManager)">
+ <summary>
+ Registers all the output parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.LimitForceLocalBeamNL.SolveInstance(Grasshopper.Kernel.IGH_DataAccess)">
+ <summary>
+ This is the method that actually does the work.
+ </summary>
+ <param name="DA">The DA object can be used to retrieve data from input parameters and 
+ to store data in output parameters.</param>
+</member>
+<member name="P:Koala.Koala.LimitForceLocalBeamNL.Icon">
+ <summary>
+ Provides an Icon for every component that will be visible in the User Interface.
+ Icons need to be 24x24 pixels.
+ </summary>
+</member>
+<member name="P:Koala.Koala.LimitForceLocalBeamNL.ComponentGuid">
+ <summary>
+ Each component must have a unique Guid to identify it. 
+ It is vital this Guid doesn't change otherwise old ghx files 
+ that use the old ID will partially fail during loading.
+ </summary>
+</member>
+<member name="M:Koala.Koala.LinearCombination.#ctor">
+ <summary>
+ Each implementation of GH_Component must provide a public 
+ constructor without any arguments.
+ Category represents the Tab in which the component will appear, 
+ Subcategory the panel. If you use non-existing tab or panel names, 
+ new tabs/panels will automatically be created.
+ </summary>
+</member>
+<member name="M:Koala.Koala.LinearCombination.RegisterInputParams(Grasshopper.Kernel.GH_Component.GH_InputParamManager)">
+ <summary>
+ Registers all the input parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.LinearCombination.RegisterOutputParams(Grasshopper.Kernel.GH_Component.GH_OutputParamManager)">
+ <summary>
+ Registers all the output parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.LinearCombination.SolveInstance(Grasshopper.Kernel.IGH_DataAccess)">
+ <summary>
+ This is the method that actually does the work.
+ </summary>
+ <param name="DA">The DA object can be used to retrieve data from input parameters and 
+ to store data in output parameters.</param>
+</member>
+<member name="P:Koala.Koala.LinearCombination.Icon">
+ <summary>
+ Provides an Icon for every component that will be visible in the User Interface.
+ Icons need to be 24x24 pixels.
+ </summary>
+</member>
+<member name="P:Koala.Koala.LinearCombination.ComponentGuid">
+ <summary>
+ Each component must have a unique Guid to identify it. 
+ It is vital this Guid doesn't change otherwise old ghx files 
+ that use the old ID will partially fail during loading.
+ </summary>
+</member>
+<member name="M:Koala.Koala.MyComponent1.#ctor">
+ <summary>
+ Each implementation of GH_Component must provide a public 
+ constructor without any arguments.
+ Category represents the Tab in which the component will appear, 
+ Subcategory the panel. If you use non-existing tab or panel names, 
+ new tabs/panels will automatically be created.
+ </summary>
+</member>
+<member name="M:Koala.Koala.MyComponent1.RegisterInputParams(Grasshopper.Kernel.GH_Component.GH_InputParamManager)">
+ <summary>
+ Registers all the input parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.MyComponent1.RegisterOutputParams(Grasshopper.Kernel.GH_Component.GH_OutputParamManager)">
+ <summary>
+ Registers all the output parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.MyComponent1.SolveInstance(Grasshopper.Kernel.IGH_DataAccess)">
+ <summary>
+ This is the method that actually does the work.
+ </summary>
+ <param name="DA">The DA object can be used to retrieve data from input parameters and 
+ to store data in output parameters.</param>
+</member>
+<member name="P:Koala.Koala.MyComponent1.Icon">
+ <summary>
+ Provides an Icon for every component that will be visible in the User Interface.
+ Icons need to be 24x24 pixels.
+ </summary>
+</member>
+<member name="P:Koala.Koala.MyComponent1.ComponentGuid">
+ <summary>
+ Each component must have a unique Guid to identify it. 
+ It is vital this Guid doesn't change otherwise old ghx files 
+ that use the old ID will partially fail during loading.
+ </summary>
+</member>
+<member name="M:Koala.Koala.FreeLineLoad.#ctor">
+ <summary>
+ Each implementation of GH_Component must provide a public 
+ constructor without any arguments.
+ Category represents the Tab in which the component will appear, 
+ Subcategory the panel. If you use non-existing tab or panel names, 
+ new tabs/panels will automatically be created.
+ </summary>
+</member>
+<member name="M:Koala.Koala.FreeLineLoad.RegisterInputParams(Grasshopper.Kernel.GH_Component.GH_InputParamManager)">
+ <summary>
+ Registers all the input parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.FreeLineLoad.RegisterOutputParams(Grasshopper.Kernel.GH_Component.GH_OutputParamManager)">
+ <summary>
+ Registers all the output parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.FreeLineLoad.SolveInstance(Grasshopper.Kernel.IGH_DataAccess)">
+ <summary>
+ This is the method that actually does the work.
+ </summary>
+ <param name="DA">The DA object can be used to retrieve data from input parameters and 
+ to store data in output parameters.</param>
+</member>
+<member name="P:Koala.Koala.FreeLineLoad.Icon">
+ <summary>
+ Provides an Icon for every component that will be visible in the User Interface.
+ Icons need to be 24x24 pixels.
+ </summary>
+</member>
+<member name="P:Koala.Koala.FreeLineLoad.ComponentGuid">
+ <summary>
+ Each component must have a unique Guid to identify it. 
+ It is vital this Guid doesn't change otherwise old ghx files 
+ that use the old ID will partially fail during loading.
+ </summary>
+</member>
+<member name="M:Koala.Koala.Nodes.#ctor">
+ <summary>
+ Each implementation of GH_Component must provide a public 
+ constructor without any arguments.
+ Category represents the Tab in which the component will appear, 
+ Subcategory the panel. If you use non-existing tab or panel names, 
+ new tabs/panels will automatically be created.
+ </summary>
+</member>
+<member name="M:Koala.Koala.Nodes.RegisterInputParams(Grasshopper.Kernel.GH_Component.GH_InputParamManager)">
+ <summary>
+ Registers all the input parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.Nodes.RegisterOutputParams(Grasshopper.Kernel.GH_Component.GH_OutputParamManager)">
+ <summary>
+ Registers all the output parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.Nodes.SolveInstance(Grasshopper.Kernel.IGH_DataAccess)">
+ <summary>
+ This is the method that actually does the work.
+ </summary>
+ <param name="DA">The DA object can be used to retrieve data from input parameters and 
+ to store data in output parameters.</param>
+</member>
+<member name="P:Koala.Koala.Nodes.Icon">
+ <summary>
+ Provides an Icon for every component that will be visible in the User Interface.
+ Icons need to be 24x24 pixels.
+ </summary>
+</member>
+<member name="P:Koala.Koala.Nodes.ComponentGuid">
+ <summary>
+ Each component must have a unique Guid to identify it. 
+ It is vital this Guid doesn't change otherwise old ghx files 
+ that use the old ID will partially fail during loading.
+ </summary>
+</member>
+<member name="M:Koala.Koala.NodeSupport.#ctor">
+ <summary>
+ Each implementation of GH_Component must provide a public 
+ constructor without any arguments.
+ Category represents the Tab in which the component will appear, 
+ Subcategory the panel. If you use non-existing tab or panel names, 
+ new tabs/panels will automatically be created.
+ </summary>
+</member>
+<member name="M:Koala.Koala.NodeSupport.RegisterInputParams(Grasshopper.Kernel.GH_Component.GH_InputParamManager)">
+ <summary>
+ Registers all the input parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.NodeSupport.RegisterOutputParams(Grasshopper.Kernel.GH_Component.GH_OutputParamManager)">
+ <summary>
+ Registers all the output parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.NodeSupport.SolveInstance(Grasshopper.Kernel.IGH_DataAccess)">
+ <summary>
+ This is the method that actually does the work.
+ </summary>
+ <param name="DA">The DA object can be used to retrieve data from input parameters and 
+ to store data in output parameters.</param>
+</member>
+<member name="P:Koala.Koala.NodeSupport.Icon">
+ <summary>
+ Provides an Icon for every component that will be visible in the User Interface.
+ Icons need to be 24x24 pixels.
+ </summary>
+</member>
+<member name="P:Koala.Koala.NodeSupport.ComponentGuid">
+ <summary>
+ Each component must have a unique Guid to identify it. 
+ It is vital this Guid doesn't change otherwise old ghx files 
+ that use the old ID will partially fail during loading.
+ </summary>
+</member>
+<member name="M:Koala.Koala.NonlinearCombination.#ctor">
+ <summary>
+ Each implementation of GH_Component must provide a public 
+ constructor without any arguments.
+ Category represents the Tab in which the component will appear, 
+ Subcategory the panel. If you use non-existing tab or panel names, 
+ new tabs/panels will automatically be created.
+ </summary>
+</member>
+<member name="M:Koala.Koala.NonlinearCombination.RegisterInputParams(Grasshopper.Kernel.GH_Component.GH_InputParamManager)">
+ <summary>
+ Registers all the input parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.NonlinearCombination.RegisterOutputParams(Grasshopper.Kernel.GH_Component.GH_OutputParamManager)">
+ <summary>
+ Registers all the output parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.NonlinearCombination.SolveInstance(Grasshopper.Kernel.IGH_DataAccess)">
+ <summary>
+ This is the method that actually does the work.
+ </summary>
+ <param name="DA">The DA object can be used to retrieve data from input parameters and 
+ to store data in output parameters.</param>
+</member>
+<member name="P:Koala.Koala.NonlinearCombination.Icon">
+ <summary>
+ Provides an Icon for every component that will be visible in the User Interface.
+ Icons need to be 24x24 pixels.
+ </summary>
+</member>
+<member name="P:Koala.Koala.NonlinearCombination.ComponentGuid">
+ <summary>
+ Each component must have a unique Guid to identify it. 
+ It is vital this Guid doesn't change otherwise old ghx files 
+ that use the old ID will partially fail during loading.
+ </summary>
+</member>
+<member name="M:Koala.Koala.Openings.#ctor">
+ <summary>
+ Each implementation of GH_Component must provide a public 
+ constructor without any arguments.
+ Category represents the Tab in which the component will appear, 
+ Subcategory the panel. If you use non-existing tab or panel names, 
+ new tabs/panels will automatically be created.
+ </summary>
+</member>
+<member name="M:Koala.Koala.Openings.RegisterInputParams(Grasshopper.Kernel.GH_Component.GH_InputParamManager)">
+ <summary>
+ Registers all the input parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.Openings.RegisterOutputParams(Grasshopper.Kernel.GH_Component.GH_OutputParamManager)">
+ <summary>
+ Registers all the output parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.Openings.SolveInstance(Grasshopper.Kernel.IGH_DataAccess)">
+ <summary>
+ This is the method that actually does the work.
+ </summary>
+ <param name="DA">The DA object can be used to retrieve data from input parameters and 
+ to store data in output parameters.</param>
+</member>
+<member name="P:Koala.Koala.Openings.Icon">
+ <summary>
+ Provides an Icon for every component that will be visible in the User Interface.
+ Icons need to be 24x24 pixels.
+ </summary>
+</member>
+<member name="P:Koala.Koala.Openings.ComponentGuid">
+ <summary>
+ Each component must have a unique Guid to identify it. 
+ It is vital this Guid doesn't change otherwise old ghx files 
+ that use the old ID will partially fail during loading.
+ </summary>
+</member>
+<member name="M:Koala.Koala.PointLoadOnBeam.#ctor">
+ <summary>
+ Each implementation of GH_Component must provide a public 
+ constructor without any arguments.
+ Category represents the Tab in which the component will appear, 
+ Subcategory the panel. If you use non-existing tab or panel names, 
+ new tabs/panels will automatically be created.
+ </summary>
+</member>
+<member name="M:Koala.Koala.PointLoadOnBeam.RegisterInputParams(Grasshopper.Kernel.GH_Component.GH_InputParamManager)">
+ <summary>
+ Registers all the input parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.PointLoadOnBeam.RegisterOutputParams(Grasshopper.Kernel.GH_Component.GH_OutputParamManager)">
+ <summary>
+ Registers all the output parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.PointLoadOnBeam.SolveInstance(Grasshopper.Kernel.IGH_DataAccess)">
+ <summary>
+ This is the method that actually does the work.
+ </summary>
+ <param name="DA">The DA object can be used to retrieve data from input parameters and 
+ to store data in output parameters.</param>
+</member>
+<member name="P:Koala.Koala.PointLoadOnBeam.Icon">
+ <summary>
+ Provides an Icon for every component that will be visible in the User Interface.
+ Icons need to be 24x24 pixels.
+ </summary>
+</member>
+<member name="P:Koala.Koala.PointLoadOnBeam.ComponentGuid">
+ <summary>
+ Each component must have a unique Guid to identify it. 
+ It is vital this Guid doesn't change otherwise old ghx files 
+ that use the old ID will partially fail during loading.
+ </summary>
+</member>
+<member name="M:Koala.Koala.PointLoadOnStructNode.#ctor">
+ <summary>
+ Each implementation of GH_Component must provide a public 
+ constructor without any arguments.
+ Category represents the Tab in which the component will appear, 
+ Subcategory the panel. If you use non-existing tab or panel names, 
+ new tabs/panels will automatically be created.
+ </summary>
+</member>
+<member name="M:Koala.Koala.PointLoadOnStructNode.RegisterInputParams(Grasshopper.Kernel.GH_Component.GH_InputParamManager)">
+ <summary>
+ Registers all the input parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.PointLoadOnStructNode.RegisterOutputParams(Grasshopper.Kernel.GH_Component.GH_OutputParamManager)">
+ <summary>
+ Registers all the output parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.PointLoadOnStructNode.SolveInstance(Grasshopper.Kernel.IGH_DataAccess)">
+ <summary>
+ This is the method that actually does the work.
+ </summary>
+ <param name="DA">The DA object can be used to retrieve data from input parameters and 
+ to store data in output parameters.</param>
+</member>
+<member name="P:Koala.Koala.PointLoadOnStructNode.Icon">
+ <summary>
+ Provides an Icon for every component that will be visible in the User Interface.
+ Icons need to be 24x24 pixels.
+ </summary>
+</member>
+<member name="P:Koala.Koala.PointLoadOnStructNode.ComponentGuid">
+ <summary>
+ Each component must have a unique Guid to identify it. 
+ It is vital this Guid doesn't change otherwise old ghx files 
+ that use the old ID will partially fail during loading.
+ </summary>
+</member>
+<member name="M:Koala.Koala.PressTensionOnlyBeamNl.#ctor">
+ <summary>
+ Each implementation of GH_Component must provide a public 
+ constructor without any arguments.
+ Category represents the Tab in which the component will appear, 
+ Subcategory the panel. If you use non-existing tab or panel names, 
+ new tabs/panels will automatically be created.
+ </summary>
+</member>
+<member name="M:Koala.Koala.PressTensionOnlyBeamNl.RegisterInputParams(Grasshopper.Kernel.GH_Component.GH_InputParamManager)">
+ <summary>
+ Registers all the input parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.PressTensionOnlyBeamNl.RegisterOutputParams(Grasshopper.Kernel.GH_Component.GH_OutputParamManager)">
+ <summary>
+ Registers all the output parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.PressTensionOnlyBeamNl.SolveInstance(Grasshopper.Kernel.IGH_DataAccess)">
+ <summary>
+ This is the method that actually does the work.
+ </summary>
+ <param name="DA">The DA object can be used to retrieve data from input parameters and 
+ to store data in output parameters.</param>
+</member>
+<member name="P:Koala.Koala.PressTensionOnlyBeamNl.Icon">
+ <summary>
+ Provides an Icon for every component that will be visible in the User Interface.
+ Icons need to be 24x24 pixels.
+ </summary>
+</member>
+<member name="P:Koala.Koala.PressTensionOnlyBeamNl.ComponentGuid">
+ <summary>
+ Each component must have a unique Guid to identify it. 
+ It is vital this Guid doesn't change otherwise old ghx files 
+ that use the old ID will partially fail during loading.
+ </summary>
+</member>
+<member name="M:Koala.Koala.ProjectInfo.#ctor">
+ <summary>
+ Each implementation of GH_Component must provide a public 
+ constructor without any arguments.
+ Category represents the Tab in which the component will appear, 
+ Subcategory the panel. If you use non-existing tab or panel names, 
+ new tabs/panels will automatically be created.
+ </summary>
+</member>
+<member name="M:Koala.Koala.ProjectInfo.RegisterInputParams(Grasshopper.Kernel.GH_Component.GH_InputParamManager)">
+ <summary>
+ Registers all the input parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.ProjectInfo.RegisterOutputParams(Grasshopper.Kernel.GH_Component.GH_OutputParamManager)">
+ <summary>
+ Registers all the output parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.ProjectInfo.SolveInstance(Grasshopper.Kernel.IGH_DataAccess)">
+ <summary>
+ This is the method that actually does the work.
+ </summary>
+ <param name="DA">The DA object can be used to retrieve data from input parameters and 
+ to store data in output parameters.</param>
+</member>
+<member name="P:Koala.Koala.ProjectInfo.Icon">
+ <summary>
+ Provides an Icon for every component that will be visible in the User Interface.
+ Icons need to be 24x24 pixels.
+ </summary>
+</member>
+<member name="P:Koala.Koala.ProjectInfo.ComponentGuid">
+ <summary>
+ Each component must have a unique Guid to identify it. 
+ It is vital this Guid doesn't change otherwise old ghx files 
+ that use the old ID will partially fail during loading.
+ </summary>
+</member>
+<member name="M:Koala.Koala.StabilityCombination.#ctor">
+ <summary>
+ Each implementation of GH_Component must provide a public 
+ constructor without any arguments.
+ Category represents the Tab in which the component will appear, 
+ Subcategory the panel. If you use non-existing tab or panel names, 
+ new tabs/panels will automatically be created.
+ </summary>
+</member>
+<member name="M:Koala.Koala.StabilityCombination.RegisterInputParams(Grasshopper.Kernel.GH_Component.GH_InputParamManager)">
+ <summary>
+ Registers all the input parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.StabilityCombination.RegisterOutputParams(Grasshopper.Kernel.GH_Component.GH_OutputParamManager)">
+ <summary>
+ Registers all the output parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.StabilityCombination.SolveInstance(Grasshopper.Kernel.IGH_DataAccess)">
+ <summary>
+ This is the method that actually does the work.
+ </summary>
+ <param name="DA">The DA object can be used to retrieve data from input parameters and 
+ to store data in output parameters.</param>
+</member>
+<member name="P:Koala.Koala.StabilityCombination.Icon">
+ <summary>
+ Provides an Icon for every component that will be visible in the User Interface.
+ Icons need to be 24x24 pixels.
+ </summary>
+</member>
+<member name="P:Koala.Koala.StabilityCombination.ComponentGuid">
+ <summary>
+ Each component must have a unique Guid to identify it. 
+ It is vital this Guid doesn't change otherwise old ghx files 
+ that use the old ID will partially fail during loading.
+ </summary>
+</member>
+<member name="M:Koala.Koala.SurfaceLoad.#ctor">
+ <summary>
+ Each implementation of GH_Component must provide a public 
+ constructor without any arguments.
+ Category represents the Tab in which the component will appear, 
+ Subcategory the panel. If you use non-existing tab or panel names, 
+ new tabs/panels will automatically be created.
+ </summary>
+</member>
+<member name="M:Koala.Koala.SurfaceLoad.RegisterInputParams(Grasshopper.Kernel.GH_Component.GH_InputParamManager)">
+ <summary>
+ Registers all the input parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.SurfaceLoad.RegisterOutputParams(Grasshopper.Kernel.GH_Component.GH_OutputParamManager)">
+ <summary>
+ Registers all the output parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.Koala.SurfaceLoad.SolveInstance(Grasshopper.Kernel.IGH_DataAccess)">
+ <summary>
+ This is the method that actually does the work.
+ </summary>
+ <param name="DA">The DA object can be used to retrieve data from input parameters and 
+ to store data in output parameters.</param>
+</member>
+<member name="P:Koala.Koala.SurfaceLoad.Icon">
+ <summary>
+ Provides an Icon for every component that will be visible in the User Interface.
+ Icons need to be 24x24 pixels.
+ </summary>
+</member>
+<member name="P:Koala.Koala.SurfaceLoad.ComponentGuid">
+ <summary>
+ Each component must have a unique Guid to identify it. 
+ It is vital this Guid doesn't change otherwise old ghx files 
+ that use the old ID will partially fail during loading.
+ </summary>
+</member>
+<member name="M:Koala.LoadCasesAndGroups.#ctor">
+ <summary>
+ Each implementation of GH_Component must provide a public 
+ constructor without any arguments.
+ Category represents the Tab in which the component will appear, 
+ Subcategory the panel. If you use non-existing tab or panel names, 
+ new tabs/panels will automatically be created.
+ </summary>
+</member>
+<member name="M:Koala.LoadCasesAndGroups.RegisterInputParams(Grasshopper.Kernel.GH_Component.GH_InputParamManager)">
+ <summary>
+ Registers all the input parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.LoadCasesAndGroups.RegisterOutputParams(Grasshopper.Kernel.GH_Component.GH_OutputParamManager)">
+ <summary>
+ Registers all the output parameters for this component.
+ </summary>
+</member>
+<member name="M:Koala.LoadCasesAndGroups.SolveInstance(Grasshopper.Kernel.IGH_DataAccess)">
+ <summary>
+ This is the method that actually does the work.
+ </summary>
+ <param name="DA">The DA object can be used to retrieve data from input parameters and 
+ to store data in output parameters.</param>
+ (ByRef out_loadcases As Object, ByRef out_loadgroups As Object) 
+</member>
+<member name="P:Koala.LoadCasesAndGroups.Icon">
+ <summary>
+ Provides an Icon for every component that will be visible in the User Interface.
+ Icons need to be 24x24 pixels.
+ </summary>
+</member>
+<member name="P:Koala.LoadCasesAndGroups.ComponentGuid">
+ <summary>
+ Each component must have a unique Guid to identify it. 
+ It is vital this Guid doesn't change otherwise old ghx files 
+ that use the old ID will partially fail during loading.
+ </summary>
+</member>
+</members>
+</doc>

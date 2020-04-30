@@ -623,8 +623,31 @@ Module HelperTools
 
         Dim arc As Rhino.Geometry.Arc
         Dim nurbscurve As Rhino.Geometry.NurbsCurve
+        Dim i As Integer
 
-        If line.IsArc() Then
+        If line.IsCircle Then
+            LineType = "Circle"
+            Dim circle As Rhino.Geometry.Circle
+            line.TryGetCircle(circle)
+            arrPoints.Clear()
+            arrPoints.Add(circle.Center)
+
+        ElseIf line.IsLinear() Then
+            LineType = "Line"
+            arrPoints.Clear()
+            arrPoints.Add(line.PointAtStart)
+            arrPoints.Add(line.PointAtEnd)
+        ElseIf line.IsPolyline Then
+            LineType = "Polyline"
+            arrPoints.Clear()
+            Dim polyline As Rhino.Geometry.Polyline
+            line.TryGetPolyline(polyline)
+            For i = 0 To polyline.Count - 1
+                arrPoints.Add(polyline.ElementAt(i))
+            Next i
+
+
+        ElseIf line.IsArc() Then
             LineType = "Arc"
             'convert to arc
             line.TryGetArc(arc)
@@ -632,11 +655,8 @@ Module HelperTools
             arrPoints.Add(arc.StartPoint)
             arrPoints.Add(arc.MidPoint)
             arrPoints.Add(arc.EndPoint)
-        ElseIf line.IsLinear() Then
-            LineType = "Line"
-            arrPoints.Clear()
-            arrPoints.Add(line.PointAtStart)
-            arrPoints.Add(line.PointAtEnd)
+            'Dim arc As Rhino.Geometry.Arc
+
         Else
             LineType = "Spline"
             'convert to Nurbs curve to get the Edit points
@@ -1077,7 +1097,7 @@ Module HelperTools
             Rhino.RhinoApp.WriteLine("Number of layers: " & SE_layersCount)
             For i = 0 To SE_layersCount - 1
                 For j = 0 To 2
-                    SE_layers(i, j) = in_layers(j + i * 2)
+                    SE_layers(i, j) = in_layers(j + i * 3)
                 Next j
             Next i
         End If
@@ -2199,23 +2219,20 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
 
         Dim LineShape As String, LineType As String
 
-        Dim node1 As String, node2 As String, node3 As String
+        Dim nodeStart As String, nodeEnd As String, MiddleNode As String
+        Dim i As Integer
 
         oSB.AppendLine("<obj nm=""" & beams(ibeam, 0) & """>")
         oSB.AppendLine(ConCat_pv("0", beams(ibeam, 0))) 'Name
 
-        LineShape = beams(ibeam, 3)
-        LineType = Strings.Trim(LineShape.Split(";")(0))
-        node1 = Strings.Trim(LineShape.Split(";")(1))
-        node2 = Strings.Trim(LineShape.Split(";")(2))
-        If LineType = "Arc" Then
-            node3 = Strings.Trim(LineShape.Split(";")(3))
-        Else
-            node3 = ""
-        End If
+        Dim ShapeAndNodes As String() = beams(ibeam, 3).Split(New Char() {";"c})
+        LineType = ShapeAndNodes.ElementAt(0)
+        nodeStart = ShapeAndNodes.ElementAt(1)
+        nodeEnd = ShapeAndNodes.Last()
 
-        oSB.AppendLine(ConCat_pn("1", node1)) 'Beg. node
-        oSB.AppendLine(ConCat_pn("2", node2)) 'End node
+
+        oSB.AppendLine(ConCat_pn("1", nodeStart)) 'Beg. node
+        oSB.AppendLine(ConCat_pn("2", nodeEnd)) 'End node
 
         oSB.AppendLine(ConCat_pn("3", beams(ibeam, 2))) 'layer
         oSB.AppendLine(ConCat_pn("4", beams(ibeam, 1))) 'Cross-Section
@@ -2257,6 +2274,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
         oSB.AppendLine(ConCat_pv("8", beams(ibeam, 12))) 'ez
 
         If LineType = "Arc" Then
+            MiddleNode = ShapeAndNodes.ElementAt(2)
             oSB.AppendLine(ConCat_opentable("9", ""))
             'Table of Geometry
             oSB.AppendLine("<h>")
@@ -2265,17 +2283,35 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             oSB.AppendLine("</h>")
 
             oSB.AppendLine(ConCat_row(0))
-            oSB.AppendLine(ConCat_pn("1", node1))
+            oSB.AppendLine(ConCat_pn("1", nodeStart))
             oSB.appendline(ConCat_pv("2", "1"))
             oSB.AppendLine("</row>")
             oSB.AppendLine(ConCat_row(1))
-            oSB.AppendLine(ConCat_pn("1", node2))
+            oSB.AppendLine(ConCat_pn("1", MiddleNode))
             oSB.AppendLine("</row>")
             oSB.AppendLine(ConCat_row(2))
-            oSB.AppendLine(ConCat_pn("1", node3))
+            oSB.AppendLine(ConCat_pn("1", nodeEnd))
+            oSB.AppendLine("</row>")
+            oSB.AppendLine(ConCat_closetable("9"))
+        ElseIf LineType = "Polyline" Then
+            oSB.AppendLine(ConCat_opentable("9", ""))
+            'Table of Geometry
+            oSB.AppendLine("<h>")
+            oSB.AppendLine(ConCat_ht("1", "Node"))
+            oSB.AppendLine(ConCat_ht("2", "Edge"))
+            oSB.AppendLine("</h>")
+            For i = 1 To ShapeAndNodes.Count - 2
+                oSB.AppendLine(ConCat_row(i - 1))
+                oSB.AppendLine(ConCat_pn("1", ShapeAndNodes.ElementAt(i)))
+                oSB.appendline(ConCat_pv("2", "0"))
+                oSB.AppendLine("</row>")
+            Next i
+            oSB.AppendLine(ConCat_row(i - 1))
+            oSB.AppendLine(ConCat_pn("1", ShapeAndNodes.ElementAt(i)))
             oSB.AppendLine("</row>")
 
-        Else
+            oSB.AppendLine(ConCat_closetable("9"))
+        ElseIf LineType = "Line" Then 'line
             oSB.AppendLine(ConCat_opentable("9", ""))
             'Table of Geometry
             oSB.AppendLine("<h>")
@@ -2283,12 +2319,29 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             oSB.AppendLine(ConCat_ht("2", "Edge"))
             oSB.AppendLine("</h>")
             oSB.AppendLine(ConCat_row(0))
-            oSB.AppendLine(ConCat_pn("1", node1))
+            oSB.AppendLine(ConCat_pn("1", nodeStart))
             oSB.appendline(ConCat_pv("2", "0"))
             oSB.AppendLine("</row>")
             oSB.AppendLine(ConCat_row(1))
-            oSB.AppendLine(ConCat_pn("1", node2))
+            oSB.AppendLine(ConCat_pn("1", nodeEnd))
             oSB.AppendLine("</row>")
+            oSB.AppendLine(ConCat_closetable("9"))
+        ElseIf LineType = "Spline" Then
+            oSB.AppendLine(ConCat_opentable("9", ""))
+            'Table of Geometry
+            oSB.AppendLine("<h>")
+            oSB.AppendLine(ConCat_ht("1", "Node"))
+            oSB.AppendLine(ConCat_ht("2", "Edge"))
+            oSB.AppendLine("</h>")
+            oSB.AppendLine(ConCat_row(0))
+            oSB.AppendLine(ConCat_pn("1", nodeStart))
+            oSB.appendline(ConCat_pv("2", "7"))
+            oSB.AppendLine("</row>")
+            For i = 2 To ShapeAndNodes.Count - 1
+                oSB.AppendLine(ConCat_row(i - 1))
+                oSB.AppendLine(ConCat_pn("1", ShapeAndNodes.ElementAt(i)))
+                oSB.AppendLine("</row>")
+            Next i
             oSB.AppendLine(ConCat_closetable("9"))
         End If
         Select Case beams(ibeam, 8)

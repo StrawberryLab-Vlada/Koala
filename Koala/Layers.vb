@@ -61,13 +61,15 @@ Namespace Koala
 
             'identify section information in the strings
             For Each item In Layers
-                layername = item.Split(";")(0)
-                layerDescription = item.Split(";")(1)
-                IslayerStructuralOnly = item.Split(";")(2)
-                SE_layers(itemcount, 0) = layername.Trim
-                SE_layers(itemcount, 1) = layerDescription.Trim
-                SE_layers(itemcount, 2) = IslayerStructuralOnly.Trim
-                itemcount += 1
+                If (item IsNot "") Then
+                    layername = item.Split(";")(0)
+                    layerDescription = item.Split(";")(1)
+                    IslayerStructuralOnly = item.Split(";")(2)
+                    SE_layers(itemcount, 0) = layername.Trim
+                    SE_layers(itemcount, 1) = layerDescription.Trim
+                    SE_layers(itemcount, 2) = IslayerStructuralOnly.Trim
+                    itemcount += 1
+                End If
             Next
 
             'Flatten data for export as simple list

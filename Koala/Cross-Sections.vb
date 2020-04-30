@@ -64,16 +64,18 @@ Namespace Koala
 
             'identify section information in the strings
             For Each item In Sections
-                sectionname = item.Split(";")(0)
-                sectioncode = item.Split(";")(1)
-                sectiondef = item.Split(";")(2)
-                sectionmat = item.Split(";")(3)
-                SE_sections(itemcount, 0) = sectionname.Trim
-                SE_sections(itemcount, 1) = sectioncode.Trim
-                SE_sections(itemcount, 2) = sectiondef.Trim
-                SE_sections(itemcount, 3) = sectionmat.Trim
+                If (item IsNot "") Then
+                    sectionname = item.Split(";")(0)
+                    sectioncode = item.Split(";")(1)
+                    sectiondef = item.Split(";")(2)
+                    sectionmat = item.Split(";")(3)
+                    SE_sections(itemcount, 0) = sectionname.Trim
+                    SE_sections(itemcount, 1) = sectioncode.Trim
+                    SE_sections(itemcount, 2) = sectiondef.Trim
+                    SE_sections(itemcount, 3) = sectionmat.Trim
 
-                itemcount += 1
+                    itemcount += 1
+                End If
             Next
 
             'Flatten data for export as simple list

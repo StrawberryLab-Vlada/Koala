@@ -183,8 +183,8 @@ Namespace Koala
                 GetTypeAndNodes(Curves(i), LineType, arrPoints)
 
                 LineShape = LineType
-                If LineType <> "Line" And LineType <> "Arc" Then
-                    Rhino.RhinoApp.WriteLine("KoalaBeams: Could not recognize the geometry of the inputted curves: """ & LineType & """. Only straight lines & circle arcs are supported.")
+                If LineType <> "Line" And LineType <> "Arc" And LineType <> "Polyline" And LineType <> "Spline" Then 'And LineType <> "Circle" Then
+                    Rhino.RhinoApp.WriteLine("KoalaBeams: Could not recognize the geometry of the inputted curves: """ & LineType & """. Only straight lines & circle arcs are supported. Beam" & BeamNamePrefix + i.ToString() & "will not be created.")
                     Continue For
                 End If
 
@@ -272,6 +272,9 @@ Namespace Koala
             FlatBeamList.Clear()
 
             For i = 0 To beamcount - 1
+                If SE_beams(i, 0) Is Nothing Then
+                    Continue For
+                End If
                 FlatBeamList.Add(SE_beams(i, 0))
                 FlatBeamList.Add(SE_beams(i, 1))
                 FlatBeamList.Add(SE_beams(i, 2))

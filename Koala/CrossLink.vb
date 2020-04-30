@@ -65,12 +65,14 @@ Namespace Koala
 
             'identify section information in the strings
             For Each item In CoupledMembers
-                Firtsmember = item.Split(";")(0)
-                SecondMember = item.Split(";")(1)
-                SE_Crosslinks(itemcount, 0) = Type
-                SE_Crosslinks(itemcount, 1) = Firtsmember.Trim
-                SE_Crosslinks(itemcount, 2) = SecondMember.Trim
-                itemcount += 1
+                If (item IsNot "") Then
+                    Firtsmember = item.Split(";")(0)
+                    SecondMember = item.Split(";")(1)
+                    SE_Crosslinks(itemcount, 0) = Type
+                    SE_Crosslinks(itemcount, 1) = Firtsmember.Trim
+                    SE_Crosslinks(itemcount, 2) = SecondMember.Trim
+                    itemcount += 1
+                End If
             Next
 
             'Flatten data for export as simple list
