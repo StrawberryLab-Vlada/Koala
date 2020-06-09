@@ -33,14 +33,14 @@ Namespace Koala
             pManager.AddTextParameter("NodePrefix", "NodePrefix", "Node prefix", GH_ParamAccess.item, "NB")
             pManager.AddNumberParameter("Tolerance", "Tolerance", "Tolerance for duplicity nodes", GH_ParamAccess.item, 0.001)
             pManager.AddBooleanParameter("RemDuplNodes", "RemDuplNodes", "Set True if you want to remove duplicate nodes", GH_ParamAccess.item, False)
-            pManager.AddIntegerParameter("StructuralType", "StructuralType", "Type:  Right click and select from options", GH_ParamAccess.item, 0)
+            pManager.AddIntegerParameter("StructuralType", "StructuralType", "Type:  Right click and select from options or choose number: general - 0, beam - 1, column - 2, gable column - 3, secondary column - 4,rafter-5, purlin- 6,roof bracing-7,
+            wall bracing - 8, girt - 9, truss chord- 10, truss diagonal - 11,plate rib - 12, beam slab - 13", GH_ParamAccess.list, 0)
             AddOptionsToMenuBeamType(pManager.Param(7))
-            pManager.AddIntegerParameter("FEMtype", "FEM type", "Element type for FEM analysis: Right click and select from options", GH_ParamAccess.item, 0)
-            AddOptionsToMenuBeamFEMtype(pManager.Param(8))
-            pManager.AddIntegerParameter("MemberSystemLine", "MemberSystemLine", "Member system line at: Right click and select from options", GH_ParamAccess.item, 1)
+            pManager.AddIntegerParameter("FEMtype", "FEM type", "Element type for FEM analysis: Right click and select from options or choose number: standard - 0,axial force only - 1", GH_ParamAccess.list, 0)
+            pManager.AddIntegerParameter("MemberSystemLine", "MemberSystemLine", "Member system line at: Right click and select from options or choose number: Centre - 1,Top - 2,  Bottom - 4,Left - 8, Top left - 10, Bottom left - 12, Right - 16, Top right - 18,Bottom right - 20 ", GH_ParamAccess.list, 1)
             AddOptionstoMenuMemberSystemLine(pManager.Param(9))
-            pManager.AddNumberParameter("ey", "ey", "Eccentricity of load in y axis", GH_ParamAccess.item, 0)
-            pManager.AddNumberParameter("ez", "ez", "Eccentricity of load in z axis", GH_ParamAccess.item, 0)
+            pManager.AddNumberParameter("ey", "ey", "Eccentricity of load in y axis", GH_ParamAccess.list, 0)
+            pManager.AddNumberParameter("ez", "ez", "Eccentricity of load in z axis", GH_ParamAccess.list, 0)
             pManager.AddTextParameter("BeamNamePrefix", "BeamNamePrefix", "Beam name prefix", GH_ParamAccess.item, "B")
 
 
@@ -78,10 +78,15 @@ Namespace Koala
             Dim tolerance As Double
             Dim RemDuplNodes As Boolean
             Dim StructuralType As String = "general"
+            Dim StructuralTypes = New List(Of Integer)
             Dim FEMtype As String = "standard"
+            Dim FEMtypes = New List(Of Integer)
             Dim MemberSystemLine As String = "Centre"
+            Dim MemberSystemLines = New List(Of Integer)
             Dim ey As Double = 0.0
+            Dim eys = New List(Of Double)
             Dim ez As Double = 0.0
+            Dim ezs = New List(Of Double)
             Dim BeamNamePrefix As String = "B"
 
 
@@ -94,14 +99,12 @@ Namespace Koala
             If (Not DA.GetData(Of String)(4, NodePrefix)) Then Return
             If (Not DA.GetData(Of Double)(5, tolerance)) Then Return
             If (Not DA.GetData(Of Boolean)(6, RemDuplNodes)) Then Return
-            DA.GetData(Of Integer)(7, i)
-            StructuralType = GetStringForBeamType(i)
-            DA.GetData(Of Integer)(8, i)
-            FEMtype = GetStringForBeamFEMtype(i)
-            DA.GetData(Of Integer)(9, i)
-            MemberSystemLine = GetStringForMemberSystemLineOrPlane(i)
-            DA.GetData(Of Double)(10, ey)
-            DA.GetData(Of Double)(11, ez)
+            DA.GetDataList(Of Integer)(7, StructuralTypes)
+            DA.GetDataList(Of Integer)(8, FEMtypes)
+
+            DA.GetDataList(Of Integer)(9, MemberSystemLines)
+            DA.GetDataList(Of Double)(10, eys)
+            DA.GetDataList(Of Double)(11, ezs)
             DA.GetData(Of String)(12, BeamNamePrefix)
 
             Dim SE_nodes(100000, 3) As String 'a node consists of: Name, X, Y, Z > make the array a dynamic list later
@@ -118,7 +121,7 @@ Namespace Koala
 
             Dim nodecount As Long, beamcount As Long
             Dim curvecount As Long
-            Dim maxlayer As Long, maxsection As Long, maxzvector As Long
+            Dim maxlayer As Long, maxsection As Long, maxzvector As Long, maxStructuralTypes As Long, maxFEMTypes As Long, maxMemberSysLines As Long, maxEy As Long, maxEz As Long
 
             Dim LineShape As String, LineType As String
 
@@ -175,7 +178,39 @@ Namespace Koala
             ElseIf curvecount > sections.count Then
                 Rhino.RhinoApp.WriteLine("KoalaBeams: Less sections are defined than beams. The last defined section will be used for the extra beams")
             End If
-            maxsection = sections.count - 1
+            maxsection = sections.Count - 1
+
+            'check maxStructuralTypes of sections
+            If curvecount < StructuralTypes.Count Then
+                Rhino.RhinoApp.WriteLine("KoalaBeams: Too many  StructuralTypes are defined. They will be ignored.")
+            ElseIf curvecount > StructuralTypes.Count Then
+                Rhino.RhinoApp.WriteLine("KoalaBeams: Less StructuralTypes are defined than beams. The last defined section will be used for the extra beams")
+            End If
+            maxStructuralTypes = StructuralTypes.Count - 1
+
+            'check maxFEMTypes of sections
+            If curvecount < FEMtypes.Count Then
+                Rhino.RhinoApp.WriteLine("KoalaBeams: Too many  FEMtypes are defined. They will be ignored.")
+            ElseIf curvecount > FEMtypes.Count Then
+                Rhino.RhinoApp.WriteLine("KoalaBeams: Less FEMtypes are defined than beams. The last defined section will be used for the extra beams")
+            End If
+            maxFEMTypes = FEMtypes.Count - 1
+
+            'check max of sections
+            If curvecount < eys.Count Then
+                Rhino.RhinoApp.WriteLine("KoalaBeams: Too many  eccentricities ey are defined. They will be ignored.")
+            ElseIf curvecount > eys.Count Then
+                Rhino.RhinoApp.WriteLine("KoalaBeams: Less eccentricities ey are defined than beams. The last defined section will be used for the extra beams")
+            End If
+            maxEy = eys.Count - 1
+
+            'check maxStructuralTypes of sections
+            If curvecount < ezs.Count Then
+                Rhino.RhinoApp.WriteLine("KoalaBeams: Too many  eccentricities ez are defined. They will be ignored.")
+            ElseIf curvecount > ezs.Count Then
+                Rhino.RhinoApp.WriteLine("KoalaBeams: Less eccentricities ez are defined than beams. The last defined section will be used for the extra beams")
+            End If
+            maxEz = ezs.Count - 1
 
             For i = 0 To curvecount - 1
 
@@ -246,10 +281,40 @@ Namespace Koala
                     SE_beams(i, 6) = ZVectors(ivector).Y
                     SE_beams(i, 7) = ZVectors(ivector).Z
                 End If
+
+                If i <= maxStructuralTypes Then
+                    StructuralType = GetStringForBeamType(StructuralTypes(i))
+                Else
+                    StructuralType = GetStringForBeamType(StructuralTypes(maxStructuralTypes))
+                End If
                 SE_beams(i, 8) = StructuralType
+
+                If i <= maxFEMTypes Then
+                    FEMtype = GetStringForBeamFEMtype(FEMtypes(i))
+                Else
+                    FEMtype = GetStringForBeamFEMtype(FEMtypes(maxFEMTypes))
+                End If
                 SE_beams(i, 9) = FEMtype
+
+                If i <= maxMemberSysLines Then
+                    MemberSystemLine = GetStringForMemberSystemLineOrPlane(MemberSystemLines(i))
+                Else
+                    MemberSystemLine = GetStringForMemberSystemLineOrPlane(MemberSystemLines(maxMemberSysLines))
+                End If
                 SE_beams(i, 10) = MemberSystemLine
+
+                If i <= maxEy Then
+                    ey = eys(i)
+                Else
+                    ey = eys(maxEz)
+                End If
                 SE_beams(i, 11) = ey
+
+                If i <= maxEz Then
+                    ez = ezs(i)
+                Else
+                    ez = ezs(maxEz)
+                End If
                 SE_beams(i, 12) = ez
 
 

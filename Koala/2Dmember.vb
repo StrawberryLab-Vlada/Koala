@@ -34,15 +34,15 @@ Namespace Koala
             pManager.AddTextParameter("NodePrefix", "NodePrefix", "Node prefix", GH_ParamAccess.item, "N2D")
             pManager.AddNumberParameter("Tolerance", "Tolerance", "Tolerance for duplicity nodes", GH_ParamAccess.item, 0.001)
             pManager.AddBooleanParameter("RemDuplNodes", "RemDuplNodes", "Set True if you want to remove duplicate nodes", GH_ParamAccess.item, False)
-            pManager.AddIntegerParameter("MemberSystemPlane", "MemberSystemPlane", "System plane of the member:  Right click and select from options", GH_ParamAccess.item, 1)
+            pManager.AddIntegerParameter("MemberSystemPlane", "MemberSystemPlane", "System plane of the member:  Right click and select from options or Centre - 1, Top - 2, Bottom - 4", GH_ParamAccess.list, 1)
             AddOptionstoMenuMemberSystemPlane(pManager.Param(8))
-            pManager.AddNumberParameter("Eccentricity z", "Eccentricity z", "Eccentricity of the plane", GH_ParamAccess.item, 0.0)
-            pManager.AddIntegerParameter("FEM nonlinear model", "FEM nonlinear model", "Nonlinear model: Right click and select from options", GH_ParamAccess.item, 0)
+            pManager.AddNumberParameter("Eccentricity z", "Eccentricity z", "Eccentricity of the plane", GH_ParamAccess.list, 0.0)
+            pManager.AddIntegerParameter("FEM nonlinear model", "FEM nonlinear model", "Nonlinear model: Right click and select from options or none - 0, Press only - 1, Membarene - 2", GH_ParamAccess.list, 0)
             AddOptionstoMenuFEMNLType2D(pManager.Param(10))
             pManager.AddTextParameter("SurfaceNamePrefix", "SurfaceNamePrefix", "Surface name prefix", GH_ParamAccess.item, "S")
-            pManager.AddIntegerParameter("SwapOrientation", "SwapOrientation", "Swap orientation of surface", GH_ParamAccess.item, 0)
+            pManager.AddIntegerParameter("SwapOrientation", "SwapOrientation", "Swap orientation of surface No - 0, Yes - 1", GH_ParamAccess.list, 0)
             AddOptionstoMenuSwapOrientation(pManager.Param(12))
-            pManager.AddNumberParameter("LCSangle", "LCSangle", "LCS angle[deg]", GH_ParamAccess.item, 0)
+            pManager.AddNumberParameter("LCSangle", "LCSangle", "LCS angle[deg]", GH_ParamAccess.list, 0)
             'pManager.AddTextParameter("Type", "Type", "Type of element: Plate, Wall, Shell", GH_ParamAccess.item, "Plate")
         End Sub
 
@@ -70,12 +70,17 @@ Namespace Koala
             Dim Tolerance As Double = 0.001
             Dim RemDuplNodes As Boolean = False
             Dim MemberPlane As String = "Centre"
+            Dim MemberPlanes = New List(Of Integer)
             Dim EccentricityZ As Double = 0.0
+            Dim EccentricityZs = New List(Of Double)
             Dim FEMNLType As String = "none"
+            Dim FEMNLTypes = New List(Of Integer)
             Dim SurfaceNamePrefix As String = "S"
             Dim i As Integer = 0
             Dim SwapOrientation As Integer = 0
+            Dim SwapOrientations = New List(Of Integer)
             Dim AngleLCS As Double = 0.0
+            Dim AngleLCSs = New List(Of Double)
 
             If (Not DA.GetDataList(Of Brep)(0, Surfaces)) Then Return
             If (Not DA.GetData(Of String)(1, Material)) Then Return
@@ -85,15 +90,20 @@ Namespace Koala
             If (Not DA.GetData(Of String)(5, NodePrefix)) Then Return
             If (Not DA.GetData(Of Double)(6, Tolerance)) Then Return
             If (Not DA.GetData(Of Boolean)(7, RemDuplNodes)) Then Return
-            If (Not DA.GetData(Of Integer)(8, i)) Then Return
-            MemberPlane = GetStringForMemberSystemLineOrPlane(i)
-            If (Not DA.GetData(Of Double)(9, EccentricityZ)) Then Return
-            If (Not DA.GetData(Of Integer)(10, i)) Then Return
-            FEMNLType = GetStringForFEMNLType2D(i)
+            If (Not DA.GetDataList(Of Integer)(8, MemberPlanes)) Then Return
+            'If (Not DA.GetData(Of Integer)(8, i)) Then Return
+            'MemberPlane = GetStringForMemberSystemLineOrPlane(i)
+            'If (Not DA.GetData(Of Double)(9, EccentricityZ)) Then Return
+            If (Not DA.GetDataList(Of Double)(9, EccentricityZs)) Then Return
+            If (Not DA.GetDataList(Of Integer)(10, FEMNLTypes)) Then Return
+            'If (Not DA.GetData(Of Integer)(10, i)) Then Return
+            'FEMNLType = GetStringForFEMNLType2D(i)
             If (Not DA.GetData(Of String)(11, SurfaceNamePrefix)) Then Return
-            If (Not DA.GetData(Of Integer)(12, SwapOrientation)) Then Return
+            If (Not DA.GetDataList(Of Integer)(12, SwapOrientations)) Then Return
+            'If (Not DA.GetData(Of Integer)(12, SwapOrientation)) Then Return
             ' SwapOrientation = GetStringFromSwapOrientation(i)
-            If (Not DA.GetData(Of Double)(13, AngleLCS)) Then Return
+            'If (Not DA.GetData(Of Double)(13, AngleLCS)) Then Return
+            If (Not DA.GetDataList(Of Double)(13, AngleLCSs)) Then Return
             Dim j As Long
 
             AngleLCS = (AngleLCS * Math.PI) / 180
@@ -132,6 +142,7 @@ Namespace Koala
 
             Dim stopWatch As New System.Diagnostics.Stopwatch()
             Dim time_elapsed As Double
+            Dim maxMemberPlanes As Long, maxEz As Long, maxFEMNLtypes As Long, maxSwapOrient As Long, maxAngelLCS As Long
 
             'initialize stopwatch
             stopWatch.Start()
@@ -140,6 +151,50 @@ Namespace Koala
             nodecount = 0
             surfacecount = 0
             SurfType = ""
+
+
+            Dim Surfacecescount = Surfaces.Count
+            'check nr of z vectors
+            If Surfacecescount < MemberPlanes.Count Then
+                Rhino.RhinoApp.WriteLine("Koala2Dmembers: Too many MemberPlanes are defined. They will be ignored.")
+            ElseIf Surfacecescount > MemberPlanes.count Then
+                Rhino.RhinoApp.WriteLine("Koala2Dmembers: Less MemberPlanes are defined than beams. The last defined Z vector will be used for the extra beams")
+            End If
+            maxMemberPlanes = MemberPlanes.Count - 1
+
+            'check nr of layers
+            If Surfacecescount < EccentricityZs.Count Then
+                Rhino.RhinoApp.WriteLine("Koala2Dmembers: Too many EccentricityZs are defined. They will be ignored.")
+            ElseIf Surfacecescount > EccentricityZs.count Then
+                Rhino.RhinoApp.WriteLine("Koala2Dmembers: Less EccentricityZs are defined than beams. The last defined layer will be used for the extra beams")
+            End If
+            maxEz = EccentricityZs.Count - 1
+
+            'check nr of sections
+            If Surfacecescount < FEMNLTypes.Count Then
+                Rhino.RhinoApp.WriteLine("Koala2Dmembers: Too many FEMNLTypes are defined. They will be ignored.")
+            ElseIf Surfacecescount > FEMNLTypes.Count Then
+                Rhino.RhinoApp.WriteLine("Koala2Dmembers: Less FEMNLTypes are defined than beams. The last defined section will be used for the extra beams")
+            End If
+            maxFEMNLtypes = FEMNLTypes.Count - 1
+
+            'check maxStructuralTypes of sections
+            If Surfacecescount < SwapOrientations.Count Then
+                Rhino.RhinoApp.WriteLine("Koala2Dmembers: Too many  SwapOrientations are defined. They will be ignored.")
+            ElseIf Surfacecescount > SwapOrientations.Count Then
+                Rhino.RhinoApp.WriteLine("Koala2Dmembers: Less SwapOrientations are defined than beams. The last defined section will be used for the extra beams")
+            End If
+            maxSwapOrient = SwapOrientations.Count - 1
+
+            'check maxFEMTypes of sections
+            If Surfacecescount < AngleLCSs.Count Then
+                Rhino.RhinoApp.WriteLine("Koala2Dmembers: Too many  FEMtypes are defined. They will be ignored.")
+            ElseIf Surfacecescount > AngleLCSs.Count Then
+                Rhino.RhinoApp.WriteLine("Koala2Dmembers: Less FEMtypes are defined than beams. The last defined section will be used for the extra beams")
+            End If
+            maxAngelLCS = AngleLCSs.Count - 1
+
+
 
             'loop through all surfaces
             '===========================
@@ -265,10 +320,40 @@ Namespace Koala
 
                 SE_surfaces(surfacecount - 1, 5) = BoundaryShape
                 SE_surfaces(surfacecount - 1, 6) = "" 'initialize list of internal nodes to empty string
+
+                If i <= maxMemberPlanes Then
+                    MemberPlane = GetStringForMemberSystemLineOrPlane(MemberPlanes(i))
+                Else
+                    MemberPlane = GetStringForMemberSystemLineOrPlane(MemberPlanes(maxMemberPlanes))
+                End If
                 SE_surfaces(surfacecount - 1, 7) = MemberPlane
+
+                If i <= maxEz Then
+                    EccentricityZ = EccentricityZs(i)
+                Else
+                    EccentricityZ = EccentricityZs(maxEz)
+                End If
                 SE_surfaces(surfacecount - 1, 8) = EccentricityZ
+
+                If i <= maxFEMNLtypes Then
+                    FEMNLType = GetStringForFEMNLType2D(FEMNLTypes(i))
+                Else
+                    FEMNLType = GetStringForFEMNLType2D(FEMNLTypes(maxFEMNLtypes))
+                End If
                 SE_surfaces(surfacecount - 1, 9) = FEMNLType
+
+                If i <= maxSwapOrient Then
+                    SwapOrientation = SwapOrientations(i)
+                Else
+                    SwapOrientation = SwapOrientations(maxSwapOrient)
+                End If
                 SE_surfaces(surfacecount - 1, 10) = SwapOrientation
+
+                If i <= maxAngelLCS Then
+                    AngleLCS = (AngleLCSs(i) * Math.PI) / 180
+                Else
+                    AngleLCS = (AngleLCSs(maxAngelLCS) * Math.PI) / 180
+                End If
                 SE_surfaces(surfacecount - 1, 11) = AngleLCS
             Next brep 'iterate to next surface
 
