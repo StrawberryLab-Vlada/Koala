@@ -763,7 +763,7 @@ Module HelperTools
         Dim SE_hinges(100000, 14) As String 'a hinge consists of: Beam name, ux, uy, uz, phix, phiy, phiz (0: free, 1: fixed), Position (Begin/End/Both)
         Dim SE_eLoads(100000, 14) As String 'a hinge consists of: Beam name, ux, uy, uz, phix, phiy, phiz (0: free, 1: fixed), Position (Begin/End/Both)
         Dim SE_pointLoadPoint(100000, 5) As String 'a hinge consists of: Beam name, ux, uy, uz, phix, phiy, phiz (0: free, 1: fixed), Position (Begin/End/Both)
-        Dim SE_pointLoadBeam(100000, 11) As String 'a hinge consists of: Beam name, ux, uy, uz, phix, phiy, phiz (0: free, 1: fixed), Position (Begin/End/Both)
+        Dim SE_pointLoadBeam(100000, 12) As String 'a hinge consists of: Beam name, ux, uy, uz, phix, phiy, phiz (0: free, 1: fixed), Position (Begin/End/Both)
         Dim SE_lincombinations(100000, 3) As String
         Dim SE_nonlincombinations(100000, 4) As String
         Dim SE_stabcombinations(100000, 2) As String
@@ -961,11 +961,11 @@ Module HelperTools
             Next i
         End If
         If (in_pointLoadsBeams IsNot Nothing) Then
-            pointLoadbeamCount = in_pointLoadsBeams.Count / 11
+            pointLoadbeamCount = in_pointLoadsBeams.Count / 12
             Rhino.RhinoApp.WriteLine("Number of beam line loads: " & lloadcount)
             For i = 0 To pointLoadbeamCount - 1
-                For j = 0 To 10
-                    SE_pointLoadBeam(i, j) = in_pointLoadsBeams(j + i * 11)
+                For j = 0 To 11
+                    SE_pointLoadBeam(i, j) = in_pointLoadsBeams(j + i * 12)
                 Next j
             Next i
         End If
@@ -1937,6 +1937,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             oSB.AppendLine(ConCat_hh("9", "Repeat (n)"))
             oSB.AppendLine(ConCat_hh("10", "Eccentricity ey"))
             oSB.AppendLine(ConCat_hh("11", "Eccentricity ez"))
+            oSB.AppendLine(ConCat_hh("12", "Delta x"))
             oSB.AppendLine("</h>")
 
             For i = 0 To pointLoadbeamCount - 1
@@ -3619,6 +3620,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
         oSB.AppendLine(ConCat_pv("9", loads(iload, 8)))
         oSB.AppendLine(ConCat_pv("10", loads(iload, 9)))
         oSB.AppendLine(ConCat_pv("11", loads(iload, 10)))
+        oSB.AppendLine(ConCat_pv("12", loads(iload, 11)))
 
         oSB.AppendLine("</obj>")
     End Sub

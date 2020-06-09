@@ -40,6 +40,7 @@ Namespace Koala
             pManager.AddIntegerParameter("Repeat", "Repeat", "Repeat", GH_ParamAccess.item, 1)
             pManager.AddNumberParameter("ey", "ey", "Eccentricity of load in y axis", GH_ParamAccess.item, 0)
             pManager.AddNumberParameter("ez", "ez", "Eccentricity of load in z axis", GH_ParamAccess.item, 0)
+            pManager.AddNumberParameter("deltaX", "deltaX", "delta X - distance between repeated forces", GH_ParamAccess.item, 0.1)
         End Sub
 
         ''' <summary>
@@ -67,6 +68,7 @@ Namespace Koala
             Dim ey As Double = 0.0
             Dim ez As Double = 0.0
             Dim i As Integer
+            Dim deltaX As Double = 0.0
 
             If (Not DA.GetData(Of String)(0, LoadCase)) Then Return
             If (Not DA.GetDataList(Of String)(1, BeamList)) Then Return
@@ -83,10 +85,11 @@ Namespace Koala
             DA.GetData(Of Integer)(8, Repeat)
             DA.GetData(Of Double)(9, ey)
             DA.GetData(Of Double)(10, ez)
+            DA.GetData(Of Double)(11, deltaX)
 
 
 
-            Dim SE_loads(BeamList.Count, 11)
+            Dim SE_loads(BeamList.Count, 12)
             Dim FlatList As New List(Of System.Object)()
             'a load consists of: load case, Beam name, coord. system (GCS/LCS), direction (X, Y, Z), value (kN/m)
 
@@ -110,6 +113,7 @@ Namespace Koala
                 SE_loads(itemcount, 8) = Repeat
                 SE_loads(itemcount, 9) = ey
                 SE_loads(itemcount, 10) = ez
+                SE_loads(itemcount, 11) = deltaX
                 itemcount += 1
             Next
 
@@ -129,6 +133,7 @@ Namespace Koala
                 FlatList.Add(SE_loads(i, 8))
                 FlatList.Add(SE_loads(i, 9))
                 FlatList.Add(SE_loads(i, 10))
+                FlatList.Add(SE_loads(i, 11))
             Next i
 
             DA.SetDataList(0, FlatList)

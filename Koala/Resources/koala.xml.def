@@ -1657,6 +1657,7 @@
 
 
       <def_property x="11" name="Eccentricity ez" type="param" flag="33619968" id="{F68C16E4-8E6D-11D4-A419-000000000000}"/>
+      <def_property x="12" name="Delta x" type="param" flag="33619968" id="{EDA4B5B0-8A80-11D4-A414-000000000000}"/>
 
     </def_table>
   </def_container>
