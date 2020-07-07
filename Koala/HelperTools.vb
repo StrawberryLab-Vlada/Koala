@@ -3969,7 +3969,32 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             Dim ESAXMLArgs As String
             Dim strErr As String, intExit As Integer
 
+            Dim ExportType As String
+            Dim ExportTypeString As String
+
+            ExportType = OutputFile.Split(".").Last
+            Select Case ExportType
+                Case "txt"
+                    ExportTypeString = "-tTXT -o"
+                Case "xlsx"
+                    ExportTypeString = "-sd -tXLSX -o"
+                Case "rtf"
+                    ExportTypeString = "-sd -tRTF -o"
+
+                Case "pdf"
+                    ExportTypeString = "-sd -tPDF -o"
+                Case "dds"
+                    ExportTypeString = "-sd -tDDS -o"
+                Case "txt"
+                    ExportTypeString = "-tTXT -o"
+                Case "XML"
+                    ExportTypeString = "-tXML -o"
+                Case Else
+                    ExportTypeString = "-tTXT -o"
+            End Select
+
             myProcess.StartInfo.FileName = ESAXMLPath
+            'ESAXMLArgs = CalcType & " " & TemplateName & " " & FileName & " " & ExportTypeString & OutputFile
             ESAXMLArgs = CalcType & " " & TemplateName & " " & FileName & " -tTXT -o" & OutputFile
             myProcess.StartInfo.Arguments = ESAXMLArgs
             myProcess.StartInfo.UseShellExecute = False
