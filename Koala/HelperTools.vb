@@ -626,11 +626,15 @@ Module HelperTools
         Dim i As Integer
 
         If line.IsCircle Then
-            LineType = "Circle"
             Dim circle As Rhino.Geometry.Circle
             line.TryGetCircle(circle)
+            LineType = "Circle"
             arrPoints.Clear()
+            Dim PointOnCircle As Rhino.Geometry.Point3d
+            PointOnCircle = circle.PointAt(0.0)
+            arrPoints.Add(PointOnCircle)
             arrPoints.Add(circle.Center)
+
 
         ElseIf line.IsLinear() Then
             LineType = "Line"
@@ -2558,6 +2562,8 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
                     osb.AppendLine(ConCat_pvt("2", "1", "Circle arc"))
                 Case "Spline"
                     osb.AppendLine(ConCat_pvt("2", "7", "Spline"))
+                Case "Circle"
+                    osb.AppendLine(ConCat_pvt("2", "2", "Circle by centre and vertex"))
             End Select
 
             While inode < UBound(Split(edges(iedge), ";")) - 1
@@ -2565,7 +2571,12 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
                 row_id = row_id + 1
                 osb.AppendLine("</row>")
                 osb.AppendLine(ConCat_row(row_id))
-                osb.AppendLine(ConCat_pn("1", Trim(Split(edges(iedge), ";")(1 + inode))))
+                If Split(edges(iedge), ";")(1 + inode).Contains("[") Then
+
+                Else
+                    osb.AppendLine(ConCat_pn("1", Trim(Split(edges(iedge), ";")(1 + inode))))
+                End If
+
 
             End While
             osb.AppendLine("</row>")

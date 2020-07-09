@@ -209,8 +209,18 @@ Namespace Koala
                 'join
                 joinedcurves = Rhino.Geometry.Curve.JoinCurves(nakededges)
                 'explode the first curve back to segments - this should now be properly sorted
-                segments = joinedcurves(0).DuplicateSegments
-                edgecount = segments.Count
+                If joinedcurves(0).IsCircle() Then
+                    ReDim Preserve segments(0)
+
+
+                    segments.SetValue(joinedcurves(0), 0)
+                    edgecount = 1
+
+                Else
+                    segments = joinedcurves(0).DuplicateSegments
+                    edgecount = segments.Count
+                End If
+
                 fullSurf = brep.Faces(0)
 
                 FirstNode = ""
@@ -295,6 +305,9 @@ Namespace Koala
                                 Else
                                     If inode < nodesinedge Then 'closed curve for SCIA Engineer > don't add the last point
                                         edgenodelist = edgenodelist & ";" & SE_nodes(currentnode - 1, 0)
+                                    ElseIf inode = nodesinedge And EdgeType = "Circle" Then
+                                        edgenodelist = edgenodelist & ";" & SE_nodes(currentnode - 1, 0)
+
                                     End If
                                 End If
                             End If
@@ -307,7 +320,14 @@ Namespace Koala
 
                     'add edge information to the BoundaryShape string
                     If BoundaryShape = "" Then
-                        BoundaryShape = EdgeType + ";" + edgenodelist
+                        If EdgeType = "Circle" Then
+                            Dim circle As Rhino.Geometry.Circle
+                            edge.TryGetCircle(circle)
+
+                            BoundaryShape = EdgeType + ";" + edgenodelist + ";" + "[" + (circle.Center.X + circle.Normal.X).ToString() + "," + (circle.Center.Y + circle.Normal.Y).ToString() + "," + (circle.Center.Z + circle.Normal.Z).ToString() + "]"
+                        Else
+                            BoundaryShape = EdgeType + ";" + edgenodelist
+                        End If
                     Else
                         BoundaryShape = BoundaryShape + " | " + EdgeType + ";" + edgenodelist
                     End If
