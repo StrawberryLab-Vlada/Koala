@@ -2572,7 +2572,9 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
                 osb.AppendLine("</row>")
                 osb.AppendLine(ConCat_row(row_id))
                 If Split(edges(iedge), ";")(1 + inode).Contains("[") Then
-
+                    Dim Normal As String
+                    Normal = Split(edges(iedge), ";")(1 + inode).Replace(",", ";")
+                    osb.AppendLine(ConCat_pin("1", "-1", Normal))
                 Else
                     osb.AppendLine(ConCat_pn("1", Trim(Split(edges(iedge), ";")(1 + inode))))
                 End If

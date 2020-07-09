@@ -26,8 +26,8 @@ Namespace Koala
         ''' </summary>
         Protected Overrides Sub RegisterInputParams(pManager As GH_Component.GH_InputParamManager)
             pManager.AddBrepParameter("Surfaces", "Surfaces", "List of definiton curves for beams", GH_ParamAccess.list)
-            pManager.AddTextParameter("Material", "Material", "Material", GH_ParamAccess.item, "C20/25")
-            pManager.AddNumberParameter("Thickness", "Thickness", "Thickness", GH_ParamAccess.item, 0.2)
+            pManager.AddTextParameter("Material", "Material", "Material", GH_ParamAccess.list, "C20/25")
+            pManager.AddNumberParameter("Thickness", "Thickness", "Thickness", GH_ParamAccess.list, 0.2)
             pManager.AddTextParameter("SurfLayer", "SurfLayer", "Definition of SurfLayer", GH_ParamAccess.item, "Surflayer")
             pManager.AddTextParameter("InternalNodes", "InternalNodes", "InternalNodes", GH_ParamAccess.list)
             pManager.Param(4).Optional = True
@@ -44,6 +44,7 @@ Namespace Koala
             AddOptionstoMenuSwapOrientation(pManager.Param(12))
             pManager.AddNumberParameter("LCSangle", "LCSangle", "LCS angle[deg]", GH_ParamAccess.list, 0)
             'pManager.AddTextParameter("Type", "Type", "Type of element: Plate, Wall, Shell", GH_ParamAccess.item, "Plate")
+
         End Sub
 
         ''' <summary>
@@ -62,8 +63,8 @@ Namespace Koala
         Protected Overrides Sub SolveInstance(DA As IGH_DataAccess)
 
             Dim Surfaces = New List(Of Brep)
-            Dim Material As String = "C20/25"
-            Dim Thickness As Double = 0.2
+            Dim Material As New List(Of String) 'String = "C20/25"
+            Dim Thickness As New List(Of String)
             Dim SurfLayer As String = "Surfaces"
             Dim InternalNodes = New List(Of String)
             Dim NodePrefix As String = "NS"
@@ -83,8 +84,8 @@ Namespace Koala
             Dim AngleLCSs = New List(Of Double)
 
             If (Not DA.GetDataList(Of Brep)(0, Surfaces)) Then Return
-            If (Not DA.GetData(Of String)(1, Material)) Then Return
-            If (Not DA.GetData(Of Double)(2, Thickness)) Then Return
+            If (Not DA.GetDataList(Of String)(1, Material)) Then Return
+            If (Not DA.GetDataList(Of String)(2, Thickness)) Then Return
             If (Not DA.GetData(Of String)(3, SurfLayer)) Then Return
             DA.GetDataList(Of String)(4, InternalNodes)
             If (Not DA.GetData(Of String)(5, NodePrefix)) Then Return
@@ -142,7 +143,7 @@ Namespace Koala
 
             Dim stopWatch As New System.Diagnostics.Stopwatch()
             Dim time_elapsed As Double
-            Dim maxMemberPlanes As Long, maxEz As Long, maxFEMNLtypes As Long, maxSwapOrient As Long, maxAngelLCS As Long
+            Dim maxMemberPlanes As Long, maxEz As Long, maxFEMNLtypes As Long, maxSwapOrient As Long, maxAngelLCS As Long, maxMaterials As Long, maxThickness As Long
 
             'initialize stopwatch
             stopWatch.Start()
@@ -194,6 +195,22 @@ Namespace Koala
             End If
             maxAngelLCS = AngleLCSs.Count - 1
 
+            'check maxMaterials of sections
+            If Surfacecescount < Material.Count Then
+                Rhino.RhinoApp.WriteLine("Koala2Dmembers: Too many  Materials are defined. They will be ignored.")
+            ElseIf Surfacecescount > Material.Count Then
+                Rhino.RhinoApp.WriteLine("Koala2Dmembers: Less Materials are defined than beams. The last defined section will be used for the extra beams")
+            End If
+            maxMaterials = Material.Count - 1
+
+            'check maxThickness of sections
+            If Surfacecescount < Thickness.Count Then
+                Rhino.RhinoApp.WriteLine("Koala2Dmembers: Too many  Thicknesses are defined. They will be ignored.")
+            ElseIf Surfacecescount > Thickness.Count Then
+                Rhino.RhinoApp.WriteLine("Koala2Dmembers: Less Thicknesses are defined than beams. The last defined section will be used for the extra beams")
+            End If
+            maxThickness = Thickness.Count - 1
+
 
 
             'loop through all surfaces
@@ -242,8 +259,18 @@ Namespace Koala
 
                 SE_surfaces(surfacecount - 1, 0) = SurfaceNamePrefix + surfacecount.ToString()
                 SE_surfaces(surfacecount - 1, 1) = SurfType
-                SE_surfaces(surfacecount - 1, 2) = Material
-                SE_surfaces(surfacecount - 1, 3) = Thickness / 1000
+                If i <= maxMaterials Then
+                    SE_surfaces(surfacecount - 1, 2) = Material(i)
+                Else
+                    SE_surfaces(surfacecount - 1, 2) = Material(maxMaterials)
+                End If
+                If i <= maxThickness Then
+                    SE_surfaces(surfacecount - 1, 2) = Thickness(i) / 1000
+                Else
+                    SE_surfaces(surfacecount - 1, 2) = Thickness(maxThickness) / 1000
+                End If
+
+
                 SE_surfaces(surfacecount - 1, 4) = SurfLayer
 
                 iedge = 0
