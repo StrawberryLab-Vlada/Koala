@@ -32,6 +32,7 @@ Namespace Koala
             pManager.AddIntegerParameter("Direction", "Direction", "Direction of load: X,Y,Z", GH_ParamAccess.item, 2)
             AddOptionsToMenuDirection(pManager.Param(3))
             pManager.AddNumberParameter("LoadValue", "LoadValue", "Value of Load in KN", GH_ParamAccess.item, -1)
+            pManager.AddTextParameter("Angle", "Angle", "Angle [deg]:Rx20,Ry0,Rz20", GH_ParamAccess.item, "Rx0,Ry0,Rz0")
         End Sub
 
         ''' <summary>
@@ -54,6 +55,7 @@ Namespace Koala
             Dim Direction As String = "Z"
             Dim LoadValue As Double = -1.0
             Dim i As Integer
+            Dim Angle As String = ""
 
 
             If (Not DA.GetData(0, LoadCase)) Then Return
@@ -63,9 +65,9 @@ Namespace Koala
             If (Not DA.GetData(3, i)) Then Return
             Direction = GetStringFromDirection(i)
             If (Not DA.GetData(4, LoadValue)) Then Return
+            DA.GetData(Of String)(5, Angle)
 
-
-            Dim SE_loads(NodeList.Count, 5)
+            Dim SE_loads(NodeList.Count, 6)
             Dim FlatList As New List(Of System.Object)()
             'a load consists of: load case, Beam name, coord. system (GCS/LCS), direction (X, Y, Z), value (kN/m)
 
@@ -83,6 +85,7 @@ Namespace Koala
                 SE_loads(itemcount, 2) = CoordSys
                 SE_loads(itemcount, 3) = Direction
                 SE_loads(itemcount, 4) = LoadValue
+                SE_loads(itemcount, 5) = Angle
                 itemcount += 1
             Next
 
@@ -96,6 +99,7 @@ Namespace Koala
                 FlatList.Add(SE_loads(i, 2))
                 FlatList.Add(SE_loads(i, 3))
                 FlatList.Add(SE_loads(i, 4))
+                FlatList.Add(SE_loads(i, 5))
             Next i
 
             DA.SetDataList(0, FlatList)

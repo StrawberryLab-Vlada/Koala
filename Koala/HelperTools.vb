@@ -762,7 +762,7 @@ Module HelperTools
         Dim SE_fsloads(100000, 6) As String 'a free surface load consists of: load case, validity, selection, coord. system (GCS/LCS), direction (X, Y, Z), value (kN/m^2), BoundaryShape
         Dim SE_hinges(100000, 14) As String 'a hinge consists of: Beam name, ux, uy, uz, phix, phiy, phiz (0: free, 1: fixed), Position (Begin/End/Both)
         Dim SE_eLoads(100000, 14) As String 'a hinge consists of: Beam name, ux, uy, uz, phix, phiy, phiz (0: free, 1: fixed), Position (Begin/End/Both)
-        Dim SE_pointLoadPoint(100000, 5) As String 'a hinge consists of: Beam name, ux, uy, uz, phix, phiy, phiz (0: free, 1: fixed), Position (Begin/End/Both)
+        Dim SE_pointLoadPoint(100000, 6) As String 'a hinge consists of: Beam name, ux, uy, uz, phix, phiy, phiz (0: free, 1: fixed), Position (Begin/End/Both)
         Dim SE_pointLoadBeam(100000, 12) As String 'a hinge consists of: Beam name, ux, uy, uz, phix, phiy, phiz (0: free, 1: fixed), Position (Begin/End/Both)
         Dim SE_lincombinations(100000, 3) As String
         Dim SE_nonlincombinations(100000, 4) As String
@@ -952,11 +952,11 @@ Module HelperTools
             Next i
         End If
         If (in_pointLoadsPoints IsNot Nothing) Then
-            pointLoadpointCount = in_pointLoadsPoints.Count / 5
+            pointLoadpointCount = in_pointLoadsPoints.Count / 6
             Rhino.RhinoApp.WriteLine("Number of beam line loads: " & pointLoadpointCount)
             For i = 0 To pointLoadpointCount - 1
-                For j = 0 To 4
-                    SE_pointLoadPoint(i, j) = in_pointLoadsPoints(j + i * 5)
+                For j = 0 To 5
+                    SE_pointLoadPoint(i, j) = in_pointLoadsPoints(j + i * 6)
                 Next j
             Next i
         End If
@@ -1898,6 +1898,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             oSB.AppendLine(ConCat_hh("3", "Direction"))
             oSB.AppendLine(ConCat_hh("4", "System"))
             oSB.AppendLine(ConCat_ht("5", "Value - F"))
+            oSB.AppendLine(ConCat_ht("6", "Angle [deg]"))
             oSB.AppendLine("</h>")
 
             For i = 0 To pointLoadpointCount - 1
@@ -3559,8 +3560,8 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
         End Select
         'load value
         oSB.AppendLine(ConCat_pv("5", loads(iload, 4) * 1000))
-
-
+        'angle
+        oSB.AppendLine(ConCat_pv("6", loads(iload, 5)))
         oSB.AppendLine("</obj>")
     End Sub
 
@@ -3994,8 +3995,8 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             End Select
 
             myProcess.StartInfo.FileName = ESAXMLPath
-            'ESAXMLArgs = CalcType & " " & TemplateName & " " & FileName & " " & ExportTypeString & OutputFile
-            ESAXMLArgs = CalcType & " " & TemplateName & " " & FileName & " -tTXT -o" & OutputFile
+            ESAXMLArgs = CalcType & " " & TemplateName & " " & FileName & " " & ExportTypeString & OutputFile
+            'ESAXMLArgs = CalcType & " " & TemplateName & " " & FileName & " -tTXT -o" & OutputFile
             myProcess.StartInfo.Arguments = ESAXMLArgs
             myProcess.StartInfo.UseShellExecute = False
             'myProcess.StartInfo.RedirectStandardOutput = True

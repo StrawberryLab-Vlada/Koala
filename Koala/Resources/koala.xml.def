@@ -783,42 +783,7 @@
       </def_table>
    </def_container>
    
-   <def_container id="{F8371A21-F459-11D4-94D3-000000000000}" clsid="{F8371A21-F459-11D4-94D3-000000000000}" progid="DataAddLoad.EP_PointForcePoint.1">
-      <def_table id="45A3A5B6-28D8-46C0-9C55-16E1626B0FE2" name="XML\default" type="vertical" clsid="{F8371A21-F459-11D4-94D3-000000000000}" progid="DataAddLoad.EP_PointForcePoint.1" size="7">
-         
-         <def_property x="0" name="Name" type="string" id="{4364BC01-AAB7-11D4-B3D9-00104BC3B531}"/>
-         
-         
-         <def_property x="1" name="Reference Table" type="table" id="{8F96D00B-2125-411D-9218-EF0038D0056F}">
-         <def_subtable size="3" type="vertical">
-         <def_property x="0" name="Member Type" type="string" id="{3334884C-E566-404D-A135-4093CC88257D}"/>
-         
-         <def_property x="1" name="Member Type Name" type="string" readonly="yes" id="{FF14758E-BC03-4650-88B5-5EA8F1016952}"/>
-         
-         <def_property x="2" name="Member Name" type="string" id="{66D67076-ED1C-44EC-BA07-93E993F493CB}"/>
-         
-         </def_subtable>
-         </def_property>
-         
-         
-         <def_property x="2" name="Load case" type="ref" id="{AACF96D6-D986-421C-9FF2-D0B696A6B1F6}">
-         <def_ref id="{0908D21F-481F-11D4-AB84-00C06C452330}" progid="DataSetScia.EP_LoadCase.1"/>
-         </def_property>
-         
-         
-         <def_property x="3" name="Direction" type="enum" flag="262144" id="{49F8017D-A4E5-11D4-A43A-000000000000}">
-         <def_enum size="3">
-         <it_enum v="0" t="X"/>
-         <it_enum v="1" t="Y"/>
-         <it_enum v="2" t="Z"/>
-         </def_enum>
-         </def_property>
-         
-         
-         <def_property x="4" name="Value - F" type="param" flag="33619968" id="{49F80183-A4E5-11D4-A43A-000000000000}"/>
-         
-      </def_table>
-   </def_container>
+  
 
    <def_container id="{BC16B3C6-F464-11D4-94D3-000000000000}" clsid="{BC16B3C6-F464-11D4-94D3-000000000000}" progid="DataAddLoad.EP_LineForceLine.1">
       <def_table id="891E5370-4DB8-4D23-93F9-B6391D3AE73E" name="XML\default" type="vertical" clsid="{BC16B3C6-F464-11D4-94D3-000000000000}" progid="DataAddLoad.EP_LineForceLine.1" size="18">
@@ -1581,7 +1546,7 @@
 
       <def_property x="5" name="Value - F" type="param" flag="33619968" id="{49F80183-A4E5-11D4-A43A-000000000000}"/>
 
-
+      <def_property x="6" name="Angle [deg]" type="string" id="{49F8017F-A4E5-11D4-A43A-000000000000}"/>
 
 
     </def_table>

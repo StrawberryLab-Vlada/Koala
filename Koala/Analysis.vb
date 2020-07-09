@@ -74,6 +74,7 @@ Namespace Koala
 
             'only run through if button is pressed
             'only run through if button is pressed
+            'AutoUpdate = False
             If AutoUpdate = False Then
                 If RunESAXML = False Then
                     Exit Sub
