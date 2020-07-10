@@ -27,7 +27,7 @@ Namespace Koala
         Protected Overrides Sub RegisterInputParams(pManager As GH_Component.GH_InputParamManager)
             pManager.AddBrepParameter("Surfaces", "Surfaces", "List of definiton curves for beams", GH_ParamAccess.list)
             pManager.AddTextParameter("Material", "Material", "Material", GH_ParamAccess.list, "C20/25")
-            pManager.AddNumberParameter("Thickness", "Thickness", "Thickness", GH_ParamAccess.list, 0.2)
+            pManager.AddTextParameter("Thickness", "Thickness", "Thickness", GH_ParamAccess.list) ', "0.2"
             pManager.AddTextParameter("SurfLayer", "SurfLayer", "Definition of SurfLayer", GH_ParamAccess.item, "Surflayer")
             pManager.AddTextParameter("InternalNodes", "InternalNodes", "InternalNodes", GH_ParamAccess.list)
             pManager.Param(4).Optional = True
@@ -265,9 +265,9 @@ Namespace Koala
                     SE_surfaces(surfacecount - 1, 2) = Material(maxMaterials)
                 End If
                 If i <= maxThickness Then
-                    SE_surfaces(surfacecount - 1, 2) = Thickness(i) / 1000
+                    SE_surfaces(surfacecount - 1, 3) = Thickness(i)
                 Else
-                    SE_surfaces(surfacecount - 1, 2) = Thickness(maxThickness) / 1000
+                    SE_surfaces(surfacecount - 1, 3) = Thickness(maxThickness)
                 End If
 
 

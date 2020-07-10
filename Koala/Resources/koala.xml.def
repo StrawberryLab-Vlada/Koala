@@ -272,10 +272,10 @@
           </def_enum>
         </def_property>
 
-        <def_property x="5" name="Thickness" type="param" flag="33619968" id="{82644AB6-D9DD-4636-B771-C6ED05FA9171}"/>
+        
 
 
-        <!--<def_property x="6" name="Thickness type" type="enum" id="{82644AB6-D9DD-4636-B771-C6ED05FA9144}">
+        <def_property x="5" name="Thickness type" type="enum" id="{82644AB6-D9DD-4636-B771-C6ED05FA9144}">
           <def_enum size="2">
             <it_enum v="0" t="constant"/>
             <it_enum v="1" t="variable"/>
@@ -283,7 +283,7 @@
         </def_property>
 
 
-        <def_property x="7" name="Direction" type="enum" flag="262144" id="{B8A78D70-8206-4F1D-88AC-19F95B0A3F3B}">
+        <def_property x="6" name="Direction" type="enum" flag="262144" id="{B8A78D70-8206-4F1D-88AC-19F95B0A3F3B}">
           <def_enum size="8">
             <it_enum v="1" t="Global X"/>
             <it_enum v="2" t="Global Y"/>
@@ -294,10 +294,15 @@
             <it_enum v="7" t="Radial"/>
             <it_enum v="8" t="Variable in 4 pt."/>
           </def_enum>
-        </def_property>-->
+        </def_property>
         
+        <def_property x="7" name="Thickness" type="param" flag="33619968" id="{82644AB6-D9DD-4636-B771-C6ED05FA9171}"/>
 
-        <def_property x="6" name="Member system-plane at" type="enum" id="{54DE517C-F821-4FDA-9D7C-4E552CA89126}">
+        <def_property x="8" name="Point 1" type="ref" flag="131072" id="{C9650E93-B8ED-4E59-B201-6DA692D1EC4E}">
+          <def_ref id="{39A7F468-A0D4-4DFF-8E5C-5843E1807D13}" progid="EP_DSG_Elements.EP_StructNode.1"/>
+        </def_property>
+
+        <def_property x="9" name="Member system-plane at" type="enum" id="{54DE517C-F821-4FDA-9D7C-4E552CA89126}">
           <def_enum size="3">
             <it_enum v="1" t="Centre"/>
             <it_enum v="2" t="Top"/>
@@ -306,9 +311,9 @@
         </def_property>
 
 
-        <def_property x="7" name="Eccentricity z" type="param" flag="33619968" id="{92FAA4D4-FE27-49EA-9D21-91A7EC47E12E}"/>
+        <def_property x="10" name="Eccentricity z" type="param" flag="33619968" id="{92FAA4D4-FE27-49EA-9D21-91A7EC47E12E}"/>
          
-         <def_property x="8" name="Table of geometry" type="table" id="{748A0933-F05E-4B33-B4D6-4854FCD612C8}">
+         <def_property x="11" name="Table of geometry" type="table" id="{748A0933-F05E-4B33-B4D6-4854FCD612C8}">
          <def_subtable size="3" type="vertical">
          <def_property x="0" name="Closed curve" type="bool" id="{E0DD8A0C-8E62-49BF-B2FF-CF737A0B65E5}"/>
          
@@ -333,7 +338,7 @@
          </def_property>
          
          
-         <def_property x="9" name="Internal nodes" type="table" id="{AE6AA708-CE5C-4465-B54B-214413ADAC4D}">
+         <def_property x="12" name="Internal nodes" type="table" id="{AE6AA708-CE5C-4465-B54B-214413ADAC4D}">
          <def_subtable size="1" type="vertical">
          <def_property x="0" name="Node" type="ref" id="{66C5A1C2-2989-4D02-847B-63E69B346911}">
          <def_ref id="{39A7F468-A0D4-4DFF-8E5C-5843E1807D13}" progid="EP_DSG_Elements.EP_StructNode.1"/>
@@ -342,8 +347,8 @@
          </def_subtable>
          </def_property>
 
-        <def_property x="10" name="Swap orientation" type="bool" flag="167772160" id="{53C7EA0D-34F7-4BC6-9187-FF0518B2D539}"/>
-        <def_property x="11" name="LCS angle" type="param" flag="33619968" id="{C118B81C-1220-4EB5-8E44-1E07C8E9FCFE}"/>
+        <def_property x="13" name="Swap orientation" type="bool" flag="167772160" id="{53C7EA0D-34F7-4BC6-9187-FF0518B2D539}"/>
+        <def_property x="14" name="LCS angle" type="param" flag="33619968" id="{C118B81C-1220-4EB5-8E44-1E07C8E9FCFE}"/>
       
         
         

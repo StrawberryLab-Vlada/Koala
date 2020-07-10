@@ -682,6 +682,9 @@ Module HelperTools
     Private Function ConCat_pvt(p, v, t)
         ConCat_pvt = "<p" & p & " v=""" & v & """ t=""" & t & """/>"
     End Function
+    Private Function ConCat_pvx(p, v, x)
+        ConCat_pvx = "<p" & p & " v=""" & v & """ x=""" & x & """/>"
+    End Function
     Private Function ConCat_pn(p, N)
         ConCat_pn = "<p" & p & " n=""" & N & """/>"
     End Function
@@ -1509,13 +1512,16 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             oSB.AppendLine(ConCat_ht("2", "Type"))
             oSB.AppendLine(ConCat_ht("3", "Material"))
             oSB.AppendLine(ConCat_ht("4", "FEM nonlinear model"))
-            oSB.AppendLine(ConCat_ht("5", "Thickness"))
-            oSB.AppendLine(ConCat_ht("6", "Member system-plane at"))
-            oSB.AppendLine(ConCat_ht("7", "Eccentricity z"))
-            oSB.AppendLine(ConCat_ht("8", "Table of geometry"))
-            oSB.AppendLine(ConCat_ht("9", "Internal nodes"))
-            oSB.AppendLine(ConCat_ht("10", "Swap orientation"))
-            oSB.AppendLine(ConCat_ht("11", "LCS angle"))
+            oSB.AppendLine(ConCat_ht("5", "Thickness type"))
+            oSB.AppendLine(ConCat_ht("6", "Direction"))
+            oSB.AppendLine(ConCat_ht("7", "Thickness"))
+            oSB.AppendLine(ConCat_ht("8", "Point 1"))
+            oSB.AppendLine(ConCat_ht("9", "Member system-plane at"))
+            oSB.AppendLine(ConCat_ht("10", "Eccentricity z"))
+            oSB.AppendLine(ConCat_ht("11", "Table of geometry"))
+            oSB.AppendLine(ConCat_ht("12", "Internal nodes"))
+            oSB.AppendLine(ConCat_ht("13", "Swap orientation"))
+            oSB.AppendLine(ConCat_ht("14", "LCS angle"))
 
 
             oSB.AppendLine("</h>")
@@ -2522,24 +2528,84 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             Case Else
                 osb.AppendLine(ConCat_pvt("4", "0", "none"))
         End Select
-        osb.AppendLine(ConCat_pv("5", CStr(surfaces(isurface, 3)))) 'thickness
+
+        Dim thickness() As String
+        thickness = Split(surfaces(isurface, 3), "|")
+        Dim thicknessType As String
+        thicknessType = thickness(0)
+        Select Case thicknessType
+            Case "constant"
+                osb.AppendLine(ConCat_pvt("5", "0", "constant"))
+                Dim thck As Double
+                thck = thickness(1) / 1000
+                osb.AppendLine(ConCat_pv("7", CStr(thck))) 'thickness
+            Case "variable"
+                osb.AppendLine(ConCat_pvt("5", "1", "variable"))
+                Dim variableThicknessType As String
+                variableThicknessType = thickness(1)
+
+                Select Case variableThicknessType
+                    Case "Global X"
+                        osb.AppendLine(ConCat_pvt("6", "1", "Global X"))
+                    Case "Global Y"
+                        osb.AppendLine(ConCat_pvt("6", "2", "Global Y"))
+                    Case "Global Z"
+                        osb.AppendLine(ConCat_pvt("6", "3", "Global Z"))
+                    Case "Local X"
+                        osb.AppendLine(ConCat_pvt("6", "4", "Local X"))
+                    Case "Local Y"
+                        osb.AppendLine(ConCat_pvt("6", "5", "Local Y"))
+                    Case "Variable in two directions"
+                        osb.AppendLine(ConCat_pvt("6", "6", "Variable in two directions"))
+                    Case "Radial"
+                        osb.AppendLine(ConCat_pvt("6", "7", "Radial"))
+                    Case "Variable in 4 pt."
+                        osb.AppendLine(ConCat_pvt("6", "8", "Variable in 4 pt."))
+
+                End Select
+                Dim thicknessProperties() As String
+                Dim i As Long
+                Dim thicknesses As New List(Of Double)
+                Dim thicknessNodes As New List(Of String)
+                If variableThicknessType = "Radial" Then
+                    For i = 2 To thickness.Count() - 1
+                        osb.AppendLine(ConCat_pvx("7", thickness(i) / 1000, i - 2)) 'value in mm
+                    Next
+                Else
+                    For i = 2 To thickness.Count() - 1
+                        thicknessProperties = Split(thickness(i), ";")
+                        thicknesses.Add(thicknessProperties(0))
+                        thicknessNodes.Add(thicknessProperties(1))
+                    Next
+                    For i = 0 To thicknesses.Count() - 1
+                        osb.AppendLine(ConCat_pvx("7", thicknesses(i) / 1000, i)) 'value in mm
+                    Next
+                    For i = 0 To thicknessNodes.Count() - 1
+                        osb.AppendLine(ConCat_pvx("8", thicknessNodes(i), i))
+                    Next
+                End If
+
+
+        End Select
+
+
 
 
         Select Case surfaces(isurface, 7)
             Case "Centre"
-                osb.AppendLine(ConCat_pvt("6", "1", "Centre"))
+                osb.AppendLine(ConCat_pvt("9", "1", "Centre"))
             Case "Top"
-                osb.AppendLine(ConCat_pvt("6", "2", "Top"))
+                osb.AppendLine(ConCat_pvt("9", "2", "Top"))
             Case "Bottom"
-                osb.AppendLine(ConCat_pvt("6", "4", "Bottom"))
+                osb.AppendLine(ConCat_pvt("9", "4", "Bottom"))
             Case Else
-                osb.AppendLine(ConCat_pvt("6", "1", "Centre"))
+                osb.AppendLine(ConCat_pvt("9", "1", "Centre"))
         End Select
 
-        osb.AppendLine(ConCat_pv("7", surfaces(isurface, 8)))
+        osb.AppendLine(ConCat_pv("10", surfaces(isurface, 8)))
 
         'table of geometry
-        osb.AppendLine(ConCat_opentable("8", ""))
+        osb.AppendLine(ConCat_opentable("11", ""))
         osb.AppendLine("<h>")
         osb.AppendLine(ConCat_ht("0", "Closed curve"))
         osb.AppendLine(ConCat_ht("1", "Node"))
@@ -2587,7 +2653,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
         Next
 
 
-        osb.AppendLine(ConCat_closetable("8"))
+        osb.AppendLine(ConCat_closetable("11"))
 
         'loop through all nodes
         row_id = 0
@@ -2595,7 +2661,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             nodes = Strings.Split(surfaces(isurface, 6), ";")
             'internal nodes
             If nodes.Count <> 0 And Not String.IsNullOrEmpty(nodes(0)) Then
-                osb.AppendLine(ConCat_opentable("9", ""))
+                osb.AppendLine(ConCat_opentable("12", ""))
                 osb.AppendLine("<h>")
                 osb.AppendLine(ConCat_ht("0", "Node"))
                 osb.AppendLine("</h>")
@@ -2611,11 +2677,11 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
                 Next inode
             End If
 
-            osb.AppendLine(ConCat_closetable("9"))
+            osb.AppendLine(ConCat_closetable("12"))
         End If
 
-        osb.AppendLine(ConCat_pv("10", surfaces(isurface, 10)))
-        osb.AppendLine(ConCat_pv("11", surfaces(isurface, 11)))
+        osb.AppendLine(ConCat_pv("13", surfaces(isurface, 10)))
+        osb.AppendLine(ConCat_pv("14", surfaces(isurface, 11)))
 
 
 
