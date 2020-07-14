@@ -40,7 +40,6 @@ namespace KoalaResults
             pManager.AddTextParameter("A_{ sz_req}", "A_{ sz_req}", "Array of bending moments My", GH_ParamAccess.list);
             pManager.AddTextParameter("A_{ sy_req}", "A_{ sy_req}", "Array of bending moments Mz", GH_ParamAccess.list);
             pManager.AddTextParameter("A_{ s_req}", "A_{ s_req}", "Array of bending moments Mz", GH_ParamAccess.list);
-            pManager.AddTextParameter("ReinfReq Errors, warnings, notes", "ReinfReq Errors, warnings, notes", "Array of bending moments Mz", GH_ParamAccess.list);
         }
 
         /// <summary>
@@ -51,7 +50,7 @@ namespace KoalaResults
         {
             string FilePath = @"G:\Vlada_data\Dropbox\StrawberryLab\BridgeDesigner\Sample\Results.txt";
             string BeamPrefix = "B";
-            string[] Result = { "A_{sz_req+}  [", "A_{sz_req-}  [", "A_{sy_req+}  [", "A_{sy_req-}  [", "A_{sz_req}  [", "A_{sy_req}  [", "A_{s_req}  [", "Errors,  warnings,  notes" };
+            string[] Result = { "A_{sz_req+}  [", "A_{sz_req-}  [", "A_{sy_req+}  [", "A_{sy_req-}  [", "A_{sz_req}  [", "A_{sy_req}  [", "A_{s_req}  ["};
             if (!DA.GetData(0, ref FilePath)) return;
             if (!DA.GetData(1, ref BeamPrefix)) return;
 

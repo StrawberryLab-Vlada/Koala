@@ -6,7 +6,7 @@ Imports Rhino.Geometry
 
 Namespace Koala
 
-    Public Class EdgeSupport
+    Public Class BeamSupport
         Inherits GH_Component
         ''' <summary>
         ''' Each implementation of GH_Component must provide a public 
@@ -16,16 +16,16 @@ Namespace Koala
         ''' new tabs/panels will automatically be created.
         ''' </summary>
         Public Sub New()
-            MyBase.New("EdgeSupport", "EdgeSupport",
-                "EdgeSupport description",
-                "Koala", "Structure")
+            MyBase.New("BeamSupport", "BeamSupport",
+                "BeamSupport description",
+                 "Koala", "Structure")
         End Sub
 
         ''' <summary>
         ''' Registers all the input parameters for this component.
         ''' </summary>
         Protected Overrides Sub RegisterInputParams(pManager As GH_Component.GH_InputParamManager)
-            pManager.AddTextParameter("ListOfMembers&Edges&Type", "ListOfSurfaces&EdgesType", "Definition of surfaces and edges:S1;SURFACE;2 O1;OPENING;1", GH_ParamAccess.list)
+            pManager.AddTextParameter("ListOfBeams", "ListOfBeams", "Definition of Beams where support is placed", GH_ParamAccess.list)
             pManager.AddIntegerParameter("Rx", "Rx", "Rotation around X axis, Right click and select from options", GH_ParamAccess.item, 1)
             AddOptionstoMenuDOFTransition(pManager.Param(1))
             pManager.AddIntegerParameter("Ry", "Ry", "Rotation around y axis, Right click and select from options", GH_ParamAccess.item, 1)
@@ -56,7 +56,7 @@ Namespace Koala
         ''' Registers all the output parameters for this component.
         ''' </summary>
         Protected Overrides Sub RegisterOutputParams(pManager As GH_Component.GH_OutputParamManager)
-            pManager.AddTextParameter("Edgesupports", "Edgesupports", "", GH_ParamAccess.list)
+            pManager.AddTextParameter("BeamSupports", "BeamSupports", "", GH_ParamAccess.list)
         End Sub
 
         ''' <summary>
@@ -65,7 +65,7 @@ Namespace Koala
         ''' <param name="DA">The DA object can be used to retrieve data from input parameters and 
         ''' to store data in output parameters.</param>
         Protected Overrides Sub SolveInstance(DA As IGH_DataAccess)
-            Dim EdgeSupports = New List(Of String)
+            Dim BeamSupports = New List(Of String)
 
 
             Dim Rx As Integer
@@ -85,7 +85,7 @@ Namespace Koala
             Dim Position2 As Double = 1.0
             Dim Origin As String = "From start"
             Dim i As Integer
-            If (Not DA.GetDataList(Of String)(0, EdgeSupports)) Then Return
+            If (Not DA.GetDataList(Of String)(0, BeamSupports)) Then Return
             DA.GetData(Of Integer)(1, Tx)
             DA.GetData(Of Integer)(2, Ty)
             DA.GetData(Of Integer)(3, Tz)
@@ -112,24 +112,12 @@ Namespace Koala
 
             Dim item As String
 
-            Dim referenceobj As String, referencetype As String, supportedge As String
-
-
             'Flatten data for export as simple list
             FlatList.Clear()
-            For Each item In EdgeSupports
-                referenceobj = item.Split(";")(0)
-                referenceobj = referenceobj.Trim
+            For Each item In BeamSupports
 
-                referencetype = item.Split(";")(1)
-                referencetype = referencetype.Trim
 
-                supportedge = item.Split(";")(2)
-                supportedge = supportedge.Trim
-
-                FlatList.Add(referenceobj)
-                FlatList.Add(referencetype)
-                FlatList.Add(supportedge)
+                FlatList.Add(item)
                 FlatList.Add(Rx)
                 FlatList.Add(Ry)
                 FlatList.Add(Rz)
@@ -165,8 +153,7 @@ Namespace Koala
             Get
                 'You can add image files to your project resources and access them like this:
                 ' return Resources.IconForThisComponent;
-                Return My.Resources.LineSupport
-
+                Return Nothing
             End Get
         End Property
 
@@ -177,7 +164,7 @@ Namespace Koala
         ''' </summary>
         Public Overrides ReadOnly Property ComponentGuid() As Guid
             Get
-                Return New Guid("61dc16e7-8e8b-40da-8a64-2b9686281a39")
+                Return New Guid("28dee2ad-8fd4-4bec-ac7b-149887db523a")
             End Get
         End Property
     End Class

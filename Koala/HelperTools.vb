@@ -744,7 +744,8 @@ Module HelperTools
                              in_openings As List(Of String), in_nodesupports As List(Of String), in_edgesupports As List(Of String), in_lcases As List(Of String), in_lgroups As List(Of String), in_lloads As List(Of String), in_sloads As List(Of String),
                              in_fploads As List(Of String), in_flloads As List(Of String), in_fsloads As List(Of String), in_hinges As List(Of String), in_edgeLoads As List(Of String), in_pointLoadsPoints As List(Of String), in_pointLoadsBeams As List(Of String),
                              Scale As String, in_LinCombinations As List(Of String), in_NonLinCombinations As List(Of String), in_StabCombinations As List(Of String),
-                             in_CrossLinks As List(Of String), in_presstensionElem As List(Of String), in_gapElem As List(Of String), in_limitforceElem As List(Of String), projectInfo As List(Of String), in_layers As List(Of String))
+                             in_CrossLinks As List(Of String), in_presstensionElem As List(Of String), in_gapElem As List(Of String), in_limitforceElem As List(Of String), projectInfo As List(Of String), in_layers As List(Of String), in_BeamLineSupport As List(Of
+                             String))
         Dim i As Long, j As Long
 
 
@@ -759,7 +760,7 @@ Module HelperTools
         Dim SE_openings(100000, 2) As String 'a surface consists of: Name, Reference surface, BoundaryShape
 
         Dim SE_nodesupports(100000, 13) As String 'a nodal support consists of: Node name, X, Y, Z, RX, RY, RZ - 0 is free, 1 is blocked DOF
-        Dim SE_edgesupports(100000, 15) As String 'an edge support consists of: Reference name, reference type, edge number, X, Y, Z, RX, RY, RZ - 0 is free, 1 is blocked DOF
+        Dim SE_edgesupports(100000, 19) As String 'an edge support consists of: Reference name, reference type, edge number, X, Y, Z, RX, RY, RZ - 0 is free, 1 is blocked DOF
         Dim SE_lcases(100000, 2) As String 'a load case consists of: Load case name, type (SW, Permanent, Variable), load group
         Dim SE_lgroups(100000, 2) As String 'a load group consists of: Load group name, type (Permanent, Variable), relation (Standard, Exclusive, Together)
         Dim SE_lloads(100000, 13) As String 'a beam line load consists of: Load case, Beam name, coord sys (GCS/LCS), direction (X, Y, Z), Distribution,value1 (kN/m),value2,coord,pos1,pos2
@@ -780,6 +781,7 @@ Module HelperTools
         Dim SE_limforceelem(1000000, 4) As String
         Dim SE_layers(1000000, 3) As String
         Dim SE_layersCount As Integer = 0
+        Dim SE_beamLineSupports(100000, 17) As String 'a beam line support consists of: Reference name, reference type, edge number, X, Y, Z, RX, RY, RZ - 0 is free, 1 is blocked DOF
 
 
         Dim SE_meshsize As Double
@@ -792,7 +794,7 @@ Module HelperTools
         Dim sectioncount As Long, nodesupportcount As Long, edgesupportcount As Long
         Dim lcasecount As Long, lgroupcount As Long, lloadcount As Long, sloadcount As Long, fploadcount As Long, flloadcount As Long, fsloadcount As Long
         Dim hingecount As Long, eloadscount As Long, pointLoadpointCount As Long, pointLoadbeamCount As Long, lincominationcount As Long, nonlincominationcount As Long
-        Dim stabcombicount As Long, crosslinkscount As Long, gapsnr As Long, ptelemnsnr As Long, lfelemnsnr As Long
+        Dim stabcombicount As Long, crosslinkscount As Long, gapsnr As Long, ptelemnsnr As Long, lfelemnsnr As Long, nBeamLineSupport As Long
         Dim stopWatch As New System.Diagnostics.Stopwatch()
         Dim time_elapsed As Double
         Dim oSB As System.Text.StringBuilder 'required for fast string building
@@ -911,11 +913,11 @@ Module HelperTools
         End If
 
         If (in_edgesupports IsNot Nothing) Then
-            edgesupportcount = in_edgesupports.Count / 15
+            edgesupportcount = in_edgesupports.Count / 19
             Rhino.RhinoApp.WriteLine("Number of edge supports: " & edgesupportcount)
             For i = 0 To edgesupportcount - 1
-                For j = 0 To 14
-                    SE_edgesupports(i, j) = in_edgesupports(j + i * 15)
+                For j = 0 To 18
+                    SE_edgesupports(i, j) = in_edgesupports(j + i * 19)
                 Next j
             Next i
         End If
@@ -1109,6 +1111,16 @@ Module HelperTools
             Next i
         End If
 
+        If ((in_BeamLineSupport IsNot Nothing)) Then
+            nBeamLineSupport = in_BeamLineSupport.Count / 17
+            Rhino.RhinoApp.WriteLine("Number of layers: " & nBeamLineSupport)
+            For i = 0 To nBeamLineSupport - 1
+                For j = 0 To 16
+                    SE_beamLineSupports(i, j) = in_BeamLineSupport(j + i * 17)
+                Next j
+            Next i
+        End If
+
 
         'write the XML file
         '---------------------------------------------------
@@ -1125,7 +1137,7 @@ SE_hinges, hingecount,
 SE_meshsize, SE_eLoads, eloadscount, SE_pointLoadPoint, pointLoadpointCount, SE_pointLoadBeam, pointLoadbeamCount,
 SE_lincombinations, lincominationcount, SE_nonlincombinations, nonlincominationcount, SE_stabcombinations,
 stabcombicount, SE_Crosslinks, crosslinkscount, SE_gapselem, gapsnr, SE_presstensionelems, ptelemnsnr, SE_limforceelem,
-lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers, SE_layersCount)
+lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers, SE_layersCount, SE_beamLineSupports, nBeamLineSupport)
 
         Rhino.RhinoApp.Write(" Done." & Convert.ToChar(13))
 
@@ -1157,7 +1169,7 @@ fploads(,), fploadnr, flloads(,), flloadnr, fsloads(,), fsloadnr,
 hinges(,), hingenr,
 meshsize, eloads(,), eloadsnr, pointLoadPoint(,), pointLoadpointCount, pointLoadBeam(,),
 pointLoadbeamCount, lincombinations(,), lincominationcount, nonlincombinations(,), nonlincominationcount,
-stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsnr, presstensionelems(,), ptelemnsnr, limforceelem(,), lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers(,), SE_layersCount)
+stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsnr, presstensionelems(,), ptelemnsnr, limforceelem(,), lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers(,), SE_layersCount, SE_beamLineSupports(,), nbeamLineSupports)
 
         Dim i As Long
         Dim c As String, cid As String, t As String, tid As String
@@ -1640,6 +1652,11 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             oSB.AppendLine(ConCat_hh("13", "Stiffness Rx"))
             oSB.AppendLine(ConCat_hh("14", "Stiffness Ry"))
             oSB.AppendLine(ConCat_hh("15", "Stiffness Rz"))
+            oSB.AppendLine(ConCat_hh("16", "Coord. definition"))
+            oSB.AppendLine(ConCat_hh("17", "Position x1"))
+            oSB.AppendLine(ConCat_hh("18", "Position x2"))
+            oSB.AppendLine(ConCat_hh("19", "Origin"))
+
 
             oSB.AppendLine("</h>")
 
@@ -1648,6 +1665,55 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
                     Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... edge supports: " + Str(i))
                 End If
                 Call WriteEdgeSupport(oSB, i, edgesupports)
+
+            Next
+
+            oSB.AppendLine("</table>")
+            oSB.AppendLine("</container>")
+        End If
+
+
+        If nbeamLineSupports > 0 Then
+            'output edge supports ------------------------------------------------------------------
+            c = "{61FC64DE-5B75-4074-BF61-DA1AAA0A194C}"
+            cid = "DataAddSupport.EP_LineSupportLine.1"
+            t = "8B25091F-28B4-425C-88D9-F9C8743D92DD"
+            tid = "DataAddSupport.EP_LineSupportLine.1"
+
+            oSB.AppendLine("")
+            oSB.AppendLine("<container id=""" & c & """ t=""" & cid & """>")
+            oSB.AppendLine("<table id=""" & t & """ t=""" & tid & """>")
+
+            oSB.AppendLine("<h>")
+            oSB.AppendLine(ConCat_hh("0", "Name"))
+            oSB.AppendLine(ConCat_hh("1", "Reference table"))
+            oSB.AppendLine(ConCat_hh("2", "Type"))
+            oSB.AppendLine(ConCat_hh("3", "X"))
+            oSB.AppendLine(ConCat_hh("4", "Y"))
+            oSB.AppendLine(ConCat_hh("5", "Z"))
+            oSB.AppendLine(ConCat_hh("6", "Rx"))
+            oSB.AppendLine(ConCat_hh("7", "Ry"))
+            oSB.AppendLine(ConCat_hh("8", "Rz"))
+            oSB.AppendLine(ConCat_hh("9", "Stiffness X"))
+            oSB.AppendLine(ConCat_hh("10", "Stiffness Y"))
+            oSB.AppendLine(ConCat_hh("11", "Stiffness Z"))
+            oSB.AppendLine(ConCat_hh("12", "Stiffness Rx"))
+            oSB.AppendLine(ConCat_hh("13", "Stiffness Ry"))
+            oSB.AppendLine(ConCat_hh("14", "Stiffness Rz"))
+            oSB.AppendLine(ConCat_hh("15", "System"))
+            oSB.AppendLine(ConCat_hh("16", "Coord. definition"))
+            oSB.AppendLine(ConCat_hh("17", "Position x1"))
+            oSB.AppendLine(ConCat_hh("18", "Position x2"))
+            oSB.AppendLine(ConCat_hh("19", "Origin"))
+
+
+            oSB.AppendLine("</h>")
+
+            For i = 0 To nbeamLineSupports - 1
+                If i > 0 And i Mod 100 = 0 Then
+                    Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... edge supports: " + Str(i))
+                End If
+                Call WriteBeamLineSupport(oSB, i, SE_beamLineSupports)
 
             Next
 
@@ -3231,6 +3297,96 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
         oSB.AppendLine(ConCat_pv("13", supports(isupport, 12)))
         oSB.AppendLine(ConCat_pv("14", supports(isupport, 13)))
         oSB.AppendLine(ConCat_pv("15", supports(isupport, 14)))
+
+        'p11 would be the definition of relative or absolute coordinates
+        Select Case supports(isupport, 15)
+            Case "Rela"
+                oSB.AppendLine(ConCat_pvt("16", "1", "Rela"))
+            Case "Abso"
+                oSB.AppendLine(ConCat_pvt("16", "0", "Abso"))
+        End Select
+        oSB.AppendLine(ConCat_pv("17", supports(isupport, 16)))
+        oSB.AppendLine(ConCat_pv("18", supports(isupport, 17)))
+
+        'p12 would be the indication of where the coordinates start: From start or From end
+        Select Case supports(isupport, 18)
+            Case "From start"
+                oSB.AppendLine(ConCat_pvt("19", "0", "From start"))
+            Case "From end"
+                oSB.AppendLine(ConCat_pvt("19", "1", "From end"))
+        End Select
+
+        oSB.AppendLine("</obj>")
+
+    End Sub
+
+    Private Sub WriteBeamLineSupport(ByRef oSB, isupport, supports(,)) 'write 1 edge support to the XML stream
+        Dim tt As String
+
+        oSB.AppendLine("<obj nm=""BLS" & isupport & """>")
+        oSB.AppendLine(ConCat_pv("0", "BLS" & isupport)) 'Support name
+
+        'write beam name as reference table
+        oSB.AppendLine("<p1 t="""">")
+        oSB.AppendLine("<h>")
+        oSB.AppendLine("<h0 t=""Member Type""/>")
+        oSB.AppendLine("<h1 t=""Member Type Name""/>")
+        oSB.AppendLine("<h2 t=""Member Name""/>")
+        oSB.AppendLine("</h>")
+        oSB.AppendLine("<row id=""0"">")
+        oSB.AppendLine(ConCat_pv("0", "{ECB5D684-7357-11D4-9F6C-00104BC3B443}"))
+        oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_Beam.1"))
+        oSB.AppendLine(ConCat_pv("2", supports(isupport, 0)))
+        oSB.AppendLine("</row>")
+        oSB.AppendLine("</p1>")
+        'end of reference table
+
+        'support type
+        oSB.AppendLine(ConCat_pvt("2", 0, "Line"))
+
+
+
+
+        tt = GetStringForDOF(supports(isupport, 1))
+        oSB.AppendLine(ConCat_pvt("3", supports(isupport, 1), tt))
+        tt = GetStringForDOF(supports(isupport, 2))
+        oSB.AppendLine(ConCat_pvt("4", supports(isupport, 2), tt))
+        tt = GetStringForDOF(supports(isupport, 3))
+        oSB.AppendLine(ConCat_pvt("5", supports(isupport, 3), tt))
+        tt = GetStringForDOF(supports(isupport, 4))
+        oSB.AppendLine(ConCat_pvt("6", supports(isupport, 4), tt))
+        tt = GetStringForDOF(supports(isupport, 5))
+        oSB.AppendLine(ConCat_pvt("7", supports(isupport, 5), tt))
+        tt = GetStringForDOF(supports(isupport, 6))
+        oSB.AppendLine(ConCat_pvt("8", supports(isupport, 6), tt))
+
+
+        oSB.AppendLine(ConCat_pv("9", supports(isupport, 7)))
+        oSB.AppendLine(ConCat_pv("10", supports(isupport, 8)))
+        oSB.AppendLine(ConCat_pv("11", supports(isupport, 9)))
+        oSB.AppendLine(ConCat_pv("12", supports(isupport, 10)))
+        oSB.AppendLine(ConCat_pv("13", supports(isupport, 11)))
+        oSB.AppendLine(ConCat_pv("14", supports(isupport, 12)))
+
+        oSB.AppendLine(ConCat_pvt("15", "0", "GCS")) 'Coordinate system
+
+        Select Case supports(isupport, 13)
+            Case "Rela"
+                oSB.AppendLine(ConCat_pvt("16", "1", "Rela"))
+            Case "Abso"
+                oSB.AppendLine(ConCat_pvt("16", "0", "Abso"))
+        End Select
+        oSB.AppendLine(ConCat_pv("17", supports(isupport, 14)))
+        oSB.AppendLine(ConCat_pv("18", supports(isupport, 15)))
+
+        'p12 would be the indication of where the coordinates start: From start or From end
+        Select Case supports(isupport, 16)
+            Case "From start"
+                oSB.AppendLine(ConCat_pvt("19", "0", "From start"))
+            Case "From end"
+                oSB.AppendLine(ConCat_pvt("19", "1", "From end"))
+        End Select
+
         oSB.AppendLine("</obj>")
 
     End Sub
@@ -4072,7 +4228,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
                 Case Else
                     ExportTypeString = "-tTXT -o"
             End Select
-
+            '.\ESA_XML.exe LIN 'C:\TEMP\MakaraHala\SCIAtemplate.ESA' 'C:\TEMP\MakaraHala\KoalaHall.xml' -sd -tXLSX -oC:\TEMP\MakaraHala\Output.xlsx
             myProcess.StartInfo.FileName = ESAXMLPath
             ESAXMLArgs = CalcType & " " & TemplateName & " " & FileName & " " & ExportTypeString & OutputFile
             'ESAXMLArgs = CalcType & " " & TemplateName & " " & FileName & " -tTXT -o" & OutputFile
@@ -4087,7 +4243,17 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             Rhino.RhinoApp.WriteLine("Please wait...")
 
             myProcess.Start()
+
+            'Dim calculationOutputReport As StreamReader
+            'calculationOutputReport = myProcess.StandardOutput
+            'Dim calculationOutputReportString As String
+            'calculationOutputReportString = calculationOutputReport.ReadToEnd()
             myProcess.WaitForExit()
+            'Dim calculationLogFile As String
+            'calculationLogFile = System.IO.Path.GetDirectoryName(OutputFile) + "\CalculationLog.txt"
+            'System.IO.File.WriteAllText(calculationLogFile, calculationOutputReportString)
+            'calculationLogFile = System.IO.Path.GetDirectoryName(OutputFile) + "\CalculationLog.txt"
+            'System.IO.File.WriteAllText(calculationLogFile, calculationOutputReportString)
             intExit = myProcess.ExitCode
             Rhino.RhinoApp.Write("SCIA Engineer finished with exit code: " & intExit)
             'output anything that could come out of SCIA Engineer

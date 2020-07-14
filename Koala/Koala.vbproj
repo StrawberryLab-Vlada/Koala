@@ -108,6 +108,7 @@
     <Compile Include="Analysis.vb" />
     <Compile Include="BeamLoads.vb" />
     <Compile Include="Beams.vb" />
+    <Compile Include="BeamSupport.vb" />
     <Compile Include="CreateXML.vb" />
     <Compile Include="Cross-Sections.vb" />
     <Compile Include="CrossLink.vb" />

@@ -626,7 +626,7 @@
    </def_container>
 
    <def_container id="{24449635-FE8C-46B5-8C97-9E0CA33F0E70}" clsid="{24449635-FE8C-46B5-8C97-9E0CA33F0E70}" progid="DataAddSupport.EP_LineSupportSurface.1">
-      <def_table id="DDE61EF9-7735-4DCD-939E-7521D1B4BB6F" name="XML\default" type="vertical" clsid="{24449635-FE8C-46B5-8C97-9E0CA33F0E70}" progid="DataAddSupport.EP_LineSupportSurface.1" size="16">
+      <def_table id="DDE61EF9-7735-4DCD-939E-7521D1B4BB6F" name="XML\default" type="vertical" clsid="{24449635-FE8C-46B5-8C97-9E0CA33F0E70}" progid="DataAddSupport.EP_LineSupportSurface.1" size="21">
          
          <def_property x="0" name="Name" type="string" id="{4364BC01-AAB7-11D4-B3D9-00104BC3B531}"/>
          
@@ -740,7 +740,28 @@
         <def_property x="13" name="Stiffness Rx" type="param" flag="33619968" id="{49F8019C-A4E5-11D4-A43A-000000000000}"/>
         <def_property x="14" name="Stiffness Ry" type="param" flag="33619968" id="{49F8019C-A4E5-11D4-A43A-000000000000}"/>
         <def_property x="15" name="Stiffness Rz" type="param" flag="33619968" id="{49F8019C-A4E5-11D4-A43A-000000000000}"/>
-        
+        <def_property x="16" name="Coord. definition" type="enum" id="{EDA4B5AB-8A80-11D4-A414-000000000000}">
+          <def_enum size="2">
+            <it_enum v="0" t="Abso"/>
+            <it_enum v="1" t="Rela"/>
+          </def_enum>
+        </def_property>
+
+
+        <def_property x="17" name="Position x1" type="param" flag="33619968" id="{EDA4B5AE-8A80-11D4-A414-000000000000}"/>
+
+
+        <def_property x="18" name="Position x2" type="param" flag="33619968" id="{F68C16F0-8E6D-11D4-A419-000000000000}"/>
+
+
+        <def_property x="19" name="Origin" type="enum" id="{EDA4B5AA-8A80-11D4-A414-000000000000}">
+          <def_enum size="2">
+            <it_enum v="0" t="From start"/>
+            <it_enum v="1" t="From end"/>
+          </def_enum>
+        </def_property>
+
+
       </def_table>
    </def_container>
 
@@ -1857,5 +1878,153 @@
 
     </def_table>
   </def_container>
+   <def_container id="{61FC64DE-5B75-4074-BF61-DA1AAA0A194C}" clsid="{61FC64DE-5B75-4074-BF61-DA1AAA0A194C}" progid="DataAddSupport.EP_LineSupportLine.1">
+      <def_table id="8B25091F-28B4-425C-88D9-F9C8743D92DD" name="XML\default" type="vertical" clsid="{61FC64DE-5B75-4074-BF61-DA1AAA0A194C}" progid="DataAddSupport.EP_LineSupportLine.1" size="46">
+
+        <def_property x="0" name="Name" type="string" id="{4364BC01-AAB7-11D4-B3D9-00104BC3B531}"/>
+        <def_property x="1" name="Reference Table" type="table" id="{8F96D00B-2125-411D-9218-EF0038D0056F}">
+         <def_subtable size="3" type="vertical">
+         <def_property x="0" name="Member Type" type="string" id="{3334884C-E566-404D-A135-4093CC88257D}"/>
+         
+         <def_property x="1" name="Member Type Name" type="string" readonly="yes" id="{FF14758E-BC03-4650-88B5-5EA8F1016952}"/>
+                 
+         
+         <def_property x="2" name="Member Name" type="string" id="{66D67076-ED1C-44EC-BA07-93E993F493CB}"/>
+         
+         </def_subtable>
+         </def_property>
+         
+         <def_property x="2" name="Type" type="enum" flag="262144" id="{7C7589CA-C90C-11D4-A46A-00C06C542707}">
+         <def_enum size="3">
+         <it_enum v="0" t="Line"/>
+         <it_enum v="1" t="Foundation strip"/>
+         <it_enum v="2" t="Wall"/>
+         </def_enum>
+         </def_property>
+         
+         
+         <def_property x="3" name="X" type="enum" flag="262144" id="{49F8018F-A4E5-11D4-A43A-000000000000}">
+         <def_enum size="8">
+         <it_enum v="0" t="Free"/>
+         <it_enum v="1" t="Rigid"/>
+         <it_enum v="2" t="Flexible"/>
+         <it_enum v="3" t="Rigid press only"/>
+         <it_enum v="4" t="Rigid tension only"/>
+         <it_enum v="5" t="Flexible press only"/>
+         <it_enum v="6" t="Flexible tension only"/>
+         <it_enum v="7" t="Nonlinear"/>
+         </def_enum>
+         </def_property>
+
+
+
+
+
+        <def_property x="4" name="Y" type="enum" flag="262144" id="{49F80192-A4E5-11D4-A43A-000000000000}">
+          <def_enum size="8">
+            <it_enum v="0" t="Free"/>
+            <it_enum v="1" t="Rigid"/>
+            <it_enum v="2" t="Flexible"/>
+            <it_enum v="3" t="Rigid press only"/>
+            <it_enum v="4" t="Rigid tension only"/>
+            <it_enum v="5" t="Flexible press only"/>
+            <it_enum v="6" t="Flexible tension only"/>
+            <it_enum v="7" t="Nonlinear"/>
+          </def_enum>
+        </def_property>
+
+    
+         
+         <def_property x="5" name="Z" type="enum" flag="262144" id="{49F80195-A4E5-11D4-A43A-000000000000}">
+         <def_enum size="8">
+         <it_enum v="0" t="Free"/>
+         <it_enum v="1" t="Rigid"/>
+         <it_enum v="2" t="Flexible"/>
+         <it_enum v="3" t="Rigid press only"/>
+         <it_enum v="4" t="Rigid tension only"/>
+         <it_enum v="5" t="Flexible press only"/>
+         <it_enum v="6" t="Flexible tension only"/>
+         <it_enum v="7" t="Nonlinear"/>
+         </def_enum>
+         </def_property>
+         
+         
+      
+         
+         
+         <def_property x="6" name="Rx" type="enum" flag="262144" id="{49F80198-A4E5-11D4-A43A-000000000000}">
+         <def_enum size="4">
+         <it_enum v="0" t="Free"/>
+         <it_enum v="1" t="Rigid"/>
+         <it_enum v="2" t="Flexible"/>
+         <it_enum v="7" t="Nonlinear"/>
+         </def_enum>
+         </def_property>
+         
+         
+         <def_property x="7" name="Ry" type="enum" flag="262144" id="{49F8019B-A4E5-11D4-A43A-000000000000}">
+         <def_enum size="4">
+         <it_enum v="0" t="Free"/>
+         <it_enum v="1" t="Rigid"/>
+         <it_enum v="2" t="Flexible"/>
+         <it_enum v="7" t="Nonlinear"/>
+         </def_enum>
+         </def_property>
+         
+         
+         <def_property x="8" name="Rz" type="enum" flag="262144" id="{49F8019E-A4E5-11D4-A43A-000000000000}">
+         <def_enum size="4">
+         <it_enum v="0" t="Free"/>
+         <it_enum v="1" t="Rigid"/>
+         <it_enum v="2" t="Flexible"/>
+         <it_enum v="7" t="Nonlinear"/>
+         </def_enum>
+         </def_property>
+
+        <def_property x="9" name="Stiffness X" type="param" flag="33619968" id="{49F80190-A4E5-11D4-A43A-000000000000}"/>
+        <def_property x="10" name="Stiffness Y" type="param" flag="33619968" id="{49F80193-A4E5-11D4-A43A-000000000000}"/>
+        <def_property x="11" name="Stiffness Z" type="param" flag="33619968" id="{49F80196-A4E5-11D4-A43A-000000000000}"/>
+        <def_property x="12" name="Stiffness Rx" type="param" flag="33619968" id="{49F8019C-A4E5-11D4-A43A-000000000000}"/>
+        <def_property x="13" name="Stiffness Ry" type="param" flag="33619968" id="{49F8019C-A4E5-11D4-A43A-000000000000}"/>
+        <def_property x="14" name="Stiffness Rz" type="param" flag="33619968" id="{49F8019C-A4E5-11D4-A43A-000000000000}"/>
+        
+         
+         
+         <def_property x="15" name="System" type="enum" id="{ACC6FEC0-B7FC-11D4-ADD9-000000000000}">
+         <def_enum size="2">
+         <it_enum v="0" t="GCS"/>
+         <it_enum v="1" t="LCS"/>
+         </def_enum>
+         </def_property>
+         
+         
+         <def_property x="16" name="Coord. definition" type="enum" id="{EDA4B5AB-8A80-11D4-A414-000000000000}">
+         <def_enum size="2">
+         <it_enum v="0" t="Abso"/>
+         <it_enum v="1" t="Rela"/>
+         </def_enum>
+         </def_property>
+         
+         
+       
+         
+         
+         <def_property x="17" name="Position x1" type="param" flag="33619968" id="{EDA4B5AE-8A80-11D4-A414-000000000000}"/>
+         
+         
+         <def_property x="18" name="Position x2" type="param" flag="33619968" id="{F68C16F0-8E6D-11D4-A419-000000000000}"/>
+         
+         
+         <def_property x="19" name="Origin" type="enum" id="{EDA4B5AA-8A80-11D4-A414-000000000000}">
+         <def_enum size="2">
+         <it_enum v="0" t="From start"/>
+         <it_enum v="1" t="From end"/>
+         </def_enum>
+         </def_property>
+
+      
+         
+      </def_table>
+   </def_container>
   
 </def_project>

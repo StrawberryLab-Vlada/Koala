@@ -82,9 +82,38 @@ Namespace Koala
             End If
             Dim strOut As String = ""
 
+
+            If Not System.IO.Directory.Exists(System.IO.Path.GetDirectoryName(ESAXMLPath)) Then
+                strOut = "SCIA Engineer is not installed in the specified path"
+                Exit Sub
+            End If
+
+            'If Not System.IO.File.Exists(System.IO.Path.GetFileName(ESAXMLPath)) Then
+            If Not System.IO.File.Exists(ESAXMLPath) Then
+                strOut = "Esa_xml.exe is not found in the specified path"
+                'Exit Sub
+            End If
+
+            If Not System.IO.Directory.Exists(System.IO.Path.GetDirectoryName(FileName)) Then
+                strOut = FileName & " - Directory does not exist"
+                Exit Sub
+            End If
+
+            'If Not System.IO.File.Exists(System.IO.Path.GetFileName(FileName)) Then
+            '    strOut = FileName & " - XML file does not exist"
+            '    'Exit Sub
+            'End If
+
+            If Not System.IO.Directory.Exists(System.IO.Path.GetDirectoryName(OutputFile)) Then
+                strOut = OutputFile & " - Directory does not exist"
+                Exit Sub
+            End If
+
+
             strOut = RunCalculationWithEsaXML(FileName, ESAXMLPath, CalcType, TemplateName, OutputFile, time_elapsed)
 
             DA.SetData(0, strOut)
+            DA.SetData(1, OutputFile)
         End Sub
 
 
