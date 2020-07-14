@@ -153,7 +153,8 @@ Namespace Koala
             Get
                 'You can add image files to your project resources and access them like this:
                 ' return Resources.IconForThisComponent;
-                Return Nothing
+                Return My.Resources.BeamLineSupport
+
             End Get
         End Property
 

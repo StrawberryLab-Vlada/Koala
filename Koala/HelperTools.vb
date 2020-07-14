@@ -744,8 +744,8 @@ Module HelperTools
                              in_openings As List(Of String), in_nodesupports As List(Of String), in_edgesupports As List(Of String), in_lcases As List(Of String), in_lgroups As List(Of String), in_lloads As List(Of String), in_sloads As List(Of String),
                              in_fploads As List(Of String), in_flloads As List(Of String), in_fsloads As List(Of String), in_hinges As List(Of String), in_edgeLoads As List(Of String), in_pointLoadsPoints As List(Of String), in_pointLoadsBeams As List(Of String),
                              Scale As String, in_LinCombinations As List(Of String), in_NonLinCombinations As List(Of String), in_StabCombinations As List(Of String),
-                             in_CrossLinks As List(Of String), in_presstensionElem As List(Of String), in_gapElem As List(Of String), in_limitforceElem As List(Of String), projectInfo As List(Of String), in_layers As List(Of String), in_BeamLineSupport As List(Of
-                             String))
+                             in_CrossLinks As List(Of String), in_presstensionElem As List(Of String), in_gapElem As List(Of String), in_limitforceElem As List(Of String), projectInfo As List(Of String), in_layers As List(Of String),
+                             in_BeamLineSupport As List(Of String), in_PointSupportOnBeam As List(Of String))
         Dim i As Long, j As Long
 
 
@@ -782,7 +782,7 @@ Module HelperTools
         Dim SE_layers(1000000, 3) As String
         Dim SE_layersCount As Integer = 0
         Dim SE_beamLineSupports(100000, 17) As String 'a beam line support consists of: Reference name, reference type, edge number, X, Y, Z, RX, RY, RZ - 0 is free, 1 is blocked DOF
-
+        Dim SE_pointSupportOnBeam(100000, 18) As String
 
         Dim SE_meshsize As Double
 
@@ -794,7 +794,8 @@ Module HelperTools
         Dim sectioncount As Long, nodesupportcount As Long, edgesupportcount As Long
         Dim lcasecount As Long, lgroupcount As Long, lloadcount As Long, sloadcount As Long, fploadcount As Long, flloadcount As Long, fsloadcount As Long
         Dim hingecount As Long, eloadscount As Long, pointLoadpointCount As Long, pointLoadbeamCount As Long, lincominationcount As Long, nonlincominationcount As Long
-        Dim stabcombicount As Long, crosslinkscount As Long, gapsnr As Long, ptelemnsnr As Long, lfelemnsnr As Long, nBeamLineSupport As Long
+        Dim stabcombicount As Long, crosslinkscount As Long, gapsnr As Long, ptelemnsnr As Long, lfelemnsnr As Long, nBeamLineSupport As Long, nPointSupportonBeam As Long
+
         Dim stopWatch As New System.Diagnostics.Stopwatch()
         Dim time_elapsed As Double
         Dim oSB As System.Text.StringBuilder 'required for fast string building
@@ -1121,6 +1122,16 @@ Module HelperTools
             Next i
         End If
 
+        If ((in_BeamLineSupport IsNot Nothing)) Then
+            nPointSupportonBeam = in_BeamLineSupport.Count / 18
+            Rhino.RhinoApp.WriteLine("Number of layers: " & nPointSupportonBeam)
+            For i = 0 To nBeamLineSupport - 1
+                For j = 0 To 17
+                    SE_pointSupportOnBeam(i, j) = in_PointSupportOnBeam(j + i * 18)
+                Next j
+            Next i
+        End If
+
 
         'write the XML file
         '---------------------------------------------------
@@ -1137,7 +1148,7 @@ SE_hinges, hingecount,
 SE_meshsize, SE_eLoads, eloadscount, SE_pointLoadPoint, pointLoadpointCount, SE_pointLoadBeam, pointLoadbeamCount,
 SE_lincombinations, lincominationcount, SE_nonlincombinations, nonlincominationcount, SE_stabcombinations,
 stabcombicount, SE_Crosslinks, crosslinkscount, SE_gapselem, gapsnr, SE_presstensionelems, ptelemnsnr, SE_limforceelem,
-lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers, SE_layersCount, SE_beamLineSupports, nBeamLineSupport)
+lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers, SE_layersCount, SE_beamLineSupports, nBeamLineSupport, SE_pointSupportOnBeam, nPointSupportonBeam)
 
         Rhino.RhinoApp.Write(" Done." & Convert.ToChar(13))
 
@@ -1169,7 +1180,7 @@ fploads(,), fploadnr, flloads(,), flloadnr, fsloads(,), fsloadnr,
 hinges(,), hingenr,
 meshsize, eloads(,), eloadsnr, pointLoadPoint(,), pointLoadpointCount, pointLoadBeam(,),
 pointLoadbeamCount, lincombinations(,), lincominationcount, nonlincombinations(,), nonlincominationcount,
-stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsnr, presstensionelems(,), ptelemnsnr, limforceelem(,), lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers(,), SE_layersCount, SE_beamLineSupports(,), nbeamLineSupports)
+stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsnr, presstensionelems(,), ptelemnsnr, limforceelem(,), lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers(,), SE_layersCount, SE_beamLineSupports(,), nbeamLineSupports, SE_pointSupportOnBeam, nPointSupportonBeam)
 
         Dim i As Long
         Dim c As String, cid As String, t As String, tid As String
@@ -1714,6 +1725,55 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
                     Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... edge supports: " + Str(i))
                 End If
                 Call WriteBeamLineSupport(oSB, i, SE_beamLineSupports)
+
+            Next
+
+            oSB.AppendLine("</table>")
+            oSB.AppendLine("</container>")
+        End If
+
+        If nPointSupportonBeam > 0 Then
+            'output edge supports ------------------------------------------------------------------
+            c = "{D8610F70-C515-4688-9A3C-73AF9207AF36}"
+            cid = "DataAddSupport.EP_PointSupportLine.1"
+            t = "D8E5CBF0-5BDF-4191-9F09-19164FF635BE"
+            tid = "DataAddSupport.EP_PointSupportLine.1"
+
+            oSB.AppendLine("")
+            oSB.AppendLine("<container id=""" & c & """ t=""" & cid & """>")
+            oSB.AppendLine("<table id=""" & t & """ t=""" & tid & """>")
+
+            oSB.AppendLine("<h>")
+            oSB.AppendLine(ConCat_hh("0", "Name"))
+            oSB.AppendLine(ConCat_hh("1", "Reference table"))
+            oSB.AppendLine(ConCat_hh("2", "Type"))
+            oSB.AppendLine(ConCat_hh("3", "X"))
+            oSB.AppendLine(ConCat_hh("4", "Y"))
+            oSB.AppendLine(ConCat_hh("5", "Z"))
+            oSB.AppendLine(ConCat_hh("6", "Rx"))
+            oSB.AppendLine(ConCat_hh("7", "Ry"))
+            oSB.AppendLine(ConCat_hh("8", "Rz"))
+            oSB.AppendLine(ConCat_hh("9", "Stiffness X"))
+            oSB.AppendLine(ConCat_hh("10", "Stiffness Y"))
+            oSB.AppendLine(ConCat_hh("11", "Stiffness Z"))
+            oSB.AppendLine(ConCat_hh("12", "Stiffness Rx"))
+            oSB.AppendLine(ConCat_hh("13", "Stiffness Ry"))
+            oSB.AppendLine(ConCat_hh("14", "Stiffness Rz"))
+            oSB.AppendLine(ConCat_hh("15", "System"))
+            oSB.AppendLine(ConCat_hh("16", "Coord. definition"))
+            oSB.AppendLine(ConCat_hh("17", "Position x"))
+            oSB.AppendLine(ConCat_hh("18", "Origin"))
+            oSB.AppendLine(ConCat_hh("18", "Repeat (n)"))
+            oSB.AppendLine(ConCat_hh("18", "Delta x"))
+
+
+            oSB.AppendLine("</h>")
+
+            For i = 0 To nPointSupportonBeam - 1
+                If i > 0 And i Mod 100 = 0 Then
+                    Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... edge supports: " + Str(i))
+                End If
+                Call WritePointSupportOnBeam(oSB, i, SE_pointSupportOnBeam)
 
             Next
 
@@ -3386,6 +3446,79 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             Case "From end"
                 oSB.AppendLine(ConCat_pvt("19", "1", "From end"))
         End Select
+
+        oSB.AppendLine("</obj>")
+
+    End Sub
+
+    Private Sub WritePointSupportOnBeam(ByRef oSB, isupport, supports(,)) 'write 1 edge support to the XML stream
+        Dim tt As String
+
+        oSB.AppendLine("<obj nm=""PSOB" & isupport & """>")
+        oSB.AppendLine(ConCat_pv("0", "PSOB" & isupport)) 'Support name
+
+        'write beam name as reference table
+        oSB.AppendLine("<p1 t="""">")
+        oSB.AppendLine("<h>")
+        oSB.AppendLine("<h0 t=""Member Type""/>")
+        oSB.AppendLine("<h1 t=""Member Type Name""/>")
+        oSB.AppendLine("<h2 t=""Member Name""/>")
+        oSB.AppendLine("</h>")
+        oSB.AppendLine("<row id=""0"">")
+        oSB.AppendLine(ConCat_pv("0", "{ECB5D684-7357-11D4-9F6C-00104BC3B443}"))
+        oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_Beam.1"))
+        oSB.AppendLine(ConCat_pv("2", supports(isupport, 0)))
+        oSB.AppendLine("</row>")
+        oSB.AppendLine("</p1>")
+        'end of reference table
+
+        'support type
+        oSB.AppendLine(ConCat_pvt("2", 0, "Standard"))
+
+
+
+        tt = GetStringForDOF(supports(isupport, 1))
+        oSB.AppendLine(ConCat_pvt("3", supports(isupport, 1), tt))
+        tt = GetStringForDOF(supports(isupport, 2))
+        oSB.AppendLine(ConCat_pvt("4", supports(isupport, 2), tt))
+        tt = GetStringForDOF(supports(isupport, 3))
+        oSB.AppendLine(ConCat_pvt("5", supports(isupport, 3), tt))
+        tt = GetStringForDOF(supports(isupport, 4))
+        oSB.AppendLine(ConCat_pvt("6", supports(isupport, 4), tt))
+        tt = GetStringForDOF(supports(isupport, 5))
+        oSB.AppendLine(ConCat_pvt("7", supports(isupport, 5), tt))
+        tt = GetStringForDOF(supports(isupport, 6))
+        oSB.AppendLine(ConCat_pvt("8", supports(isupport, 6), tt))
+
+
+        oSB.AppendLine(ConCat_pv("9", supports(isupport, 7)))
+        oSB.AppendLine(ConCat_pv("10", supports(isupport, 8)))
+        oSB.AppendLine(ConCat_pv("11", supports(isupport, 9)))
+        oSB.AppendLine(ConCat_pv("12", supports(isupport, 10)))
+        oSB.AppendLine(ConCat_pv("13", supports(isupport, 11)))
+        oSB.AppendLine(ConCat_pv("14", supports(isupport, 12)))
+
+        oSB.AppendLine(ConCat_pvt("15", "0", "GCS")) 'Coordinate system
+
+        Select Case supports(isupport, 13)
+            Case "Rela"
+                oSB.AppendLine(ConCat_pvt("16", "1", "Rela"))
+            Case "Abso"
+                oSB.AppendLine(ConCat_pvt("16", "0", "Abso"))
+        End Select
+        oSB.AppendLine(ConCat_pv("17", supports(isupport, 14)))
+
+        'p12 would be the indication of where the coordinates start: From start or From end
+        Select Case supports(isupport, 15)
+            Case "From start"
+                oSB.AppendLine(ConCat_pvt("18", "0", "From start"))
+            Case "From end"
+                oSB.AppendLine(ConCat_pvt("18", "1", "From end"))
+        End Select
+        oSB.AppendLine(ConCat_pv("19", supports(isupport, 15)))
+
+        oSB.AppendLine(ConCat_pv("20", supports(isupport, 15)))
+
 
         oSB.AppendLine("</obj>")
 

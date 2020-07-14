@@ -150,6 +150,7 @@
     <Compile Include="Openings.vb" />
     <Compile Include="PointLoadOnBeam.vb" />
     <Compile Include="PointLoadOnStructNode.vb" />
+    <Compile Include="PointSupportOnBeam.vb" />
     <Compile Include="PressTensionOnlyBeamNl.vb" />
     <Compile Include="ProjectInfo.vb" />
     <Compile Include="StabilityCombination.vb" />
@@ -189,6 +190,7 @@
   <ItemGroup>
     <Content Include="Resources\2DMember.bmp" />
     <Content Include="Resources\Analysis.bmp" />
+    <None Include="Resources\BeamLineSupport.bmp" />
     <Content Include="Resources\CreateXML.bmp" />
     <None Include="Resources\Cross-link.bmp" />
     <Content Include="Resources\Cross-section.bmp" />
@@ -215,6 +217,7 @@
     <None Include="Resources\StabilityCombination.bmp" />
     <None Include="Resources\PressOnly.bmp" />
     <None Include="Resources\ProjectInfo.bmp" />
+    <None Include="Resources\PointSupportOnBeam.bmp" />
     <Content Include="Resources\SurfaceLoad.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

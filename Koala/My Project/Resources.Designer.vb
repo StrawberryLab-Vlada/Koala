@@ -93,6 +93,16 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property BeamLineSupport() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("BeamLineSupport", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property CreateXML() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("CreateXML", resourceCulture)
@@ -323,6 +333,16 @@ Namespace My.Resources
         Friend ReadOnly Property PointLoadPoint() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("PointLoadPoint", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property PointSupportOnBeam() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("PointSupportOnBeam", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

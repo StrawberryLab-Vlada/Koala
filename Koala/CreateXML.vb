@@ -166,6 +166,8 @@ Namespace Koala
             pManager.Param(34).Optional = True
             pManager.AddTextParameter("BeamLineSupports", "BeamLineSupports", "Defined line support on beam", GH_ParamAccess.list)
             pManager.Param(35).Optional = True
+            pManager.AddTextParameter("PointSupportsOnBeam", "PointSupportsOnBeam", "Defined point supports on beam", GH_ParamAccess.list)
+            pManager.Param(36).Optional = True
         End Sub
 
         ''' <summary>
@@ -221,6 +223,7 @@ Namespace Koala
             Dim projectInfo = New List(Of String)
             Dim in_layers = New List(Of String)
             Dim in_BeamLineSupport = New List(Of String)
+            Dim in_PointSupportsOnBeams = New List(Of String)
             Dim i As Integer = 0
 
             If (Not DA.GetData(Of String)(19, FileName)) Then Return
@@ -261,6 +264,7 @@ Namespace Koala
             DA.GetDataList(Of String)(33, projectInfo)
             DA.GetDataList(Of String)(34, in_layers)
             DA.GetDataList(Of String)(35, in_BeamLineSupport)
+            DA.GetDataList(Of String)(36, in_PointSupportsOnBeams)
 
             If AutoUpdate = False Then
                 If OnDemand = False Then
@@ -271,7 +275,7 @@ Namespace Koala
             CreateXMLFile(FileName, StructureType, Materials, UILanguage, MeshSize, in_sections, in_nodes, in_beams, in_surfaces, in_openings,
                           in_nodesupports, in_edgesupports, in_lcases, in_lgroups, in_lloads, in_sloads, in_fploads, in_flloads, in_fsloads, in_hinges,
                           in_edgeLoads, in_pointLoadsPoints, in_pointLoadsBeams, Scale, in_LinCombinations, in_NonLinCombinations, in_StabCombinations,
-                          in_CrossLinks, in_presstensionElem, in_gapElem, in_limitforceElem, projectInfo, in_layers, in_BeamLineSupport)
+                          in_CrossLinks, in_presstensionElem, in_gapElem, in_limitforceElem, projectInfo, in_layers, in_BeamLineSupport, in_PointSupportsOnBeams)
             DA.SetData(0, FileName)
 
 
