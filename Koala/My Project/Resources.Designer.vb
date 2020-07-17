@@ -380,9 +380,29 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property SubSoil() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("SubSoil", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property SurfaceLoad() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("SurfaceLoad", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property SurfaceSupport() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("SurfaceSupport", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

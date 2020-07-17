@@ -190,6 +190,7 @@
   <ItemGroup>
     <Content Include="Resources\2DMember.bmp" />
     <Content Include="Resources\Analysis.bmp" />
+    <None Include="Resources\SurfaceSupport.bmp" />
     <None Include="Resources\BeamLineSupport.bmp" />
     <Content Include="Resources\CreateXML.bmp" />
     <None Include="Resources\Cross-link.bmp" />
@@ -218,6 +219,7 @@
     <None Include="Resources\PressOnly.bmp" />
     <None Include="Resources\ProjectInfo.bmp" />
     <None Include="Resources\PointSupportOnBeam.bmp" />
+    <None Include="Resources\SubSoil.bmp" />
     <Content Include="Resources\SurfaceLoad.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

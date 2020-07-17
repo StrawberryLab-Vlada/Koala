@@ -185,7 +185,17 @@ Koala
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:Koala.My.Resources.Resources.SubSoil">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:Koala.My.Resources.Resources.SurfaceLoad">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
+<member name="P:Koala.My.Resources.Resources.SurfaceSupport">
 <summary>
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
