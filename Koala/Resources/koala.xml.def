@@ -535,100 +535,119 @@
       <def_table id="B692AE6A-CE3D-44B6-8F23-FA69CCE6E7EF" name="XML\default" type="vertical" clsid="{1CBCA4DE-355B-40F7-A91D-8EFD26A6404D}" progid="DataAddSupport.EP_PointSupportPoint.1" size="15">
          
          
-         <def_property x="0" name="Name" type="string" id="{4364BC01-AAB7-11D4-B3D9-00104BC3B531}"/>
+          
+        <def_property x="0" name="Name" type="string" id="{4364BC01-AAB7-11D4-B3D9-00104BC3B531}"/>
          
          
-        <def_property x="1" name="Reference Table" type="table" id="{8F96D00B-2125-411D-9218-EF0038D0056F}">
-        <def_subtable size="3" type="vertical">
-          <def_property x="0" name="Member Type" type="string" id="{3334884C-E566-404D-A135-4093CC88257D}"/>
-
-          <def_property x="1" name="Member Type Name" type="string" readonly="yes" id="{FF14758E-BC03-4650-88B5-5EA8F1016952}"/>
-
-          <def_property x="2" name="Member Name" type="string" id="{66D67076-ED1C-44EC-BA07-93E993F493CB}"/>
-
-        </def_subtable>
-      </def_property>
-
-
-        <def_property x="2" name="X" type="enum" flag="262144" id="{49F8018F-A4E5-11D4-A43A-000000000000}">
-          <def_enum size="8">
-            <it_enum v="0" t="Free"/>
-            <it_enum v="1" t="Rigid"/>
-            <it_enum v="2" t="Flexible"/>
-            <it_enum v="3" t="Rigid press only"/>
-            <it_enum v="4" t="Rigid tension only"/>
-            <it_enum v="5" t="Flexible press only"/>
-            <it_enum v="6" t="Flexible tension only"/>
-            <it_enum v="7" t="Nonlinear"/>
-          </def_enum>
-        </def_property>
-
-
-        <def_property x="3" name="Y" type="enum" flag="262144" id="{49F80192-A4E5-11D4-A43A-000000000000}">
-          <def_enum size="8">
-            <it_enum v="0" t="Free"/>
-            <it_enum v="1" t="Rigid"/>
-            <it_enum v="2" t="Flexible"/>
-            <it_enum v="3" t="Rigid press only"/>
-            <it_enum v="4" t="Rigid tension only"/>
-            <it_enum v="5" t="Flexible press only"/>
-            <it_enum v="6" t="Flexible tension only"/>
-            <it_enum v="7" t="Nonlinear"/>
-          </def_enum>
-        </def_property>
-
-
-        <def_property x="4" name="Z" type="enum" flag="262144" id="{49F80195-A4E5-11D4-A43A-000000000000}">
-          <def_enum size="8">
-            <it_enum v="0" t="Free"/>
-            <it_enum v="1" t="Rigid"/>
-            <it_enum v="2" t="Flexible"/>
-            <it_enum v="3" t="Rigid press only"/>
-            <it_enum v="4" t="Rigid tension only"/>
-            <it_enum v="5" t="Flexible press only"/>
-            <it_enum v="6" t="Flexible tension only"/>
-            <it_enum v="7" t="Nonlinear"/>
-          </def_enum>
-        </def_property>
-
-
-        <def_property x="5" name="Rx" type="enum" flag="262144" id="{49F80198-A4E5-11D4-A43A-000000000000}">
-          <def_enum size="4">
-            <it_enum v="0" t="Free"/>
-            <it_enum v="1" t="Rigid"/>
-            <it_enum v="2" t="Flexible"/>
-            <it_enum v="7" t="Nonlinear"/>
-          </def_enum>
-        </def_property>
-
-
-        <def_property x="6" name="Ry" type="enum" flag="262144" id="{49F8019B-A4E5-11D4-A43A-000000000000}">
-          <def_enum size="4">
-            <it_enum v="0" t="Free"/>
-            <it_enum v="1" t="Rigid"/>
-            <it_enum v="2" t="Flexible"/>
-            <it_enum v="7" t="Nonlinear"/>
-          </def_enum>
-        </def_property>
-
-
-        <def_property x="7" name="Rz" type="enum" flag="262144" id="{49F8019E-A4E5-11D4-A43A-000000000000}">
-          <def_enum size="4">
-            <it_enum v="0" t="Free"/>
-            <it_enum v="1" t="Rigid"/>
-            <it_enum v="2" t="Flexible"/>
-            <it_enum v="7" t="Nonlinear"/>
-          </def_enum>
-        </def_property>
-
-
-        <def_property x="8" name="Stiffness X" type="param" flag="33619968" id="{49F8019C-A4E5-11D4-A43A-000000000000}"/>
-        <def_property x="9" name="Stiffness Y" type="param" flag="33619968" id="{49F8019C-A4E5-11D4-A43A-000000000000}"/>
-        <def_property x="10" name="Stiffness Z" type="param" flag="33619968" id="{49F8019C-A4E5-11D4-A43A-000000000000}"/>
-        <def_property x="11" name="Stiffness Rx" type="param" flag="33619968" id="{49F8019C-A4E5-11D4-A43A-000000000000}"/>
-        <def_property x="12" name="Stiffness Ry" type="param" flag="33619968" id="{49F8019C-A4E5-11D4-A43A-000000000000}"/>
-        <def_property x="13" name="Stiffness Rz" type="param" flag="33619968" id="{49F8019C-A4E5-11D4-A43A-000000000000}"/>
-        <def_property x="14" name="Angle [deg]" type="string" id="{7C7589CE-C90C-11D4-A46A-00C06C542707}"/>
+       
+         
+         
+         <def_property x="1" name="Reference Table" type="table" id="{8F96D00B-2125-411D-9218-EF0038D0056F}">
+         <def_subtable size="3" type="vertical">
+         <def_property x="0" name="Member Type" type="string" id="{3334884C-E566-404D-A135-4093CC88257D}"/>
+         
+         <def_property x="1" name="Member Type Name" type="string" readonly="yes" id="{FF14758E-BC03-4650-88B5-5EA8F1016952}"/>
+         
+         <def_property x="2" name="Member Name" type="string" id="{66D67076-ED1C-44EC-BA07-93E993F493CB}"/>
+         
+         </def_subtable>
+         </def_property>
+         
+         
+         <def_property x="2" name="X" type="enum" flag="262144" id="{49F8018F-A4E5-11D4-A43A-000000000000}">
+         <def_enum size="9">
+         <it_enum v="0" t="Free"/>
+         <it_enum v="1" t="Rigid"/>
+         <it_enum v="2" t="Flexible"/>
+         <it_enum v="3" t="Rigid press only"/>
+         <it_enum v="4" t="Rigid tension only"/>
+         <it_enum v="5" t="Flexible press only"/>
+         <it_enum v="6" t="Flexible tension only"/>
+         <it_enum v="7" t="Nonlinear"/>
+         <it_enum v="8" t="Friction"/>
+         </def_enum>
+         </def_property>
+         
+         
+         <def_property x="3" name="Y" type="enum" flag="262144" id="{49F80192-A4E5-11D4-A43A-000000000000}">
+         <def_enum size="9">
+         <it_enum v="0" t="Free"/>
+         <it_enum v="1" t="Rigid"/>
+         <it_enum v="2" t="Flexible"/>
+         <it_enum v="3" t="Rigid press only"/>
+         <it_enum v="4" t="Rigid tension only"/>
+         <it_enum v="5" t="Flexible press only"/>
+         <it_enum v="6" t="Flexible tension only"/>
+         <it_enum v="7" t="Nonlinear"/>
+         <it_enum v="8" t="Friction"/>
+         </def_enum>
+         </def_property>
+         
+         
+         <def_property x="4" name="Z" type="enum" flag="262144" id="{49F80195-A4E5-11D4-A43A-000000000000}">
+         <def_enum size="9">
+         <it_enum v="0" t="Free"/>
+         <it_enum v="1" t="Rigid"/>
+         <it_enum v="2" t="Flexible"/>
+         <it_enum v="3" t="Rigid press only"/>
+         <it_enum v="4" t="Rigid tension only"/>
+         <it_enum v="5" t="Flexible press only"/>
+         <it_enum v="6" t="Flexible tension only"/>
+         <it_enum v="7" t="Nonlinear"/>
+         <it_enum v="8" t="Friction"/>
+         </def_enum>
+         </def_property>
+         
+         
+         <def_property x="5" name="Rx" type="enum" flag="262144" id="{49F80198-A4E5-11D4-A43A-000000000000}">
+         <def_enum size="4">
+         <it_enum v="0" t="Free"/>
+         <it_enum v="1" t="Rigid"/>
+         <it_enum v="2" t="Flexible"/>
+         <it_enum v="7" t="Nonlinear"/>
+         </def_enum>
+         </def_property>
+         
+         
+         <def_property x="6" name="Ry" type="enum" flag="262144" id="{49F8019B-A4E5-11D4-A43A-000000000000}">
+         <def_enum size="4">
+         <it_enum v="0" t="Free"/>
+         <it_enum v="1" t="Rigid"/>
+         <it_enum v="2" t="Flexible"/>
+         <it_enum v="7" t="Nonlinear"/>
+         </def_enum>
+         </def_property>
+         
+         
+         <def_property x="7" name="Rz" type="enum" flag="262144" id="{49F8019E-A4E5-11D4-A43A-000000000000}">
+         <def_enum size="4">
+         <it_enum v="0" t="Free"/>
+         <it_enum v="1" t="Rigid"/>
+         <it_enum v="2" t="Flexible"/>
+         <it_enum v="7" t="Nonlinear"/>
+         </def_enum>
+         </def_property>
+         
+         
+         <def_property x="8" name="Stiffness X" type="param" flag="33619968" id="{49F80190-A4E5-11D4-A43A-000000000000}"/>
+         
+         
+         <def_property x="9" name="Stiffness Y" type="param" flag="33619968" id="{49F80193-A4E5-11D4-A43A-000000000000}"/>
+         
+         
+         <def_property x="10" name="Stiffness Z" type="param" flag="33619968" id="{49F80196-A4E5-11D4-A43A-000000000000}"/>
+         
+         
+         <def_property x="11" name="Stiffness Rx" type="param" flag="33619968" id="{49F80199-A4E5-11D4-A43A-000000000000}"/>
+         
+         
+         <def_property x="12" name="Stiffness Ry" type="param" flag="33619968" id="{49F8019C-A4E5-11D4-A43A-000000000000}"/>
+         
+         
+         <def_property x="13" name="Stiffness Rz" type="param" flag="33619968" id="{49F8019F-A4E5-11D4-A43A-000000000000}"/>
+         
+         
+         <def_property x="14" name="Angle [deg]" type="string" id="{7C7589CE-C90C-11D4-A46A-00C06C542707}"/>
       </def_table>
    </def_container>
 
@@ -741,13 +760,23 @@
          </def_enum>
          </def_property>
 
-        <def_property x="10" name="Stiffness X" type="param" flag="33619968" id="{49F8019C-A4E5-11D4-A43A-000000000000}"/>
-        <def_property x="11" name="Stiffness Y" type="param" flag="33619968" id="{49F8019C-A4E5-11D4-A43A-000000000000}"/>
-        <def_property x="12" name="Stiffness Z" type="param" flag="33619968" id="{49F8019C-A4E5-11D4-A43A-000000000000}"/>
-        <def_property x="13" name="Stiffness Rx" type="param" flag="33619968" id="{49F8019C-A4E5-11D4-A43A-000000000000}"/>
-        <def_property x="14" name="Stiffness Ry" type="param" flag="33619968" id="{49F8019C-A4E5-11D4-A43A-000000000000}"/>
-        <def_property x="15" name="Stiffness Rz" type="param" flag="33619968" id="{49F8019C-A4E5-11D4-A43A-000000000000}"/>
-        <def_property x="16" name="Coord. definition" type="enum" id="{EDA4B5AB-8A80-11D4-A414-000000000000}">
+         <def_property x="10" name="Stiffness X" type="param" flag="33619968" id="{49F80190-A4E5-11D4-A43A-000000000000}"/>
+         
+         
+         <def_property x="11" name="Stiffness Y" type="param" flag="33619968" id="{49F80193-A4E5-11D4-A43A-000000000000}"/>
+         
+         
+         <def_property x="12" name="Stiffness Z" type="param" flag="33619968" id="{49F80196-A4E5-11D4-A43A-000000000000}"/>
+         
+         
+         <def_property x="13" name="Stiffness Rx" type="param" flag="33619968" id="{49F80199-A4E5-11D4-A43A-000000000000}"/>
+         
+         
+         <def_property x="14" name="Stiffness Ry" type="param" flag="33619968" id="{49F8019C-A4E5-11D4-A43A-000000000000}"/>
+         
+         
+         <def_property x="15" name="Stiffness Rz" type="param" flag="33619968" id="{49F8019F-A4E5-11D4-A43A-000000000000}"/>
+         <def_property x="16" name="Coord. definition" type="enum" id="{EDA4B5AB-8A80-11D4-A414-000000000000}">
           <def_enum size="2">
             <it_enum v="0" t="Abso"/>
             <it_enum v="1" t="Rela"/>
@@ -1989,12 +2018,21 @@
          </def_property>
 
         <def_property x="9" name="Stiffness X" type="param" flag="33619968" id="{49F80190-A4E5-11D4-A43A-000000000000}"/>
-        <def_property x="10" name="Stiffness Y" type="param" flag="33619968" id="{49F80193-A4E5-11D4-A43A-000000000000}"/>
-        <def_property x="11" name="Stiffness Z" type="param" flag="33619968" id="{49F80196-A4E5-11D4-A43A-000000000000}"/>
-        <def_property x="12" name="Stiffness Rx" type="param" flag="33619968" id="{49F8019C-A4E5-11D4-A43A-000000000000}"/>
-        <def_property x="13" name="Stiffness Ry" type="param" flag="33619968" id="{49F8019C-A4E5-11D4-A43A-000000000000}"/>
-        <def_property x="14" name="Stiffness Rz" type="param" flag="33619968" id="{49F8019C-A4E5-11D4-A43A-000000000000}"/>
-        
+         
+         
+         <def_property x="10" name="Stiffness Y" type="param" flag="33619968" id="{49F80193-A4E5-11D4-A43A-000000000000}"/>
+         
+         
+         <def_property x="11" name="Stiffness Z" type="param" flag="33619968" id="{49F80196-A4E5-11D4-A43A-000000000000}"/>
+         
+         
+         <def_property x="12" name="Stiffness Rx" type="param" flag="33619968" id="{49F80199-A4E5-11D4-A43A-000000000000}"/>
+         
+         
+         <def_property x="13" name="Stiffness Ry" type="param" flag="33619968" id="{49F8019C-A4E5-11D4-A43A-000000000000}"/>
+         
+         
+         <def_property x="14" name="Stiffness Rz" type="param" flag="33619968" id="{49F8019F-A4E5-11D4-A43A-000000000000}"/>
          
          
          <def_property x="15" name="System" type="enum" id="{ACC6FEC0-B7FC-11D4-ADD9-000000000000}">
@@ -2037,10 +2075,9 @@
    <def_container id="{D8610F70-C515-4688-9A3C-73AF9207AF36}" clsid="{D8610F70-C515-4688-9A3C-73AF9207AF36}" progid="DataAddSupport.EP_PointSupportLine.1">
       <def_table id="D8E5CBF0-5BDF-4191-9F09-19164FF635BE" name="XML\default" type="vertical" clsid="{D8610F70-C515-4688-9A3C-73AF9207AF36}" progid="DataAddSupport.EP_PointSupportLine.1" size="68">
 
-        <def_property x="0" name="Name" type="string" id="{4364BC01-AAB7-11D4-B3D9-00104BC3B531}"/>
-
-        <def_property x="1" name="Reference Table" type="table" id="{8F96D00B-2125-411D-9218-EF0038D0056F}">
-         <def_subtable size="3" type="vertical">
+         <def_property x="0" name="Name" type="string" id="{4364BC01-AAB7-11D4-B3D9-00104BC3B531}"/>
+          <def_property x="1" name="Reference Table" type="table" id="{8F96D00B-2125-411D-9218-EF0038D0056F}">
+         <def_subtable size="4" type="vertical">
          <def_property x="0" name="Member Type" type="string" id="{3334884C-E566-404D-A135-4093CC88257D}"/>
          
          <def_property x="1" name="Member Type Name" type="string" readonly="yes" id="{FF14758E-BC03-4650-88B5-5EA8F1016952}"/>
@@ -2052,7 +2089,8 @@
          </def_subtable>
          </def_property>
          
-                  
+         
+         
          <def_property x="2" name="Type" type="enum" flag="262144" id="{7C7589CA-C90C-11D4-A46A-00C06C542707}">
          <def_enum size="3">
          <it_enum v="0" t="Standard"/>
@@ -2063,7 +2101,7 @@
          
          
          <def_property x="3" name="X" type="enum" flag="262144" id="{49F8018F-A4E5-11D4-A43A-000000000000}">
-         <def_enum size="8">
+         <def_enum size="9">
          <it_enum v="0" t="Free"/>
          <it_enum v="1" t="Rigid"/>
          <it_enum v="2" t="Flexible"/>
@@ -2072,12 +2110,13 @@
          <it_enum v="5" t="Flexible press only"/>
          <it_enum v="6" t="Flexible tension only"/>
          <it_enum v="7" t="Nonlinear"/>
+         <it_enum v="8" t="Friction"/>
          </def_enum>
          </def_property>
          
          
          <def_property x="4" name="Y" type="enum" flag="262144" id="{49F80192-A4E5-11D4-A43A-000000000000}">
-         <def_enum size="8">
+         <def_enum size="9">
          <it_enum v="0" t="Free"/>
          <it_enum v="1" t="Rigid"/>
          <it_enum v="2" t="Flexible"/>
@@ -2086,12 +2125,13 @@
          <it_enum v="5" t="Flexible press only"/>
          <it_enum v="6" t="Flexible tension only"/>
          <it_enum v="7" t="Nonlinear"/>
+         <it_enum v="8" t="Friction"/>
          </def_enum>
          </def_property>
          
          
          <def_property x="5" name="Z" type="enum" flag="262144" id="{49F80195-A4E5-11D4-A43A-000000000000}">
-         <def_enum size="8">
+         <def_enum size="9">
          <it_enum v="0" t="Free"/>
          <it_enum v="1" t="Rigid"/>
          <it_enum v="2" t="Flexible"/>
@@ -2100,6 +2140,7 @@
          <it_enum v="5" t="Flexible press only"/>
          <it_enum v="6" t="Flexible tension only"/>
          <it_enum v="7" t="Nonlinear"/>
+         <it_enum v="8" t="Friction"/>
          </def_enum>
          </def_property>
          
@@ -2132,19 +2173,27 @@
          <it_enum v="7" t="Nonlinear"/>
          </def_enum>
          </def_property>
-
-        <def_property x="9" name="Stiffness X" type="param" flag="33619968" id="{49F80190-A4E5-11D4-A43A-000000000000}"/>
-        <def_property x="10" name="Stiffness Y" type="param" flag="33619968" id="{49F80193-A4E5-11D4-A43A-000000000000}"/>
-        <def_property x="11" name="Stiffness Z" type="param" flag="33619968" id="{49F80196-A4E5-11D4-A43A-000000000000}"/>
-        <def_property x="12" name="Stiffness Rx" type="param" flag="33619968" id="{49F8019C-A4E5-11D4-A43A-000000000000}"/>
-        <def_property x="13" name="Stiffness Ry" type="param" flag="33619968" id="{49F8019C-A4E5-11D4-A43A-000000000000}"/>
-        <def_property x="14" name="Stiffness Rz" type="param" flag="33619968" id="{49F8019C-A4E5-11D4-A43A-000000000000}"/>
-
-
-
-      
          
          
+          <def_property x="9" name="Stiffness X" type="param" flag="33619968" id="{49F80190-A4E5-11D4-A43A-000000000000}"/>
+         
+         
+         <def_property x="10" name="Stiffness Y" type="param" flag="33619968" id="{49F80193-A4E5-11D4-A43A-000000000000}"/>
+         
+         
+         <def_property x="11" name="Stiffness Z" type="param" flag="33619968" id="{49F80196-A4E5-11D4-A43A-000000000000}"/>
+         
+         
+         <def_property x="12" name="Stiffness Rx" type="param" flag="33619968" id="{49F80199-A4E5-11D4-A43A-000000000000}"/>
+         
+         
+         <def_property x="13" name="Stiffness Ry" type="param" flag="33619968" id="{49F8019C-A4E5-11D4-A43A-000000000000}"/>
+         
+         
+         <def_property x="14" name="Stiffness Rz" type="param" flag="33619968" id="{49F8019F-A4E5-11D4-A43A-000000000000}"/>
+         
+         
+        
          
          
          <def_property x="15" name="System" type="enum" id="{ACC6FEC0-B7FC-11D4-ADD9-000000000000}">
@@ -2175,7 +2224,9 @@
          
          
          <def_property x="19" name="Repeat (n)" type="param" flag="33619968" id="{EDA4B5AF-8A80-11D4-A414-000000000000}"/>
-        <def_property x="20" name="Delta x" type="param" flag="33619968" id="{EDA4B5B0-8A80-11D4-A414-000000000000}"/>
+         
+         
+         <def_property x="20" name="Delta x" type="param" flag="33619968" id="{EDA4B5B0-8A80-11D4-A414-000000000000}"/>
          
       </def_table>
    </def_container>

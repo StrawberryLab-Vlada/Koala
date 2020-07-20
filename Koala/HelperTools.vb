@@ -1122,10 +1122,10 @@ Module HelperTools
             Next i
         End If
 
-        If ((in_BeamLineSupport IsNot Nothing)) Then
-            nPointSupportonBeam = in_BeamLineSupport.Count / 18
+        If ((in_PointSupportOnBeam IsNot Nothing)) Then
+            nPointSupportonBeam = in_PointSupportOnBeam.Count / 18
             Rhino.RhinoApp.WriteLine("Number of layers: " & nPointSupportonBeam)
-            For i = 0 To nBeamLineSupport - 1
+            For i = 0 To nPointSupportonBeam - 1
                 For j = 0 To 17
                     SE_pointSupportOnBeam(i, j) = in_PointSupportOnBeam(j + i * 18)
                 Next j
@@ -1764,8 +1764,8 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             oSB.AppendLine(ConCat_ht("16", "Coord. definition"))
             oSB.AppendLine(ConCat_ht("17", "Position x"))
             oSB.AppendLine(ConCat_ht("18", "Origin"))
-            oSB.AppendLine(ConCat_ht("18", "Repeat (n)"))
-            oSB.AppendLine(ConCat_ht("18", "Delta x"))
+            oSB.AppendLine(ConCat_ht("19", "Repeat (n)"))
+            oSB.AppendLine(ConCat_ht("20", "Delta x"))
 
 
             oSB.AppendLine("</h>")
@@ -3353,17 +3353,17 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
         oSB.AppendLine(ConCat_pvt("2", CStr(CLng(supports(isupport, 2)) - 1), supports(isupport, 2))) 'Edge number minus 1 is the index
 
         tt = GetStringForDOF(supports(isupport, 3))
-        oSB.AppendLine(ConCat_pvt("2", supports(isupport, 3), tt))
+        oSB.AppendLine(ConCat_pvt("3", supports(isupport, 3), tt))
         tt = GetStringForDOF(supports(isupport, 4))
-        oSB.AppendLine(ConCat_pvt("3", supports(isupport, 4), tt))
+        oSB.AppendLine(ConCat_pvt("4", supports(isupport, 4), tt))
         tt = GetStringForDOF(supports(isupport, 5))
-        oSB.AppendLine(ConCat_pvt("4", supports(isupport, 5), tt))
+        oSB.AppendLine(ConCat_pvt("5", supports(isupport, 5), tt))
         tt = GetStringForDOF(supports(isupport, 6))
-        oSB.AppendLine(ConCat_pvt("5", supports(isupport, 6), tt))
+        oSB.AppendLine(ConCat_pvt("6", supports(isupport, 6), tt))
         tt = GetStringForDOF(supports(isupport, 7))
-        oSB.AppendLine(ConCat_pvt("6", supports(isupport, 7), tt))
+        oSB.AppendLine(ConCat_pvt("7", supports(isupport, 7), tt))
         tt = GetStringForDOF(supports(isupport, 8))
-        oSB.AppendLine(ConCat_pvt("7", supports(isupport, 8), tt))
+        oSB.AppendLine(ConCat_pvt("8", supports(isupport, 8), tt))
 
         oSB.AppendLine(ConCat_pvt("9", "0", "GCS")) 'Coordinate system
         oSB.AppendLine(ConCat_pv("10", supports(isupport, 9)))
@@ -3530,9 +3530,9 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             Case "From end"
                 oSB.AppendLine(ConCat_pvt("18", "1", "From end"))
         End Select
-        oSB.AppendLine(ConCat_pv("19", supports(isupport, 15)))
+        oSB.AppendLine(ConCat_pv("19", supports(isupport, 16)))
 
-        oSB.AppendLine(ConCat_pv("20", supports(isupport, 15)))
+        oSB.AppendLine(ConCat_pv("20", supports(isupport, 17)))
 
 
         oSB.AppendLine("</obj>")
