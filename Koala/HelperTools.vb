@@ -745,7 +745,7 @@ Module HelperTools
                              in_fploads As List(Of String), in_flloads As List(Of String), in_fsloads As List(Of String), in_hinges As List(Of String), in_edgeLoads As List(Of String), in_pointLoadsPoints As List(Of String), in_pointLoadsBeams As List(Of String),
                              Scale As String, in_LinCombinations As List(Of String), in_NonLinCombinations As List(Of String), in_StabCombinations As List(Of String),
                              in_CrossLinks As List(Of String), in_presstensionElem As List(Of String), in_gapElem As List(Of String), in_limitforceElem As List(Of String), projectInfo As List(Of String), in_layers As List(Of String),
-                             in_BeamLineSupport As List(Of String), in_PointSupportOnBeam As List(Of String))
+                             in_BeamLineSupport As List(Of String), in_PointSupportOnBeam As List(Of String), in_Subsoils As List(Of String), in_SurfaceSupports As List(Of String))
         Dim i As Long, j As Long
 
 
@@ -783,6 +783,8 @@ Module HelperTools
         Dim SE_layersCount As Integer = 0
         Dim SE_beamLineSupports(100000, 17) As String 'a beam line support consists of: Reference name, reference type, edge number, X, Y, Z, RX, RY, RZ - 0 is free, 1 is blocked DOF
         Dim SE_pointSupportOnBeam(100000, 18) As String
+        Dim SE_subsoil(100000, 7) As String
+        Dim SE_surfaceSupport(100000, 2) As String
 
         Dim SE_meshsize As Double
 
@@ -794,7 +796,7 @@ Module HelperTools
         Dim sectioncount As Long, nodesupportcount As Long, edgesupportcount As Long
         Dim lcasecount As Long, lgroupcount As Long, lloadcount As Long, sloadcount As Long, fploadcount As Long, flloadcount As Long, fsloadcount As Long
         Dim hingecount As Long, eloadscount As Long, pointLoadpointCount As Long, pointLoadbeamCount As Long, lincominationcount As Long, nonlincominationcount As Long
-        Dim stabcombicount As Long, crosslinkscount As Long, gapsnr As Long, ptelemnsnr As Long, lfelemnsnr As Long, nBeamLineSupport As Long, nPointSupportonBeam As Long
+        Dim stabcombicount As Long, crosslinkscount As Long, gapsnr As Long, ptelemnsnr As Long, lfelemnsnr As Long, nBeamLineSupport As Long, nPointSupportonBeam As Long, nSubsoils As Long, nSurfaceSupports As Long
 
         Dim stopWatch As New System.Diagnostics.Stopwatch()
         Dim time_elapsed As Double
@@ -1114,7 +1116,7 @@ Module HelperTools
 
         If ((in_BeamLineSupport IsNot Nothing)) Then
             nBeamLineSupport = in_BeamLineSupport.Count / 17
-            Rhino.RhinoApp.WriteLine("Number of layers: " & nBeamLineSupport)
+            Rhino.RhinoApp.WriteLine("Number of beam line supports: " & nBeamLineSupport)
             For i = 0 To nBeamLineSupport - 1
                 For j = 0 To 16
                     SE_beamLineSupports(i, j) = in_BeamLineSupport(j + i * 17)
@@ -1124,10 +1126,30 @@ Module HelperTools
 
         If ((in_PointSupportOnBeam IsNot Nothing)) Then
             nPointSupportonBeam = in_PointSupportOnBeam.Count / 18
-            Rhino.RhinoApp.WriteLine("Number of layers: " & nPointSupportonBeam)
+            Rhino.RhinoApp.WriteLine("Number of point supports on beam: " & nPointSupportonBeam)
             For i = 0 To nPointSupportonBeam - 1
                 For j = 0 To 17
                     SE_pointSupportOnBeam(i, j) = in_PointSupportOnBeam(j + i * 18)
+                Next j
+            Next i
+        End If
+
+        If ((in_Subsoils IsNot Nothing)) Then
+            nSubsoils = in_Subsoils.Count / 7
+            Rhino.RhinoApp.WriteLine("Number of number of subsoils: " & nSubsoils)
+            For i = 0 To nSubsoils - 1
+                For j = 0 To 6
+                    SE_subsoil(i, j) = in_Subsoils(j + i * 7)
+                Next j
+            Next i
+        End If
+
+        If ((in_SurfaceSupports IsNot Nothing)) Then
+            nSurfaceSupports = in_SurfaceSupports.Count / 2
+            Rhino.RhinoApp.WriteLine("Number of surface supports: " & nSurfaceSupports)
+            For i = 0 To nSurfaceSupports - 1
+                For j = 0 To 1
+                    SE_surfaceSupport(i, j) = in_SurfaceSupports(j + i * 2)
                 Next j
             Next i
         End If
@@ -1148,7 +1170,7 @@ SE_hinges, hingecount,
 SE_meshsize, SE_eLoads, eloadscount, SE_pointLoadPoint, pointLoadpointCount, SE_pointLoadBeam, pointLoadbeamCount,
 SE_lincombinations, lincominationcount, SE_nonlincombinations, nonlincominationcount, SE_stabcombinations,
 stabcombicount, SE_Crosslinks, crosslinkscount, SE_gapselem, gapsnr, SE_presstensionelems, ptelemnsnr, SE_limforceelem,
-lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers, SE_layersCount, SE_beamLineSupports, nBeamLineSupport, SE_pointSupportOnBeam, nPointSupportonBeam)
+lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers, SE_layersCount, SE_beamLineSupports, nBeamLineSupport, SE_pointSupportOnBeam, nPointSupportonBeam, SE_subsoil, nSubsoils, SE_surfaceSupport, nSurfaceSupports)
 
         Rhino.RhinoApp.Write(" Done." & Convert.ToChar(13))
 
@@ -1180,7 +1202,7 @@ fploads(,), fploadnr, flloads(,), flloadnr, fsloads(,), fsloadnr,
 hinges(,), hingenr,
 meshsize, eloads(,), eloadsnr, pointLoadPoint(,), pointLoadpointCount, pointLoadBeam(,),
 pointLoadbeamCount, lincombinations(,), lincominationcount, nonlincombinations(,), nonlincominationcount,
-stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsnr, presstensionelems(,), ptelemnsnr, limforceelem(,), lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers(,), SE_layersCount, SE_beamLineSupports(,), nbeamLineSupports, SE_pointSupportOnBeam, nPointSupportonBeam)
+stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsnr, presstensionelems(,), ptelemnsnr, limforceelem(,), lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers(,), SE_layersCount, SE_beamLineSupports(,), nbeamLineSupports, SE_pointSupportOnBeam, nPointSupportonBeam, SE_subsoil(,), nSubsoils, SE_surfaceSupport(,), nSurfaceSupports)
 
         Dim i As Long
         Dim c As String, cid As String, t As String, tid As String
@@ -1781,6 +1803,76 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             oSB.AppendLine("</table>")
             oSB.AppendLine("</container>")
         End If
+        If nSubsoils > 0 Then
+            'output edge supports ------------------------------------------------------------------
+            c = "{8867A6F2-D7E4-11D4-A47F-00C06C542707}"
+            cid = "DataLibScia.EP_Subsoil.1"
+            t = "A4C324A5-2F59-452D-86C0-FF1B5427BC81"
+            tid = "DataLibScia.EP_Subsoil.1"
+
+            oSB.AppendLine("")
+            oSB.AppendLine("<container id=""" & c & """ t=""" & cid & """>")
+            oSB.AppendLine("<table id=""" & t & """ t=""" & tid & """>")
+
+            oSB.AppendLine("<h>")
+            oSB.AppendLine(ConCat_ht("0", "Name"))
+            oSB.AppendLine(ConCat_ht("1", "Decription"))
+            oSB.AppendLine(ConCat_ht("2", "C1x"))
+            oSB.AppendLine(ConCat_ht("3", "C1y"))
+            oSB.AppendLine(ConCat_ht("4", "Stiffness"))
+            oSB.AppendLine(ConCat_ht("5", "C1z"))
+            oSB.AppendLine(ConCat_ht("6", "C2x"))
+            oSB.AppendLine(ConCat_ht("7", "C2y"))
+
+
+
+
+
+            oSB.AppendLine("</h>")
+
+            For i = 0 To nSubsoils - 1
+                If i > 0 And i Mod 100 = 0 Then
+                    Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... subsoil: " + Str(i))
+                End If
+                Call WriteSubsoil(oSB, i, SE_subsoil)
+
+            Next
+
+            oSB.AppendLine("</table>")
+            oSB.AppendLine("</container>")
+        End If
+
+        If nSurfaceSupports > 0 Then
+            'output edge supports ------------------------------------------------------------------
+            c = "{1F4C3BA2-9235-4C0B-A940-4C72C9B59C30}"
+            cid = "EP_SurfaceSupportSurface"
+            t = "ECC78F0A-BB10-4F0A-9E4C-3B8EB00FF33F"
+            tid = "EP_SurfaceSupportSurface"
+
+            oSB.AppendLine("")
+            oSB.AppendLine("<container id=""" & c & """ t=""" & cid & """>")
+            oSB.AppendLine("<table id=""" & t & """ t=""" & tid & """>")
+
+            oSB.AppendLine("<h>")
+            oSB.AppendLine(ConCat_ht("0", "Name"))
+            oSB.AppendLine(ConCat_ht("1", "Reference Table"))
+            oSB.AppendLine(ConCat_ht("2", "Type"))
+            oSB.AppendLine(ConCat_ht("3", "Subsoil"))
+            oSB.AppendLine("</h>")
+
+            For i = 0 To nSurfaceSupports - 1
+                If i > 0 And i Mod 100 = 0 Then
+                    Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... Surface support: " + Str(i))
+                End If
+                Call WriteSurfaceSupport(oSB, i, SE_surfaceSupport)
+
+            Next
+
+            oSB.AppendLine("</table>")
+            oSB.AppendLine("</container>")
+        End If
+
+
 
         If lgroupnr > 0 Then
             'output load groups ------------------------------------------------------------------
@@ -3535,6 +3627,46 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
         oSB.AppendLine(ConCat_pv("20", supports(isupport, 17)))
 
 
+        oSB.AppendLine("</obj>")
+
+    End Sub
+
+    Private Sub WriteSubsoil(ByRef oSB, i, subsoil(,)) 'write 1 edge support to the XML stream
+
+        oSB.AppendLine("<obj nm=""Subsoil" & i & """>")
+        oSB.AppendLine(ConCat_pv("0", subsoil(i, 0)))
+        oSB.AppendLine(ConCat_pv("1", subsoil(i, 1)))
+        oSB.AppendLine(ConCat_pv("2", subsoil(i, 2)))
+        oSB.AppendLine(ConCat_pv("3", subsoil(i, 3)))
+        oSB.AppendLine(ConCat_pvt("4", "0", "Flexible"))
+        oSB.AppendLine(ConCat_pv("5", subsoil(i, 4)))
+        oSB.AppendLine(ConCat_pv("6", subsoil(i, 5)))
+        oSB.AppendLine(ConCat_pv("7", subsoil(i, 6)))
+        oSB.AppendLine("</obj>")
+
+    End Sub
+
+    Private Sub WriteSurfaceSupport(ByRef oSB, i, surfacesupport(,))
+
+        oSB.AppendLine("<obj nm=""SurfaceSupport" & i & """>")
+        oSB.AppendLine(ConCat_pv("0", "SurfaceSupport" & i))
+
+        'write beam name as reference table
+        oSB.AppendLine("<p1 t="""">")
+        oSB.AppendLine("<h>")
+        oSB.AppendLine("<h0 t=""Member Type""/>")
+        oSB.AppendLine("<h1 t=""Member Type Name""/>")
+        oSB.AppendLine("<h2 t=""Member Name""/>")
+        oSB.AppendLine("</h>")
+        oSB.AppendLine("<row id=""0"">")
+        oSB.AppendLine(ConCat_pv("0", "{8708ED31-8E66-11D4-AD94-F6F5DE2BE344}"))
+        oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_Plane.1"))
+        oSB.AppendLine(ConCat_pv("2", surfacesupport(i, 0)))
+        oSB.AppendLine("</row>")
+        oSB.AppendLine("</p1>")
+        'end of reference table
+        oSB.AppendLine(ConCat_pvt("2", "0", "Individual"))
+        oSB.AppendLine(ConCat_pv("3", surfacesupport(i, 1)))
         oSB.AppendLine("</obj>")
 
     End Sub

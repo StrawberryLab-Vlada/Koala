@@ -2235,55 +2235,31 @@
     <def_table id="A4C324A5-2F59-452D-86C0-FF1B5427BC81" name="XML\default" type="vertical" clsid="{8867A6F2-D7E4-11D4-A47F-00C06C542707}" progid="DataLibScia.EP_Subsoil.1" size="17">
 
       <def_property x="0" name="Name" type="string" id="{4364BC01-AAB7-11D4-B3D9-00104BC3B531}"/>
+ <def_property x="1" name="Decription" type="string" id="{DF7073CA-9624-48FD-A1B3-A0F396E43C72}"/>
+      <def_property x="2" name="C1x" type="real" id="{C68B6DA0-C12F-4D2E-9E37-52400D7561F8}"/>
 
 
-      <def_property x="1" name="UniqueID" type="string" id="{EB2C0F85-7275-4F94-9EA7-E8C3DBFB0FA6}"/>
+      <def_property x="3" name="C1y" type="real" id="{C68B6DA1-C12F-4D2E-9E37-52400D7561F8}"/>
 
 
-      <def_property x="2" name="Type" type="enum" id="{23CBD482-E4B7-11D4-A487-00C06C542707}">
-        <def_enum size="2">
-          <it_enum v="0" t="Undrained"/>
-          <it_enum v="1" t="Drained"/>
-        </def_enum>
-      </def_property>
-
-
-      <def_property x="3" name="Specific weight" type="real" id="{23CBD483-E4B7-11D4-A487-00C06C542707}"/>
-
-
-      <def_property x="4" name="Fi'" type="real" id="{23CBD484-E4B7-11D4-A487-00C06C542707}"/>
-
-
-      <def_property x="5" name="Sigma oc" type="real" id="{23CBD485-E4B7-11D4-A487-00C06C542707}"/>
-
-
-      <def_property x="6" name="cu" type="real" id="{23CBD487-E4B7-11D4-A487-00C06C542707}"/>
-
-
-      <def_property x="7" name="C1x" type="real" id="{C68B6DA0-C12F-4D2E-9E37-52400D7561F8}"/>
-
-
-      <def_property x="8" name="C1y" type="real" id="{C68B6DA1-C12F-4D2E-9E37-52400D7561F8}"/>
-
-
-      <def_property x="9" name="Stiffness" type="real" id="{C68B6DA2-C12F-4D2E-9E37-52400D7561F8}"/>
-
-
-      <def_property x="10" name="C2x" type="real" id="{C68B6DA3-C12F-4D2E-9E37-52400D7561F8}"/>
-
-
-      <def_property x="11" name="C2y" type="real" id="{C68B6DA4-C12F-4D2E-9E37-52400D7561F8}"/>
-
-
-      <def_property x="12" name="C1z" type="enum" flag="262144" id="{BB8F201F-F101-4C53-890D-345EC986AA9E}">
+         <def_property x="4" name="C1z" type="enum" flag="262144" id="{BB8F201F-F101-4C53-890D-345EC986AA9E}">
         <def_enum size="2">
           <it_enum v="0" t="Flexible"/>
           <it_enum v="1" t="Nonlinear function"/>
         </def_enum>
       </def_property>
+      
+      <def_property x="5" name="Stiffness" type="real" id="{C68B6DA2-C12F-4D2E-9E37-52400D7561F8}"/>
 
 
-      <def_property x="13" name="Water/air in clay subgrade" type="bool" id="{8C2BDC60-54CC-4219-91AA-FCF637008BF5}"/>
+      <def_property x="6" name="C2x" type="real" id="{C68B6DA3-C12F-4D2E-9E37-52400D7561F8}"/>
+
+
+      <def_property x="7" name="C2y" type="real" id="{C68B6DA4-C12F-4D2E-9E37-52400D7561F8}"/>
+
+   
+      
+
 
     </def_table>
   </def_container>
@@ -2291,27 +2267,26 @@
   <def_container id="{1F4C3BA2-9235-4C0B-A940-4C72C9B59C30}" clsid="{1F4C3BA2-9235-4C0B-A940-4C72C9B59C30}" progid="DataAddSupport.EP_SurfaceSupportSurface.1">
     <def_table id="ECC78F0A-BB10-4F0A-9E4C-3B8EB00FF33F" name="XML\default" type="vertical" clsid="{1F4C3BA2-9235-4C0B-A940-4C72C9B59C30}" progid="DataAddSupport.EP_SurfaceSupportSurface.1" size="13">
 
-      <def_property x="0" name="Reference Table" type="table" id="{8F96D00B-2125-411D-9218-EF0038D0056F}">
+        <def_property x="0" name="Name" type="string" id="{4364BC01-AAB7-11D4-B3D9-00104BC3B531}"/>
+        <def_property x="1" name="Reference Table" type="table" id="{8F96D00B-2125-411D-9218-EF0038D0056F}">
         <def_subtable size="4" type="vertical">
           <def_property x="0" name="Member Type" type="string" id="{3334884C-E566-404D-A135-4093CC88257D}"/>
 
           <def_property x="1" name="Member Type Name" type="string" readonly="yes" id="{FF14758E-BC03-4650-88B5-5EA8F1016952}"/>
 
-          <def_property x="2" name="Member Id" type="integer" id="{DD496603-20BD-4CF1-8C72-351306D89D08}"/>
+         
 
-          <def_property x="3" name="Member Name" type="string" id="{66D67076-ED1C-44EC-BA07-93E993F493CB}"/>
+          <def_property x="2" name="Member Name" type="string" id="{66D67076-ED1C-44EC-BA07-93E993F493CB}"/>
 
         </def_subtable>
       </def_property>
 
 
-      <def_property x="1" name="Name" type="string" id="{4364BC01-AAB7-11D4-B3D9-00104BC3B531}"/>
+    
 
 
-      <def_property x="2" name="UniqueID" type="string" id="{EB2C0F85-7275-4F94-9EA7-E8C3DBFB0FA6}"/>
 
-
-      <def_property x="3" name="Type" type="enum" flag="262144" id="{7C7589CA-C90C-11D4-A46A-00C06C542707}">
+      <def_property x="2" name="Type" type="enum" flag="262144" id="{7C7589CA-C90C-11D4-A46A-00C06C542707}">
         <def_enum size="3">
           <it_enum v="0" t="Individual"/>
           <it_enum v="1" t="Soilin"/>
@@ -2320,7 +2295,7 @@
       </def_property>
 
 
-      <def_property x="4" name="Subsoil" type="ref" flag="131072" id="{7C7589C8-C90C-11D4-A46A-00C06C542707}">
+      <def_property x="3" name="Subsoil" type="ref" flag="131072" id="{7C7589C8-C90C-11D4-A46A-00C06C542707}">
         <def_ref id="{8867A6F2-D7E4-11D4-A47F-00C06C542707}" progid="DataLibScia.EP_Subsoil.1"/>
       </def_property>
 

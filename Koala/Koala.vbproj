@@ -154,7 +154,9 @@
     <Compile Include="PressTensionOnlyBeamNl.vb" />
     <Compile Include="ProjectInfo.vb" />
     <Compile Include="StabilityCombination.vb" />
+    <Compile Include="Subsoil.vb" />
     <Compile Include="SurfaceLoad.vb" />
+    <Compile Include="SurfaceSupport.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
