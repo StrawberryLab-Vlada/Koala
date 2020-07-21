@@ -29,6 +29,7 @@ Namespace Koala
             pManager.AddTextParameter("Surface", "Surface", "Name of surface where is opening", GH_ParamAccess.item)
             pManager.AddTextParameter("NodePrefix", "NodePrefix", "Prefix of nodes defining opening", GH_ParamAccess.item, "NO")
             pManager.AddNumberParameter("Tolerance", "Tolerance", "tolerance for geometry check", GH_ParamAccess.item, 0.001)
+            pManager.AddTextParameter("OpeningNamePrefix", "OpeningNamePrefix", "Prefix name of the opening", GH_ParamAccess.item, "O")
         End Sub
 
         ''' <summary>
@@ -50,11 +51,13 @@ Namespace Koala
             Dim Surface As String = ""
             Dim NodePrefix As String = "NO"
             Dim Tolerance As Double = 0.001
+            Dim OpeningNamePrefix As String = "O"
 
             If (Not DA.GetDataList(Of Curve)(0, ClosedCurves)) Then Return
             If (Not DA.GetData(Of String)(1, Surface)) Then Return
             If (Not DA.GetData(Of String)(2, NodePrefix)) Then Return
             If (Not DA.GetData(Of Double)(3, Tolerance)) Then Return
+            If (Not DA.GetData(Of String)(4, OpeningNamePrefix)) Then Return
 
 
             Dim i As Long, j As Long
@@ -120,7 +123,7 @@ Namespace Koala
                     edgenodelist = ""
                     BoundaryShape = ""
 
-                    SE_openings(openingcount - 1, 0) = "O" & openingcount
+                    SE_openings(openingcount - 1, 0) = OpeningNamePrefix & openingcount
                     SE_openings(openingcount - 1, 1) = Surface
 
                     For Each arrPoint In arrPoints
@@ -160,7 +163,7 @@ Namespace Koala
 
                     openingcount = openingcount + 1
 
-                    SE_openings(openingcount - 1, 0) = "O" & openingcount
+                    SE_openings(openingcount - 1, 0) = OpeningNamePrefix & openingcount
                     SE_openings(openingcount - 1, 1) = Surface
 
                     iedge = 0
