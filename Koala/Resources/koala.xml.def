@@ -1502,9 +1502,7 @@
 
           <def_property x="1" name="Member Type Name" type="string" readonly="yes" id="{FF14758E-BC03-4650-88B5-5EA8F1016952}"/>
 
-          <def_property x="2" name="Member Id" type="integer" id="{DD496603-20BD-4CF1-8C72-351306D89D08}"/>
-
-          <def_property x="3" name="Member Name" type="string" id="{66D67076-ED1C-44EC-BA07-93E993F493CB}"/>
+         <def_property x="2" name="Member Name" type="string" id="{66D67076-ED1C-44EC-BA07-93E993F493CB}"/>
 
         </def_subtable>
       </def_property>
