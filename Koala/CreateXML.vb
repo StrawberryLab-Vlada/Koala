@@ -172,6 +172,8 @@ Namespace Koala
             pManager.Param(37).Optional = True
             pManager.AddTextParameter("SurfaceSupports", "SurfaceSupports", "Defined surface supports", GH_ParamAccess.list)
             pManager.Param(38).Optional = True
+            pManager.AddTextParameter("Loadpanels", "Loadpanels", "Defined Load panels", GH_ParamAccess.list)
+            pManager.Param(39).Optional = True
         End Sub
 
         ''' <summary>
@@ -230,6 +232,7 @@ Namespace Koala
             Dim in_PointSupportsOnBeams = New List(Of String)
             Dim in_Subsoils = New List(Of String)
             Dim in_SurfaceSupports = New List(Of String)
+            Dim in_loadpanels = New List(Of String)
             Dim i As Integer = 0
 
             If (Not DA.GetData(Of String)(19, FileName)) Then Return
@@ -273,6 +276,7 @@ Namespace Koala
             DA.GetDataList(Of String)(36, in_PointSupportsOnBeams)
             DA.GetDataList(Of String)(37, in_Subsoils)
             DA.GetDataList(Of String)(38, in_SurfaceSupports)
+            DA.GetDataList(Of String)(39, in_loadpanels)
 
             If AutoUpdate = False Then
                 If OnDemand = False Then
@@ -283,7 +287,7 @@ Namespace Koala
             CreateXMLFile(FileName, StructureType, Materials, UILanguage, MeshSize, in_sections, in_nodes, in_beams, in_surfaces, in_openings,
                           in_nodesupports, in_edgesupports, in_lcases, in_lgroups, in_lloads, in_sloads, in_fploads, in_flloads, in_fsloads, in_hinges,
                           in_edgeLoads, in_pointLoadsPoints, in_pointLoadsBeams, Scale, in_LinCombinations, in_NonLinCombinations, in_StabCombinations,
-                          in_CrossLinks, in_presstensionElem, in_gapElem, in_limitforceElem, projectInfo, in_layers, in_BeamLineSupport, in_PointSupportsOnBeams, in_Subsoils, in_SurfaceSupports)
+                          in_CrossLinks, in_presstensionElem, in_gapElem, in_limitforceElem, projectInfo, in_layers, in_BeamLineSupport, in_PointSupportsOnBeams, in_Subsoils, in_SurfaceSupports, in_loadpanels)
             DA.SetData(0, FileName)
 
 

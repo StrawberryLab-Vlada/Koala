@@ -126,6 +126,7 @@
     <Compile Include="LinearCombination.vb" />
     <Compile Include="LoadCasesAndGroups.vb" />
     <Compile Include="KoalaInfo.vb" />
+    <Compile Include="LoadPanels.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -213,6 +214,7 @@
     <Content Include="Resources\LoadGroup.bmp" />
     <None Include="Resources\Opening.bmp" />
     <None Include="Resources\Node.bmp" />
+    <None Include="Resources\LoadPanel.bmp" />
     <Content Include="Resources\NodeSupport.bmp" />
     <None Include="Resources\PointLoadPoint.bmp" />
     <None Include="Resources\PointLoadBeam.bmp" />

@@ -2300,4 +2300,266 @@
     </def_table>
   </def_container>
 
+  <!--load panels-->
+  <def_container id="{8708ED31-8E66-11D4-AD94-F6F5DE2BE344}" clsid="{8708ED31-8E66-11D4-AD94-F6F5DE2BE344}" progid="EP_DSG_Elements.EP_Plane.1">
+    <def_table id="BEA3B878-D1E8-4381-9A87-169EDCF7D602" name="XML\default" type="vertical" clsid="{8708ED31-8E66-11D4-AD94-F6F5DE2BE344}" progid="EP_DSG_Elements.EP_Plane.1" size="121">
+
+      <def_property x="0" name="Name" type="string" id="{4364BC01-AAB7-11D4-B3D9-00104BC3B531}"/>
+
+
+      <def_property x="1" name="Layer" type="ref" flag="131072" id="{35E4A750-E358-11D4-AE4C-000000000000}">
+        <def_ref id="{D3885EC4-BAE5-11D4-B3FA-00104BC3B531}" progid="EP_DSG_Elements.EP_DataLayer.1"/>
+      </def_property>
+
+
+      <def_property x="2" name="Table of geometry" type="table" id="{748A0933-F05E-4B33-B4D6-4854FCD612C8}">
+        <def_subtable size="4" type="vertical">
+          <def_property x="0" name="Closed curve" type="bool" id="{E0DD8A0C-8E62-49BF-B2FF-CF737A0B65E5}"/>
+
+          <def_property x="1" name="Node" type="ref" id="{F140E9F9-E8C9-48F1-A305-7F1EB39EEB65}">
+            <def_ref id="{39A7F468-A0D4-4DFF-8E5C-5843E1807D13}" progid="EP_DSG_Elements.EP_StructNode.1"/>
+          </def_property>
+
+          <def_property x="2" name="Edge" type="enum" id="{406832D0-2125-4389-94E2-FD17D97BD027}">
+            <def_enum size="8">
+              <it_enum v="0" t="Line"/>
+              <it_enum v="1" t="Circle arc"/>
+              <it_enum v="2" t="Circle by centre and vertex"/>
+              <it_enum v="4" t="Circle by 3 pts"/>
+              <it_enum v="5" t="Parabolic arc"/>
+              <it_enum v="6" t="Bezier"/>
+              <it_enum v="7" t="Spline"/>
+              <it_enum v="9" t="Linestrip"/>
+            </def_enum>
+          </def_property>
+
+          <def_property x="3" name="Weight" type="real" id="{23292B43-824E-4CC1-9376-83DA8BAC58DB}"/>
+
+        </def_subtable>
+      </def_property>
+
+      <def_property x="3" name="Element type" type="enum" id="{FFC42932-46D4-4DE8-B809-8CCA1B06A09C}">
+        <def_enum size="2">
+          <it_enum v="1" t="Standard"/>
+          <it_enum v="5" t="Load panel"/>
+        </def_enum>
+      </def_property>
+
+      <def_property x="4" name="Panel type" type="enum" id="{C8983825-6D71-48A4-9463-FFD8E34E7E9D}">
+        <def_enum size="3">
+          <it_enum v="0" t="To panel nodes"/>
+          <it_enum v="1" t="To panel edges"/>
+          <it_enum v="2" t="To panel edges and beams"/>
+        </def_enum>
+      </def_property>
+
+
+      <def_property x="5" name="Load transfer direction" type="enum" id="{1BAB9B24-06D8-4534-9829-31C33A8414DC}">
+        <def_enum size="3">
+          <it_enum v="0" t="X (LCS panel)"/>
+          <it_enum v="1" t="Y (LCS panel)"/>
+          <it_enum v="2" t="all (LCS panel)"/>
+        </def_enum>
+      </def_property>
+
+      <def_property x="6" name="Transfer in X [%]" type="integer" id="{1BBCFC4D-4134-49F5-9CC0-2724C9DD409B}"/>
+
+
+      <def_property x="7" name="Transfer in Y [%]" type="integer" id="{6BF523A5-BAF7-478A-BF4E-86F61B12E27A}"/>
+
+
+      <def_property x="8" name="Load transfer method" type="enum" id="{CD7E05A5-D63E-4E2F-8EBB-4F469F9DADF8}">
+        <def_enum size="4">
+          <it_enum v="0" t="Accurate(FEM),fixed link with beams"/>
+          <it_enum v="1" t="Standard"/>
+          <it_enum v="2" t="Accurate(FEM),hinged link with beams"/>
+          <it_enum v="3" t="Tributary area"/>
+        </def_enum>
+      </def_property>
+
+
+      <def_property x="9" name="Selection of entities" type="enum" id="{45307C01-416A-4EB6-A4C5-185B77C9D9AA}">
+        <def_enum size="4">
+          <it_enum v="0" t="All"/>
+          <it_enum v="1" t="User selection"/>
+          <it_enum v="2" t="By type"/>
+          <it_enum v="3" t="Auto selection"/>
+        </def_enum>
+      </def_property>
+
+      <def_property x="10" name="Swap orientation" type="bool" flag="167772160" id="{53C7EA0D-34F7-4BC6-9187-FF0518B2D539}"/>
+
+
+      <def_property x="11" name="LCS angle" type="param" flag="33619968" id="{C118B81C-1220-4EB5-8E44-1E07C8E9FCFE}"/>
+
+
+     
+      <def_property x="12" name="Supporting members validity range (with respect to panel Z-axis)" type="enum" id="{468408BC-46D4-41C7-8928-96BE88683C0F}">
+        <def_enum size="3">
+          <it_enum v="0" t="All"/>
+          <it_enum v="1" t="-Z"/>
+          <it_enum v="2" t="+Z"/>
+        </def_enum>
+      </def_property>
+
+
+    </def_table>
+  </def_container>
+
+  <def_container id="{7B422CC0-6394-403B-8386-1584D5E5E4FD}" clsid="{7B422CC0-6394-403B-8386-1584D5E5E4FD}" progid="EP_DSG_Elements.8.00.EP_LoadPanel.1">
+    <def_table id="53BD2D63-6124-489E-899A-4EBEECBB9770" name="XML\default" type="vertical" clsid="{7B422CC0-6394-403B-8386-1584D5E5E4FD}" progid="EP_DSG_Elements.8.00.EP_LoadPanel.1" size="52">
+
+      <def_property x="0" name="Name" type="string" id="{4364BC01-AAB7-11D4-B3D9-00104BC3B531}"/>
+
+
+      <def_property x="1" name="UniqueID" type="string" id="{EB2C0F85-7275-4F94-9EA7-E8C3DBFB0FA6}"/>
+
+
+      <def_property x="2" name="Layer" type="ref" flag="131072" id="{35E4A750-E358-11D4-AE4C-000000000000}">
+        <def_ref id="{D3885EC4-BAE5-11D4-B3FA-00104BC3B531}" progid="EP_DSG_Elements.EP_DataLayer.1"/>
+      </def_property>
+
+
+      <def_property x="3" name="LCS type" type="enum" id="{60A0A2A0-D29C-4D2A-A0ED-CBC2DEB9102F}">
+        <def_enum size="6">
+          <it_enum v="0" t="Standard"/>
+          <it_enum v="1" t="Perpendicular to vector"/>
+          <it_enum v="2" t="Congruent with line"/>
+          <it_enum v="3" t="Smallest angle with vector"/>
+          <it_enum v="4" t="Tilt of vector defined by point"/>
+          <it_enum v="5" t="Tilt of vector normal to line"/>
+        </def_enum>
+      </def_property>
+
+
+      <def_property x="4" name="Swap orientation" type="bool" flag="167772160" id="{53C7EA0D-34F7-4BC6-9187-FF0518B2D539}"/>
+
+
+      <def_property x="5" name="LCS angle" type="param" flag="33619968" id="{C118B81C-1220-4EB5-8E44-1E07C8E9FCFE}"/>
+
+
+      <def_property x="6" name="Panel type" type="enum" id="{C8983825-6D71-48A4-9463-FFD8E34E7E9D}">
+        <def_enum size="3">
+          <it_enum v="0" t="To panel nodes"/>
+          <it_enum v="1" t="To panel edges"/>
+          <it_enum v="2" t="To panel edges and beams"/>
+        </def_enum>
+      </def_property>
+
+
+      <def_property x="7" name="Load transfer direction" type="enum" id="{1BAB9B24-06D8-4534-9829-31C33A8414DC}">
+        <def_enum size="3">
+          <it_enum v="0" t="X (LCS panel)"/>
+          <it_enum v="1" t="Y (LCS panel)"/>
+          <it_enum v="2" t="all (LCS panel)"/>
+        </def_enum>
+      </def_property>
+
+
+      <def_property x="8" name="Max. eccentricity of members" type="real" id="{984AD8B1-1C3C-42CF-8CF7-5974B17EA175}"/>
+
+
+      <def_property x="9" name="Supporting members validity range (with respect to panel Z-axis)" type="enum" id="{468408BC-46D4-41C7-8928-96BE88683C0F}">
+        <def_enum size="3">
+          <it_enum v="0" t="All"/>
+          <it_enum v="1" t="-Z"/>
+          <it_enum v="2" t="+Z"/>
+        </def_enum>
+      </def_property>
+
+
+      <def_property x="10" name="Load transfer method" type="enum" id="{86690B53-5265-490D-B1A3-3E78304F32B2}">
+        <def_enum size="2">
+          <it_enum v="1" t="Standard"/>
+          <it_enum v="3" t="Tributary area"/>
+        </def_enum>
+      </def_property>
+
+
+      <def_property x="11" name="Selection of entities" type="enum" id="{3E92C6E0-B199-4132-A489-1308AD7A76F6}">
+        <def_enum size="2">
+          <it_enum v="0" t="All"/>
+          <it_enum v="1" t="User selection"/>
+        </def_enum>
+      </def_property>
+
+
+      <def_property x="12" name="Selection of entities" type="enum" id="{0D503EFB-CE24-4CC5-A802-3722464AA5A1}">
+        <def_enum size="2">
+          <it_enum v="0" t="All"/>
+          <it_enum v="3" t="Auto selection"/>
+        </def_enum>
+      </def_property>
+
+
+      <def_property x="13" name="Load transfer method" type="enum" id="{75FCD824-E753-49EA-A0DC-A84554C21970}">
+        <def_enum size="2">
+          <it_enum v="1" t="Standard"/>
+          <it_enum v="3" t="Tributary area"/>
+        </def_enum>
+      </def_property>
+
+
+      <def_property x="14" name="Selection of entities" type="enum" id="{45307C01-416A-4EB6-A4C5-185B77C9D9AA}">
+        <def_enum size="4">
+          <it_enum v="0" t="All"/>
+          <it_enum v="1" t="User selection"/>
+          <it_enum v="2" t="By type"/>
+          <it_enum v="3" t="Auto selection"/>
+        </def_enum>
+      </def_property>
+
+
+      <def_property x="15" name="Max.angle for transfer" type="real" id="{D095D0D8-C3D5-4DBB-8564-396C11DFE66B}"/>
+
+
+      <def_property x="16" name="Transfer in X [%]" type="integer" id="{1BBCFC4D-4134-49F5-9CC0-2724C9DD409B}"/>
+
+
+      <def_property x="17" name="Transfer in Y [%]" type="integer" id="{6BF523A5-BAF7-478A-BF4E-86F61B12E27A}"/>
+
+
+      <def_property x="18" name="Load transfer method" type="enum" id="{CD7E05A5-D63E-4E2F-8EBB-4F469F9DADF8}">
+        <def_enum size="4">
+          <it_enum v="0" t="Accurate(FEM),fixed link with beams"/>
+          <it_enum v="1" t="Standard"/>
+          <it_enum v="2" t="Accurate(FEM),hinged link with beams"/>
+          <it_enum v="3" t="Tributary area"/>
+        </def_enum>
+      </def_property>
+
+
+      <def_property x="19" name="3D Wind" type="bool" id="{DF73855B-56CA-4318-BB47-04B4A3D3E2D9}"/>
+
+
+      <def_property x="20" name="Table of geometry" type="table" id="{748A0933-F05E-4B33-B4D6-4854FCD612C8}">
+        <def_subtable size="4" type="vertical">
+          <def_property x="0" name="Closed curve" type="bool" id="{E0DD8A0C-8E62-49BF-B2FF-CF737A0B65E5}"/>
+
+          <def_property x="1" name="Node" type="ref" id="{F140E9F9-E8C9-48F1-A305-7F1EB39EEB65}">
+            <def_ref id="{39A7F468-A0D4-4DFF-8E5C-5843E1807D13}" progid="EP_DSG_Elements.EP_StructNode.1"/>
+          </def_property>
+
+          <def_property x="2" name="Edge" type="enum" id="{406832D0-2125-4389-94E2-FD17D97BD027}">
+            <def_enum size="8">
+              <it_enum v="0" t="Line"/>
+              <it_enum v="1" t="Circle arc"/>
+              <it_enum v="2" t="Circle by centre and vertex"/>
+              <it_enum v="4" t="Circle by 3 pts"/>
+              <it_enum v="5" t="Parabolic arc"/>
+              <it_enum v="6" t="Bezier"/>
+              <it_enum v="7" t="Spline"/>
+              <it_enum v="9" t="Linestrip"/>
+            </def_enum>
+          </def_property>
+
+          <def_property x="3" name="Weight" type="real" id="{23292B43-824E-4CC1-9376-83DA8BAC58DB}"/>
+
+        </def_subtable>
+      </def_property>
+
+    </def_table>
+  </def_container>
+
+
 </def_project>
