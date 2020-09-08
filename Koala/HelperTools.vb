@@ -592,6 +592,66 @@ Module HelperTools
         End Select
     End Function
 
+    Public Sub AddOptionsToMenuPanelType(menuItem As Param_Integer)
+        menuItem.AddNamedValue("To panel nodes", 0)
+        menuItem.AddNamedValue("To panel edges", 1)
+        menuItem.AddNamedValue("To panel edges and beams", 2)
+    End Sub
+    Public Function GetStringForPanelType(item As Integer) As String
+        Select Case item
+            Case 0
+                Return "To panel nodes"
+            Case 1
+                Return "To panel edges"
+            Case 2
+                Return "To panel edges and beams"
+
+            Case Else
+                Return "To panel edges and beams"
+        End Select
+    End Function
+
+
+    Public Sub AddOptionsToMenuTransferMethod(menuItem As Param_Integer)
+        menuItem.AddNamedValue("Accurate(FEM),fixed link with beams", 0)
+        menuItem.AddNamedValue("Standard", 1)
+        menuItem.AddNamedValue("Accurate(FEM),hinged link with beams", 2)
+        menuItem.AddNamedValue("Tributary area", 3)
+    End Sub
+    Public Function GetStringForTransferMethod(item As Integer) As String
+        Select Case item
+            Case 0
+                Return "Accurate(FEM),fixed link with beams"
+            Case 1
+                Return "Standard"
+            Case 2
+                Return "Accurate(FEM),hinged link with beams"
+            Case 3
+                Return "Tributary area"
+            Case Else
+                Return "Standard"
+        End Select
+    End Function
+
+    Public Sub AddOptionsToMenuTransferDirection(menuItem As Param_Integer)
+        menuItem.AddNamedValue("X (LCS panel)", 0)
+        menuItem.AddNamedValue("Y (LCS panel)", 1)
+        menuItem.AddNamedValue("all (LCS panel)", 2)
+    End Sub
+    Public Function GetStringForTransferDirection(item As Integer) As String
+        Select Case item
+            Case 0
+                Return "X (LCS panel)"
+            Case 1
+                Return "Y (LCS panel)"
+            Case 2
+                Return "all (LCS panel)"
+
+            Case Else
+                Return "all (LCS panel)"
+        End Select
+    End Function
+
     Public Function GetExistingNode(arrPoint As Rhino.Geometry.Point3d, nodes(,) As String, nnodes As Long, epsilon As Double)
         Dim currentnode
         'Start with node not found, loop through all the nodes until one is found within tolerance
@@ -745,7 +805,7 @@ Module HelperTools
                              in_fploads As List(Of String), in_flloads As List(Of String), in_fsloads As List(Of String), in_hinges As List(Of String), in_edgeLoads As List(Of String), in_pointLoadsPoints As List(Of String), in_pointLoadsBeams As List(Of String),
                              Scale As String, in_LinCombinations As List(Of String), in_NonLinCombinations As List(Of String), in_StabCombinations As List(Of String),
                              in_CrossLinks As List(Of String), in_presstensionElem As List(Of String), in_gapElem As List(Of String), in_limitforceElem As List(Of String), projectInfo As List(Of String), in_layers As List(Of String),
-                             in_BeamLineSupport As List(Of String), in_PointSupportOnBeam As List(Of String), in_Subsoils As List(Of String), in_SurfaceSupports As List(Of String))
+                             in_BeamLineSupport As List(Of String), in_PointSupportOnBeam As List(Of String), in_Subsoils As List(Of String), in_SurfaceSupports As List(Of String), in_loadpanels As List(Of String))
         Dim i As Long, j As Long
 
 
@@ -785,6 +845,7 @@ Module HelperTools
         Dim SE_pointSupportOnBeam(100000, 18) As String
         Dim SE_subsoil(100000, 7) As String
         Dim SE_surfaceSupport(100000, 2) As String
+        Dim SE_LoadPanels(100000, 7) As String
 
         Dim SE_meshsize As Double
 
@@ -796,7 +857,7 @@ Module HelperTools
         Dim sectioncount As Long, nodesupportcount As Long, edgesupportcount As Long
         Dim lcasecount As Long, lgroupcount As Long, lloadcount As Long, sloadcount As Long, fploadcount As Long, flloadcount As Long, fsloadcount As Long
         Dim hingecount As Long, eloadscount As Long, pointLoadpointCount As Long, pointLoadbeamCount As Long, lincominationcount As Long, nonlincominationcount As Long
-        Dim stabcombicount As Long, crosslinkscount As Long, gapsnr As Long, ptelemnsnr As Long, lfelemnsnr As Long, nBeamLineSupport As Long, nPointSupportonBeam As Long, nSubsoils As Long, nSurfaceSupports As Long
+        Dim stabcombicount As Long, crosslinkscount As Long, gapsnr As Long, ptelemnsnr As Long, lfelemnsnr As Long, nBeamLineSupport As Long, nPointSupportonBeam As Long, nSubsoils As Long, nSurfaceSupports As Long, nloadPanels As Long
 
         Dim stopWatch As New System.Diagnostics.Stopwatch()
         Dim time_elapsed As Double
@@ -891,6 +952,17 @@ Module HelperTools
             For i = 0 To surfacecount - 1
                 For j = 0 To 11
                     SE_surfaces(i, j) = in_surfaces(j + i * 12)
+                Next j
+            Next i
+        End If
+
+
+        If (in_loadpanels IsNot Nothing) Then
+            nloadPanels = in_loadpanels.Count / 8
+            Rhino.RhinoApp.WriteLine("Number of loadpanels: " & nloadPanels)
+            For i = 0 To nloadPanels - 1
+                For j = 0 To 7
+                    SE_LoadPanels(i, j) = in_loadpanels(j + i * 8)
                 Next j
             Next i
         End If
@@ -1170,7 +1242,7 @@ SE_hinges, hingecount,
 SE_meshsize, SE_eLoads, eloadscount, SE_pointLoadPoint, pointLoadpointCount, SE_pointLoadBeam, pointLoadbeamCount,
 SE_lincombinations, lincominationcount, SE_nonlincombinations, nonlincominationcount, SE_stabcombinations,
 stabcombicount, SE_Crosslinks, crosslinkscount, SE_gapselem, gapsnr, SE_presstensionelems, ptelemnsnr, SE_limforceelem,
-lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers, SE_layersCount, SE_beamLineSupports, nBeamLineSupport, SE_pointSupportOnBeam, nPointSupportonBeam, SE_subsoil, nSubsoils, SE_surfaceSupport, nSurfaceSupports)
+lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers, SE_layersCount, SE_beamLineSupports, nBeamLineSupport, SE_pointSupportOnBeam, nPointSupportonBeam, SE_subsoil, nSubsoils, SE_surfaceSupport, nSurfaceSupports, SE_LoadPanels, nloadPanels)
 
         Rhino.RhinoApp.Write(" Done." & Convert.ToChar(13))
 
@@ -1202,7 +1274,7 @@ fploads(,), fploadnr, flloads(,), flloadnr, fsloads(,), fsloadnr,
 hinges(,), hingenr,
 meshsize, eloads(,), eloadsnr, pointLoadPoint(,), pointLoadpointCount, pointLoadBeam(,),
 pointLoadbeamCount, lincombinations(,), lincominationcount, nonlincombinations(,), nonlincominationcount,
-stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsnr, presstensionelems(,), ptelemnsnr, limforceelem(,), lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers(,), SE_layersCount, SE_beamLineSupports(,), nbeamLineSupports, SE_pointSupportOnBeam, nPointSupportonBeam, SE_subsoil(,), nSubsoils, SE_surfaceSupport(,), nSurfaceSupports)
+stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsnr, presstensionelems(,), ptelemnsnr, limforceelem(,), lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers(,), SE_layersCount, SE_beamLineSupports(,), nbeamLineSupports, SE_pointSupportOnBeam, nPointSupportonBeam, SE_subsoil(,), nSubsoils, SE_surfaceSupport(,), nSurfaceSupports, SE_Loadpanels(,), nLoadpanels)
 
         Dim i As Long
         Dim c As String, cid As String, t As String, tid As String
@@ -1576,6 +1648,47 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
                     Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... surface: " + Str(i))
                 End If
                 Call WriteSurface(oSB, i, surfaces)
+
+            Next
+
+            oSB.AppendLine("</table>")
+            oSB.AppendLine("</container>")
+        End If
+
+        If nLoadpanels > 0 Then
+            'output load panels ------------------------------------------------------------------
+            c = "{8708ED31-8E66-11D4-AD94-F6F5DE2BE344}"
+            cid = "EP_DSG_Elements.EP_Plane.1"
+            t = "BEA3B878-D1E8-4381-9A87-169EDCF7D602"
+            tid = "EP_DSG_Elements.EP_Plane.1"
+
+            oSB.AppendLine("")
+            oSB.AppendLine("<container id=""" & c & """ t=""" & cid & """>")
+            oSB.AppendLine("<table id=""" & t & """ t=""" & tid & """>")
+
+            oSB.AppendLine("<h>")
+            oSB.AppendLine(ConCat_ht("0", "Name"))
+            oSB.AppendLine(ConCat_ht("1", "Layer"))
+            oSB.AppendLine(ConCat_ht("2", "Table of geometry"))
+
+            oSB.AppendLine(ConCat_ht("3", "Element type"))
+            oSB.AppendLine(ConCat_ht("4", "Panel type"))
+            oSB.AppendLine(ConCat_ht("5", "Load transfer direction"))
+            oSB.AppendLine(ConCat_ht("6", "Transfer in X [%]"))
+            oSB.AppendLine(ConCat_ht("7", "Transfer in Y [%]"))
+            oSB.AppendLine(ConCat_ht("8", "Load transfer method"))
+            oSB.AppendLine(ConCat_ht("9", "Selection of entities"))
+            oSB.AppendLine(ConCat_ht("10", "Swap orientation"))
+            oSB.AppendLine(ConCat_ht("11", "LCS angle"))
+
+
+            oSB.AppendLine("</h>")
+
+            For i = 0 To nLoadpanels - 1
+                If i > 0 And i Mod 100 = 0 Then
+                    Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... surface: " + Str(i))
+                End If
+                Call WriteLoadPanels(oSB, i, SE_Loadpanels)
 
             Next
 
@@ -2909,6 +3022,98 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
 
     End Sub
 
+
+    Private Sub WriteLoadPanels(ByRef osb, iloadpanel, loadpanels(,)) 'write 1 surface to the XML stream
+        Dim row_id As Long, inode As Long
+        Dim iedge As Long
+        Dim edges() As String, nodes() As String
+
+        osb.AppendLine("<obj nm=""" & loadpanels(iloadpanel, 0) & """>")
+        osb.AppendLine(ConCat_pv("0", loadpanels(iloadpanel, 0))) ' name
+        osb.AppendLine(ConCat_pn("1", loadpanels(iloadpanel, 4))) 'layer
+
+        'table of geometry
+        osb.AppendLine(ConCat_opentable("2", ""))
+        osb.AppendLine("<h>")
+        osb.AppendLine(ConCat_ht("0", "Closed curve"))
+        osb.AppendLine(ConCat_ht("1", "Node"))
+        osb.AppendLine(ConCat_ht("2", "Edge"))
+        osb.AppendLine("</h>")
+
+        'loop through all edges
+        row_id = 0
+        edges = Strings.Split(loadpanels(iloadpanel, 2), "|")
+
+        For iedge = 0 To edges.Count - 1
+            inode = 0
+            osb.AppendLine(ConCat_row(row_id))
+            osb.AppendLine(ConCat_pv("0", "1")) 'Closed curve
+            osb.AppendLine(ConCat_pn("1", Trim(Split(edges(iedge), ";")(1)))) 'first node
+            Select Case Strings.Trim(Strings.Split(edges(iedge), ";")(0)) 'curve type
+                Case "Line"
+                    osb.AppendLine(ConCat_pvt("2", "0", "Line"))
+                Case "Arc"
+                    osb.AppendLine(ConCat_pvt("2", "1", "Circle arc"))
+                Case "Spline"
+                    osb.AppendLine(ConCat_pvt("2", "7", "Spline"))
+                Case "Circle"
+                    osb.AppendLine(ConCat_pvt("2", "2", "Circle by centre and vertex"))
+            End Select
+
+            While inode < UBound(Split(edges(iedge), ";")) - 1
+                inode = inode + 1
+                row_id = row_id + 1
+                osb.AppendLine("</row>")
+                osb.AppendLine(ConCat_row(row_id))
+                If Split(edges(iedge), ";")(1 + inode).Contains("[") Then
+                    Dim Normal As String
+                    Normal = Split(edges(iedge), ";")(1 + inode).Replace(",", ";")
+                    osb.AppendLine(ConCat_pin("1", "-1", Normal))
+                Else
+                    osb.AppendLine(ConCat_pn("1", Trim(Split(edges(iedge), ";")(1 + inode))))
+                End If
+
+
+            End While
+            osb.AppendLine("</row>")
+            row_id = row_id + 1
+
+        Next
+
+        osb.AppendLine(ConCat_closetable("2"))
+
+
+
+        osb.AppendLine(ConCat_pvt("3", "5", "Load panel"))
+
+        Dim panelType As String
+        panelType = GetStringForPanelType(loadpanels(iloadpanel, 3))
+        osb.AppendLine(ConCat_pvt("4", loadpanels(iloadpanel, 3), panelType))
+        Dim transferDirection As String
+        transferDirection = GetStringForTransferDirection(loadpanels(iloadpanel, 4))
+        osb.AppendLine(ConCat_pvt("5", loadpanels(iloadpanel, 4), transferDirection))
+        osb.AppendLine(ConCat_pv("6", "50"))
+        osb.AppendLine(ConCat_pv("7", "50"))
+        'osb.AppendLine(ConCat_ht("6", "Transfer in X [%]"))
+        'osb.AppendLine(ConCat_ht("7", "Transfer in Y [%]"))
+
+
+        Dim transferMethod As String
+        transferMethod = GetStringForTransferMethod(loadpanels(iloadpanel, 5))
+        osb.AppendLine(ConCat_pvt("8", loadpanels(iloadpanel, 5), transferMethod))
+        osb.AppendLine(ConCat_pvt("9", "0", "All"))
+
+
+
+        osb.AppendLine(ConCat_pv("10", loadpanels(iloadpanel, 6)))
+        osb.AppendLine(ConCat_pv("11", loadpanels(iloadpanel, 7)))
+
+
+
+
+        osb.AppendLine("</obj>")
+
+    End Sub
     Private Sub WriteOpening(ByRef osb, iopening, openings(,)) 'write 1 opening to the XML stream
         Dim row_id As Long, inode As Long
         Dim iedge As Long
