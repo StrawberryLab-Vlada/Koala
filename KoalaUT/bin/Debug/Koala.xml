@@ -42,6 +42,11 @@ Koala
   Looks up a localized resource of type System.Drawing.Bitmap.
 </summary>
 </member>
+<member name="P:Koala.My.Resources.Resources.Buckling">
+<summary>
+  Looks up a localized resource of type System.Drawing.Bitmap.
+</summary>
+</member>
 <member name="P:Koala.My.Resources.Resources.CreateXML">
 <summary>
   Looks up a localized resource of type System.Drawing.Bitmap.

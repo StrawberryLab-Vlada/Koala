@@ -5,75 +5,7 @@ Imports Rhino.Geometry
 
 
 Namespace Koala
-    ' KOALA: a collection of Grasshopper components for use with SCIA Engineer
-    ' -----
-    ' Author(s) : Cyril Heck
 
-    ' HISTORY
-    ' -----
-    ' v1.0: initial version created during a SCIA "Ship-It"
-    ' v1.1: added support for circle arcs
-    ' v1.2: working on built-in XML.DEF file (will be done once migrated to Visual Studio)
-    ' v1.3: added support for esa_xml.exe with end supports + SW
-    '       added support for LCS definition by Z vectors
-    ' v2:   reorganized code into multiple components for more flexibility
-    '       added support for multiple sections and layers
-    '       extended handling of supports
-    ' v2.1: improved error detection for esa_xml.exe
-    '       separated running the analysis from creating the XML file
-    '       now supports different number of layers, sections, z vectors than beams
-    '       fixed error with "Type Process not defined" when trying to run esa_xml.exe on some machines
-    ' v2.11:fixed bug when the number of layers, sections, z vectors was higher or the same as the number of beams
-    ' v2.2: FRAME ANALYSIS:
-    '       support For direct section definition(basic I sections + rectangular & circular concrete)
-    '       support for AutoUpdate toggle - automatic generation of the XML file & for running the analysis
-    '       support for line loads (basic) and load cases & groups
-    '       support for simple hinges
-    ' v2.3  Focus on surfaces geometry:
-    '       support for materials on slabs
-    '       support for complex, flat surfaces, incl respecting circle arcs, avoids creation of duplicate nodes between two consecutive edges
-    '       support for openings
-    '       Also:
-    '       support all formcodes For steel - see reference
-    '               https://help.scia.net/webhelplatest/en/#pvt/steelcodechecktb/annexes/annex_a_profile_library_formcodes.htm
-    '       improved numbering: nodes & beams now start With index 1 instead Of 0
-    ' v2.31 introduced global "tolerance" parameter, used for duplicate node removal and to check the planarity of opening curves
-    ' v2.4  line support on surface & opening edges
-    '       selection of project type, materials
-    '       surface loads (incl different coordinate systems & projections)
-    '       free loads (point, line, surface)
-    '       mesh size for 2D elements
-    ' v2.5  streamlined the KoalaBeams component to flexibly accept segments, circle arcs as geometry input
-    '       fixed free line & surface loads when SCIA Engineer's UI is set to Dutch, French, German
-    '       nodes (for specific cases where no beams or shells should be created)
-    '       more robust support for curved shells (sorting order of edges) - shells still need to have max 4 edges, meaning that exploding them to faces does help.
-    '       internal nodes on slabs
-    ' v2.51 scale is now also applied to free load geometry
-    '
-    ' TO DO
-    ' -----
-    ' 3.0: implement support for the SCIA OpenAPI for XML update, running calculation and retrieving results
-    ' direct support for complex shells through built-in explosion to individual faces - only for non-planar surfaces!
-    ' support for ribs (when the XML import works in SCIA Engineer)
-    ' line loads on surface edges
-    ' mesh setup: nr of 1D tiles
-    ' built-up steel profiles
-    ' tapered profiles (steel built-up only? general?)
-    ' run duplicate node removal at overall level in the main component (when everything comes together)
-    ' modify duplicate node search to start with the end and cycle to the beginning (should be faster in many cases)
-    ' support for bracings: axial force only + tension-only (NL)
-    ' support for prestressing tendons
-    ' support for nodal loads(On nodes)
-    ' extended support loads on beams (part of the beam, trapezoidal)
-    ' support creation of layers
-    ' build in .XML.DEF file
-    ' delete "results" file before starting calculation
-    ' move to a true GH component with the SDK
-    ' For shells, add Option To decrease the number Of nodes (eg On straight lines)
-    ' faster removal of duplicates
-    ' support for a Karamba3D model?
-
-    'only run through if button is pressed
     Public Class CreateXML
         Inherits GH_Component
         ''' <summary>
