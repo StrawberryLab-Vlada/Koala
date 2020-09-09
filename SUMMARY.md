@@ -4,7 +4,7 @@
 
 ## Manual
 
-* [General introduction](manual/untitled.md)
+* [General introduction](manual/generalintorduction.md)
 * [Installation instruction](manual/installation-instruction.md)
 * [Simple examples for easy start](manual/simple-examples-for-easy-start.md)
 * [In-depth component reference](manual/in-depth-component-reference/README.md)
