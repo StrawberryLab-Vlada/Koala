@@ -1,6 +1,7 @@
 # Table of contents
 
 * [General Introduction](generalintorduction.md)
+* [Beam local nonlinearities](beam-local-nonlinearities.md)
 * [Installation instruction](installation-instruction.md)
 
 ## Manual
