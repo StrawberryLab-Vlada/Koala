@@ -46,7 +46,7 @@ Namespace Koala
             Dim Name As String = "SC1"
             Dim Content As String = "1*LC2"
             If (Not DA.GetData(Of String)(0, Name)) Then Return
-            If (Not DA.GetData(Of String)(2, Content)) Then Return
+            If (Not DA.GetData(Of String)(1, Content)) Then Return
 
             Dim FlatList As New List(Of System.Object) From {
                 Name,
