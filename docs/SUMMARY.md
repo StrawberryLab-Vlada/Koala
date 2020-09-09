@@ -1,7 +1,6 @@
 # Table of contents
 
 * [General Introduction](generalintorduction.md)
-* [Beam local nonlinearities](beam-local-nonlinearities.md)
 * [Installation instruction](installation-instruction.md)
 
 ## Manual
@@ -29,6 +28,7 @@
     * [Line load on 2D member edge](manual/in-depth-component-reference/load/line-load-on-2d-member-edge.md)
     * [Surface load](manual/in-depth-component-reference/load/surface-load.md)
   * [Structure](manual/in-depth-component-reference/structure/README.md)
+    * [Beam local nonlinearities](manual/in-depth-component-reference/structure/beam-local-nonlinearities.md)
     * [Geometry](manual/in-depth-component-reference/structure/geometry/README.md)
       * [Nodes](manual/in-depth-component-reference/structure/geometry/nodes.md)
       * [Beams](manual/in-depth-component-reference/structure/geometry/beams.md)
