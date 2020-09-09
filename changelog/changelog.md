@@ -1,4 +1,61 @@
+---
+description: Change log of development of Koala - What's  new in the release/
+---
+
 # Changelog
+
+## v3.8
+
+### Added
+
+* Component for definition of Load panel definition
+
+## v3.7
+
+### Fixed
+
+* Definition of degrees of freedom for supports
+* Definition of flexible stiffness for supports
+* Naming of the openings - added prefix for name of the opening
+
+### Added
+
+* Component for definition of beam line support
+* Component for definition of nodal support on beam
+* Component for definition of subsoil
+* Component for definition of surface support
+
+## v3.6
+
+### Changed
+
+* Components for Analysis - changed format of output file - now is possible to get document in xml, txt,  rtf, dds and xlsx.
+* Definition of thickness for 2D member - now is possible to define constant as well as variable thickness 
+
+### Added
+
+* Point load on point - added definition of the rotation angle
+* Support for circular slabs
+
+## v3.5
+
+### Changed
+
+* Components of beam and 2D members - changed behavior of components to respect list inputs for properties
+
+### Added
+
+* Point load on beam - Added option to define distance between forces
+
+## v3.4
+
+### Fixed
+
+* Fixed issue with layers - added a new component for the definition of layers. Defined layers can be used in components of surfaces and beams.
+
+### Added
+
+* Added description field in component for nonlinear combination
 
 ## v3.3
 
