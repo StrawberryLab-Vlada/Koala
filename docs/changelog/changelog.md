@@ -66,7 +66,7 @@ description: Change log of development of Koala - What's  new in the release/
 
 ### Changed
 
-*  Autogeneration of xml.def file, which is generated in the same directory and with same name as xml file.
+* Autogeneration of xml.def file, which is generated in the same directory and with same name as xml file.
 
 ### Added
 
@@ -85,8 +85,6 @@ description: Change log of development of Koala - What's  new in the release/
   * Added possibility to define nonlinear type of 2D member - membrane/2D pressure only 
   * Added rotation of LCS 
   * Added possibility to swap surface
-
-
 
 ## **v3.1**
 
@@ -110,8 +108,6 @@ description: Change log of development of Koala - What's  new in the release/
   * definition of position on edge - relative x absolute
   * trapezoidal shape
 * Add component for line load on surface edge
-
-
 
 ## v3.0
 
@@ -174,13 +170,9 @@ description: Change log of development of Koala - What's  new in the release/
 
 * working on built-in XML.DEF file
 
-
-
 ## v1.1
 
 * added support for circle arcs
 
-
-
-##    ****
+## _\*\*_
 

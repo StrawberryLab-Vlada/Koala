@@ -2,23 +2,23 @@
 
 ## Latest version Koala v3.7
 
- [https://cdnstore.scia.net/garage/Koala\_v3.7.zip](https://cdnstore.scia.net/garage/Koala_v3.7.zip)
+[https://cdnstore.scia.net/garage/Koala\_v3.7.zip](https://cdnstore.scia.net/garage/Koala_v3.7.zip)
 
 ## Koala v3.6
 
-[ https://cdnstore.scia.net/garage/Koala\_v3.6.zip](%20https://cdnstore.scia.net/garage/Koala_v3.6.zip)
+[ https://cdnstore.scia.net/garage/Koala\_v3.6.zip](https://github.com/jarabroz/Koala/tree/3dd2d30c4629b90c99dc77233e7f42ba2a6fb2e0/garage/Koala_v3.6.zip)
 
 ## Koala v3.5
 
-[ https://cdnstore.scia.net/garage/Koala\_v3.5.zip](%20https://cdnstore.scia.net/garage/Koala_v3.5.zip)
+[ https://cdnstore.scia.net/garage/Koala\_v3.5.zip](https://github.com/jarabroz/Koala/tree/3dd2d30c4629b90c99dc77233e7f42ba2a6fb2e0/garage/Koala_v3.5.zip)
 
 ## Koala v3.4
 
-[ https://cdnstore.scia.net/garage/Koala\_v3.4.zip](%20https://cdnstore.scia.net/garage/Koala_v3.4.zip)
+[ https://cdnstore.scia.net/garage/Koala\_v3.4.zip](https://github.com/jarabroz/Koala/tree/3dd2d30c4629b90c99dc77233e7f42ba2a6fb2e0/garage/Koala_v3.4.zip)
 
 ## Koala v3.3
 
-[ https://cdnstore.scia.net/garage/Koala\_v3.3.zip](%20https://cdnstore.scia.net/garage/Koala_v3.3.zip)
+[ https://cdnstore.scia.net/garage/Koala\_v3.3.zip](https://github.com/jarabroz/Koala/tree/3dd2d30c4629b90c99dc77233e7f42ba2a6fb2e0/garage/Koala_v3.3.zip)
 
 ## Koala v3.2
 

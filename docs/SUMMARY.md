@@ -1,11 +1,10 @@
 # Table of contents
 
-* [Koala](README.md)
+* [General Introduction](generalintorduction.md)
+* [Installation instruction](installation-instruction.md)
 
 ## Manual
 
-* [General introduction](manual/generalintorduction.md)
-* [Installation instruction](manual/installation-instruction.md)
 * [Simple examples for easy start](manual/simple-examples-for-easy-start.md)
 * [In-depth component reference](manual/in-depth-component-reference/README.md)
   * [General workflow](manual/in-depth-component-reference/general-workflow.md)
