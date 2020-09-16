@@ -1,6 +1,8 @@
 # Layers
 
-![Layers component](../../../.gitbook/assets/layerscomponent.png)
+![](../../../.gitbook/assets/layerscomponent.png)
+
+Layers component defines layers which then can be used for definition of layers for beams and 2D members. 
 
 ## Inputs
 
@@ -8,7 +10,7 @@ Layerdefiniton can contain list of strings for definition of layers. You should 
 
 where
 
-* _LayerName_  is name of the layer
+* _LayerName_  is name of the layer which is the used as input parameter for elements which supports of their assignments to layers. Layer name is the used as reference in the case of input parameters for other components.
 * _Layerdescription_ is description of the layer
 * _IsLayerStructuralOnly_ is parameter which sets layer to StructuralOnly. If elements are in structural layer in SCIA Engineer then they are omitted from FE calculation.
 

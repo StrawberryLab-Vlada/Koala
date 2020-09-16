@@ -27,7 +27,7 @@ _NameofYourCrossSection_; _MatCode_; _TypeParameters_; _MaterialGrade_
 
 where
 
-* _NameofYourCrossSection_ is how you name your cross-section. This name is used during definition of beam.
+* _NameofYourCrossSection_ is how you name your cross-section. This name is used during definition of beam.  These names are the used as references in the case of input parameters for other components.
 * _MatCode_
   * concrete: CONC
   * timber: TIMB

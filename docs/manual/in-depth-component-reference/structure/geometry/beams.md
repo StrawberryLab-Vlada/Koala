@@ -34,7 +34,7 @@ List of the names of the layers where beams will be placed in SCIA Engineer. For
 
 ### NodePrefix
 
-Prefix which is used in the naming of generated nodes. Numbering starts from 1. So if prefix is N the the first node is N1 and so one. Default value is NB.
+Prefix which is used in the naming of generated nodes. Numbering starts from 1. So if prefix is N the the first node is N1 and so one. Default value is NB.  These names are the used as references in the case of input parameters for other components.
 
 ### Tolerance
 
@@ -100,7 +100,7 @@ Eccentricity of the beam in global z axis with respect to system line of the bea
 
 ### BeamNamePrefix
 
-Prefix which is used in the naming of generated beams. Numbering starts from 1. So if prefix is B the the first beam is B1 and so one. Default value is B.
+Prefix which is used in the naming of generated beams. Numbering starts from 1. So if prefix is B the the first beam is B1 and so one. Default value is B.  These names are the used as references in the case of input parameters for other components.
 
 ## Outputs
 
@@ -108,7 +108,15 @@ As output from component there is string list with defined nodes and string list
 
 {% page-ref page="../../general/createxml.md" %}
 
+## Example
+
 ![](../../../../.gitbook/assets/examplebeamcomponent.png)
+
+You can see this component in the action in example Frame
+
+{% page-ref page="../../../simple-examples-for-easy-start.md" %}
+
+
 
 
 
