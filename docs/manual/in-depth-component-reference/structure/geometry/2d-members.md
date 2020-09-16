@@ -62,11 +62,11 @@ Prefix which is used in the naming of generated nodes. Numbering starts from 1. 
 
 ### Tolerance
 
-Tolerance which is used to remove duplicate nodes \(if enabled with next input\)
+Tolerance which is used to remove duplicate nodes \(if enabled with next input\). Default is 0.001.
 
 ### RemDuplNodes
 
-Enables removal of duplicate nodes.
+Enables removal of duplicate nodes. Default is false.
 
 ### MemberSystemPlane
 

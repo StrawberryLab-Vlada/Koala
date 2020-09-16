@@ -2,17 +2,32 @@
 
 ![Opening component](../../../../.gitbook/assets/openningcomponent.png)
 
+Opening component is used for creation of openings in 2D members.
+
 ## Input
 
 ### ClosedCurves
 
+List with geometrical definition of the surfaces. Supported geometrical surface shapes:
+
+* closed polygonal shape where segments could be line, circular arc and spline.
+* circular shape
+
 ### Surface
+
+Name of the surface which hosts openings.
 
 ### NodePrefix
 
+Prefix which is used in the naming of generated nodes. Numbering starts from 1. So if prefix is N the the first node is N1 and so one. Default value is NO. These names are the used as references in the case of input parameters for other components.
+
 ### Tolerance
 
+Tolerance which is used to remove duplicate nodes \(if enabled with next input\).
+
 ### OpeningNamePrefix
+
+Prefix which is used in the naming of generated openings. Numbering starts from 1. So if prefix is O the the first opening is O1 and so one. Default value is O.  These names are the used as references in the case of input parameters for other components.
 
 ## Output
 
