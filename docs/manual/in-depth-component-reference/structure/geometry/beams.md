@@ -2,7 +2,7 @@
 
 ![Beam component](../../../../.gitbook/assets/beamcomponent.png)
 
-Beam component defines all possible cross-sections which you can the use for creation of beam through beam component.
+Beam component defines beam elements.
 
 ## Inputs
 
