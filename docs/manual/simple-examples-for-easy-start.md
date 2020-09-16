@@ -2,6 +2,10 @@
 
 ## Example Frame
 
+
+
+![Imported frame example in SCIA Engineer](../.gitbook/assets/frameesamplese.png)
+
 This example is located in the same folder/zip as \*.gha file. You can download it up to date from our Github storage [here](https://github.com/jarabroz/Koala/raw/master/ExampleFiles/Frame.gh).
 
 
