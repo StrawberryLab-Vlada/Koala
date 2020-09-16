@@ -84,7 +84,7 @@ where
 
 ## Outputs
 
-As output from component there is string list with defined cross-sections and its properties which needs to be linked to component for creation of XML file.
+As output from component there is string list with defined cross-sections and its properties which needs to be linked to component for creation of XML file into Section input parameter.
 
 {% page-ref page="../general/createxml.md" %}
 

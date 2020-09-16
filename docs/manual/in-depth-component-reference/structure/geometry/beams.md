@@ -104,11 +104,11 @@ Prefix which is used in the naming of generated beams. Numbering starts from 1. 
 
 ## Outputs
 
-As output from component there is string list with defined nodes and string list with defined beams and its properties. Both lists need to be linked to component for creation of XML file.
+As output from component there is string list with defined nodes and string list with defined beams and its properties. Both lists need to be linked to component for creation of XML file into Nodes input parameter and Beams input parameter.
 
 {% page-ref page="../../general/createxml.md" %}
 
-
+![](../../../../.gitbook/assets/examplebeamcomponent.png)
 
 
 
