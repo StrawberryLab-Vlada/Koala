@@ -15,7 +15,7 @@ Type of the crosslink. It could be
 
 ### Coupled members
 
-Members where crosslink should be applied. Crosslink will be located in the intersection of the members, so members have to have an intersection. Syntax is firstmember;secondmember;.
+Members where crosslink should be applied. Crosslink will be located in the intersection of the members, so members have to have an intersection. Syntax is firstmembername;secondmemberName;. Members should be created via beam component and their names are used as references.
 
 ## Output
 
