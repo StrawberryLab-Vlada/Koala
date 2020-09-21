@@ -1,4 +1,2 @@
 # Calculate
 
-C
-

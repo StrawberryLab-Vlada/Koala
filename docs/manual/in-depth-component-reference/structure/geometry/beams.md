@@ -2,7 +2,7 @@
 
 ![Beam component](../../../../.gitbook/assets/beamcomponent.png)
 
-Beam component defines beam elements.
+Beam component defines beam elements with their properties.
 
 ## Inputs
 
