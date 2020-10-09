@@ -18,9 +18,7 @@ It takes Grasshopper geometry and produces a SCIA Engineer XML with the correspo
 * Batch-mode: ability to run an analysis and get results through "esa\_xml.exe"
 * And more…
 
-See our webinar below how to use Koala in your projects
-
-{% embed url="https://youtu.be/RY-K4LVAiWw" %}
+See our webinar below how to use Koala in your projects https://youtu.be/RY-K4LVAiWw
 
 If you miss something you can vote for feature or add new [https://koala.ideas.aha.io/](https://koala.ideas.aha.io/)
 

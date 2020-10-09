@@ -37,7 +37,7 @@
       * [Openings](manual/in-depth-component-reference/structure/geometry/openings.md)
     * [Supports](manual/in-depth-component-reference/structure/supports/README.md)
       * [Nodal support](manual/in-depth-component-reference/structure/supports/nodal-support.md)
-      * [Node on beam support](manual/in-depth-component-reference/structure/supports/node-on-beam-support.md)
+      * [Point support on beam](manual/in-depth-component-reference/structure/supports/node-on-beam-support.md)
       * [Line support on beam](manual/in-depth-component-reference/structure/supports/line-support-on-beam.md)
       * [Line support on 2D member edge](manual/in-depth-component-reference/structure/supports/line-support-on-2d-member-edge.md)
       * [Surface support](manual/in-depth-component-reference/structure/supports/surface-support.md)
