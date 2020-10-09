@@ -26,7 +26,7 @@ Namespace Koala
         ''' </summary>
         Protected Overrides Sub RegisterInputParams(pManager As GH_Component.GH_InputParamManager)
             pManager.AddPointParameter("Points", "Points", "ListOfPoints", GH_ParamAccess.list)
-            pManager.AddTextParameter("NodePrefix", "NodePrefix", "Prefix for nodes", GH_ParamAccess.item)
+            pManager.AddTextParameter("NodePrefix", "NodePrefix", "Prefix for nodes", GH_ParamAccess.item, "N")
 
         End Sub
 

@@ -8,7 +8,7 @@ Module HelperTools
         menuItem.AddNamedValue("Rigid", 1)
         menuItem.AddNamedValue("Flexible", 2)
         menuItem.AddNamedValue("Rigid press only", 3)
-        menuItem.AddNamedValue("Ridig tension only", 4)
+        menuItem.AddNamedValue("Rigid tension only", 4)
         menuItem.AddNamedValue("Flexible press only", 5)
         menuItem.AddNamedValue("Flexible tension only", 6)
     End Sub
@@ -44,6 +44,25 @@ Module HelperTools
                 Return "Slovenčina"
             Case Else
                 Return "English"
+        End Select
+    End Function
+
+    Public Function GetNumberForUILangauge(item As String) As Long
+        Select Case item
+            Case "English"
+                Return 0
+            Case "Nederlands"
+                Return 1
+            Case "Français"
+                Return 2
+            Case "Deutsch"
+                Return 3
+            Case "Čeština"
+                Return 4
+            Case "Slovenčina"
+                Return 5
+            Case Else
+                Return 0
         End Select
     End Function
 
@@ -766,6 +785,7 @@ Module HelperTools
     'global variables for this component
     '-----------------------------------
     Public gl_UILanguage As String 'required until free loads geometry's definition is language-neutral in SCIA Engineer's XML
+    Public UILanguageNumber As Long
 
 
     Public Function GetExistingNode(arrPoint, nodes(,), nnodes, epsilon)
@@ -902,6 +922,7 @@ Module HelperTools
 
         'make some input parameters global variables for this component
         gl_UILanguage = UILanguage
+        UILanguageNumber = GetNumberForUILangauge(gl_UILanguage)
 
         'show that it's busy
         Rhino.RhinoApp.WriteLine("")
@@ -4467,12 +4488,12 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
         oSB.AppendLine(ConCat_pv("4", Trim(Split(LineShape, ";")(3) * scale))) 'first node Z
         Select Case Strings.Trim(Strings.Split(LineShape, ";")(0)) 'curve type - only "Line by 2 pts" is supported by SCIA Engineer
             Case "Line"
-                If gl_UILanguage = "0" Then oSB.AppendLine(ConCat_pv("5", "Line")) 'English
-                If gl_UILanguage = "1" Then oSB.AppendLine(ConCat_pv("5", "Lijn")) 'Dutch
-                If gl_UILanguage = "2" Then oSB.AppendLine(ConCat_pv("5", "Ligne")) 'French
-                If gl_UILanguage = "3" Then oSB.AppendLine(ConCat_pv("5", "Linie")) 'German
-                If gl_UILanguage = "4" Then oSB.AppendLine(ConCat_pv("5", "Přímka")) 'Czech
-                If gl_UILanguage = "5" Then oSB.AppendLine(ConCat_pv("5", "Čiara")) 'Slovak
+                If UILanguageNumber = "0" Then oSB.AppendLine(ConCat_pv("5", "Line")) 'English
+                If UILanguageNumber = "1" Then oSB.AppendLine(ConCat_pv("5", "Lijn")) 'Dutch
+                If UILanguageNumber = "2" Then oSB.AppendLine(ConCat_pv("5", "Ligne")) 'French
+                If UILanguageNumber = "3" Then oSB.AppendLine(ConCat_pv("5", "Linie")) 'German
+                If UILanguageNumber = "4" Then oSB.AppendLine(ConCat_pv("5", "Přímka")) 'Czech
+                If UILanguageNumber = "5" Then oSB.AppendLine(ConCat_pv("5", "Čiara")) 'Slovak
 
             Case "Arc"
                 oSB.AppendLine(ConCat_pv("5", "Circle arc")) 'not supported in SE
@@ -4571,12 +4592,12 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             oSB.AppendLine(ConCat_pv("4", Trim(Split(LineShape, ";")(3) * scale))) 'first node Z
             Select Case Strings.Trim(Strings.Split(LineShape, ";")(0)) 'curve type - only "Line by 2 pts" is supported by SCIA Engineer
                 Case "Line"
-                    If gl_UILanguage = "0" Then oSB.AppendLine(ConCat_pv("5", "Line")) 'English
-                    If gl_UILanguage = "1" Then oSB.AppendLine(ConCat_pv("5", "Lijn")) 'Dutch
-                    If gl_UILanguage = "2" Then oSB.AppendLine(ConCat_pv("5", "Ligne")) 'French
-                    If gl_UILanguage = "3" Then oSB.AppendLine(ConCat_pv("5", "Linie")) 'German
-                    If gl_UILanguage = "4" Then oSB.AppendLine(ConCat_pv("5", "Přímka")) 'Czech
-                    If gl_UILanguage = "5" Then oSB.AppendLine(ConCat_pv("5", "Čiara")) 'Slovak
+                    If UILanguageNumber = "0" Then oSB.AppendLine(ConCat_pv("5", "Line")) 'English
+                    If UILanguageNumber = "1" Then oSB.AppendLine(ConCat_pv("5", "Lijn")) 'Dutch
+                    If UILanguageNumber = "2" Then oSB.AppendLine(ConCat_pv("5", "Ligne")) 'French
+                    If UILanguageNumber = "3" Then oSB.AppendLine(ConCat_pv("5", "Linie")) 'German
+                    If UILanguageNumber = "4" Then oSB.AppendLine(ConCat_pv("5", "Přímka")) 'Czech
+                    If UILanguageNumber = "5" Then oSB.AppendLine(ConCat_pv("5", "Čiara")) 'Slovak
                 Case "Arc"
                     oSB.AppendLine(ConCat_pv("5", "Circle arc")) 'not supported in SE
                 Case "Spline"

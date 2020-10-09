@@ -1,5 +1,5 @@
 ﻿Imports System.Collections.Generic
-
+Imports Grasshopper.GUI.HTML
 Imports Grasshopper.Kernel
 Imports Rhino.Geometry
 
@@ -91,6 +91,17 @@ Namespace Koala
 
 
         End Sub
+
+        Protected Overrides Function HtmlHelp_Source() As String
+
+            Dim url As String = “https://jara-broz.gitbook.io/koala/manual/in-depth-component-reference/libraries/cross-sections“
+            'run default browser with help
+            Process.Start(url)
+
+            Return "GOTO:https://jara-broz.gitbook.io/koala/manual/in-depth-component-reference/libraries/cross-sections"
+            'Return "https://jara-broz.gitbook.io/koala/manual/in-depth-component-reference/libraries/cross-sections"
+        End Function
+
 
 
         ''' <summary>
