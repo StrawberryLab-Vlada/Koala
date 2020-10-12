@@ -13,7 +13,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Tool for conversion Rhino Grasshoper model to SCIA Engineer")>
 <Assembly: AssemblyCompany("Strawberrylab")>
 <Assembly: AssemblyProduct("Koala")>
-<Assembly: AssemblyCopyright("Copyright ©  2019")>
+<Assembly: AssemblyCopyright("Copyright ©  2020")>
 <Assembly: AssemblyTrademark("")>
 
 <Assembly: ComVisible(True)>
@@ -32,6 +32,6 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("3.8.0.0")>
-<Assembly: AssemblyFileVersion("3.8.0.0")>
+<Assembly: AssemblyVersion("3.8.1.0")>
+<Assembly: AssemblyFileVersion("3.8.1.0")>
 <Assembly: NeutralResourcesLanguage("en")>
