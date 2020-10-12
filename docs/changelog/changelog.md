@@ -10,6 +10,11 @@ description: Change log of development of Koala - What's  new in the release/
 
 * Component for definition of Load panel definition
 
+### Fixed
+
+* Definition of polygon for surface free load
+* Definition of line for free line load
+
 ## v3.7
 
 ### Fixed
