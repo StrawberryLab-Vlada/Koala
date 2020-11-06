@@ -30,9 +30,9 @@ Namespace Koala
             pManager.AddIntegerParameter("CalcType", "CalcType", "Type of calculation:  Right click and select from options", GH_ParamAccess.item, 0)
             AddOptionsToMenuCalculationType(pManager.Param(2))
             pManager.AddTextParameter("TemplateName", "TemplateName", "Template file name", GH_ParamAccess.item)
-            pManager.AddTextParameter("OutputFile", "OutputFile", "Output file for results", GH_ParamAccess.item)
+            pManager.AddTextParameter("OutputFile", "OutputFile", "Output file for results", GH_ParamAccess.item, "")
             pManager.AddBooleanParameter("RunESAXML", "RunESAXML", "Run calculation: True, False - no", GH_ParamAccess.item, False)
-
+            pManager.AddTextParameter("SavedSEProject", "SavedSEProject", "Output File with saved SCIA Engineer project with modifications", GH_ParamAccess.item, "")
 
         End Sub
 
@@ -41,7 +41,8 @@ Namespace Koala
         ''' </summary>
         Protected Overrides Sub RegisterOutputParams(pManager As GH_Component.GH_OutputParamManager)
             pManager.AddTextParameter("Message", "Message", "", GH_ParamAccess.item)
-            pManager.AddTextParameter("OutputFile", "OutputFile", "", GH_ParamAccess.item)
+            pManager.AddTextParameter("OutputFile", "OutputFile", "File with generated report", GH_ParamAccess.item)
+            pManager.AddTextParameter("SavedSEProject", "SavedSEProject", "File with saved SCIA Engineer project with modifications", GH_ParamAccess.item)
         End Sub
 
         ''' <summary>
@@ -56,6 +57,7 @@ Namespace Koala
             Dim CalcType As String = "LIN"
             Dim TemplateName As String = ""
             Dim OutputFile As String = ""
+            Dim SESavedProject As String = ""
 
             Dim RunESAXML As Boolean = False
 
@@ -68,7 +70,7 @@ Namespace Koala
             If (Not DA.GetData(3, TemplateName)) Then Return
             If (Not DA.GetData(4, OutputFile)) Then Return
             If (Not DA.GetData(5, RunESAXML)) Then Return
-
+            If (Not DA.GetData(6, SESavedProject)) Then Return
 
             Dim time_elapsed As Double
 
@@ -103,14 +105,21 @@ Namespace Koala
             '    strOut = FileName & " - XML file does not exist"
             '    'Exit Sub
             'End If
-
-            If Not System.IO.Directory.Exists(System.IO.Path.GetDirectoryName(OutputFile)) Then
-                strOut = OutputFile & " - Directory does not exist"
-                Exit Sub
+            If Not OutputFile = "" Then
+                If Not System.IO.Directory.Exists(System.IO.Path.GetDirectoryName(OutputFile)) Then
+                    strOut = OutputFile & " - Directory does not exist"
+                    Exit Sub
+                End If
             End If
 
+            If Not SESavedProject = "" Then
+                If Not System.IO.Directory.Exists(System.IO.Path.GetDirectoryName(SESavedProject)) Then
+                    strOut = SESavedProject & " - Directory does not exist"
+                    Exit Sub
+                End If
+            End If
 
-            strOut = RunCalculationWithEsaXML(FileName, ESAXMLPath, CalcType, TemplateName, OutputFile, time_elapsed)
+            strOut = RunCalculationWithEsaXML(FileName, ESAXMLPath, CalcType, TemplateName, OutputFile, time_elapsed, SESavedProject)
 
             DA.SetData(0, strOut)
             DA.SetData(1, OutputFile)

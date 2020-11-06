@@ -4706,7 +4706,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
 
     End Sub
 
-    Public Function RunCalculationWithEsaXML(FileName As String, ESAXMLPath As String, CalcType As String, TemplateName As String, OutputFile As String, ByRef time_elapsed As Double) As String
+    Public Function RunCalculationWithEsaXML(FileName As String, ESAXMLPath As String, CalcType As String, TemplateName As String, OutputFile As String, ByRef time_elapsed As Double, SESavedProject As String) As String
 
         Dim stopWatch As New System.Diagnostics.Stopwatch()
 
@@ -4724,13 +4724,13 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             Dim ESAXMLArgs As String
             Dim strErr As String, intExit As Integer
 
-            Dim ExportType As String
+            Dim ExportType As String = ""
             Dim ExportTypeString As String
 
             ExportType = OutputFile.Split(".").Last
             Select Case ExportType
-                Case "txt"
-                    ExportTypeString = "-tTXT -o"
+                Case "tst"
+                    ExportTypeString = "-tTST -o"
                 Case "xlsx"
                     ExportTypeString = "-sd -tXLSX -o"
                 Case "rtf"
@@ -4749,8 +4749,32 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             End Select
             '.\ESA_XML.exe LIN 'C:\TEMP\MakaraHala\SCIAtemplate.ESA' 'C:\TEMP\MakaraHala\KoalaHall.xml' -sd -tXLSX -oC:\TEMP\MakaraHala\Output.xlsx
             myProcess.StartInfo.FileName = ESAXMLPath
-            ESAXMLArgs = CalcType & " " & TemplateName & " " & FileName & " " & ExportTypeString & OutputFile
-            'ESAXMLArgs = CalcType & " " & TemplateName & " " & FileName & " -tTXT -o" & OutputFile
+
+
+
+            If Not SESavedProject = "" Then
+                Dim MultiProcesFile = System.IO.Path.GetDirectoryName(SESavedProject)
+                MultiProcesFile += "\runParameters.txt"
+                'FileCopy(TemplateName, SESavedProject)
+                Dim Parameters = CalcType & " " & TemplateName & " " & FileName & " -tESA -o" & SESavedProject & Environment.NewLine
+                If Not OutputFile = "" Then
+                    Parameters += CalcType & " " & TemplateName & " " & FileName & " " & ExportTypeString & OutputFile & Environment.NewLine
+                End If
+
+                System.IO.File.WriteAllText(MultiProcesFile, Parameters)
+                ESAXMLArgs = "CMD" & " " & MultiProcesFile
+                'File.Delete(MultiProcesFile)
+            Else
+                ESAXMLArgs = CalcType & " " & TemplateName & " " & FileName
+                If Not OutputFile = "" Then
+                    ESAXMLArgs += " " & ExportTypeString & OutputFile
+                End If
+            End If
+
+
+
+
+
             myProcess.StartInfo.Arguments = ESAXMLArgs
             myProcess.StartInfo.UseShellExecute = False
             'myProcess.StartInfo.RedirectStandardOutput = True
