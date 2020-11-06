@@ -4856,7 +4856,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             ' DA.SetData(1, OutputFile)
         Catch ex As Exception
             Rhino.RhinoApp.WriteLine("Encountered error launching esa_xml.exe: " & ex.Message)
-
+            strOut = "Encountered error launching esa_xml.exe: " & ex.Message
         End Try
 
 
