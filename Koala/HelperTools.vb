@@ -1340,16 +1340,29 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
 
             'data
             oSB.AppendLine("<obj id=""1"">")
-            Select Case Strings.Trim(Strings.UCase(structtype)) 'Structure type
-                Case "FRAME XZ"
+            Select Case structtype
+                Case "Beam"
+                    oSB.AppendLine(ConCat_pvt("0", 0, "Beam"))
+                Case "Truss XZ"
+                    oSB.AppendLine(ConCat_pvt("0", 1, "Truss XZ"))
+                Case "Frame XZ"
                     oSB.AppendLine(ConCat_pvt("0", 2, "Frame XZ"))
-                Case "FRAME XYZ"
+                Case "Truss XYZ"
+                    oSB.AppendLine(ConCat_pvt("0", 3, "Truss XYZ"))
+                Case "Frame XYZ"
                     oSB.AppendLine(ConCat_pvt("0", 4, "Frame XYZ"))
-                Case "GENERAL XYZ"
+                Case "Grid XY"
+                    oSB.AppendLine(ConCat_pvt("0", 5, "Grid XY"))
+                Case "Plate XY"
+                    oSB.AppendLine(ConCat_pvt("0", 6, "Plate XY"))
+                Case "Wall XY"
+                    oSB.AppendLine(ConCat_pvt("0", 7, "Wall XY"))
+                Case "General XYZ"
                     oSB.AppendLine(ConCat_pvt("0", 8, "General XYZ"))
                 Case Else
-                    Rhino.RhinoApp.WriteLine("KOALA: Structure type not recognized")
+                    oSB.AppendLine(ConCat_pvt("0", 8, "General XYZ"))
             End Select
+
             If (projectInfo.Count <> 0) Then
                 oSB.AppendLine(ConCat_pv("1", projectInfo(0)))
                 oSB.AppendLine(ConCat_pv("2", projectInfo(1)))
@@ -1368,7 +1381,7 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             oSB.AppendLine(ConCat_pv("7", IIf(materials.Contains("Steel"), "1", "0")))
             oSB.AppendLine(ConCat_pv("8", IIf(materials.Contains("Timber"), "1", "0")))
             oSB.AppendLine(ConCat_pv("9", IIf(materials.Contains("Fiber Concrete"), "1", "0")))
-            oSB.AppendLine(ConCat_pv("10", "PrDEx_InitialStress, PrDEx_Subsoil,PrDEx_InitialDeformationsAndCurvature, PrDEx_SecondOrder, PrDEx_Nonlinearity, PrDEx_BeamLocalNonlinearity,PrDEx_SupportNonlinearity, PrDEx_FrictionSupport, PrDEx_StabilityAnalysis, PrDEx_MaterialSteel"))
+            oSB.AppendLine(ConCat_pv("10", "PrDEx_InitialStress, PrDEx_Subsoil,PrDEx_InitialDeformationsAndCurvature, PrDEx_SecondOrder, PrDEx_Nonlinearity, PrDEx_BeamLocalNonlinearity,PrDEx_SupportNonlinearity, PrDEx_StabilityAnalysis"))
             'If (projectInfo.Count <> 0) Then
             '    oSB.AppendLine(ConCat_pv("11", projectInfo(5)))
             '    oSB.AppendLine(ConCat_pv("12", projectInfo(6)))
