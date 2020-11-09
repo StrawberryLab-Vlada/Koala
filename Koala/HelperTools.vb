@@ -391,6 +391,26 @@ Module HelperTools
         End Select
     End Function
 
+
+    Public Sub AddOptionsToMenuDirectionMoment(menuitem As Param_Integer)
+        menuitem.AddNamedValue("Mx", 0)
+        menuitem.AddNamedValue("My", 1)
+        menuitem.AddNamedValue("Mz", 2)
+    End Sub
+
+    Public Function GetStringFromDirectionMoment(item As Integer) As String
+        Select Case item
+            Case 0
+                Return "Mx"
+            Case 1
+                Return "My"
+            Case 2
+                Return "Mz"
+            Case Else
+                Return "Mz"
+        End Select
+    End Function
+
     Public Sub AddOptionsToMenuOrigin(menuitem As Param_Integer)
         menuitem.AddNamedValue("From start", 0)
         menuitem.AddNamedValue("From end", 1)
@@ -825,7 +845,8 @@ Module HelperTools
                              in_fploads As List(Of String), in_flloads As List(Of String), in_fsloads As List(Of String), in_hinges As List(Of String), in_edgeLoads As List(Of String), in_pointLoadsPoints As List(Of String), in_pointLoadsBeams As List(Of String),
                              Scale As String, in_LinCombinations As List(Of String), in_NonLinCombinations As List(Of String), in_StabCombinations As List(Of String),
                              in_CrossLinks As List(Of String), in_presstensionElem As List(Of String), in_gapElem As List(Of String), in_limitforceElem As List(Of String), projectInfo As List(Of String), in_layers As List(Of String),
-                             in_BeamLineSupport As List(Of String), in_PointSupportOnBeam As List(Of String), in_Subsoils As List(Of String), in_SurfaceSupports As List(Of String), in_loadpanels As List(Of String))
+                             in_BeamLineSupport As List(Of String), in_PointSupportOnBeam As List(Of String), in_Subsoils As List(Of String), in_SurfaceSupports As List(Of String), in_loadpanels As List(Of String), in_pointMomentPoint As List(Of String),
+                             in_pointMomentBeam As List(Of String), in_lineMomentBeam As List(Of String), in_lineMomentEdge As List(Of String), in_freePointMoment As List(Of String))
         Dim i As Long, j As Long
 
 
@@ -866,6 +887,11 @@ Module HelperTools
         Dim SE_subsoil(100000, 7) As String
         Dim SE_surfaceSupport(100000, 2) As String
         Dim SE_LoadPanels(100000, 7) As String
+        Dim SE_PointMomentPointNode(100000, 5) As String
+        Dim SE_pointMomentBeam(100000, 10) As String
+        Dim SE_lineMomentBeam(100000, 10) As String
+        Dim SE_lineMomentEdge(100000, 12) As String
+        Dim SE_fMomentPointloads(100000, 8) As String
 
         Dim SE_meshsize As Double
 
@@ -878,6 +904,8 @@ Module HelperTools
         Dim lcasecount As Long, lgroupcount As Long, lloadcount As Long, sloadcount As Long, fploadcount As Long, flloadcount As Long, fsloadcount As Long
         Dim hingecount As Long, eloadscount As Long, pointLoadpointCount As Long, pointLoadbeamCount As Long, lincominationcount As Long, nonlincominationcount As Long
         Dim stabcombicount As Long, crosslinkscount As Long, gapsnr As Long, ptelemnsnr As Long, lfelemnsnr As Long, nBeamLineSupport As Long, nPointSupportonBeam As Long, nSubsoils As Long, nSurfaceSupports As Long, nloadPanels As Long
+
+        Dim pointMomentpointCount As Long, pointMomentbeamCount As Long, lineMomentBeamCount As Long, lineMomentEdgeCount As Long, fpointmomentloadcount As Long
 
         Dim stopWatch As New System.Diagnostics.Stopwatch()
         Dim time_elapsed As Double
@@ -1056,12 +1084,32 @@ Module HelperTools
                 Next j
             Next i
         End If
+
+        If (in_lineMomentEdge IsNot Nothing) Then
+            lineMomentEdgeCount = in_lineMomentEdge.Count / 12
+            Rhino.RhinoApp.WriteLine("Number of beam line loads: " & eloadscount)
+            For i = 0 To lineMomentEdgeCount - 1
+                For j = 0 To 11
+                    SE_lineMomentEdge(i, j) = in_lineMomentEdge(j + i * 12)
+                Next j
+            Next i
+        End If
+
         If (in_pointLoadsPoints IsNot Nothing) Then
             pointLoadpointCount = in_pointLoadsPoints.Count / 6
             Rhino.RhinoApp.WriteLine("Number of beam line loads: " & pointLoadpointCount)
             For i = 0 To pointLoadpointCount - 1
                 For j = 0 To 5
                     SE_pointLoadPoint(i, j) = in_pointLoadsPoints(j + i * 6)
+                Next j
+            Next i
+        End If
+        If (in_pointMomentPoint IsNot Nothing) Then
+            pointMomentpointCount = in_pointMomentPoint.Count / 5
+            Rhino.RhinoApp.WriteLine("Number of beam line loads: " & pointLoadpointCount)
+            For i = 0 To pointMomentpointCount - 1
+                For j = 0 To 4
+                    SE_PointMomentPointNode(i, j) = in_pointMomentPoint(j + i * 5)
                 Next j
             Next i
         End If
@@ -1074,6 +1122,28 @@ Module HelperTools
                 Next j
             Next i
         End If
+
+        If (in_pointMomentBeam IsNot Nothing) Then
+            pointMomentbeamCount = in_pointMomentBeam.Count / 10
+            Rhino.RhinoApp.WriteLine("Number of beam line loads: " & lloadcount)
+            For i = 0 To pointMomentbeamCount - 1
+                For j = 0 To 9
+                    SE_pointMomentBeam(i, j) = in_pointMomentBeam(j + i * 10)
+                Next j
+            Next i
+        End If
+
+
+        If (in_lineMomentBeam IsNot Nothing) Then
+            lineMomentBeamCount = in_lineMomentBeam.Count / 11
+            Rhino.RhinoApp.WriteLine("Number of beam line loads: " & lloadcount)
+            For i = 0 To lineMomentBeamCount - 1
+                For j = 0 To 10
+                    SE_lineMomentBeam(i, j) = in_lineMomentBeam(j + i * 11)
+                Next j
+            Next i
+        End If
+
 
         If (in_sloads IsNot Nothing) Then
             sloadcount = in_sloads.Count / 5
@@ -1091,6 +1161,16 @@ Module HelperTools
             For i = 0 To fploadcount - 1
                 For j = 0 To 8
                     SE_fploads(i, j) = in_fploads(j + i * 9)
+                Next j
+            Next i
+        End If
+
+        If (in_freePointMoment IsNot Nothing) Then
+            fpointmomentloadcount = in_freePointMoment.Count / 9
+            Rhino.RhinoApp.WriteLine("Number of free point loads: " & fpointmomentloadcount)
+            For i = 0 To fpointmomentloadcount - 1
+                For j = 0 To 8
+                    SE_fMomentPointloads(i, j) = in_freePointMoment(j + i * 9)
                 Next j
             Next i
         End If
@@ -1263,7 +1343,9 @@ SE_hinges, hingecount,
 SE_meshsize, SE_eLoads, eloadscount, SE_pointLoadPoint, pointLoadpointCount, SE_pointLoadBeam, pointLoadbeamCount,
 SE_lincombinations, lincominationcount, SE_nonlincombinations, nonlincominationcount, SE_stabcombinations,
 stabcombicount, SE_Crosslinks, crosslinkscount, SE_gapselem, gapsnr, SE_presstensionelems, ptelemnsnr, SE_limforceelem,
-lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers, SE_layersCount, SE_beamLineSupports, nBeamLineSupport, SE_pointSupportOnBeam, nPointSupportonBeam, SE_subsoil, nSubsoils, SE_surfaceSupport, nSurfaceSupports, SE_LoadPanels, nloadPanels)
+lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers, SE_layersCount, SE_beamLineSupports, nBeamLineSupport, SE_pointSupportOnBeam,
+nPointSupportonBeam, SE_subsoil, nSubsoils, SE_surfaceSupport, nSurfaceSupports, SE_LoadPanels, nloadPanels,
+SE_PointMomentPointNode, pointMomentpointCount, SE_pointMomentBeam, pointMomentbeamCount, SE_lineMomentBeam, lineMomentBeamCount, SE_lineMomentEdge, lineMomentEdgeCount, SE_fMomentPointloads, fpointmomentloadcount)
 
         Rhino.RhinoApp.Write(" Done." & Convert.ToChar(13))
 
@@ -1288,14 +1370,17 @@ lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers, SE_layersCount, SE_beamLineS
     End Sub
 
     Private Sub WriteXMLFile(ByRef oSB, scale, structtype, materials,
-sections(,), sectionnr, nodes(,), nnodes, beams(,), beamnr, surfaces(,), surfacenr,
-openings(,), openingnr, nodesupports(,), nodesupportnr, edgesupports(,), edgesupportnr,
-lcases(,), lcasenr, lgroups(,), lgroupnr, lloads(,), lloadnr, sloads(,), sloadnr,
-fploads(,), fploadnr, flloads(,), flloadnr, fsloads(,), fsloadnr,
-hinges(,), hingenr,
-meshsize, eloads(,), eloadsnr, pointLoadPoint(,), pointLoadpointCount, pointLoadBeam(,),
-pointLoadbeamCount, lincombinations(,), lincominationcount, nonlincombinations(,), nonlincominationcount,
-stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsnr, presstensionelems(,), ptelemnsnr, limforceelem(,), lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers(,), SE_layersCount, SE_beamLineSupports(,), nbeamLineSupports, SE_pointSupportOnBeam, nPointSupportonBeam, SE_subsoil(,), nSubsoils, SE_surfaceSupport(,), nSurfaceSupports, SE_Loadpanels(,), nLoadpanels)
+    sections(,), sectionnr, nodes(,), nnodes, beams(,), beamnr, surfaces(,), surfacenr,
+    openings(,), openingnr, nodesupports(,), nodesupportnr, edgesupports(,), edgesupportnr,
+    lcases(,), lcasenr, lgroups(,), lgroupnr, lloads(,), lloadnr, sloads(,), sloadnr,
+    fploads(,), fploadnr, flloads(,), flloadnr, fsloads(,), fsloadnr,
+    hinges(,), hingenr,
+    meshsize, eloads(,), eloadsnr, pointLoadPoint(,), pointLoadpointCount, pointLoadBeam(,),
+    pointLoadbeamCount, lincombinations(,), lincominationcount, nonlincombinations(,), nonlincominationcount,
+    stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsnr, presstensionelems(,), ptelemnsnr, limforceelem(,),
+    lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers(,), SE_layersCount, SE_beamLineSupports(,), nbeamLineSupports, SE_pointSupportOnBeam,
+    nPointSupportonBeam, SE_subsoil(,), nSubsoils, SE_surfaceSupport(,), nSurfaceSupports, SE_Loadpanels(,), nLoadpanels, SE_PointMomentPointNode(,),
+    pointMomentpointCount, SE_pointMomentBeam(,), pointMomentbeamCount, SE_lineMomentBeam(,), lineMomentBeamCount, SE_lineMomentEdge(,), lineMomentEdgeCount, SE_fMomentPointloads(,), fpointmomentloadcount)
 
         Dim i As Long
         Dim c As String, cid As String, t As String, tid As String
@@ -2211,6 +2296,49 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             oSB.AppendLine("</container>")
         End If
 
+
+        If lineMomentBeamCount > 0 Then
+
+            'output line loads ------------------------------------------------------------------
+            c = "{80A77F84-F6A0-11D4-94D7-000000000000}"
+            cid = "DataAddLoad.EP_LineMomentLine.1"
+            t = "DAB00915-4D9D-46C9-BF3D-67407EFE7663"
+            tid = "DataAddLoad.EP_LineMomentLine.1"
+
+            oSB.AppendLine("")
+            oSB.AppendLine("<container id=""" & c & """ t=""" & cid & """>")
+            oSB.AppendLine("<table id=""" & t & """ t=""" & tid & """>")
+
+            oSB.AppendLine("<h>")
+            oSB.AppendLine(ConCat_ht("0", "Name"))
+            oSB.AppendLine(ConCat_ht("1", "Load case"))
+            oSB.AppendLine(ConCat_ht("2", "Reference Table"))
+            oSB.AppendLine(ConCat_ht("3", "Direction"))
+            oSB.AppendLine(ConCat_ht("4", "Distribution"))
+            oSB.AppendLine(ConCat_ht("5", "Value - M@1"))
+            oSB.AppendLine(ConCat_ht("6", "Value - M@2"))
+            oSB.AppendLine(ConCat_ht("7", "System"))
+            oSB.AppendLine(ConCat_ht("8", "Location"))
+            oSB.AppendLine(ConCat_ht("9", "Position x1"))
+            oSB.AppendLine(ConCat_ht("10", "Position x2"))
+            oSB.AppendLine(ConCat_ht("11", "Coord. definition"))
+            oSB.AppendLine(ConCat_ht("12", "Origin"))
+
+
+            oSB.AppendLine("</h>")
+
+            For i = 0 To lineMomentBeamCount - 1
+                If i > 0 And i Mod 100 = 0 Then
+                    Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... line load: " + Str(i))
+                End If
+                Call WriteLineMomentLoadBeam(oSB, i, SE_lineMomentBeam)
+
+            Next
+
+            oSB.AppendLine("</table>")
+            oSB.AppendLine("</container>")
+        End If
+
         If eloadsnr > 0 Then
 
             'output line loads ------------------------------------------------------------------
@@ -2254,6 +2382,49 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             oSB.AppendLine("</container>")
         End If
 
+
+
+        If lineMomentEdgeCount > 0 Then
+
+            'output line loads ------------------------------------------------------------------
+            c = "{C8390D34-1C9A-4190-8EEC-1A1BC146D5DA}"
+            cid = "DataAddLoad.EP_LineMomentSurface.1"
+            t = "04A59A88-15E2-48EC-ABB6-CB836650FFF6"
+            tid = "DataAddLoad.EP_LineMomentSurface.1"
+
+            oSB.AppendLine("")
+            oSB.AppendLine("<container id=""" & c & """ t=""" & cid & """>")
+            oSB.AppendLine("<table id=""" & t & """ t=""" & tid & """>")
+
+            oSB.AppendLine("<h>")
+            oSB.AppendLine(ConCat_ht("0", "Name"))
+            oSB.AppendLine(ConCat_ht("1", "Load case"))
+            oSB.AppendLine(ConCat_ht("2", "Reference Table"))
+            oSB.AppendLine(ConCat_ht("3", "Direction"))
+            oSB.AppendLine(ConCat_ht("4", "Distribution"))
+            oSB.AppendLine(ConCat_ht("5", "Value - M@1"))
+            oSB.AppendLine(ConCat_ht("6", "Value - M@2"))
+            oSB.AppendLine(ConCat_ht("7", "System"))
+            oSB.AppendLine(ConCat_ht("8", "Location"))
+            oSB.AppendLine(ConCat_ht("9", "Position x1"))
+            oSB.AppendLine(ConCat_ht("10", "Position x2"))
+            oSB.AppendLine(ConCat_ht("11", "Coord. definition"))
+            oSB.AppendLine(ConCat_ht("12", "Origin"))
+            oSB.AppendLine(ConCat_ht("13", "Edge"))
+            oSB.AppendLine("</h>")
+
+            For i = 0 To lineMomentEdgeCount - 1
+                If i > 0 And i Mod 100 = 0 Then
+                    Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... line load: " + Str(i))
+                End If
+                Call WriteMomentLineLoadOnEdge(oSB, i, SE_lineMomentEdge)
+
+            Next
+
+            oSB.AppendLine("</table>")
+            oSB.AppendLine("</container>")
+        End If
+
         'pointLoadPoint(,), pointLoadpointCount, pointLoadBeam(,), pointLoadbeamCount)
         If pointLoadpointCount > 0 Then
             'output line loads ------------------------------------------------------------------
@@ -2282,6 +2453,40 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
                     Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... line load: " + Str(i))
                 End If
                 Call WritePLoadsPoint(oSB, i, pointLoadPoint)
+
+            Next
+
+            oSB.AppendLine("</table>")
+            oSB.AppendLine("</container>")
+        End If
+
+
+        If pointMomentpointCount > 0 Then 'point moment
+            'output line loads ------------------------------------------------------------------
+            c = "{80A77F82-F6A0-11D4-94D7-000000000000}"
+            cid = "DataAddLoad.EP_PointMomentPoint.1"
+            t = "C62A6980-F7BB-478C-92CD-51E25FD6A7F6"
+            tid = "DataAddLoad.EP_PointMomentPoint.1"
+
+            oSB.AppendLine("")
+            oSB.AppendLine("<container id=""" & c & """ t=""" & cid & """>")
+            oSB.AppendLine("<table id=""" & t & """ t=""" & tid & """>")
+
+            oSB.AppendLine("<h>")
+
+            oSB.AppendLine(ConCat_ht("0", "Load case"))
+            oSB.AppendLine(ConCat_ht("1", "Name"))
+            oSB.AppendLine(ConCat_ht("2", "Reference Table"))
+            oSB.AppendLine(ConCat_ht("3", "Direction"))
+            oSB.AppendLine(ConCat_ht("4", "System"))
+            oSB.AppendLine(ConCat_ht("5", "Value - M"))
+            oSB.AppendLine("</h>")
+
+            For i = 0 To pointMomentpointCount - 1
+                If i > 0 And i Mod 100 = 0 Then
+                    Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... line load: " + Str(i))
+                End If
+                Call WriteMLoadsPoint(oSB, i, SE_PointMomentPointNode)
 
             Next
 
@@ -2322,6 +2527,44 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
                     Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... line load: " + Str(i))
                 End If
                 Call WritePLoadsBeam(oSB, i, pointLoadBeam)
+
+            Next
+
+            oSB.AppendLine("</table>")
+            oSB.AppendLine("</container>")
+        End If
+
+        If pointMomentbeamCount > 0 Then
+            'output line loads ------------------------------------------------------------------
+            c = "{6A363EA4-0BD3-42C0-973A-8C48B14C9FB9}"
+            cid = "DataAddLoad.EP_PointMomentLine.1"
+            t = "3CF3A1A2-C109-4DB9-A0A0-0F4ACD090188"
+            tid = "DataAddLoad.EP_PointMomentLine.1"
+
+            oSB.AppendLine("")
+            oSB.AppendLine("<container id=""" & c & """ t=""" & cid & """>")
+            oSB.AppendLine("<table id=""" & t & """ t=""" & tid & """>")
+
+            oSB.AppendLine("<h>")
+
+            oSB.AppendLine(ConCat_ht("0", "Load case"))
+            oSB.AppendLine(ConCat_ht("1", "Name"))
+            oSB.AppendLine(ConCat_ht("2", "Reference Table"))
+            oSB.AppendLine(ConCat_ht("3", "Direction"))
+            oSB.AppendLine(ConCat_ht("4", "System"))
+            oSB.AppendLine(ConCat_ht("5", "Value - F"))
+            oSB.AppendLine(ConCat_ht("6", "Coord. definition"))
+            oSB.AppendLine(ConCat_ht("7", "Position x"))
+            oSB.AppendLine(ConCat_ht("8", "Origin"))
+            oSB.AppendLine(ConCat_ht("9", "Repeat (n)"))
+            oSB.AppendLine(ConCat_ht("10", "Delta x"))
+            oSB.AppendLine("</h>")
+
+            For i = 0 To pointMomentbeamCount - 1
+                If i > 0 And i Mod 100 = 0 Then
+                    Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... line load: " + Str(i))
+                End If
+                Call WriteMLoadsBeam(oSB, i, SE_pointMomentBeam)
 
             Next
 
@@ -2396,6 +2639,44 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
                     Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... free point load: " + Str(i))
                 End If
                 Call WriteFPLoad(oSB, scale, i, fploads)
+
+            Next
+
+            oSB.AppendLine("</table>")
+            oSB.AppendLine("</container>")
+        End If
+
+        If fpointmomentloadcount > 0 Then
+
+            'output free point loads ------------------------------------------------------------------
+            c = "{F92DA832-9046-44F4-B5E2-CEC576BDFC09}"
+            cid = "DataAddLoad.EP_PointMomentFree.1"
+            t = "245E02B5-FA52-48B8-AF2F-DBA106AF4DE8"
+            tid = "DataAddLoad.EP_PointMomentFree.1"
+
+            oSB.AppendLine("")
+            oSB.AppendLine("<container id=""" & c & """ t=""" & cid & """>")
+            oSB.AppendLine("<table id=""" & t & """ t=""" & tid & """>")
+
+            oSB.AppendLine("<h>")
+            oSB.AppendLine(ConCat_ht("0", "Load case"))
+            oSB.AppendLine(ConCat_ht("1", "Name"))
+            oSB.AppendLine(ConCat_ht("2", "Direction"))
+            oSB.AppendLine(ConCat_ht("3", "Validity"))
+            oSB.AppendLine(ConCat_ht("4", "Select"))
+            oSB.AppendLine(ConCat_ht("5", "Value - F"))
+            oSB.AppendLine(ConCat_ht("6", "Coord X"))
+            oSB.AppendLine(ConCat_ht("7", "Coord Y"))
+            oSB.AppendLine(ConCat_ht("8", "Coord Z"))
+            oSB.AppendLine(ConCat_ht("9", "System"))
+
+            oSB.AppendLine("</h>")
+
+            For i = 0 To fpointmomentloadcount - 1
+                If i > 0 And i Mod 100 = 0 Then
+                    Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... free point load: " + Str(i))
+                End If
+                Call WriteFPMomentLoad(oSB, scale, i, SE_fMomentPointloads)
 
             Next
 
@@ -4146,6 +4427,84 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
 
     End Sub
 
+
+
+    Private Sub WriteLineMomentLoadBeam(ByRef oSB, iload, loads(,)) 'write 1 line load to the XML stream
+
+        oSB.AppendLine("<obj id=""" & Trim(Str(iload)) & """ nm=""" & "LMLB" & Trim(Str(iload)) & """>")
+        oSB.AppendLine(ConCat_pv("0", "LMLB" & Trim(Str(iload))))
+        oSB.AppendLine(ConCat_pn("1", loads(iload, 0)))
+        'write beam name as reference table
+        oSB.AppendLine("<p2 t="""">")
+        oSB.AppendLine("<h>")
+        oSB.AppendLine("<h0 t=""Member Type""/>")
+        oSB.AppendLine("<h1 t=""Member Type Name""/>")
+        oSB.AppendLine("<h2 t=""Member Name""/>")
+        oSB.AppendLine("</h>")
+        oSB.AppendLine("<row id=""0"">")
+        oSB.AppendLine(ConCat_pv("0", "{ECB5D684-7357-11D4-9F6C-00104BC3B443}"))
+        oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_Beam.1"))
+        oSB.AppendLine(ConCat_pv("2", loads(iload, 1)))
+        oSB.AppendLine("</row>")
+        oSB.AppendLine("</p2>")
+        'end of reference table
+
+        'direction
+
+        Select Case loads(iload, 3)
+            Case "Mx"
+                oSB.AppendLine(ConCat_pvt("3", "0", "Mx"))
+            Case "My"
+                oSB.AppendLine(ConCat_pvt("3", "1", "My"))
+            Case "Mz"
+                oSB.AppendLine(ConCat_pvt("3", "2", "Mz"))
+        End Select
+        'distribution & values
+        Select Case loads(iload, 4)
+            Case "Uniform"
+                oSB.AppendLine(ConCat_pvt("4", "0", loads(iload, 4)))
+            Case "Trapez"
+                oSB.AppendLine(ConCat_pvt("4", "1", loads(iload, 4)))
+            Case Else
+                oSB.AppendLine(ConCat_pvt("4", "0", loads(iload, 4)))
+        End Select
+
+        'load value
+        oSB.AppendLine(ConCat_pv("5", loads(iload, 5) * 1000))
+        oSB.AppendLine(ConCat_pv("6", loads(iload, 6) * 1000))
+        'axis definition
+
+        Select Case loads(iload, 2)
+            Case "GCS"
+                oSB.AppendLine(ConCat_pvt("7", "0", "GCS"))
+            Case "LCS"
+                oSB.AppendLine(ConCat_pvt("7", "1", "LCS"))
+        End Select
+        'p8 would be the "location": length or projection (only for GCS)
+
+        'p9 would be the starting position for the load > default = 0.0
+        'p10 would be the end position for the load > default = 1.0
+        oSB.AppendLine(ConCat_pv("9", loads(iload, 8)))
+        oSB.AppendLine(ConCat_pv("10", loads(iload, 9)))
+        'p11 would be the definition of relative or absolute coordinates
+        Select Case loads(iload, 7)
+            Case "Rela"
+                oSB.AppendLine(ConCat_pvt("11", "1", "Rela"))
+            Case "Abso"
+                oSB.AppendLine(ConCat_pvt("11", "0", "Abso"))
+        End Select
+        'p12 would be the indication of where the coordinates start: From start or From end
+        Select Case loads(iload, 10)
+            Case "From start"
+                oSB.AppendLine(ConCat_pvt("12", "0", "From start"))
+            Case "From end"
+                oSB.AppendLine(ConCat_pvt("12", "1", "From end"))
+        End Select
+
+        oSB.AppendLine("</obj>")
+
+    End Sub
+
     Private Sub WriteELoad(ByRef oSB, iload, loads(,)) 'write 1 line load on surface ede  to the XML stream
 
 
@@ -4229,6 +4588,90 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
         oSB.AppendLine("</obj>")
 
     End Sub
+
+
+    Private Sub WriteMomentLineLoadOnEdge(ByRef oSB, iload, loads(,)) 'write 1 line load on surface ede  to the XML stream
+
+
+        oSB.AppendLine("<obj id=""" & Trim(Str(iload)) & """ nm=""" & "ESLM" & Trim(Str(iload)) & """>")
+        oSB.AppendLine(ConCat_pv("0", "ESLM" & Trim(Str(iload))))
+        oSB.AppendLine(ConCat_pn("1", loads(iload, 0)))
+        'write surafec name as reference table
+        oSB.AppendLine("<p2 t="""">")
+        oSB.AppendLine("<h>")
+        oSB.AppendLine("<h0 t=""Member Type""/>")
+        oSB.AppendLine("<h1 t=""Member Type Name""/>")
+        oSB.AppendLine("<h2 t=""Member Name""/>")
+        oSB.AppendLine("</h>")
+        oSB.AppendLine("<row id=""0"">")
+        oSB.AppendLine(ConCat_pv("0", "{8708ED31-8E66-11D4-AD94-F6F5DE2BE344}"))
+        oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_Plane.1"))
+        oSB.AppendLine(ConCat_pv("2", loads(iload, 1)))
+        oSB.AppendLine("</row>")
+        oSB.AppendLine("</p2>")
+        'end of reference table
+
+        'direction
+
+        Select Case loads(iload, 4)
+            Case "Mx"
+                oSB.AppendLine(ConCat_pvt("3", "0", "Mx"))
+            Case "My"
+                oSB.AppendLine(ConCat_pvt("3", "1", "My"))
+            Case "Mz"
+                oSB.AppendLine(ConCat_pvt("3", "2", "Mz"))
+        End Select
+        'distribution & values
+        Select Case loads(iload, 5)
+            Case "Uniform"
+                oSB.AppendLine(ConCat_pvt("4", "0", loads(iload, 5)))
+            Case "Trapez"
+                oSB.AppendLine(ConCat_pvt("4", "1", loads(iload, 5)))
+            Case Else
+                oSB.AppendLine(ConCat_pvt("4", "0", loads(iload, 5)))
+        End Select
+
+        'load value
+        oSB.AppendLine(ConCat_pv("5", loads(iload, 6) * 1000))
+        oSB.AppendLine(ConCat_pv("6", loads(iload, 7) * 1000))
+        'axis definition
+
+        Select Case loads(iload, 3)
+            Case "GCS - Length"
+                oSB.AppendLine(ConCat_pvt("7", "0", "GCS"))
+                oSB.AppendLine(ConCat_pvt("8", "0", "Length"))
+            Case "GCS - Projection"
+                oSB.AppendLine(ConCat_pvt("7", "0", "GCS"))
+                oSB.AppendLine(ConCat_pvt("8", "1", "Projection"))
+            Case "LCS"
+                oSB.AppendLine(ConCat_pvt("7", "1", "LCS"))
+            Case Else
+                oSB.AppendLine(ConCat_pvt("7", "1", "LCS"))
+        End Select
+
+        oSB.AppendLine(ConCat_pv("9", loads(iload, 9)))
+        oSB.AppendLine(ConCat_pv("10", loads(iload, 10)))
+        'p11 would be the definition of relative or absolute coordinates
+        Select Case loads(iload, 8)
+            Case "Rela"
+                oSB.AppendLine(ConCat_pvt("11", "1", "Rela"))
+            Case "Abso"
+                oSB.AppendLine(ConCat_pvt("11", "0", "Abso"))
+        End Select
+        'p12 would be the indication of where the coordinates start: From start or From end
+        Select Case loads(iload, 11)
+            Case "From start"
+                oSB.AppendLine(ConCat_pvt("12", "0", "From start"))
+            Case "From end"
+                oSB.AppendLine(ConCat_pvt("12", "1", "From end"))
+        End Select
+
+        'edge
+        oSB.AppendLine(ConCat_pvt("13", loads(iload, 2) - 1, loads(iload, 2)))
+        oSB.AppendLine("</obj>")
+
+    End Sub
+
     Private Sub WriteSLoad(ByRef oSB, iload, loads(,)) 'write 1 surface load to the XML stream
 
         oSB.AppendLine("<obj id=""" & Trim(Str(iload)) & """ nm=""" & "SF" & Trim(Str(iload)) & """>")
@@ -4319,6 +4762,52 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
         oSB.AppendLine("</obj>")
     End Sub
 
+    Private Sub WriteMLoadsPoint(ByRef oSB, iload, loads(,))
+
+        oSB.AppendLine("<obj id=""" & Trim(Str(iload)) & """ nm=""" & "MLP" & Trim(Str(iload)) & """>")
+
+
+        oSB.AppendLine(ConCat_pn("0", loads(iload, 0)))
+        oSB.AppendLine(ConCat_pv("1", "MLP" & Trim(Str(iload))))
+        'write beam name as reference table
+        oSB.AppendLine("<p2 t="""">")
+        oSB.AppendLine("<h>")
+        oSB.AppendLine("<h0 t=""Member Type""/>")
+        oSB.AppendLine("<h1 t=""Member Type Name""/>")
+        oSB.AppendLine("<h2 t=""Member Name""/>")
+        oSB.AppendLine("</h>")
+        oSB.AppendLine("<row id=""0"">")
+        oSB.AppendLine(ConCat_pv("0", "{39A7F468-A0D4-4DFF-8E5C-5843E1807D13}"))
+        oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_StructNode.1"))
+        oSB.AppendLine(ConCat_pv("2", loads(iload, 1)))
+        oSB.AppendLine("</row>")
+        oSB.AppendLine("</p2>")
+        'end of reference table
+
+
+
+        'direction
+        Select Case loads(iload, 3)
+            Case "Mx"
+                oSB.AppendLine(ConCat_pvt("3", "0", "Mx"))
+            Case "My"
+                oSB.AppendLine(ConCat_pvt("3", "1", "My"))
+            Case "Mz"
+                oSB.AppendLine(ConCat_pvt("3", "2", "Mz"))
+        End Select
+        'coordinate system
+        Select Case loads(iload, 2)
+            Case "GCS"
+                oSB.AppendLine(ConCat_pvt("4", "0", "GCS"))
+            Case "LCS"
+                oSB.AppendLine(ConCat_pvt("4", "1", "LCS"))
+        End Select
+        'load value
+        oSB.AppendLine(ConCat_pv("5", loads(iload, 4) * 1000))
+
+        oSB.AppendLine("</obj>")
+    End Sub
+
     Sub WritePLoadsBeam(ByRef oSB, iload, loads(,))
 
         oSB.AppendLine("<obj id=""" & Trim(Str(iload)) & """ nm=""" & "PLB" & Trim(Str(iload)) & """>")
@@ -4379,6 +4868,68 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
 
         oSB.AppendLine("</obj>")
     End Sub
+    Sub WriteMLoadsBeam(ByRef oSB, iload, loads(,))
+
+        oSB.AppendLine("<obj id=""" & Trim(Str(iload)) & """ nm=""" & "MLB" & Trim(Str(iload)) & """>")
+        oSB.AppendLine(ConCat_pn("0", loads(iload, 0)))
+        oSB.AppendLine(ConCat_pv("1", "MLB" & Trim(Str(iload))))
+        'write beam name as reference table
+        oSB.AppendLine("<p2 t="""">")
+        oSB.AppendLine("<h>")
+        oSB.AppendLine("<h0 t=""Member Type""/>")
+        oSB.AppendLine("<h1 t=""Member Type Name""/>")
+        oSB.AppendLine("<h2 t=""Member Name""/>")
+        oSB.AppendLine("</h>")
+        oSB.AppendLine("<row id=""0"">")
+        oSB.AppendLine(ConCat_pv("0", "{ECB5D684-7357-11D4-9F6C-00104BC3B443}"))
+        oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_Beam.1"))
+        oSB.AppendLine(ConCat_pv("2", loads(iload, 1)))
+        oSB.AppendLine("</row>")
+        oSB.AppendLine("</p2>")
+        'end of reference table
+
+        'direction
+        Select Case loads(iload, 3)
+            Case "Mx"
+                oSB.AppendLine(ConCat_pvt("3", "0", "Mx"))
+            Case "My"
+                oSB.AppendLine(ConCat_pvt("3", "1", "My"))
+            Case "Mz"
+                oSB.AppendLine(ConCat_pvt("3", "2", "Mz"))
+        End Select
+        'coordinate system
+        Select Case loads(iload, 2)
+            Case "GCS"
+                oSB.AppendLine(ConCat_pvt("4", "0", "GCS"))
+            Case "LCS"
+                oSB.AppendLine(ConCat_pvt("4", "1", "LCS"))
+        End Select
+        'load value
+        oSB.AppendLine(ConCat_pv("5", loads(iload, 4) * 1000))
+        Select Case loads(iload, 5)
+            Case "Rela"
+                oSB.AppendLine(ConCat_pvt("6", "1", "Rela"))
+            Case "Abso"
+                oSB.AppendLine(ConCat_pvt("6", "0", "Abso"))
+        End Select
+        oSB.AppendLine(ConCat_pv("7", loads(iload, 6)))
+        Select Case loads(iload, 7)
+            Case "From start"
+                oSB.AppendLine(ConCat_pvt("8", "0", "From start"))
+            Case "From end"
+                oSB.AppendLine(ConCat_pvt("8", "1", "From end"))
+        End Select
+
+
+        oSB.AppendLine(ConCat_pv("9", loads(iload, 8)))
+        oSB.AppendLine(ConCat_pv("10", loads(iload, 9)))
+
+
+        oSB.AppendLine("</obj>")
+    End Sub
+
+
+
 
     Private Sub WriteFPLoad(ByRef oSB, scale, iload, loads(,)) 'write 1 free point load to the XML stream
         'a free point load consists of:
@@ -4395,6 +4946,49 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
                 oSB.AppendLine(ConCat_pvt("2", "1", "Y"))
             Case "Z"
                 oSB.AppendLine(ConCat_pvt("2", "2", "Z"))
+        End Select
+        'validity
+        Select Case loads(iload, 2)
+            Case "All"
+                oSB.AppendLine(ConCat_pvt("3", "0", "All"))
+            Case "Z equals 0"
+                oSB.AppendLine(ConCat_pvt("3", "4", "Z=0"))
+        End Select
+        'selection
+        oSB.AppendLine(ConCat_pvt("4", "0", "Auto"))
+        'load value
+        oSB.AppendLine(ConCat_pv("5", loads(iload, 5) * 1000))
+        'point X, Y, Z coordinates
+        oSB.AppendLine(ConCat_pv("6", loads(iload, 6) * scale))
+        oSB.AppendLine(ConCat_pv("7", loads(iload, 7) * scale))
+        oSB.AppendLine(ConCat_pv("8", loads(iload, 8) * scale))
+        'coordinate system
+        Select Case loads(iload, 3)
+            Case "GCS"
+                oSB.AppendLine(ConCat_pvt("9", "0", "GCS"))
+            Case "Member LCS"
+                oSB.AppendLine(ConCat_pvt("9", "1", "Member LCS"))
+        End Select
+        oSB.AppendLine("</obj>")
+
+    End Sub
+
+
+    Private Sub WriteFPMomentLoad(ByRef oSB, scale, iload, loads(,)) 'write 1 free point load to the XML stream
+        'a free point load consists of:
+        'Load Case, Selection, Validity, coord sys (GCS/LCS), direction (X, Y, Z), value (kN), PointX, PointY, PointZ
+
+        oSB.AppendLine("<obj id=""" & Trim(Str(iload)) & """ nm=""" & "FMP" & Trim(Str(iload)) & """>")
+        oSB.AppendLine(ConCat_pn("0", loads(iload, 0)))
+        oSB.AppendLine(ConCat_pv("1", "FMP" & Trim(Str(iload))))
+        'direction
+        Select Case loads(iload, 4)
+            Case "Mx"
+                oSB.AppendLine(ConCat_pvt("2", "0", "Mx"))
+            Case "My"
+                oSB.AppendLine(ConCat_pvt("2", "1", "My"))
+            Case "Mz"
+                oSB.AppendLine(ConCat_pvt("2", "2", "Mz"))
         End Select
         'validity
         Select Case loads(iload, 2)
@@ -4706,6 +5300,23 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
 
     End Sub
 
+    Function WrapIfRequired(Filename As String) As String
+        Dim containsSpaces = False
+        Dim ContainsQuotes = False
+
+        Dim FilePath = Filename.Trim
+        If FilePath.Contains(" ") Then containsSpaces = True
+        If FilePath.Substring(0, 1) = """" Then ContainsQuotes = True
+        If FilePath.Substring(FilePath.Length - 1, 1) = """" And ContainsQuotes = False Then ContainsQuotes = True
+
+        If containsSpaces = True And ContainsQuotes = False Then
+            'Only wrap if it contains spaces in string and not already quoted
+            Return """" & FilePath & """"""
+        Else
+            Return FilePath
+        End If
+    End Function
+
     Public Function RunCalculationWithEsaXML(FileName As String, ESAXMLPath As String, CalcType As String, TemplateName As String, OutputFile As String, ByRef time_elapsed As Double, SESavedProject As String) As String
 
         Dim stopWatch As New System.Diagnostics.Stopwatch()
@@ -4750,7 +5361,8 @@ stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsn
             '.\ESA_XML.exe LIN 'C:\TEMP\MakaraHala\SCIAtemplate.ESA' 'C:\TEMP\MakaraHala\KoalaHall.xml' -sd -tXLSX -oC:\TEMP\MakaraHala\Output.xlsx
             myProcess.StartInfo.FileName = ESAXMLPath
 
-
+            'TemplateName = WrapIfRequired(TemplateName)
+            'FileName = WrapIfRequired(FileName)
 
             If Not SESavedProject = "" Then
                 Dim MultiProcesFile = System.IO.Path.GetDirectoryName(SESavedProject)

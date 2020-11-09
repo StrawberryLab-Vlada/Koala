@@ -106,6 +106,16 @@ Namespace Koala
             pManager.Param(38).Optional = True
             pManager.AddTextParameter("Loadpanels", "Loadpanels", "Defined Load panels", GH_ParamAccess.list)
             pManager.Param(39).Optional = True
+            pManager.AddTextParameter("PointMomentsOnNodes", "PointMomentsOnNodes", "Defined point moments in points", GH_ParamAccess.list)
+            pManager.Param(40).Optional = True
+            pManager.AddTextParameter("PointMomentsOnBeams", "PointMomentsOnBeams", "Defined point moments in points on beams", GH_ParamAccess.list)
+            pManager.Param(41).Optional = True
+            pManager.AddTextParameter("LineMomentsOnBeams", "LineMomentsOnBeams", "Defined line moments on beams", GH_ParamAccess.list)
+            pManager.Param(42).Optional = True
+            pManager.AddTextParameter("LineMomentsOnEdge", "LineMomentsOnEdge", "Defined line moments on edges", GH_ParamAccess.list)
+            pManager.Param(43).Optional = True
+            pManager.AddTextParameter("FreeMomentPoints", "FreeMomentPoints", "Defined free point moments", GH_ParamAccess.list)
+            pManager.Param(44).Optional = True
         End Sub
 
         ''' <summary>
@@ -165,6 +175,12 @@ Namespace Koala
             Dim in_Subsoils = New List(Of String)
             Dim in_SurfaceSupports = New List(Of String)
             Dim in_loadpanels = New List(Of String)
+            Dim in_pointMomentPoint = New List(Of String)
+            Dim in_pointMomentBeam = New List(Of String)
+            Dim in_lineMomentBeam = New List(Of String)
+            Dim in_lineMomentEdge = New List(Of String)
+            Dim in_freePointMoment = New List(Of String)
+
             Dim i As Integer = 0
 
             If (Not DA.GetData(Of String)(19, FileName)) Then Return
@@ -209,6 +225,11 @@ Namespace Koala
             DA.GetDataList(Of String)(37, in_Subsoils)
             DA.GetDataList(Of String)(38, in_SurfaceSupports)
             DA.GetDataList(Of String)(39, in_loadpanels)
+            DA.GetDataList(Of String)(40, in_pointMomentPoint)
+            DA.GetDataList(Of String)(41, in_pointMomentBeam)
+            DA.GetDataList(Of String)(42, in_lineMomentBeam)
+            DA.GetDataList(Of String)(43, in_lineMomentEdge)
+            DA.GetDataList(Of String)(44, in_freePointMoment)
 
             If AutoUpdate = False Then
                 If OnDemand = False Then
@@ -219,7 +240,8 @@ Namespace Koala
             CreateXMLFile(FileName, StructureType, Materials, UILanguage, MeshSize, in_sections, in_nodes, in_beams, in_surfaces, in_openings,
                           in_nodesupports, in_edgesupports, in_lcases, in_lgroups, in_lloads, in_sloads, in_fploads, in_flloads, in_fsloads, in_hinges,
                           in_edgeLoads, in_pointLoadsPoints, in_pointLoadsBeams, Scale, in_LinCombinations, in_NonLinCombinations, in_StabCombinations,
-                          in_CrossLinks, in_presstensionElem, in_gapElem, in_limitforceElem, projectInfo, in_layers, in_BeamLineSupport, in_PointSupportsOnBeams, in_Subsoils, in_SurfaceSupports, in_loadpanels)
+                          in_CrossLinks, in_presstensionElem, in_gapElem, in_limitforceElem, projectInfo, in_layers, in_BeamLineSupport, in_PointSupportsOnBeams,
+                          in_Subsoils, in_SurfaceSupports, in_loadpanels, in_pointMomentPoint, in_pointMomentBeam, in_lineMomentBeam, in_lineMomentEdge, in_freePointMoment)
             DA.SetData(0, FileName)
 
 

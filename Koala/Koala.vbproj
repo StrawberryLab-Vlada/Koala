@@ -114,6 +114,7 @@
     <Compile Include="CrossLink.vb" />
     <Compile Include="EdgeLoad.vb" />
     <Compile Include="EdgeSupport.vb" />
+    <Compile Include="FreePointMoment.vb" />
     <Compile Include="FreeSurfaceLoad.Designer.vb">
       <DependentUpon>FreeSurfaceLoad.vb</DependentUpon>
     </Compile>
@@ -124,6 +125,8 @@
     <Compile Include="Layers.vb" />
     <Compile Include="LimitForceLocalBeamNL.vb" />
     <Compile Include="LinearCombination.vb" />
+    <Compile Include="LineMomentOnBeam.vb" />
+    <Compile Include="LineMomentOnEdge.vb" />
     <Compile Include="LoadCasesAndGroups.vb" />
     <Compile Include="KoalaInfo.vb" />
     <Compile Include="LoadPanels.vb" />
@@ -151,6 +154,8 @@
     <Compile Include="Openings.vb" />
     <Compile Include="PointLoadOnBeam.vb" />
     <Compile Include="PointLoadOnStructNode.vb" />
+    <Compile Include="PointMomentOnBeam.vb" />
+    <Compile Include="PointMomentOnStructNode.vb" />
     <Compile Include="PointSupportOnBeam.vb" />
     <Compile Include="PressTensionOnlyBeamNl.vb" />
     <Compile Include="ProjectInfo.vb" />
@@ -188,12 +193,15 @@
     <None Include="Resources\SurfaceSupport.bmp" />
     <None Include="Resources\BeamLineSupport.bmp" />
     <None Include="Resources\Buckling.bmp" />
+    <None Include="Resources\BeamLineMoment.bmp" />
+    <None Include="Resources\BeamPointMoment.bmp" />
     <Content Include="Resources\CreateXML.bmp" />
     <None Include="Resources\Cross-link.bmp" />
     <Content Include="Resources\Cross-section.bmp" />
     <None Include="Resources\EdgeLoad.bmp" />
     <Content Include="Resources\FreeLineLoad.bmp" />
     <Content Include="Resources\FreePointLoad.bmp" />
+    <None Include="Resources\FreePointMoment.bmp" />
     <Content Include="Resources\FreeSurfaceLoad.bmp" />
     <None Include="Resources\Gap.bmp" />
     <Content Include="Resources\Hinge.bmp" />
@@ -201,6 +209,7 @@
     <None Include="Resources\LimitForceBeamNL.bmp" />
     <Content Include="Resources\koala.xml.def" />
     <None Include="Resources\Layers.bmp" />
+    <None Include="Resources\LineEdgeMoment.bmp" />
     <Content Include="Resources\LineLoad.bmp" />
     <Content Include="Resources\LineSupport.bmp" />
     <Content Include="Resources\LoadCases.bmp" />
@@ -217,6 +226,7 @@
     <None Include="Resources\ProjectInfo.bmp" />
     <None Include="Resources\PointSupportOnBeam.bmp" />
     <None Include="Resources\SubSoil.bmp" />
+    <None Include="Resources\PointMoment.bmp" />
     <Content Include="Resources\SurfaceLoad.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

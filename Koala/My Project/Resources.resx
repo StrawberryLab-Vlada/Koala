@@ -124,8 +124,14 @@
   <data name="Beam" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Beam.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="BeamLineMoment" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BeamLineMoment.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="BeamLineSupport" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\BeamLineSupport.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="BeamPointMoment" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BeamPointMoment.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Buckling" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Buckling.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -148,6 +154,9 @@
   <data name="FreePointLoad" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\FreePointLoad.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="FreePointMoment" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\FreePointMoment.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="FreeSurfaceLoad" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\FreeSurfaceLoad.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -168,6 +177,9 @@
   </data>
   <data name="LinearCombination" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\LinearCombination.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="LineEdgeMoment" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\LineEdgeMoment.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="LineLoad" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\LineLoad.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -201,6 +213,9 @@
   </data>
   <data name="PointLoadPoint" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PointLoadPoint.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="PointMoment" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\PointMoment.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="PointSupportOnBeam" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\PointSupportOnBeam.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
