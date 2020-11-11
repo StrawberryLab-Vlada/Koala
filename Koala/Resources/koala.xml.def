@@ -2376,7 +2376,9 @@
     <def_table id="A4C324A5-2F59-452D-86C0-FF1B5427BC81" name="XML\default" type="vertical" clsid="{8867A6F2-D7E4-11D4-A47F-00C06C542707}" progid="DataLibScia.EP_Subsoil.1" size="17">
 
       <def_property x="0" name="Name" type="string" id="{4364BC01-AAB7-11D4-B3D9-00104BC3B531}"/>
- <def_property x="1" name="Decription" type="string" id="{DF7073CA-9624-48FD-A1B3-A0F396E43C72}"/>
+      
+      <def_property x="1" name="Decription" type="string" id="{DF7073CA-9624-48FD-A1B3-A0F396E43C72}"/>
+      
       <def_property x="2" name="C1x" type="real" id="{C68B6DA0-C12F-4D2E-9E37-52400D7561F8}"/>
 
 
@@ -2398,8 +2400,10 @@
 
       <def_property x="7" name="C2y" type="real" id="{C68B6DA4-C12F-4D2E-9E37-52400D7561F8}"/>
 
-   
-      
+
+      <def_property x="8" name="Nonlinear function C1z" type="ref" flag="131072" id="{61813FE0-79A1-4C3B-BA1D-94F420A3E6C4}">
+        <def_ref id="{2C78B173-A1D3-11D4-A433-000000000000}" progid="DataLibScia.EP_NonLinearFunction.1"/>
+      </def_property>
 
 
     </def_table>

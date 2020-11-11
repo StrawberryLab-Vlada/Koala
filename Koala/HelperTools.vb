@@ -733,6 +733,23 @@ Module HelperTools
                 Return "Rigid"
         End Select
     End Function
+
+    Public Sub AddOptionstoMenuC1ztype(menuItem As Param_Integer)
+        menuItem.AddNamedValue("Flexible", 0)
+        menuItem.AddNamedValue("Nonlinear function", 1)
+    End Sub
+
+    Public Function GetStringForC1ztype(item As Integer) As String
+        Select Case item
+            Case 0
+                Return "Flexible"
+            Case 1
+                Return "Nonlinear function"
+
+            Case Else
+                Return "Flexible"
+        End Select
+    End Function
     Public Function GetExistingNode(arrPoint As Rhino.Geometry.Point3d, nodes(,) As String, nnodes As Long, epsilon As Double)
         Dim currentnode
         'Start with node not found, loop through all the nodes until one is found within tolerance
@@ -934,7 +951,7 @@ Module HelperTools
         Dim SE_layersCount As Integer = 0
         Dim SE_beamLineSupports(100000, 23) As String 'a beam line support consists of: Reference name, reference type, edge number, X, Y, Z, RX, RY, RZ - 0 is free, 1 is blocked DOF
         Dim SE_pointSupportOnBeam(100000, 24) As String
-        Dim SE_subsoil(100000, 7) As String
+        Dim SE_subsoil(100000, 9) As String
         Dim SE_surfaceSupport(100000, 2) As String
         Dim SE_LoadPanels(100000, 7) As String
         Dim SE_PointMomentPointNode(100000, 5) As String
@@ -1359,11 +1376,11 @@ Module HelperTools
         End If
 
         If ((in_Subsoils IsNot Nothing)) Then
-            nSubsoils = in_Subsoils.Count / 7
+            nSubsoils = in_Subsoils.Count / 9
             Rhino.RhinoApp.WriteLine("Number of number of subsoils: " & nSubsoils)
             For i = 0 To nSubsoils - 1
-                For j = 0 To 6
-                    SE_subsoil(i, j) = in_Subsoils(j + i * 7)
+                For j = 0 To 8
+                    SE_subsoil(i, j) = in_Subsoils(j + i * 9)
                 Next j
             Next i
         End If
@@ -2173,10 +2190,11 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
             oSB.AppendLine(ConCat_ht("1", "Decription"))
             oSB.AppendLine(ConCat_ht("2", "C1x"))
             oSB.AppendLine(ConCat_ht("3", "C1y"))
-            oSB.AppendLine(ConCat_ht("4", "Stiffness"))
-            oSB.AppendLine(ConCat_ht("5", "C1z"))
+            oSB.AppendLine(ConCat_ht("4", "C1z"))
+            oSB.AppendLine(ConCat_ht("5", "Stiffness"))
             oSB.AppendLine(ConCat_ht("6", "C2x"))
             oSB.AppendLine(ConCat_ht("7", "C2y"))
+            oSB.AppendLine(ConCat_ht("8", "Nonlinear function C1z"))
 
 
 
@@ -4373,10 +4391,21 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
         oSB.AppendLine(ConCat_pv("1", subsoil(i, 1)))
         oSB.AppendLine(ConCat_pv("2", subsoil(i, 2)))
         oSB.AppendLine(ConCat_pv("3", subsoil(i, 3)))
-        oSB.AppendLine(ConCat_pvt("4", "0", "Flexible")) ' or nonlinear
+
+        Select Case subsoil(i, 7)
+            Case "Flexible"
+                oSB.AppendLine(ConCat_pvt("4", "0", "Flexible"))
+            Case "Nonlinear function"
+                oSB.AppendLine(ConCat_pvt("4", "1", "Nonlinear Function"))
+            Case Else
+                oSB.AppendLine(ConCat_pvt("4", "0", "Flexible"))
+        End Select
+
+
         oSB.AppendLine(ConCat_pv("5", subsoil(i, 4)))
         oSB.AppendLine(ConCat_pv("6", subsoil(i, 5)))
         oSB.AppendLine(ConCat_pv("7", subsoil(i, 6)))
+        oSB.AppendLine(ConCat_pv("8", subsoil(i, 8)))
         oSB.AppendLine("</obj>")
 
     End Sub
