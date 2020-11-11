@@ -151,6 +151,7 @@
     <Compile Include="Nodes.vb" />
     <Compile Include="NodeSupport.vb" />
     <Compile Include="NonlinearCombination.vb" />
+    <Compile Include="NonlinearFunction.vb" />
     <Compile Include="Openings.vb" />
     <Compile Include="PointLoadOnBeam.vb" />
     <Compile Include="PointLoadOnStructNode.vb" />
@@ -227,6 +228,7 @@
     <None Include="Resources\PointSupportOnBeam.bmp" />
     <None Include="Resources\SubSoil.bmp" />
     <None Include="Resources\PointMoment.bmp" />
+    <None Include="Resources\NonLinearFunction.bmp" />
     <Content Include="Resources\SurfaceLoad.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

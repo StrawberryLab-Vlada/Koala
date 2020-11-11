@@ -11,12 +11,14 @@ Module HelperTools
         menuItem.AddNamedValue("Rigid tension only", 4)
         menuItem.AddNamedValue("Flexible press only", 5)
         menuItem.AddNamedValue("Flexible tension only", 6)
+        menuItem.AddNamedValue("Nonlinear", 7)
     End Sub
 
     Public Sub AddOptionstoMenuDOFRotation(menuItem As Param_Integer)
         menuItem.AddNamedValue("Free", 0)
         menuItem.AddNamedValue("Rigid", 1)
         menuItem.AddNamedValue("Flexible", 2)
+        menuItem.AddNamedValue("Nonlinear", 7)
     End Sub
 
     Public Sub AddOptionsToMenuLanguage(menuItem As Param_Integer)
@@ -203,6 +205,9 @@ Module HelperTools
                 Return "Flexible press only"
             Case 6
                 Return "Flexible tension only"
+
+            Case 7
+                Return "Nonlinear"
             Case Else
                 Return "Free"
         End Select
@@ -691,6 +696,43 @@ Module HelperTools
         End Select
     End Function
 
+    Public Sub AddOptionsToMenuNLFunctionType(menuItem As Param_Integer)
+        menuItem.AddNamedValue("Translation", 0)
+        menuItem.AddNamedValue("Rotation", 1)
+        menuItem.AddNamedValue("Nonlinear subsoil", 2)
+    End Sub
+    Public Function GetStringForitemNLFunctionType(item As Integer) As String
+        Select Case item
+            Case 0
+                Return "Translation"
+            Case 1
+                Return "Rotation"
+            Case 2
+                Return "Nonlinear subsoil"
+            Case Else
+                Return "Translation"
+        End Select
+    End Function
+
+
+    Public Sub AddOptionsToMenuNLFunctionEndType(menuItem As Param_Integer)
+        menuItem.AddNamedValue("Rigid", 0)
+        menuItem.AddNamedValue("Free", 1)
+        menuItem.AddNamedValue("Flexible", 2)
+    End Sub
+
+    Public Function GetStringForitemNLFunctionEndType(item As Integer) As String
+        Select Case item
+            Case 0
+                Return "Rigid"
+            Case 1
+                Return "Free"
+            Case 2
+                Return "Flexible"
+            Case Else
+                Return "Rigid"
+        End Select
+    End Function
     Public Function GetExistingNode(arrPoint As Rhino.Geometry.Point3d, nodes(,) As String, nnodes As Long, epsilon As Double)
         Dim currentnode
         'Start with node not found, loop through all the nodes until one is found within tolerance
@@ -784,6 +826,12 @@ Module HelperTools
     Private Function ConCat_pvx(p, v, x)
         ConCat_pvx = "<p" & p & " v=""" & v & """ x=""" & x & """/>"
     End Function
+
+    Private Function ConCat_pv1v2x(p, v1, v2, x)
+        ConCat_pv1v2x = "<p" & p & " v1=""" & v1 & """ v2=""" & v2 & """ x=""" & x & """/>"
+    End Function
+
+
     Private Function ConCat_pn(p, N)
         ConCat_pn = "<p" & p & " n=""" & N & """/>"
     End Function
@@ -799,6 +847,8 @@ Module HelperTools
     Private Function ConCat_row(id)
         ConCat_row = "<row id=""" & CStr(id) & """>"
     End Function
+
+
 
     '<Custom additional code> 
 
@@ -846,7 +896,7 @@ Module HelperTools
                              Scale As String, in_LinCombinations As List(Of String), in_NonLinCombinations As List(Of String), in_StabCombinations As List(Of String),
                              in_CrossLinks As List(Of String), in_presstensionElem As List(Of String), in_gapElem As List(Of String), in_limitforceElem As List(Of String), projectInfo As List(Of String), in_layers As List(Of String),
                              in_BeamLineSupport As List(Of String), in_PointSupportOnBeam As List(Of String), in_Subsoils As List(Of String), in_SurfaceSupports As List(Of String), in_loadpanels As List(Of String), in_pointMomentPoint As List(Of String),
-                             in_pointMomentBeam As List(Of String), in_lineMomentBeam As List(Of String), in_lineMomentEdge As List(Of String), in_freePointMoment As List(Of String))
+                             in_pointMomentBeam As List(Of String), in_lineMomentBeam As List(Of String), in_lineMomentEdge As List(Of String), in_freePointMoment As List(Of String), in_nonlinearfunctions As List(Of String))
         Dim i As Long, j As Long
 
 
@@ -860,8 +910,8 @@ Module HelperTools
         Dim SE_surfaces(100000, 12) As String 'a surface consists of: Name, Type, Material, Thickness, Layer, BoundaryShape, InternalNodes
         Dim SE_openings(100000, 2) As String 'a surface consists of: Name, Reference surface, BoundaryShape
 
-        Dim SE_nodesupports(100000, 13) As String 'a nodal support consists of: Node name, X, Y, Z, RX, RY, RZ - 0 is free, 1 is blocked DOF
-        Dim SE_edgesupports(100000, 19) As String 'an edge support consists of: Reference name, reference type, edge number, X, Y, Z, RX, RY, RZ - 0 is free, 1 is blocked DOF
+        Dim SE_nodesupports(100000, 19) As String 'a nodal support consists of: Node name, X, Y, Z, RX, RY, RZ - 0 is free, 1 is blocked DOF
+        Dim SE_edgesupports(100000, 25) As String 'an edge support consists of: Reference name, reference type, edge number, X, Y, Z, RX, RY, RZ - 0 is free, 1 is blocked DOF
         Dim SE_lcases(100000, 2) As String 'a load case consists of: Load case name, type (SW, Permanent, Variable), load group
         Dim SE_lgroups(100000, 2) As String 'a load group consists of: Load group name, type (Permanent, Variable), relation (Standard, Exclusive, Together)
         Dim SE_lloads(100000, 13) As String 'a beam line load consists of: Load case, Beam name, coord sys (GCS/LCS), direction (X, Y, Z), Distribution,value1 (kN/m),value2,coord,pos1,pos2
@@ -882,8 +932,8 @@ Module HelperTools
         Dim SE_limforceelem(1000000, 4) As String
         Dim SE_layers(1000000, 3) As String
         Dim SE_layersCount As Integer = 0
-        Dim SE_beamLineSupports(100000, 17) As String 'a beam line support consists of: Reference name, reference type, edge number, X, Y, Z, RX, RY, RZ - 0 is free, 1 is blocked DOF
-        Dim SE_pointSupportOnBeam(100000, 18) As String
+        Dim SE_beamLineSupports(100000, 23) As String 'a beam line support consists of: Reference name, reference type, edge number, X, Y, Z, RX, RY, RZ - 0 is free, 1 is blocked DOF
+        Dim SE_pointSupportOnBeam(100000, 24) As String
         Dim SE_subsoil(100000, 7) As String
         Dim SE_surfaceSupport(100000, 2) As String
         Dim SE_LoadPanels(100000, 7) As String
@@ -892,6 +942,7 @@ Module HelperTools
         Dim SE_lineMomentBeam(100000, 10) As String
         Dim SE_lineMomentEdge(100000, 12) As String
         Dim SE_fMomentPointloads(100000, 8) As String
+        Dim SE_NonlinearFunctions(100000, 5) As String
 
         Dim SE_meshsize As Double
 
@@ -905,7 +956,7 @@ Module HelperTools
         Dim hingecount As Long, eloadscount As Long, pointLoadpointCount As Long, pointLoadbeamCount As Long, lincominationcount As Long, nonlincominationcount As Long
         Dim stabcombicount As Long, crosslinkscount As Long, gapsnr As Long, ptelemnsnr As Long, lfelemnsnr As Long, nBeamLineSupport As Long, nPointSupportonBeam As Long, nSubsoils As Long, nSurfaceSupports As Long, nloadPanels As Long
 
-        Dim pointMomentpointCount As Long, pointMomentbeamCount As Long, lineMomentBeamCount As Long, lineMomentEdgeCount As Long, fpointmomentloadcount As Long
+        Dim pointMomentpointCount As Long, pointMomentbeamCount As Long, lineMomentBeamCount As Long, lineMomentEdgeCount As Long, fpointmomentloadcount As Long, nlfunctionscount As Long
 
         Dim stopWatch As New System.Diagnostics.Stopwatch()
         Dim time_elapsed As Double
@@ -1027,21 +1078,21 @@ Module HelperTools
         End If
 
         If (in_nodesupports IsNot Nothing) Then
-            nodesupportcount = in_nodesupports.Count / 14
+            nodesupportcount = in_nodesupports.Count / 20
             Rhino.RhinoApp.WriteLine("Number of node supports: " & nodesupportcount)
             For i = 0 To nodesupportcount - 1
-                For j = 0 To 13
-                    SE_nodesupports(i, j) = in_nodesupports(j + i * 14)
+                For j = 0 To 19
+                    SE_nodesupports(i, j) = in_nodesupports(j + i * 20)
                 Next j
             Next i
         End If
 
         If (in_edgesupports IsNot Nothing) Then
-            edgesupportcount = in_edgesupports.Count / 19
+            edgesupportcount = in_edgesupports.Count / 25
             Rhino.RhinoApp.WriteLine("Number of edge supports: " & edgesupportcount)
             For i = 0 To edgesupportcount - 1
-                For j = 0 To 18
-                    SE_edgesupports(i, j) = in_edgesupports(j + i * 19)
+                For j = 0 To 24
+                    SE_edgesupports(i, j) = in_edgesupports(j + i * 25)
                 Next j
             Next i
         End If
@@ -1288,21 +1339,21 @@ Module HelperTools
         End If
 
         If ((in_BeamLineSupport IsNot Nothing)) Then
-            nBeamLineSupport = in_BeamLineSupport.Count / 17
+            nBeamLineSupport = in_BeamLineSupport.Count / 23
             Rhino.RhinoApp.WriteLine("Number of beam line supports: " & nBeamLineSupport)
             For i = 0 To nBeamLineSupport - 1
-                For j = 0 To 16
-                    SE_beamLineSupports(i, j) = in_BeamLineSupport(j + i * 17)
+                For j = 0 To 22
+                    SE_beamLineSupports(i, j) = in_BeamLineSupport(j + i * 23)
                 Next j
             Next i
         End If
 
         If ((in_PointSupportOnBeam IsNot Nothing)) Then
-            nPointSupportonBeam = in_PointSupportOnBeam.Count / 18
+            nPointSupportonBeam = in_PointSupportOnBeam.Count / 24
             Rhino.RhinoApp.WriteLine("Number of point supports on beam: " & nPointSupportonBeam)
             For i = 0 To nPointSupportonBeam - 1
-                For j = 0 To 17
-                    SE_pointSupportOnBeam(i, j) = in_PointSupportOnBeam(j + i * 18)
+                For j = 0 To 23
+                    SE_pointSupportOnBeam(i, j) = in_PointSupportOnBeam(j + i * 24)
                 Next j
             Next i
         End If
@@ -1328,6 +1379,17 @@ Module HelperTools
         End If
 
 
+        If ((in_nonlinearfunctions IsNot Nothing)) Then
+            nlfunctionscount = in_nonlinearfunctions.Count / 5
+            Rhino.RhinoApp.WriteLine("Number of surface supports: " & nSurfaceSupports)
+            For i = 0 To nlfunctionscount - 1
+                For j = 0 To 4
+                    SE_NonlinearFunctions(i, j) = in_nonlinearfunctions(j + i * 5)
+                Next j
+            Next i
+        End If
+
+
         'write the XML file
         '---------------------------------------------------
         Rhino.RhinoApp.Write("Creating the XML file string in memory...")
@@ -1345,7 +1407,8 @@ SE_lincombinations, lincominationcount, SE_nonlincombinations, nonlincominationc
 stabcombicount, SE_Crosslinks, crosslinkscount, SE_gapselem, gapsnr, SE_presstensionelems, ptelemnsnr, SE_limforceelem,
 lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers, SE_layersCount, SE_beamLineSupports, nBeamLineSupport, SE_pointSupportOnBeam,
 nPointSupportonBeam, SE_subsoil, nSubsoils, SE_surfaceSupport, nSurfaceSupports, SE_LoadPanels, nloadPanels,
-SE_PointMomentPointNode, pointMomentpointCount, SE_pointMomentBeam, pointMomentbeamCount, SE_lineMomentBeam, lineMomentBeamCount, SE_lineMomentEdge, lineMomentEdgeCount, SE_fMomentPointloads, fpointmomentloadcount)
+SE_PointMomentPointNode, pointMomentpointCount, SE_pointMomentBeam, pointMomentbeamCount, SE_lineMomentBeam, lineMomentBeamCount, SE_lineMomentEdge, lineMomentEdgeCount,
+SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionscount)
 
         Rhino.RhinoApp.Write(" Done." & Convert.ToChar(13))
 
@@ -1380,7 +1443,7 @@ SE_PointMomentPointNode, pointMomentpointCount, SE_pointMomentBeam, pointMomentb
     stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsnr, presstensionelems(,), ptelemnsnr, limforceelem(,),
     lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers(,), SE_layersCount, SE_beamLineSupports(,), nbeamLineSupports, SE_pointSupportOnBeam,
     nPointSupportonBeam, SE_subsoil(,), nSubsoils, SE_surfaceSupport(,), nSurfaceSupports, SE_Loadpanels(,), nLoadpanels, SE_PointMomentPointNode(,),
-    pointMomentpointCount, SE_pointMomentBeam(,), pointMomentbeamCount, SE_lineMomentBeam(,), lineMomentBeamCount, SE_lineMomentEdge(,), lineMomentEdgeCount, SE_fMomentPointloads(,), fpointmomentloadcount)
+    pointMomentpointCount, SE_pointMomentBeam(,), pointMomentbeamCount, SE_lineMomentBeam(,), lineMomentBeamCount, SE_lineMomentEdge(,), lineMomentEdgeCount, SE_fMomentPointloads(,), fpointmomentloadcount, SE_NonlinearFunctions(,), nlfunctionscount)
 
         Dim i As Long
         Dim c As String, cid As String, t As String, tid As String
@@ -1848,6 +1911,41 @@ SE_PointMomentPointNode, pointMomentpointCount, SE_pointMomentBeam, pointMomentb
             oSB.AppendLine("</container>")
         End If
 
+
+
+        If nlfunctionscount > 0 Then
+            'output nodal supports ------------------------------------------------------------------
+            c = "{2C78B173-A1D3-11D4-A433-000000000000}"
+            cid = "DataLibScia.EP_NonLinearFunction.1"
+            t = "102590D1-4EF3-4E7D-892B-CAB4DDFE8C20"
+            tid = "DataLibScia.EP_NonLinearFunction.1"
+
+            oSB.AppendLine("")
+            oSB.AppendLine("<container id=""" & c & """ t=""" & cid & """>")
+            oSB.AppendLine("<table id=""" & t & """ t=""" & tid & """>")
+
+            oSB.AppendLine("<h>")
+            oSB.AppendLine(ConCat_ht("0", "Name"))
+            oSB.AppendLine(ConCat_ht("1", "Type"))
+            oSB.AppendLine(ConCat_ht("2", "Positive end"))
+            oSB.AppendLine(ConCat_ht("3", "Negative end"))
+            oSB.AppendLine(ConCat_ht("4", "u / F"))
+            oSB.AppendLine(ConCat_ht("5", "fi / M"))
+            oSB.AppendLine(ConCat_ht("6", "u / F"))
+            oSB.AppendLine("</h>")
+
+            For i = 0 To nlfunctionscount - 1
+                If i > 0 And i Mod 100 = 0 Then
+                    Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... nodal supports: " + Str(i))
+                End If
+                Call WriteNonlinearFunction(oSB, i, SE_NonlinearFunctions)
+
+            Next
+
+            oSB.AppendLine("</table>")
+            oSB.AppendLine("</container>")
+        End If
+
         If nodesupportnr > 0 Then
             'output nodal supports ------------------------------------------------------------------
             c = "{1CBCA4DE-355B-40F7-A91D-8EFD26A6404D}"
@@ -1876,6 +1974,12 @@ SE_PointMomentPointNode, pointMomentpointCount, SE_pointMomentBeam, pointMomentb
             oSB.AppendLine(ConCat_ht("12", "Stiffness Ry"))
             oSB.AppendLine(ConCat_ht("13", "Stiffness Rz"))
             oSB.AppendLine(ConCat_ht("14", "Angle [deg]"))
+            oSB.AppendLine(ConCat_ht("15", "Function X"))
+            oSB.AppendLine(ConCat_ht("16","Function Y"))
+            oSB.AppendLine(ConCat_ht("17", "Function Z"))
+            oSB.AppendLine(ConCat_ht("18", "Function Rx"))
+            oSB.AppendLine(ConCat_ht("19", "Function Ry"))
+            oSB.AppendLine(ConCat_ht("20","Function Rz"))
             oSB.AppendLine("</h>")
 
             For i = 0 To nodesupportnr - 1
@@ -1922,6 +2026,12 @@ SE_PointMomentPointNode, pointMomentpointCount, SE_pointMomentBeam, pointMomentb
             oSB.AppendLine(ConCat_ht("17", "Position x1"))
             oSB.AppendLine(ConCat_ht("18", "Position x2"))
             oSB.AppendLine(ConCat_ht("19", "Origin"))
+            oSB.AppendLine(ConCat_ht("20", "Function X"))
+            oSB.AppendLine(ConCat_ht("21", "Function Y"))
+            oSB.AppendLine(ConCat_ht("22", "Function Z"))
+            oSB.AppendLine(ConCat_ht("23", "Function Rx"))
+            oSB.AppendLine(ConCat_ht("24", "Function Ry"))
+            oSB.AppendLine(ConCat_ht("25", "Function Rz"))
 
 
             oSB.AppendLine("</h>")
@@ -1971,6 +2081,12 @@ SE_PointMomentPointNode, pointMomentpointCount, SE_pointMomentBeam, pointMomentb
             oSB.AppendLine(ConCat_ht("17", "Position x1"))
             oSB.AppendLine(ConCat_ht("18", "Position x2"))
             oSB.AppendLine(ConCat_ht("19", "Origin"))
+            oSB.AppendLine(ConCat_ht("20", "Function X"))
+            oSB.AppendLine(ConCat_ht("21", "Function Y"))
+            oSB.AppendLine(ConCat_ht("22", "Function Z"))
+            oSB.AppendLine(ConCat_ht("23", "Function Rx"))
+            oSB.AppendLine(ConCat_ht("24", "Function Ry"))
+            oSB.AppendLine(ConCat_ht("25", "Function Rz"))
 
 
             oSB.AppendLine("</h>")
@@ -2020,6 +2136,12 @@ SE_PointMomentPointNode, pointMomentpointCount, SE_pointMomentBeam, pointMomentb
             oSB.AppendLine(ConCat_ht("18", "Origin"))
             oSB.AppendLine(ConCat_ht("19", "Repeat (n)"))
             oSB.AppendLine(ConCat_ht("20", "Delta x"))
+            oSB.AppendLine(ConCat_ht("21", "Function X"))
+            oSB.AppendLine(ConCat_ht("22", "Function Y"))
+            oSB.AppendLine(ConCat_ht("23", "Function Z"))
+            oSB.AppendLine(ConCat_ht("24", "Function Rx"))
+            oSB.AppendLine(ConCat_ht("25", "Function Ry"))
+            oSB.AppendLine(ConCat_ht("26", "Function Rz"))
 
 
             oSB.AppendLine("</h>")
@@ -3885,6 +4007,78 @@ SE_PointMomentPointNode, pointMomentpointCount, SE_pointMomentBeam, pointMomentb
 
     End Sub
 
+    Private Sub WriteNonlinearFunction(ByRef oSB, i, SE_NonlinearFunctions(,)) 'write 1 nodal support to the XML stream
+
+
+        oSB.AppendLine("<obj nm=""" & SE_NonlinearFunctions(i, 0) & """>")
+        oSB.AppendLine(ConCat_pv("0", SE_NonlinearFunctions(i, 0)))
+        Select Case (SE_NonlinearFunctions(i, 1))
+            Case "Translation"
+                oSB.AppendLine(ConCat_pvt("1", "0", "Translation"))
+            Case "Rotation"
+                oSB.AppendLine(ConCat_pvt("1", "1", "Rotation"))
+            Case "Nonlinear subsoil"
+                oSB.AppendLine(ConCat_pvt("1", "2", "Nonlinear subsoil"))
+            Case Else
+                oSB.AppendLine(ConCat_pvt("1", "0", "Translation"))
+        End Select
+
+        Select Case (SE_NonlinearFunctions(i, 3))
+            Case "Rigid"
+                oSB.AppendLine(ConCat_pvt("2", "0", "Rigid"))
+            Case "Free"
+                oSB.AppendLine(ConCat_pvt("2", "1", "Free"))
+            Case "Flexible"
+                oSB.AppendLine(ConCat_pvt("2", "2", "Flexible"))
+            Case Else
+                oSB.AppendLine(ConCat_pvt("2", "0", "Rigid"))
+        End Select
+
+        Select Case (SE_NonlinearFunctions(i, 3))
+            Case "Rigid"
+                oSB.AppendLine(ConCat_pvt("3", "0", "Rigid"))
+            Case "Free"
+                oSB.AppendLine(ConCat_pvt("4", "1", "Free"))
+            Case "Flexible"
+                oSB.AppendLine(ConCat_pvt("4", "2", "Flexible"))
+            Case Else
+                oSB.AppendLine(ConCat_pvt("4", "0", "Rigid"))
+        End Select
+
+        Dim parts As String() = SE_NonlinearFunctions(i, 4).Split(New Char() {"|"c})
+
+        Dim x As String
+        Dim y As String
+        Dim j As Long = 0
+        Select Case (SE_NonlinearFunctions(i, 1))
+            Case "Translation"
+                For Each item In parts
+                    x = item.Split(";")(0)
+                    y = item.Split(";")(1)
+                    oSB.AppendLine(ConCat_pv1v2x("4", x, y, j))
+                    j += 1
+                Next item
+            Case "Rotation"
+                For Each item In parts
+                    x = item.Split(";")(0)
+                    y = item.Split(";")(1)
+                    oSB.AppendLine(ConCat_pv1v2x("5", x, y, i))
+                    i += 1
+                Next item
+            Case "Nonlinear subsoil"
+                For Each item In parts
+                    x = item.Split(";")(0)
+                    y = item.Split(";")(1)
+                    oSB.AppendLine(ConCat_pv1v2x("6", x, y, i))
+                    i += 1
+                Next item
+
+        End Select
+
+        oSB.AppendLine("</obj>")
+
+    End Sub
+
     Private Sub WriteNodeSupport(ByRef oSB, isupport, supports(,)) 'write 1 nodal support to the XML stream
         Dim tt As String
 
@@ -3924,7 +4118,13 @@ SE_PointMomentPointNode, pointMomentpointCount, SE_pointMomentBeam, pointMomentb
         oSB.AppendLine(ConCat_pv("12", supports(isupport, 11)))
         oSB.AppendLine(ConCat_pv("13", supports(isupport, 12)))
         oSB.AppendLine(ConCat_pv("14", supports(isupport, 13)))
-
+        '15-20 NL functions
+        oSB.AppendLine(ConCat_pin("15", "1", supports(isupport, 14)))
+        oSB.AppendLine(ConCat_pin("16", "1", supports(isupport, 15)))
+        oSB.AppendLine(ConCat_pin("17", "1", supports(isupport, 16)))
+        oSB.AppendLine(ConCat_pin("18", "1", supports(isupport, 17)))
+        oSB.AppendLine(ConCat_pin("19", "1", supports(isupport, 18)))
+        oSB.AppendLine(ConCat_pin("20", "1", supports(isupport, 19)))
         oSB.AppendLine("</obj>")
 
     End Sub
@@ -4002,7 +4202,12 @@ SE_PointMomentPointNode, pointMomentpointCount, SE_pointMomentBeam, pointMomentb
             Case "From end"
                 oSB.AppendLine(ConCat_pvt("19", "1", "From end"))
         End Select
-
+        oSB.AppendLine(ConCat_pin("20", "1", supports(isupport, 18)))
+        oSB.AppendLine(ConCat_pin("21", "1", supports(isupport, 19)))
+        oSB.AppendLine(ConCat_pin("22", "1", supports(isupport, 20)))
+        oSB.AppendLine(ConCat_pin("23", "1", supports(isupport, 21)))
+        oSB.AppendLine(ConCat_pin("24", "1", supports(isupport, 22)))
+        oSB.AppendLine(ConCat_pin("25", "1", supports(isupport, 23)))
         oSB.AppendLine("</obj>")
 
     End Sub
@@ -4073,7 +4278,12 @@ SE_PointMomentPointNode, pointMomentpointCount, SE_pointMomentBeam, pointMomentb
             Case "From end"
                 oSB.AppendLine(ConCat_pvt("19", "1", "From end"))
         End Select
-
+        oSB.AppendLine(ConCat_pin("20", "1", supports(isupport, 18)))
+        oSB.AppendLine(ConCat_pin("21", "1", supports(isupport, 19)))
+        oSB.AppendLine(ConCat_pin("22", "1", supports(isupport, 20)))
+        oSB.AppendLine(ConCat_pin("23", "1", supports(isupport, 21)))
+        oSB.AppendLine(ConCat_pin("24", "1", supports(isupport, 22)))
+        oSB.AppendLine(ConCat_pin("25", "1", supports(isupport, 23)))
         oSB.AppendLine("</obj>")
 
     End Sub
@@ -4145,7 +4355,12 @@ SE_PointMomentPointNode, pointMomentpointCount, SE_pointMomentBeam, pointMomentb
         oSB.AppendLine(ConCat_pv("19", supports(isupport, 16)))
 
         oSB.AppendLine(ConCat_pv("20", supports(isupport, 17)))
-
+        oSB.AppendLine(ConCat_pin("21", "1", supports(isupport, 18)))
+        oSB.AppendLine(ConCat_pin("22", "1", supports(isupport, 19)))
+        oSB.AppendLine(ConCat_pin("23", "1", supports(isupport, 20)))
+        oSB.AppendLine(ConCat_pin("24", "1", supports(isupport, 21)))
+        oSB.AppendLine(ConCat_pin("25", "1", supports(isupport, 22)))
+        oSB.AppendLine(ConCat_pin("26", "1", supports(isupport, 23)))
 
         oSB.AppendLine("</obj>")
 
@@ -4158,7 +4373,7 @@ SE_PointMomentPointNode, pointMomentpointCount, SE_pointMomentBeam, pointMomentb
         oSB.AppendLine(ConCat_pv("1", subsoil(i, 1)))
         oSB.AppendLine(ConCat_pv("2", subsoil(i, 2)))
         oSB.AppendLine(ConCat_pv("3", subsoil(i, 3)))
-        oSB.AppendLine(ConCat_pvt("4", "0", "Flexible"))
+        oSB.AppendLine(ConCat_pvt("4", "0", "Flexible")) ' or nonlinear
         oSB.AppendLine(ConCat_pv("5", subsoil(i, 4)))
         oSB.AppendLine(ConCat_pv("6", subsoil(i, 5)))
         oSB.AppendLine(ConCat_pv("7", subsoil(i, 6)))

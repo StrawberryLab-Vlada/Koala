@@ -532,7 +532,7 @@
   </def_container>
    <def_container id="{1CBCA4DE-355B-40F7-A91D-8EFD26A6404D}" clsid="{1CBCA4DE-355B-40F7-A91D-8EFD26A6404D}">
       
-      <def_table id="B692AE6A-CE3D-44B6-8F23-FA69CCE6E7EF" name="XML\default" type="vertical" clsid="{1CBCA4DE-355B-40F7-A91D-8EFD26A6404D}" progid="DataAddSupport.EP_PointSupportPoint.1" size="15">
+      <def_table id="B692AE6A-CE3D-44B6-8F23-FA69CCE6E7EF" name="XML\default" type="vertical" clsid="{1CBCA4DE-355B-40F7-A91D-8EFD26A6404D}" progid="DataAddSupport.EP_PointSupportPoint.1" size="21">
          
          
           
@@ -648,11 +648,40 @@
          
          
          <def_property x="14" name="Angle [deg]" type="string" id="{7C7589CE-C90C-11D4-A46A-00C06C542707}"/>
+
+        <def_property x="15" name="Function X" type="ref" flag="131072" id="{49F80191-A4E5-11D4-A43A-000000000000}">
+          <def_ref id="{2C78B173-A1D3-11D4-A433-000000000000}" progid="DataLibScia.EP_NonLinearFunction.1"/>
+        </def_property>
+
+
+        <def_property x="16" name="Function Y" type="ref" flag="131072" id="{49F80194-A4E5-11D4-A43A-000000000000}">
+          <def_ref id="{2C78B173-A1D3-11D4-A433-000000000000}" progid="DataLibScia.EP_NonLinearFunction.1"/>
+        </def_property>
+
+
+        <def_property x="17" name="Function Z" type="ref" flag="131072" id="{49F80197-A4E5-11D4-A43A-000000000000}">
+          <def_ref id="{2C78B173-A1D3-11D4-A433-000000000000}" progid="DataLibScia.EP_NonLinearFunction.1"/>
+        </def_property>
+
+
+        <def_property x="18" name="Function Rx" type="ref" flag="131072" id="{49F8019A-A4E5-11D4-A43A-000000000000}">
+          <def_ref id="{2C78B173-A1D3-11D4-A433-000000000000}" progid="DataLibScia.EP_NonLinearFunction.1"/>
+        </def_property>
+
+
+        <def_property x="19" name="Function Ry" type="ref" flag="131072" id="{49F8019D-A4E5-11D4-A43A-000000000000}">
+          <def_ref id="{2C78B173-A1D3-11D4-A433-000000000000}" progid="DataLibScia.EP_NonLinearFunction.1"/>
+        </def_property>
+
+
+        <def_property x="20" name="Function Rz" type="ref" flag="131072" id="{49F801A0-A4E5-11D4-A43A-000000000000}">
+          <def_ref id="{2C78B173-A1D3-11D4-A433-000000000000}" progid="DataLibScia.EP_NonLinearFunction.1"/>
+        </def_property>
       </def_table>
    </def_container>
 
    <def_container id="{24449635-FE8C-46B5-8C97-9E0CA33F0E70}" clsid="{24449635-FE8C-46B5-8C97-9E0CA33F0E70}" progid="DataAddSupport.EP_LineSupportSurface.1">
-      <def_table id="DDE61EF9-7735-4DCD-939E-7521D1B4BB6F" name="XML\default" type="vertical" clsid="{24449635-FE8C-46B5-8C97-9E0CA33F0E70}" progid="DataAddSupport.EP_LineSupportSurface.1" size="21">
+      <def_table id="DDE61EF9-7735-4DCD-939E-7521D1B4BB6F" name="XML\default" type="vertical" clsid="{24449635-FE8C-46B5-8C97-9E0CA33F0E70}" progid="DataAddSupport.EP_LineSupportSurface.1" size="27">
          
          <def_property x="0" name="Name" type="string" id="{4364BC01-AAB7-11D4-B3D9-00104BC3B531}"/>
          
@@ -797,6 +826,63 @@
           </def_enum>
         </def_property>
 
+        <def_property x="15" name="Function X" type="ref" flag="131072" id="{49F80191-A4E5-11D4-A43A-000000000000}">
+          <def_ref id="{2C78B173-A1D3-11D4-A433-000000000000}" progid="DataLibScia.EP_NonLinearFunction.1"/>
+        </def_property>
+
+
+        <def_property x="16" name="Function Y" type="ref" flag="131072" id="{49F80194-A4E5-11D4-A43A-000000000000}">
+          <def_ref id="{2C78B173-A1D3-11D4-A433-000000000000}" progid="DataLibScia.EP_NonLinearFunction.1"/>
+        </def_property>
+
+
+        <def_property x="17" name="Function Z" type="ref" flag="131072" id="{49F80197-A4E5-11D4-A43A-000000000000}">
+          <def_ref id="{2C78B173-A1D3-11D4-A433-000000000000}" progid="DataLibScia.EP_NonLinearFunction.1"/>
+        </def_property>
+
+
+        <def_property x="18" name="Function Rx" type="ref" flag="131072" id="{49F8019A-A4E5-11D4-A43A-000000000000}">
+          <def_ref id="{2C78B173-A1D3-11D4-A433-000000000000}" progid="DataLibScia.EP_NonLinearFunction.1"/>
+        </def_property>
+
+
+        <def_property x="19" name="Function Ry" type="ref" flag="131072" id="{49F8019D-A4E5-11D4-A43A-000000000000}">
+          <def_ref id="{2C78B173-A1D3-11D4-A433-000000000000}" progid="DataLibScia.EP_NonLinearFunction.1"/>
+        </def_property>
+
+
+        <def_property x="20" name="Function Rz" type="ref" flag="131072" id="{49F801A0-A4E5-11D4-A43A-000000000000}">
+          <def_ref id="{2C78B173-A1D3-11D4-A433-000000000000}" progid="DataLibScia.EP_NonLinearFunction.1"/>
+        </def_property>
+
+        <def_property x="21" name="Function X" type="ref" flag="131072" id="{49F80191-A4E5-11D4-A43A-000000000000}">
+          <def_ref id="{2C78B173-A1D3-11D4-A433-000000000000}" progid="DataLibScia.EP_NonLinearFunction.1"/>
+        </def_property>
+
+
+        <def_property x="22" name="Function Y" type="ref" flag="131072" id="{49F80194-A4E5-11D4-A43A-000000000000}">
+          <def_ref id="{2C78B173-A1D3-11D4-A433-000000000000}" progid="DataLibScia.EP_NonLinearFunction.1"/>
+        </def_property>
+
+
+        <def_property x="23" name="Function Z" type="ref" flag="131072" id="{49F80197-A4E5-11D4-A43A-000000000000}">
+          <def_ref id="{2C78B173-A1D3-11D4-A433-000000000000}" progid="DataLibScia.EP_NonLinearFunction.1"/>
+        </def_property>
+
+
+        <def_property x="24" name="Function Rx" type="ref" flag="131072" id="{49F8019A-A4E5-11D4-A43A-000000000000}">
+          <def_ref id="{2C78B173-A1D3-11D4-A433-000000000000}" progid="DataLibScia.EP_NonLinearFunction.1"/>
+        </def_property>
+
+
+        <def_property x="25" name="Function Ry" type="ref" flag="131072" id="{49F8019D-A4E5-11D4-A43A-000000000000}">
+          <def_ref id="{2C78B173-A1D3-11D4-A433-000000000000}" progid="DataLibScia.EP_NonLinearFunction.1"/>
+        </def_property>
+
+
+        <def_property x="26" name="Function Rz" type="ref" flag="131072" id="{49F801A0-A4E5-11D4-A43A-000000000000}">
+          <def_ref id="{2C78B173-A1D3-11D4-A433-000000000000}" progid="DataLibScia.EP_NonLinearFunction.1"/>
+        </def_property>
 
       </def_table>
    </def_container>
@@ -2065,6 +2151,34 @@
          </def_enum>
          </def_property>
 
+        <def_property x="20" name="Function X" type="ref" flag="131072" id="{49F80191-A4E5-11D4-A43A-000000000000}">
+          <def_ref id="{2C78B173-A1D3-11D4-A433-000000000000}" progid="DataLibScia.EP_NonLinearFunction.1"/>
+        </def_property>
+
+
+        <def_property x="21" name="Function Y" type="ref" flag="131072" id="{49F80194-A4E5-11D4-A43A-000000000000}">
+          <def_ref id="{2C78B173-A1D3-11D4-A433-000000000000}" progid="DataLibScia.EP_NonLinearFunction.1"/>
+        </def_property>
+
+
+        <def_property x="22" name="Function Z" type="ref" flag="131072" id="{49F80197-A4E5-11D4-A43A-000000000000}">
+          <def_ref id="{2C78B173-A1D3-11D4-A433-000000000000}" progid="DataLibScia.EP_NonLinearFunction.1"/>
+        </def_property>
+
+
+        <def_property x="23" name="Function Rx" type="ref" flag="131072" id="{49F8019A-A4E5-11D4-A43A-000000000000}">
+          <def_ref id="{2C78B173-A1D3-11D4-A433-000000000000}" progid="DataLibScia.EP_NonLinearFunction.1"/>
+        </def_property>
+
+
+        <def_property x="24" name="Function Ry" type="ref" flag="131072" id="{49F8019D-A4E5-11D4-A43A-000000000000}">
+          <def_ref id="{2C78B173-A1D3-11D4-A433-000000000000}" progid="DataLibScia.EP_NonLinearFunction.1"/>
+        </def_property>
+
+
+        <def_property x="25" name="Function Rz" type="ref" flag="131072" id="{49F801A0-A4E5-11D4-A43A-000000000000}">
+          <def_ref id="{2C78B173-A1D3-11D4-A433-000000000000}" progid="DataLibScia.EP_NonLinearFunction.1"/>
+        </def_property>
       
          
       </def_table>
@@ -2225,6 +2339,35 @@
          
          
          <def_property x="20" name="Delta x" type="param" flag="33619968" id="{EDA4B5B0-8A80-11D4-A414-000000000000}"/>
+
+        <def_property x="21" name="Function X" type="ref" flag="131072" id="{49F80191-A4E5-11D4-A43A-000000000000}">
+          <def_ref id="{2C78B173-A1D3-11D4-A433-000000000000}" progid="DataLibScia.EP_NonLinearFunction.1"/>
+        </def_property>
+
+
+        <def_property x="22" name="Function Y" type="ref" flag="131072" id="{49F80194-A4E5-11D4-A43A-000000000000}">
+          <def_ref id="{2C78B173-A1D3-11D4-A433-000000000000}" progid="DataLibScia.EP_NonLinearFunction.1"/>
+        </def_property>
+
+
+        <def_property x="23" name="Function Z" type="ref" flag="131072" id="{49F80197-A4E5-11D4-A43A-000000000000}">
+          <def_ref id="{2C78B173-A1D3-11D4-A433-000000000000}" progid="DataLibScia.EP_NonLinearFunction.1"/>
+        </def_property>
+
+
+        <def_property x="24" name="Function Rx" type="ref" flag="131072" id="{49F8019A-A4E5-11D4-A43A-000000000000}">
+          <def_ref id="{2C78B173-A1D3-11D4-A433-000000000000}" progid="DataLibScia.EP_NonLinearFunction.1"/>
+        </def_property>
+
+
+        <def_property x="25" name="Function Ry" type="ref" flag="131072" id="{49F8019D-A4E5-11D4-A43A-000000000000}">
+          <def_ref id="{2C78B173-A1D3-11D4-A433-000000000000}" progid="DataLibScia.EP_NonLinearFunction.1"/>
+        </def_property>
+
+
+        <def_property x="26" name="Function Rz" type="ref" flag="131072" id="{49F801A0-A4E5-11D4-A43A-000000000000}">
+          <def_ref id="{2C78B173-A1D3-11D4-A433-000000000000}" progid="DataLibScia.EP_NonLinearFunction.1"/>
+        </def_property>
          
       </def_table>
    </def_container>
@@ -2941,6 +3084,51 @@
          
       </def_table>
  </def_container>
-      
+
+  <def_container id="{2C78B173-A1D3-11D4-A433-000000000000}" clsid="{2C78B173-A1D3-11D4-A433-000000000000}" progid="DataLibScia.EP_NonLinearFunction.1" library="yes">
+    <def_table id="102590D1-4EF3-4E7D-892B-CAB4DDFE8C20" name="XML\default" type="vertical" clsid="{2C78B173-A1D3-11D4-A433-000000000000}" progid="DataLibScia.EP_NonLinearFunction.1" size="8">
+
+      <def_property x="0" name="Name" type="string" id="{4364BC01-AAB7-11D4-B3D9-00104BC3B531}"/>
+
+
    
+
+
+      <def_property x="1" name="Type" type="enum" id="{002E80F4-A296-11D4-A434-000000000000}">
+        <def_enum size="3">
+          <it_enum v="0" t="Translation"/>
+          <it_enum v="1" t="Rotation"/>
+          <it_enum v="2" t="Nonlinear subsoil"/>
+        </def_enum>
+      </def_property>
+
+
+      <def_property x="2" name="Positive end" type="enum" id="{002E80F5-A296-11D4-A434-000000000000}">
+        <def_enum size="3">
+          <it_enum v="0" t="Rigid"/>
+          <it_enum v="1" t="Free"/>
+          <it_enum v="2" t="Flexible"/>
+        </def_enum>
+      </def_property>
+
+
+      <def_property x="3" name="Negative end" type="enum" id="{002E80F6-A296-11D4-A434-000000000000}">
+        <def_enum size="3">
+          <it_enum v="0" t="Rigid"/>
+          <it_enum v="1" t="Free"/>
+          <it_enum v="2" t="Flexible"/>
+        </def_enum>
+      </def_property>
+
+
+      <def_property x="4" name="u / F" type="real2" id="{002E80F3-A296-11D4-A434-000000000000}"/>
+
+
+      <def_property x="5" name="fi / M" type="real2" id="{0879C610-BD5B-11D4-A45A-00C06C542707}"/>
+
+
+      <def_property x="6" name="u / F" type="real2" id="{FAF49E68-488C-4E7C-8F31-DF6D19A92A40}"/>
+
+    </def_table>
+  </def_container>
 </def_project>
