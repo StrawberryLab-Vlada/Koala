@@ -492,14 +492,29 @@ Module HelperTools
 
     Public Sub AddOptionsToMenuValidity(menuitem As Param_Integer)
         menuitem.AddNamedValue("All", 0)
-        menuitem.AddNamedValue("Z equals 0", 1)
+        menuitem.AddNamedValue("-Z", 1)
+        menuitem.AddNamedValue("+Z", 2)
+        menuitem.AddNamedValue("From-to", 3)
+        menuitem.AddNamedValue("Z=0", 4)
+        menuitem.AddNamedValue("-Z (incl. 0)", 5)
+        menuitem.AddNamedValue("+Z (incl. 0)", 6)
     End Sub
     Public Function GetStringFromuValidity(item As Integer) As String
         Select Case item
             Case 0
                 Return "All"
             Case 1
-                Return "Z equals 0"
+                Return "-Z"
+            Case 2
+                Return "+Z"
+            Case 3
+                Return "From-to"
+            Case 4
+                Return "Z=0"
+            Case 5
+                Return "-Z (incl. 0)"
+            Case 6
+                Return "+Z (incl. 0)"
             Case Else
                 Return "All"
         End Select
@@ -1224,11 +1239,11 @@ Module HelperTools
         End If
 
         If (in_fploads IsNot Nothing) Then
-            fploadcount = in_fploads.Count / 9
+            fploadcount = in_fploads.Count / 11
             Rhino.RhinoApp.WriteLine("Number of free point loads: " & fploadcount)
             For i = 0 To fploadcount - 1
-                For j = 0 To 8
-                    SE_fploads(i, j) = in_fploads(j + i * 9)
+                For j = 0 To 10
+                    SE_fploads(i, j) = in_fploads(j + i * 11)
                 Next j
             Next i
         End If
@@ -2771,6 +2786,10 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
             oSB.AppendLine(ConCat_ht("8", "Coord Z"))
             oSB.AppendLine(ConCat_ht("9", "System"))
             oSB.AppendLine(ConCat_ht("10", "Selected objects"))
+            oSB.AppendLine(ConCat_ht("11", "Validity from"))
+            oSB.AppendLine(ConCat_ht("12", "Validity to"))
+
+
 
             oSB.AppendLine("</h>")
 
@@ -3556,7 +3575,7 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
         Dim transferMethod As String
         transferMethod = GetStringForTransferMethod(loadpanels(iloadpanel, 5))
         osb.AppendLine(ConCat_pvt("8", loadpanels(iloadpanel, 5), transferMethod))
-        osb.AppendLine(ConCat_pvt("9", "0", "All"))
+        osb.AppendLine(ConCat_pvt("9", "0", "All")) 'selection of entities - -Z +Z all
 
 
 
@@ -5195,8 +5214,18 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
         Select Case loads(iload, 2)
             Case "All"
                 oSB.AppendLine(ConCat_pvt("3", "0", "All"))
-            Case "Z equals 0"
+            Case "-Z"
+                oSB.AppendLine(ConCat_pvt("3", "1", "-Z"))
+            Case "+Z"
+                oSB.AppendLine(ConCat_pvt("3", "2", "+Z"))
+            Case "From-to"
+                oSB.AppendLine(ConCat_pvt("3", "3", "From-to"))
+            Case "Z=0"
                 oSB.AppendLine(ConCat_pvt("3", "4", "Z=0"))
+            Case "-Z"
+                oSB.AppendLine(ConCat_pvt("3", "5", "-Z (incl. 0)"))
+            Case "+Z"
+                oSB.AppendLine(ConCat_pvt("3", "6", "+Z (incl. 0)"))
         End Select
         'selection
         oSB.AppendLine(ConCat_pvt("4", "0", "Auto"))
@@ -5213,6 +5242,7 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
             Case "Member LCS"
                 oSB.AppendLine(ConCat_pvt("9", "1", "Member LCS"))
         End Select
+
         oSB.AppendLine("</obj>")
 
     End Sub
@@ -5238,8 +5268,18 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
         Select Case loads(iload, 2)
             Case "All"
                 oSB.AppendLine(ConCat_pvt("3", "0", "All"))
-            Case "Z equals 0"
+            Case "-Z"
+                oSB.AppendLine(ConCat_pvt("3", "1", "-Z"))
+            Case "+Z"
+                oSB.AppendLine(ConCat_pvt("3", "2", "+Z"))
+            Case "From-to"
+                oSB.AppendLine(ConCat_pvt("3", "3", "From-to"))
+            Case "Z=0"
                 oSB.AppendLine(ConCat_pvt("3", "4", "Z=0"))
+            Case "-Z"
+                oSB.AppendLine(ConCat_pvt("3", "5", "-Z (incl. 0)"))
+            Case "+Z"
+                oSB.AppendLine(ConCat_pvt("3", "6", "+Z (incl. 0)"))
         End Select
         'selection
         oSB.AppendLine(ConCat_pvt("4", "0", "Auto"))
@@ -5294,32 +5334,42 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
         oSB.AppendLine(ConCat_pv("4", loads(iload, 6) * 1000))
         oSB.AppendLine(ConCat_pv("5", loads(iload, 7) * 1000))
         'validity
-        Select Case loads(iload, 1)
+        Select Case loads(iload, 2)
             Case "All"
-                oSB.AppendLine(ConCat_pvt("5", "0", "All"))
-            Case "Z equals 0"
-                oSB.AppendLine(ConCat_pvt("5", "4", "Z=0"))
+                oSB.AppendLine(ConCat_pvt("6", "0", "All"))
+            Case "-Z"
+                oSB.AppendLine(ConCat_pvt("6", "1", "-Z"))
+            Case "+Z"
+                oSB.AppendLine(ConCat_pvt("6", "2", "+Z"))
+            Case "From-to"
+                oSB.AppendLine(ConCat_pvt("6", "3", "From-to"))
+            Case "Z=0"
+                oSB.AppendLine(ConCat_pvt("6", "4", "Z=0"))
+            Case "-Z"
+                oSB.AppendLine(ConCat_pvt("6", "5", "-Z (incl. 0)"))
+            Case "+Z"
+                oSB.AppendLine(ConCat_pvt("6", "6", "+Z (incl. 0)"))
         End Select
 
         'selection (loads(iload,2))
-        oSB.AppendLine(ConCat_pvt("6", "0", "Auto"))
+        oSB.AppendLine(ConCat_pvt("7", "0", "Auto"))
 
         'coordinate system
         Select Case loads(iload, 3)
             Case "GCS - Length"
-                oSB.AppendLine(ConCat_pvt("7", "0", "GCS"))
-                oSB.AppendLine(ConCat_pvt("8", "0", "Length"))
+                oSB.AppendLine(ConCat_pvt("8", "0", "GCS"))
+                oSB.AppendLine(ConCat_pvt("9", "0", "Length"))
             Case "GCS - Projection"
-                oSB.AppendLine(ConCat_pvt("7", "0", "GCS"))
-                oSB.AppendLine(ConCat_pvt("8", "1", "Projection"))
+                oSB.AppendLine(ConCat_pvt("8", "0", "GCS"))
+                oSB.AppendLine(ConCat_pvt("9", "1", "Projection"))
             Case "Member LCS"
-                oSB.AppendLine(ConCat_pvt("7", "1", "Member LCS"))
+                oSB.AppendLine(ConCat_pvt("8", "1", "Member LCS"))
         End Select
 
         'table of geometry
         LineShape = loads(iload, 8)
 
-        oSB.AppendLine(ConCat_opentable("9", ""))
+        oSB.AppendLine(ConCat_opentable("10", ""))
 
         oSB.AppendLine("<h>")
         oSB.AppendLine(ConCat_ht("0", "Node"))
@@ -5362,7 +5412,7 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
         oSB.AppendLine(ConCat_pv("4", Trim(Split(LineShape, ";")(6) * scale))) 'second node Z
         oSB.AppendLine("</row>")
 
-        oSB.AppendLine(ConCat_closetable("9"))
+        oSB.AppendLine(ConCat_closetable("10"))
 
         oSB.AppendLine("</obj>")
 
@@ -5395,11 +5445,21 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
         oSB.AppendLine(ConCat_pv("4", loads(iload, 5) * 1000))
 
         'validity
-        Select Case loads(iload, 1)
+        Select Case loads(iload, 2)
             Case "All"
                 oSB.AppendLine(ConCat_pvt("5", "0", "All"))
-            Case "Z equals 0"
-                oSB.AppendLine(ConCat_pvt("5", "4", "Z=0"))
+            Case "-Z"
+                oSB.AppendLine(ConCat_pvt("5", "1", "-Z"))
+            Case "+Z"
+                oSB.AppendLine(ConCat_pvt("5", "2", "+Z"))
+            Case "From-to"
+                oSB.AppendLine(ConCat_pvt("5", "3", "From-to"))
+            Case "Z=0"
+                oSB.AppendLine(ConCat_pvt("4", "4", "Z=0"))
+            Case "-Z"
+                oSB.AppendLine(ConCat_pvt("4", "5", "-Z (incl. 0)"))
+            Case "+Z"
+                oSB.AppendLine(ConCat_pvt("5", "6", "+Z (incl. 0)"))
         End Select
 
         'selection (loads(iload,2))
