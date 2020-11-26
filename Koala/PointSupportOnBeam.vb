@@ -51,6 +51,13 @@ Namespace Koala
             AddOptionsToMenuOrigin(pManager.Param(15))
             pManager.AddIntegerParameter("Repeat", "Repeat", "Repeat", GH_ParamAccess.item, 1)
             pManager.AddNumberParameter("DeltaX", "DeltaX", "DeltaX", GH_ParamAccess.item, 0.1)
+            pManager.AddTextParameter("FunctionRx", "FunctionRx", "Stiffness for Rx in MNm/rad", GH_ParamAccess.item, "")
+            pManager.AddTextParameter("FunctionRy", "FunctionRy", "Stiffness for Ry in MNm/rad", GH_ParamAccess.item, "")
+            pManager.AddTextParameter("FunctionRz", "FunctionRz", "Stiffness for Rz in MNm/rad", GH_ParamAccess.item, "")
+            pManager.AddTextParameter("FunctionTx", "FunctionTx", "Stiffness for Tx in MNm", GH_ParamAccess.item, "")
+            pManager.AddTextParameter("FunctionTy", "FunctionTy", "Stiffness for Ty in MNm", GH_ParamAccess.item, "")
+            pManager.AddTextParameter("FunctionTz", "FunctionTz", "Stiffness for Tz in MNm", GH_ParamAccess.item, "")
+
         End Sub
 
         ''' <summary>
@@ -87,6 +94,14 @@ Namespace Koala
             Dim Origin As String = "From start"
             Dim DeltaX As Double = 0.01
             Dim i As Integer
+            Dim RxFunction As String = ""
+            Dim RyFunction As String = ""
+            Dim RzFunction As String = ""
+            Dim TxFunction As String = ""
+            Dim TyFunction As String = ""
+            Dim TzFunction As String = ""
+
+
             If (Not DA.GetDataList(Of String)(0, BeamSupports)) Then Return
 
             DA.GetData(Of Integer)(1, Rx)
@@ -108,6 +123,12 @@ Namespace Koala
             Origin = GetStringFromOrigin(i)
             DA.GetData(16, Repeat)
             DA.GetData(17, DeltaX)
+            DA.GetData(Of String)(18, RxFunction)
+            DA.GetData(Of String)(19, RyFunction)
+            DA.GetData(Of String)(20, RzFunction)
+            DA.GetData(Of String)(21, TxFunction)
+            DA.GetData(Of String)(22, TyFunction)
+            DA.GetData(Of String)(23, TzFunction)
 
 
             Dim FlatList As New List(Of System.Object)()
@@ -142,7 +163,12 @@ Namespace Koala
                 FlatList.Add(Origin)
                 FlatList.Add(Repeat)
                 FlatList.Add(DeltaX)
-
+                FlatList.Add(TxFunction)
+                FlatList.Add(TyFunction)
+                FlatList.Add(TzFunction)
+                FlatList.Add(RxFunction)
+                FlatList.Add(RyFunction)
+                FlatList.Add(RzFunction)
             Next
 
 

@@ -28,13 +28,17 @@ Namespace Koala
             pManager.AddTextParameter("LoadCase", "LoadCase", "Name of load case", GH_ParamAccess.item, "LC2")
             pManager.AddIntegerParameter("Validity", "Validity", "Validity: All,Z equals 0", GH_ParamAccess.item, 0)
             AddOptionsToMenuValidity(pManager.Param(1))
-            pManager.AddTextParameter("Selection", "Selection", "Selection: Auto", GH_ParamAccess.item, "Auto")
+            pManager.AddIntegerParameter("Selection", "Selection", "Selection: Auto", GH_ParamAccess.item, 0)
+            AddOptionsToMenuSelection(pManager.Param(2))
             pManager.AddIntegerParameter("CoordSys", "CoordSys", "Coordinate system: GCS - Length, GCS - Projection, Member LCS", GH_ParamAccess.item, 0)
             AddOptionsToMenuCoordSysFreeLine(pManager.Param(3))
-            pManager.AddIntegerParameter("Direction", "Direction", "Direction of load: X,Y,Z", GH_ParamAccess.item, 0)
+            pManager.AddIntegerParameter("Direction", "Direction", "Direction of load: X,Y,Z", GH_ParamAccess.item, 2)
             AddOptionsToMenuDirection(pManager.Param(4))
             pManager.AddNumberParameter("LoadValue", "LoadValue", "Value of Load in KN/m", GH_ParamAccess.item, -1)
             pManager.AddCurveParameter("Boundaries", "Boundaries", "List of lines", GH_ParamAccess.list)
+            pManager.AddNumberParameter("ValidityFrom", "ValidityFrom", "Validity From in m", GH_ParamAccess.item, 0)
+            pManager.AddNumberParameter("ValidityTo", "ValidityTo", "Validity To in m", GH_ParamAccess.item, 0)
+            'pManager.AddTextParameter("Selected2Dmembers", "Selected2Dmembers", "Selected 2D members as list if Selection is put as Selected", GH_ParamAccess.list, {})
         End Sub
 
         ''' <summary>
@@ -62,19 +66,27 @@ Namespace Koala
             Dim Boundaries = New List(Of Curve)
             Dim i As Integer
 
+
+            Dim ValidityFrom As Double = 0.0
+            Dim ValidityTo As Double = 0.0
+
             If (Not DA.GetData(0, LoadCase)) Then Return
             If (Not DA.GetData(1, i)) Then Return
             Validity = GetStringFromuValidity(i)
-            If (Not DA.GetData(2, Selection)) Then Return
+            If (Not DA.GetData(2, i)) Then Return
+            Selection = GetStringFromMenuSelection(i)
             If (Not DA.GetData(3, i)) Then Return
             CoordSys = GetStringFromCoordSysLine(i)
             If (Not DA.GetData(4, i)) Then Return
             Direction = GetStringFromDirection(i)
             If (Not DA.GetData(5, LoadValue)) Then Return
             If (Not DA.GetDataList(Of Curve)(6, Boundaries)) Then Return
+            If (Not DA.GetData(7, ValidityFrom)) Then Return
+            If (Not DA.GetData(8, ValidityTo)) Then Return
+
             Dim j As Long
 
-            Dim SE_fsloads(Boundaries.Count, 6)
+            Dim SE_fsloads(Boundaries.Count, 9)
             Dim FlatList As New List(Of System.Object)()
             'a free surface load consists of: load case, validity, selection, coord. system (GCS/LCS), direction (X, Y, Z), value (kN/m^2), BoundaryShape
 
@@ -122,6 +134,8 @@ Namespace Koala
                 SE_fsloads(itemcount, 4) = Direction
                 SE_fsloads(itemcount, 5) = LoadValue
                 SE_fsloads(itemcount, 6) = BoundaryShape
+                SE_fsloads(itemcount, 7) = ValidityFrom
+                SE_fsloads(itemcount, 8) = ValidityTo
                 itemcount += 1
             Next
 
@@ -130,7 +144,7 @@ Namespace Koala
             FlatList.Clear()
 
             For i = 0 To itemcount - 1
-                For j = 0 To 6
+                For j = 0 To 8
                     FlatList.Add(SE_fsloads(i, j))
                 Next j
             Next i

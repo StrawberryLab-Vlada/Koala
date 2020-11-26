@@ -6,7 +6,7 @@ Imports Rhino.Geometry
 
 Namespace Koala
 
-    Public Class MyComponent1
+    Public Class FreePointMoment
         Inherits GH_Component
         ''' <summary>
         ''' Each implementation of GH_Component must provide a public 
@@ -16,8 +16,8 @@ Namespace Koala
         ''' new tabs/panels will automatically be created.
         ''' </summary>
         Public Sub New()
-            MyBase.New("FreePointLoad", "FreePointLoad",
-                "Free point load",
+            MyBase.New("FreePointMoment", "FreePointMoment",
+                "FreePointMoment description",
                 "Koala", "Load")
         End Sub
 
@@ -26,15 +26,15 @@ Namespace Koala
         ''' </summary>
         Protected Overrides Sub RegisterInputParams(pManager As GH_Component.GH_InputParamManager)
             pManager.AddTextParameter("LoadCase", "LoadCase", "Name of load case", GH_ParamAccess.item, "LC2")
-            pManager.AddIntegerParameter("Validity", "Validity", "Validity: All,Z=0", GH_ParamAccess.item, 0)
+            pManager.AddIntegerParameter("Validity", "Validity", "Validity: All,Z equals 0", GH_ParamAccess.item, 0)
             AddOptionsToMenuValidity(pManager.Param(1))
             pManager.AddIntegerParameter("Selection", "Selection", "Selection: Auto", GH_ParamAccess.item, 0)
             AddOptionsToMenuSelection(pManager.Param(2))
             pManager.AddIntegerParameter("CoordSys", "CoordSys", "Coordinate system: GCS or Member LCS", GH_ParamAccess.item, 4)
             AddOptionsToMenuCoordSysFreePoint(pManager.Param(3))
-            pManager.AddIntegerParameter("Direction", "Direction", "Direction of load: X,Y,Z", GH_ParamAccess.item, 2)
-            AddOptionsToMenuDirection(pManager.Param(4))
-            pManager.AddNumberParameter("LoadValue", "LoadValue", "Value of Load in KN/m", GH_ParamAccess.item, -1.0)
+            pManager.AddIntegerParameter("Direction", "Direction", "Direction of load: Mx,My,Mz", GH_ParamAccess.item, 2)
+            AddOptionsToMenuDirectionMoment(pManager.Param(4))
+            pManager.AddNumberParameter("LoadValue", "LoadValue", "Value of Load in KNm", GH_ParamAccess.item, -1)
             pManager.AddPointParameter("Points", "Points", "List of points", GH_ParamAccess.list)
             pManager.AddNumberParameter("ValidityFrom", "ValidityFrom", "Validity From in m", GH_ParamAccess.item, 0)
             pManager.AddNumberParameter("ValidityTo", "ValidityTo", "Validity To in m", GH_ParamAccess.item, 0)
@@ -45,7 +45,7 @@ Namespace Koala
         ''' Registers all the output parameters for this component.
         ''' </summary>
         Protected Overrides Sub RegisterOutputParams(pManager As GH_Component.GH_OutputParamManager)
-            pManager.AddTextParameter("FreePointloads", "FreePointloads", "", GH_ParamAccess.list)
+            pManager.AddTextParameter("FreeMomentPointloads", "FreeMomentPointloads", "Defined free moments in points", GH_ParamAccess.list)
         End Sub
 
         ''' <summary>
@@ -54,7 +54,6 @@ Namespace Koala
         ''' <param name="DA">The DA object can be used to retrieve data from input parameters and 
         ''' to store data in output parameters.</param>
         Protected Overrides Sub SolveInstance(DA As IGH_DataAccess)
-
             Dim LoadCase As String = ""
             Dim Validity As String = ""
             Dim Selection As String = ""
@@ -62,11 +61,12 @@ Namespace Koala
             Dim Direction As String = ""
             Dim LoadValue As Double = -1.0
             Dim Points = New List(Of Point3d)
+            Dim i As Integer
 
             Dim ValidityFrom As Double = 0.0
             Dim ValidityTo As Double = 0.0
 
-            Dim i As Integer
+
             If (Not DA.GetData(0, LoadCase)) Then Return
             If (Not DA.GetData(1, i)) Then Return
             Validity = GetStringFromuValidity(i)
@@ -75,7 +75,7 @@ Namespace Koala
             If (Not DA.GetData(3, i)) Then Return
             CoordSys = GetStringFromCoordSysLine(i)
             If (Not DA.GetData(4, i)) Then Return
-            Direction = GetStringFromDirection(i)
+            Direction = GetStringFromDirectionMoment(i)
             If (Not DA.GetData(5, LoadValue)) Then Return
             If (Not DA.GetDataList(Of Point3d)(6, Points)) Then Return
             If (Not DA.GetData(7, ValidityFrom)) Then Return
@@ -83,7 +83,7 @@ Namespace Koala
 
             Dim j As Long
 
-            Dim SE_fploads(Points.Count, 10)
+            Dim SE_fploads(Points.Count, 11)
             Dim FlatList As New List(Of System.Object)()
             'a load consists of: load case, validity, selection, coord. system (GCS/LCS), direction (X, Y, Z), value (kN/m), X, Y, Z
 
@@ -107,7 +107,6 @@ Namespace Koala
                 SE_fploads(itemcount, 8) = item.Z
                 SE_fploads(itemcount, 9) = ValidityFrom
                 SE_fploads(itemcount, 10) = ValidityTo
-
                 itemcount = itemcount + 1
             Next
 
@@ -121,7 +120,6 @@ Namespace Koala
                 Next j
             Next i
             DA.SetDataList(0, FlatList)
-
         End Sub
 
 
@@ -133,8 +131,7 @@ Namespace Koala
             Get
                 'You can add image files to your project resources and access them like this:
                 ' return Resources.IconForThisComponent;
-                Return My.Resources.FreePointLoad
-
+                Return My.Resources.FreePointMoment
             End Get
         End Property
 
@@ -145,7 +142,7 @@ Namespace Koala
         ''' </summary>
         Public Overrides ReadOnly Property ComponentGuid() As Guid
             Get
-                Return New Guid("1cc75f74-502a-4c46-8d6b-e60df57e233b")
+                Return New Guid("190bab7f-0553-497c-b710-4ef6e28a6ffa")
             End Get
         End Property
     End Class

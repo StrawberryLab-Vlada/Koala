@@ -39,6 +39,8 @@ Namespace Koala
             pManager.AddBooleanParameter("RemDuplNodes", "RemDuplNodes", "Set True if you want to remove duplicate nodes", GH_ParamAccess.item, False)
             pManager.AddIntegerParameter("SwapOrientation", "SwapOrientation", "Swap orientation of surface No - 0, Yes - 1", GH_ParamAccess.list, 0)
             pManager.AddNumberParameter("LCSangle", "LCSangle", "LCS angle[deg]", GH_ParamAccess.list, 0)
+            'pManager.AddIntegerParameter("SupportingMembersValidity", "SupportingMembersValidity", "Validity of supporting members", GH_ParamAccess.list, 0)
+            'AddOptionsToMenuSupportingMembersValidity(pManager.Param(10))
         End Sub
 
         ''' <summary>

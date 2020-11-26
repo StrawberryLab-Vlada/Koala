@@ -33,6 +33,9 @@ Namespace Koala
             pManager.AddNumberParameter("C1z", "C1z", "C1z in MN/m^3", GH_ParamAccess.item, 50.0)
             pManager.AddNumberParameter("C2x", "C2x", "C2x in MN/m^3", GH_ParamAccess.item, 50.0)
             pManager.AddNumberParameter("C2y", "C2y", "C2y in MN/m^3", GH_ParamAccess.item, 50.0)
+            pManager.AddIntegerParameter("C1ztype", "C1ztype", "C1ztype", GH_ParamAccess.item, 0)
+            AddOptionstoMenuC1ztype(pManager.Param(7))
+            pManager.AddTextParameter("NonlinearFunction", "NonlinearFunction", "Name of nonlinear function for C1z", GH_ParamAccess.item, "")
         End Sub
 
         ''' <summary>
@@ -56,6 +59,9 @@ Namespace Koala
             Dim C1z As Double
             Dim C2x As Double
             Dim C2y As Double
+            Dim i As Integer
+            Dim C1ztype As String = ""
+            Dim NonlinearFunction As String = ""
 
 
 
@@ -67,6 +73,11 @@ Namespace Koala
             DA.GetData(Of Double)(4, C1z)
             DA.GetData(Of Double)(5, C2x)
             DA.GetData(Of Double)(6, C2y)
+            DA.GetData(Of Integer)(7, i)
+            C1ztype = GetStringForC1ztype(i)
+            DA.GetData(Of String)(8, NonlinearFunction)
+
+
 
             Dim FlatList As New List(Of System.Object)()
             'a hinge consists of: Beam name, ux, uy, uz, phix, phiy, phiz (0: free, 1: fixed), Position (Begin/End/Both)
@@ -86,6 +97,8 @@ Namespace Koala
             FlatList.Add(C1z * 1000000)
             FlatList.Add(C2x * 1000000)
             FlatList.Add(C2y * 1000000)
+            FlatList.Add(C1ztype)
+            FlatList.Add(NonlinearFunction)
 
 
 

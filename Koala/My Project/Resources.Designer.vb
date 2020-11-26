@@ -93,9 +93,29 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property BeamLineMoment() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("BeamLineMoment", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property BeamLineSupport() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("BeamLineSupport", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property BeamPointMoment() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("BeamPointMoment", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -173,6 +193,16 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property FreePointMoment() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("FreePointMoment", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property FreeSurfaceLoad() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("FreeSurfaceLoad", resourceCulture)
@@ -243,6 +273,16 @@ Namespace My.Resources
         Friend ReadOnly Property LinearCombination() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("LinearCombination", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property LineEdgeMoment() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("LineEdgeMoment", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -330,6 +370,16 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property NonLinearFunction() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("NonLinearFunction", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property Opening() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Opening", resourceCulture)
@@ -353,6 +403,16 @@ Namespace My.Resources
         Friend ReadOnly Property PointLoadPoint() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("PointLoadPoint", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property PointMoment() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("PointMoment", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
