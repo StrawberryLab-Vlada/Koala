@@ -28,13 +28,17 @@ Namespace Koala
             pManager.AddTextParameter("LoadCase", "LoadCase", "Name of load case", GH_ParamAccess.item, "LC2")
             pManager.AddIntegerParameter("Validity", "Validity", "Validity: All,Z equals 0", GH_ParamAccess.item, 0)
             AddOptionsToMenuValidity(pManager.Param(1))
-            pManager.AddTextParameter("Selection", "Selection", "Selection: All", GH_ParamAccess.item, "All")
+            pManager.AddIntegerParameter("Selection", "Selection", "Selection: Auto", GH_ParamAccess.item, 0)
+            AddOptionsToMenuSelection(pManager.Param(2))
             pManager.AddIntegerParameter("CoordSys", "CoordSys", "Coordinate system: GCS or Member LCS", GH_ParamAccess.item, 4)
             AddOptionsToMenuCoordSysFreePoint(pManager.Param(3))
-            pManager.AddIntegerParameter("Direction", "Direction", "Direction of load: Mx,My,Mz", GH_ParamAccess.item, 0)
+            pManager.AddIntegerParameter("Direction", "Direction", "Direction of load: Mx,My,Mz", GH_ParamAccess.item, 2)
             AddOptionsToMenuDirectionMoment(pManager.Param(4))
             pManager.AddNumberParameter("LoadValue", "LoadValue", "Value of Load in KNm", GH_ParamAccess.item, -1)
             pManager.AddPointParameter("Points", "Points", "List of points", GH_ParamAccess.list)
+            pManager.AddNumberParameter("ValidityFrom", "ValidityFrom", "Validity From in m", GH_ParamAccess.item, 0)
+            pManager.AddNumberParameter("ValidityTo", "ValidityTo", "Validity To in m", GH_ParamAccess.item, 0)
+            'pManager.AddTextParameter("Selected2Dmembers", "Selected2Dmembers", "Selected 2D members as list if Selection is put as Selected", GH_ParamAccess.list, {})
         End Sub
 
         ''' <summary>
@@ -58,21 +62,28 @@ Namespace Koala
             Dim LoadValue As Double = -1.0
             Dim Points = New List(Of Point3d)
             Dim i As Integer
+
+            Dim ValidityFrom As Double = 0.0
+            Dim ValidityTo As Double = 0.0
+
+
             If (Not DA.GetData(0, LoadCase)) Then Return
             If (Not DA.GetData(1, i)) Then Return
             Validity = GetStringFromuValidity(i)
-            If (Not DA.GetData(2, Selection)) Then Return
+            If (Not DA.GetData(2, i)) Then Return
+            Selection = GetStringFromMenuSelection(i)
             If (Not DA.GetData(3, i)) Then Return
             CoordSys = GetStringFromCoordSysLine(i)
             If (Not DA.GetData(4, i)) Then Return
             Direction = GetStringFromDirectionMoment(i)
             If (Not DA.GetData(5, LoadValue)) Then Return
             If (Not DA.GetDataList(Of Point3d)(6, Points)) Then Return
-
+            If (Not DA.GetData(7, ValidityFrom)) Then Return
+            If (Not DA.GetData(8, ValidityTo)) Then Return
 
             Dim j As Long
 
-            Dim SE_fploads(Points.Count, 8)
+            Dim SE_fploads(Points.Count, 11)
             Dim FlatList As New List(Of System.Object)()
             'a load consists of: load case, validity, selection, coord. system (GCS/LCS), direction (X, Y, Z), value (kN/m), X, Y, Z
 
@@ -94,6 +105,8 @@ Namespace Koala
                 SE_fploads(itemcount, 6) = item.X
                 SE_fploads(itemcount, 7) = item.Y
                 SE_fploads(itemcount, 8) = item.Z
+                SE_fploads(itemcount, 9) = ValidityFrom
+                SE_fploads(itemcount, 10) = ValidityTo
                 itemcount = itemcount + 1
             Next
 
@@ -102,7 +115,7 @@ Namespace Koala
             FlatList.Clear()
 
             For i = 0 To itemcount - 1
-                For j = 0 To 8
+                For j = 0 To 10
                     FlatList.Add(SE_fploads(i, j))
                 Next j
             Next i

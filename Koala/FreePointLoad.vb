@@ -25,18 +25,20 @@ Namespace Koala
         ''' Registers all the input parameters for this component.
         ''' </summary>
         Protected Overrides Sub RegisterInputParams(pManager As GH_Component.GH_InputParamManager)
-            pManager.AddTextParameter("LoadCase", "LoadCase", "Name of load case", GH_ParamAccess.item)
+            pManager.AddTextParameter("LoadCase", "LoadCase", "Name of load case", GH_ParamAccess.item, "LC2")
             pManager.AddIntegerParameter("Validity", "Validity", "Validity: All,Z=0", GH_ParamAccess.item, 0)
             AddOptionsToMenuValidity(pManager.Param(1))
-            pManager.AddTextParameter("Selection", "Selection", "Selection: Auto", GH_ParamAccess.item)
+            pManager.AddIntegerParameter("Selection", "Selection", "Selection: Auto", GH_ParamAccess.item, 0)
+            AddOptionsToMenuSelection(pManager.Param(2))
             pManager.AddIntegerParameter("CoordSys", "CoordSys", "Coordinate system: GCS or Member LCS", GH_ParamAccess.item, 4)
             AddOptionsToMenuCoordSysFreePoint(pManager.Param(3))
-            pManager.AddIntegerParameter("Direction", "Direction", "Direction of load: X,Y,Z", GH_ParamAccess.item, 0)
+            pManager.AddIntegerParameter("Direction", "Direction", "Direction of load: X,Y,Z", GH_ParamAccess.item, 2)
             AddOptionsToMenuDirection(pManager.Param(4))
-            pManager.AddNumberParameter("LoadValue", "LoadValue", "Value of Load in KN/m", GH_ParamAccess.item)
+            pManager.AddNumberParameter("LoadValue", "LoadValue", "Value of Load in KN/m", GH_ParamAccess.item, -1.0)
             pManager.AddPointParameter("Points", "Points", "List of points", GH_ParamAccess.list)
             pManager.AddNumberParameter("ValidityFrom", "ValidityFrom", "Validity From in m", GH_ParamAccess.item, 0)
             pManager.AddNumberParameter("ValidityTo", "ValidityTo", "Validity To in m", GH_ParamAccess.item, 0)
+            'pManager.AddTextParameter("Selected2Dmembers", "Selected2Dmembers", "Selected 2D members as list if Selection is put as Selected", GH_ParamAccess.list, {})
         End Sub
 
         ''' <summary>
@@ -68,7 +70,8 @@ Namespace Koala
             If (Not DA.GetData(0, LoadCase)) Then Return
             If (Not DA.GetData(1, i)) Then Return
             Validity = GetStringFromuValidity(i)
-            If (Not DA.GetData(2, Selection)) Then Return
+            If (Not DA.GetData(2, i)) Then Return
+            Selection = GetStringFromMenuSelection(i)
             If (Not DA.GetData(3, i)) Then Return
             CoordSys = GetStringFromCoordSysLine(i)
             If (Not DA.GetData(4, i)) Then Return
@@ -113,7 +116,7 @@ Namespace Koala
             FlatList.Clear()
 
             For i = 0 To itemcount - 1
-                For j = 0 To 8
+                For j = 0 To 10
                     FlatList.Add(SE_fploads(i, j))
                 Next j
             Next i

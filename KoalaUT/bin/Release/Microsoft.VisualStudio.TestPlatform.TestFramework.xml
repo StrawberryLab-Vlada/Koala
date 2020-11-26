@@ -262,7 +262,7 @@
         </member>
         <member name="T:Microsoft.VisualStudio.TestTools.UnitTesting.DataAccessMethod">
             <summary>
-            Enumeration for how how we access data rows in data driven testing.
+            Enumeration for how we access data rows in data driven testing.
             </summary>
         </member>
         <member name="F:Microsoft.VisualStudio.TestTools.UnitTesting.DataAccessMethod.Sequential">
@@ -277,7 +277,7 @@
         </member>
         <member name="T:Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute">
             <summary>
-            Attribute to define inline data for a test method.
+            Attribute to define in-line data for a test method.
             </summary>
         </member>
         <member name="M:Microsoft.VisualStudio.TestTools.UnitTesting.DataRowAttribute.#ctor">
@@ -3233,8 +3233,9 @@
             <summary>
             Tests whether the specified collections are equal and throws an exception
             if the two collections are not equal. Equality is defined as having the same
-            elements in the same order and quantity. Different references to the same
-            value are considered equal.
+            elements in the same order and quantity. Whether two elements are the same
+            is checked using <see cref="M:System.Object.Equals(System.Object,System.Object)" /> method.
+            Different references to the same value are considered equal.
             </summary>
             <param name="expected">
             The first collection to compare. This is the collection the tests expects.
@@ -3252,8 +3253,9 @@
             <summary>
             Tests whether the specified collections are equal and throws an exception
             if the two collections are not equal. Equality is defined as having the same
-            elements in the same order and quantity. Different references to the same
-            value are considered equal.
+            elements in the same order and quantity. Whether two elements are the same
+            is checked using <see cref="M:System.Object.Equals(System.Object,System.Object)" /> method.
+            Different references to the same value are considered equal.
             </summary>
             <param name="expected">
             The first collection to compare. This is the collection the tests expects.
@@ -3276,8 +3278,9 @@
             <summary>
             Tests whether the specified collections are equal and throws an exception
             if the two collections are not equal. Equality is defined as having the same
-            elements in the same order and quantity. Different references to the same
-            value are considered equal.
+            elements in the same order and quantity. Whether two elements are the same
+            is checked using <see cref="M:System.Object.Equals(System.Object,System.Object)" /> method.
+            Different references to the same value are considered equal.
             </summary>
             <param name="expected">
             The first collection to compare. This is the collection the tests expects.
@@ -3303,8 +3306,9 @@
             <summary>
             Tests whether the specified collections are unequal and throws an exception
             if the two collections are equal. Equality is defined as having the same
-            elements in the same order and quantity. Different references to the same
-            value are considered equal.
+            elements in the same order and quantity. Whether two elements are the same
+            is checked using <see cref="M:System.Object.Equals(System.Object,System.Object)" /> method.
+            Different references to the same value are considered equal.
             </summary>
             <param name="notExpected">
             The first collection to compare. This is the collection the tests expects
@@ -3322,8 +3326,9 @@
             <summary>
             Tests whether the specified collections are unequal and throws an exception
             if the two collections are equal. Equality is defined as having the same
-            elements in the same order and quantity. Different references to the same
-            value are considered equal.
+            elements in the same order and quantity. Whether two elements are the same
+            is checked using <see cref="M:System.Object.Equals(System.Object,System.Object)" /> method.
+            Different references to the same value are considered equal.
             </summary>
             <param name="notExpected">
             The first collection to compare. This is the collection the tests expects
@@ -3346,8 +3351,9 @@
             <summary>
             Tests whether the specified collections are unequal and throws an exception
             if the two collections are equal. Equality is defined as having the same
-            elements in the same order and quantity. Different references to the same
-            value are considered equal.
+            elements in the same order and quantity. Whether two elements are the same
+            is checked using <see cref="M:System.Object.Equals(System.Object,System.Object)" /> method.
+            Different references to the same value are considered equal.
             </summary>
             <param name="notExpected">
             The first collection to compare. This is the collection the tests expects
@@ -4041,7 +4047,7 @@
             Initializes a new instance of the <see cref="T:Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute"/> class.
             </summary>
             <param name="displayName">
-            Message specifies reason for ignoring.
+            Display Name for the Test Window
             </param>
         </member>
         <member name="P:Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute.DisplayName">
@@ -4059,7 +4065,7 @@
         </member>
         <member name="T:Microsoft.VisualStudio.TestTools.UnitTesting.DataTestMethodAttribute">
             <summary>
-            Attribute for data driven test where data can be specified inline.
+            Attribute for data driven test where data can be specified in-line.
             </summary>
         </member>
         <member name="T:Microsoft.VisualStudio.TestTools.UnitTesting.TestInitializeAttribute">
@@ -4069,7 +4075,7 @@
         </member>
         <member name="T:Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute">
             <summary>
-            The test cleanup attribute.
+            The test cleanup attribute marks methods that are executed after every test marked with a <see cref="T:Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute"/>.
             </summary>
         </member>
         <member name="T:Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute">
@@ -4278,7 +4284,7 @@
         </member>
         <member name="P:Microsoft.VisualStudio.TestTools.UnitTesting.WorkItemAttribute.Id">
             <summary>
-            Gets the Id to a workitem associated.
+            Gets the Id to a work item associated.
             </summary>
         </member>
         <member name="T:Microsoft.VisualStudio.TestTools.UnitTesting.TimeoutAttribute">

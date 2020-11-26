@@ -1212,6 +1212,11 @@
          
          </def_subtable>
          </def_property>
+        
+        <def_property x="11" name="Validity from" type="real" id="{E1554D75-61DC-4CFD-96AB-3C84E7BE8B6A}"/>
+
+
+        <def_property x="12" name="Validity to" type="real" id="{65F1B835-6639-403D-9D19-4CC7A519C8C1}"/>
          
       </def_table>
    </def_container>
@@ -1245,7 +1250,8 @@
          
          
          <def_property x="4" name="Value - P@1" type="param" flag="33619968" id="{49F80183-A4E5-11D4-A43A-000000000000}"/>
-        <def_property x="4" name="Value - P@2" type="param" flag="33619968" id="{49F80183-A4E5-11D4-A43A-000000000000}"/>
+     
+        <def_property x="5" name="Value - P@2" type="param" flag="33619968" id="{49F80183-A4E5-11D4-A43A-000000000000}"/>
          
          <def_property x="6" name="Validity" type="enum" flag="262144" id="{0FB44074-7F6B-41A0-9CE3-EB7779861490}">
          <def_enum size="7">
@@ -1309,7 +1315,7 @@
          </def_property>
          
          
-         <def_property x="10" name="Selected objects" type="table" id="{74BFFF75-F689-4C05-8362-A8C74A9C4ECC}">
+         <def_property x="11" name="Selected objects" type="table" id="{74BFFF75-F689-4C05-8362-A8C74A9C4ECC}">
          <def_subtable size="3" type="vertical">
          <def_property x="0" name="Type" type="string" id="{14137532-7119-40F3-A0CC-3C7AC13944F3}"/>
          
@@ -1319,6 +1325,11 @@
          
          </def_subtable>
          </def_property>
+        
+        <def_property x="12" name="Validity from" type="real" id="{E1554D75-61DC-4CFD-96AB-3C84E7BE8B6A}"/>
+
+
+        <def_property x="13" name="Validity to" type="real" id="{65F1B835-6639-403D-9D19-4CC7A519C8C1}"/>
          
       </def_table>
    </def_container>
@@ -1428,6 +1439,11 @@
          
          </def_subtable>
          </def_property>
+
+        <def_property x="11" name="Validity from" type="real" id="{E1554D75-61DC-4CFD-96AB-3C84E7BE8B6A}"/>
+
+
+        <def_property x="12" name="Validity to" type="real" id="{65F1B835-6639-403D-9D19-4CC7A519C8C1}"/>
          
       </def_table>
    </def_container>
@@ -3085,7 +3101,23 @@
          <it_enum v="2" t="Load LCS"/>
          </def_enum>
          </def_property>
-         
+
+        <def_property x="10" name="Selected objects" type="table" id="{74BFFF75-F689-4C05-8362-A8C74A9C4ECC}">
+          <def_subtable size="3" type="vertical">
+            <def_property x="0" name="Type" type="string" id="{14137532-7119-40F3-A0CC-3C7AC13944F3}"/>
+
+            <def_property x="1" name="Type human name" type="string" readonly="yes" id="{CCBCF1E6-7D6C-42FD-AC25-85247C5708FC}"/>
+
+            <def_property x="2" name="Name" type="string" readonly="yes" id="{188960DC-EBA4-4493-9BC9-6FC0B25CB2F0}"/>
+
+          </def_subtable>
+        </def_property>
+
+        <def_property x="11" name="Validity from" type="real" id="{E1554D75-61DC-4CFD-96AB-3C84E7BE8B6A}"/>
+
+
+        <def_property x="12" name="Validity to" type="real" id="{65F1B835-6639-403D-9D19-4CC7A519C8C1}"/>
+
       </def_table>
  </def_container>
 

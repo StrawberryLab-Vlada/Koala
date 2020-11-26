@@ -25,11 +25,12 @@ Namespace Koala
         ''' Registers all the input parameters for this component.
         ''' </summary>
         Protected Overrides Sub RegisterInputParams(pManager As GH_Component.GH_InputParamManager)
-            pManager.AddTextParameter("LoadCase", "LoadCase", "Name of load case", GH_ParamAccess.item)
+            pManager.AddTextParameter("LoadCase", "LoadCase", "Name of load case", GH_ParamAccess.item, "LC2")
             pManager.AddIntegerParameter("Validity", "Validity", "Validity: All,Z equals 0", GH_ParamAccess.item, 0)
             AddOptionsToMenuValidity(pManager.Param(1))
-            pManager.AddTextParameter("Selection", "Selection", "Selection: Auto", GH_ParamAccess.item)
-            pManager.AddIntegerParameter("CoordSys", "CoordSys", "Coordinate system: GCS - Length, GCS - Projection or Member LCS", GH_ParamAccess.item)
+            pManager.AddIntegerParameter("Selection", "Selection", "Selection: Auto", GH_ParamAccess.item, 0)
+            AddOptionsToMenuSelection(pManager.Param(2))
+            pManager.AddIntegerParameter("CoordSys", "CoordSys", "Coordinate system: GCS - Length, GCS - Projection or Member LCS", GH_ParamAccess.item, 0)
             AddOptionsToMenuCoordSysFreeLine(pManager.Param(3))
             pManager.AddIntegerParameter("Direction", "Direction", "Direction of load: X,Y,Z", GH_ParamAccess.item, 2)
             AddOptionsToMenuDirection(pManager.Param(4))
@@ -38,7 +39,9 @@ Namespace Koala
             pManager.AddNumberParameter("LoadValue1", "LoadValue1", "Value of Load in KN/m", GH_ParamAccess.item, -1.0)
             pManager.AddNumberParameter("LoadValue2", "LoadValue2", "Value of Load in KN/m", GH_ParamAccess.item, -1.0)
             pManager.AddCurveParameter("Lines", "Lines", "List of lines", GH_ParamAccess.list)
-
+            pManager.AddNumberParameter("ValidityFrom", "ValidityFrom", "Validity From in m", GH_ParamAccess.item, 0)
+            pManager.AddNumberParameter("ValidityTo", "ValidityTo", "Validity To in m", GH_ParamAccess.item, 0)
+            'pManager.AddTextParameter("Selected2Dmembers", "Selected2Dmembers", "Selected 2D members as list if Selection is put as Selected", GH_ParamAccess.list, {})
         End Sub
 
         ''' <summary>
@@ -66,10 +69,17 @@ Namespace Koala
             Dim LoadValue2 As Double = -1.0
             Dim Lines = New List(Of Curve)
             Dim i As Integer
+
+
+
+            Dim ValidityFrom As Double = 0.0
+            Dim ValidityTo As Double = 0.0
+
             If (Not DA.GetData(0, LoadCase)) Then Return
             If (Not DA.GetData(1, i)) Then Return
             Validity = GetStringFromuValidity(i)
-            If (Not DA.GetData(2, Selection)) Then Return
+            If (Not DA.GetData(2, i)) Then Return
+            Selection = GetStringFromMenuSelection(i)
             If (Not DA.GetData(3, i)) Then Return
             CoordSys = GetStringFromCoordSysLine(i)
             If (Not DA.GetData(4, i)) Then Return
@@ -81,15 +91,17 @@ Namespace Koala
                 Case "Uniform"
                     LoadValue2 = LoadValue1
                 Case "Trapez"
-                    DA.GetData(6, LoadValue2)
+                    DA.GetData(7, LoadValue2)
                 Case Else
                     LoadValue2 = LoadValue1
             End Select
-            If (Not DA.GetDataList(Of Curve)(6, Lines)) Then Return
+            If (Not DA.GetDataList(Of Curve)(8, Lines)) Then Return
+            If (Not DA.GetData(9, ValidityFrom)) Then Return
+            If (Not DA.GetData(10, ValidityTo)) Then Return
 
             Dim j As Long
 
-            Dim SE_flloads(Lines.Count, 9)
+            Dim SE_flloads(Lines.Count, 11)
             Dim FlatList As New List(Of System.Object)()
             'a free line load consists of: load case, validity, selection, coord. system (GCS/LCS), direction (X, Y, Z), value (kN/m), LineShape
 
@@ -121,6 +133,8 @@ Namespace Koala
                 SE_flloads(itemcount, 6) = LoadValue1
                 SE_flloads(itemcount, 7) = LoadValue2
                 SE_flloads(itemcount, 8) = BoundaryShape
+                SE_flloads(itemcount, 9) = ValidityFrom
+                SE_flloads(itemcount, 10) = ValidityTo
                 itemcount = itemcount + 1
             Next
 
@@ -129,11 +143,11 @@ Namespace Koala
             FlatList.Clear()
 
             For i = 0 To itemcount - 1
-                For j = 0 To 6
+                For j = 0 To 10
                     FlatList.Add(SE_flloads(i, j))
                 Next j
             Next i
-            DA.SetData(0, FlatList)
+            DA.SetDataList(0, FlatList)
 
 
         End Sub

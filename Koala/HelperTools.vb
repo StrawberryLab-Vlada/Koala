@@ -499,6 +499,8 @@ Module HelperTools
         menuitem.AddNamedValue("-Z (incl. 0)", 5)
         menuitem.AddNamedValue("+Z (incl. 0)", 6)
     End Sub
+
+
     Public Function GetStringFromuValidity(item As Integer) As String
         Select Case item
             Case 0
@@ -519,6 +521,24 @@ Module HelperTools
                 Return "All"
         End Select
     End Function
+
+
+    Public Sub AddOptionsToMenuSelection(menuitem As Param_Integer)
+        menuitem.AddNamedValue("Auto", 0)
+        menuitem.AddNamedValue("Select", 1)
+
+    End Sub
+    Public Function GetStringFromMenuSelection(item As Integer) As String
+        Select Case item
+            Case 0
+                Return "Auto"
+            Case 1
+                Return "Select"
+            Case Else
+                Return "Auto"
+        End Select
+    End Function
+
 
     Public Sub AddOptionsToMenuCoordSysFreeLine(menuitem As Param_Integer)
         menuitem.AddNamedValue("GCS - Length", 0)
@@ -689,6 +709,25 @@ Module HelperTools
                 Return "Tributary area"
             Case Else
                 Return "Standard"
+        End Select
+    End Function
+
+    Sub AddOptionsToMenuSupportingMembersValidity(menuItem As Param_Integer)
+        menuItem.AddNamedValue("All", 0)
+        menuItem.AddNamedValue("-Z", 1)
+        menuItem.AddNamedValue("+Z", 2)
+    End Sub
+    Public Function GetStringForSupportingMembersValidity(item As Integer) As String
+        Select Case item
+            Case 0
+                Return "All"
+            Case 1
+                Return "-Z"
+            Case 2
+                Return "+Z"
+
+            Case Else
+                Return "All"
         End Select
     End Function
 
@@ -948,9 +987,9 @@ Module HelperTools
         Dim SE_lgroups(100000, 2) As String 'a load group consists of: Load group name, type (Permanent, Variable), relation (Standard, Exclusive, Together)
         Dim SE_lloads(100000, 13) As String 'a beam line load consists of: Load case, Beam name, coord sys (GCS/LCS), direction (X, Y, Z), Distribution,value1 (kN/m),value2,coord,pos1,pos2
         Dim SE_sloads(100000, 4) As String 'a surface load consists of: Load case, Surface name, coord sys (GCS/LCS), direction (X, Y, Z), value (kN/m)
-        Dim SE_fploads(100000, 8) As String 'a free point load consists of: Load case, Selection, Validity, coord sys (GCS/LCS), direction (X, Y, Z), value (kN), PointX, PointY, PointZ
-        Dim SE_flloads(100000, 9) As String 'a free line load consists of: load case, validity, selection, coord. system (GCS/LCS), direction (X, Y, Z), value (kN/m), LineShape
-        Dim SE_fsloads(100000, 6) As String 'a free surface load consists of: load case, validity, selection, coord. system (GCS/LCS), direction (X, Y, Z), value (kN/m^2), BoundaryShape
+        Dim SE_fploads(100000, 10) As String 'a free point load consists of: Load case, Selection, Validity, coord sys (GCS/LCS), direction (X, Y, Z), value (kN), PointX, PointY, PointZ
+        Dim SE_flloads(100000, 11) As String 'a free line load consists of: load case, validity, selection, coord. system (GCS/LCS), direction (X, Y, Z), value (kN/m), LineShape
+        Dim SE_fsloads(100000, 8) As String 'a free surface load consists of: load case, validity, selection, coord. system (GCS/LCS), direction (X, Y, Z), value (kN/m^2), BoundaryShape
         Dim SE_hinges(100000, 14) As String 'a hinge consists of: Beam name, ux, uy, uz, phix, phiy, phiz (0: free, 1: fixed), Position (Begin/End/Both)
         Dim SE_eLoads(100000, 14) As String 'a hinge consists of: Beam name, ux, uy, uz, phix, phiy, phiz (0: free, 1: fixed), Position (Begin/End/Both)
         Dim SE_pointLoadPoint(100000, 6) As String 'a hinge consists of: Beam name, ux, uy, uz, phix, phiy, phiz (0: free, 1: fixed), Position (Begin/End/Both)
@@ -973,7 +1012,7 @@ Module HelperTools
         Dim SE_pointMomentBeam(100000, 10) As String
         Dim SE_lineMomentBeam(100000, 10) As String
         Dim SE_lineMomentEdge(100000, 12) As String
-        Dim SE_fMomentPointloads(100000, 8) As String
+        Dim SE_fMomentPointloads(100000, 10) As String
         Dim SE_NonlinearFunctions(100000, 5) As String
 
         Dim SE_meshsize As Double
@@ -1249,31 +1288,31 @@ Module HelperTools
         End If
 
         If (in_freePointMoment IsNot Nothing) Then
-            fpointmomentloadcount = in_freePointMoment.Count / 9
+            fpointmomentloadcount = in_freePointMoment.Count / 11
             Rhino.RhinoApp.WriteLine("Number of free point loads: " & fpointmomentloadcount)
             For i = 0 To fpointmomentloadcount - 1
-                For j = 0 To 8
-                    SE_fMomentPointloads(i, j) = in_freePointMoment(j + i * 9)
+                For j = 0 To 10
+                    SE_fMomentPointloads(i, j) = in_freePointMoment(j + i * 11)
                 Next j
             Next i
         End If
 
         If (in_flloads IsNot Nothing) Then
-            flloadcount = in_flloads.Count / 9
+            flloadcount = in_flloads.Count / 11
             Rhino.RhinoApp.WriteLine("Number of free line loads: " & flloadcount)
             For i = 0 To flloadcount - 1
-                For j = 0 To 8
-                    SE_flloads(i, j) = in_flloads(j + i * 9)
+                For j = 0 To 10
+                    SE_flloads(i, j) = in_flloads(j + i * 11)
                 Next j
             Next i
         End If
 
         If (in_fsloads IsNot Nothing) Then
-            fsloadcount = in_fsloads.Count / 7
+            fsloadcount = in_fsloads.Count / 9
             Rhino.RhinoApp.WriteLine("Number of free surface loads: " & fsloadcount)
             For i = 0 To fsloadcount - 1
-                For j = 0 To 6
-                    SE_fsloads(i, j) = in_fsloads(j + i * 7)
+                For j = 0 To 8
+                    SE_fsloads(i, j) = in_fsloads(j + i * 9)
                 Next j
             Next i
         End If
@@ -2828,6 +2867,9 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
             oSB.AppendLine(ConCat_ht("7", "Coord Y"))
             oSB.AppendLine(ConCat_ht("8", "Coord Z"))
             oSB.AppendLine(ConCat_ht("9", "System"))
+            oSB.AppendLine(ConCat_ht("10", "Selected objects"))
+            oSB.AppendLine(ConCat_ht("11", "Validity from"))
+            oSB.AppendLine(ConCat_ht("12", "Validity to"))
 
             oSB.AppendLine("</h>")
 
@@ -2867,6 +2909,8 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
             oSB.AppendLine(ConCat_ht("9", "Location"))
             oSB.AppendLine(ConCat_ht("10", "Table of geometry"))
             oSB.AppendLine(ConCat_ht("11", "Selected objects"))
+            oSB.AppendLine(ConCat_ht("12", "Validity from"))
+            oSB.AppendLine(ConCat_ht("13", "Validity to"))
 
             oSB.AppendLine("</h>")
 
@@ -2905,6 +2949,8 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
             oSB.AppendLine(ConCat_ht("8", "Location"))
             oSB.AppendLine(ConCat_ht("9", "Table of geometry"))
             oSB.AppendLine(ConCat_ht("10", "Selected objects"))
+            oSB.AppendLine(ConCat_ht("11", "Validity from"))
+            oSB.AppendLine(ConCat_ht("12", "Validity to"))
 
             oSB.AppendLine("</h>")
 
@@ -4099,15 +4145,15 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
                 For Each item In parts
                     x = item.Split(";")(0)
                     y = item.Split(";")(1)
-                    oSB.AppendLine(ConCat_pv1v2x("5", x, y, i))
-                    i += 1
+                    oSB.AppendLine(ConCat_pv1v2x("5", x, y, j))
+                    j += 1
                 Next item
             Case "Nonlinear subsoil"
                 For Each item In parts
                     x = item.Split(";")(0)
                     y = item.Split(";")(1)
-                    oSB.AppendLine(ConCat_pv1v2x("6", x, y, i))
-                    i += 1
+                    oSB.AppendLine(ConCat_pv1v2x("6", x, y, j))
+                    j += 1
                 Next item
 
         End Select
@@ -5211,7 +5257,7 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
                 oSB.AppendLine(ConCat_pvt("2", "2", "Z"))
         End Select
         'validity
-        Select Case loads(iload, 2)
+        Select Case loads(iload, 1)
             Case "All"
                 oSB.AppendLine(ConCat_pvt("3", "0", "All"))
             Case "-Z"
@@ -5265,7 +5311,7 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
                 oSB.AppendLine(ConCat_pvt("2", "2", "Mz"))
         End Select
         'validity
-        Select Case loads(iload, 2)
+        Select Case loads(iload, 1)
             Case "All"
                 oSB.AppendLine(ConCat_pvt("3", "0", "All"))
             Case "-Z"
@@ -5334,7 +5380,7 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
         oSB.AppendLine(ConCat_pv("4", loads(iload, 6) * 1000))
         oSB.AppendLine(ConCat_pv("5", loads(iload, 7) * 1000))
         'validity
-        Select Case loads(iload, 2)
+        Select Case loads(iload, 1)
             Case "All"
                 oSB.AppendLine(ConCat_pvt("6", "0", "All"))
             Case "-Z"
@@ -5445,7 +5491,7 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
         oSB.AppendLine(ConCat_pv("4", loads(iload, 5) * 1000))
 
         'validity
-        Select Case loads(iload, 2)
+        Select Case loads(iload, 1)
             Case "All"
                 oSB.AppendLine(ConCat_pvt("5", "0", "All"))
             Case "-Z"
