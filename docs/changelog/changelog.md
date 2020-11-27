@@ -4,6 +4,24 @@ description: Change log of development of Koala - What's  new in the release/
 
 # Changelog
 
+## v3.9
+
+### Added
+
+* Component for definition of point moment
+* Component for definition of line moment
+* Component for definition of free point moment
+* Component for definition of nonlinear functions
+
+### Fixed
+
+* Definition of line for free line load
+
+### Changed
+
+* Option to save SCIA Engineer project after calculation
+* Option to use Nonlinear functions for supports and subsoil
+
 ## v3.8
 
 ### Added
