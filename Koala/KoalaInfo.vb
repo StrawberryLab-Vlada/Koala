@@ -29,13 +29,13 @@ Public Class KoalaInfo
     Public Overrides ReadOnly Property AuthorName As String
         Get
             'Return a string identifying you or your company.
-            Return "Developed by Strawberrylab for SCIA"
+            Return "Developed by Jaroslav Broz at Strawberrylab for SCIA"
         End Get
     End Property
     Public Overrides ReadOnly Property AuthorContact As String
         Get
             'Return a string representing your preferred contact details.
-            Return "garage@scia.net"
+            Return "jara.broz@gmail.com"
         End Get
     End Property
 End Class

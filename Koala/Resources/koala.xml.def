@@ -241,7 +241,7 @@
     </def_container>
 
    <def_container id="{8708ED31-8E66-11D4-AD94-F6F5DE2BE344}" clsid="{8708ED31-8E66-11D4-AD94-F6F5DE2BE344}" progid="EP_DSG_Elements.EP_Plane.1">
-      <def_table id="2F3C64B3-BAF2-4E26-ACF1-CB6DDBD6BC0F" name="XML\default" type="vertical" clsid="{8708ED31-8E66-11D4-AD94-F6F5DE2BE344}" progid="EP_DSG_Elements.EP_Plane.1" size="15">
+      <def_table id="2F3C64B3-BAF2-4E26-ACF1-CB6DDBD6BC0F" name="XML\default" type="vertical" clsid="{8708ED31-8E66-11D4-AD94-F6F5DE2BE344}" progid="EP_DSG_Elements.EP_Plane.1" size="16">
          
          <def_property x="0" name="Name" type="string" id="{4364BC01-AAB7-11D4-B3D9-00104BC3B531}"/>
          
@@ -349,9 +349,15 @@
 
         <def_property x="13" name="Swap orientation" type="bool" flag="167772160" id="{53C7EA0D-34F7-4BC6-9187-FF0518B2D539}"/>
         <def_property x="14" name="LCS angle" type="param" flag="33619968" id="{C118B81C-1220-4EB5-8E44-1E07C8E9FCFE}"/>
-      
-        
-        
+        <def_property x="3" name="Element type" type="enum" id="{FFC42932-46D4-4DE8-B809-8CCA1B06A09C}">
+          <def_enum size="2">
+            <it_enum v="1" t="Standard"/>
+            <it_enum v="5" t="Load panel"/>
+          </def_enum>
+        </def_property>
+
+
+
       </def_table>
    </def_container>
       

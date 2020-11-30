@@ -1892,6 +1892,7 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
             oSB.AppendLine(ConCat_ht("12", "Internal nodes"))
             oSB.AppendLine(ConCat_ht("13", "Swap orientation"))
             oSB.AppendLine(ConCat_ht("14", "LCS angle"))
+            oSB.AppendLine(ConCat_ht("15", "Element type"))
 
 
             oSB.AppendLine("</h>")
@@ -3536,7 +3537,7 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
         osb.AppendLine(ConCat_pv("14", surfaces(isurface, 11)))
 
 
-
+        osb.AppendLine(ConCat_pvt("3", "1", "Standard"))
 
         osb.AppendLine("</obj>")
 
