@@ -349,7 +349,7 @@
 
         <def_property x="13" name="Swap orientation" type="bool" flag="167772160" id="{53C7EA0D-34F7-4BC6-9187-FF0518B2D539}"/>
         <def_property x="14" name="LCS angle" type="param" flag="33619968" id="{C118B81C-1220-4EB5-8E44-1E07C8E9FCFE}"/>
-        <def_property x="3" name="Element type" type="enum" id="{FFC42932-46D4-4DE8-B809-8CCA1B06A09C}">
+        <def_property x="15" name="Element type" type="enum" id="{FFC42932-46D4-4DE8-B809-8CCA1B06A09C}">
           <def_enum size="2">
             <it_enum v="1" t="Standard"/>
             <it_enum v="5" t="Load panel"/>

@@ -3537,7 +3537,7 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
         osb.AppendLine(ConCat_pv("14", surfaces(isurface, 11)))
 
 
-        osb.AppendLine(ConCat_pvt("3", "1", "Standard"))
+        osb.AppendLine(ConCat_pvt("15", "1", "Standard"))
 
         osb.AppendLine("</obj>")
 

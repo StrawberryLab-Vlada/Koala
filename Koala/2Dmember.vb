@@ -37,7 +37,7 @@ Namespace Koala
             pManager.AddIntegerParameter("MemberSystemPlane", "MemberSystemPlane", "System plane of the member:  Right click and select from options or Centre - 1, Top - 2, Bottom - 4", GH_ParamAccess.list, 1)
             AddOptionstoMenuMemberSystemPlane(pManager.Param(8))
             pManager.AddNumberParameter("Eccentricity z", "Eccentricity z", "Eccentricity of the plane", GH_ParamAccess.list, 0.0)
-            pManager.AddIntegerParameter("FEM nonlinear model", "FEM nonlinear model", "Nonlinear model: Right click and select from options or none - 0, Press only - 1, Membarene - 2", GH_ParamAccess.list, 0)
+            pManager.AddIntegerParameter("FEM nonlinear model", "FEM nonlinear model", "Nonlinear model: Right click and select from options or none - 0, Press only - 1, Membrane - 2", GH_ParamAccess.list, 0)
             AddOptionstoMenuFEMNLType2D(pManager.Param(10))
             pManager.AddTextParameter("SurfaceNamePrefix", "SurfaceNamePrefix", "Surface name prefix", GH_ParamAccess.item, "S")
             pManager.AddIntegerParameter("SwapOrientation", "SwapOrientation", "Swap orientation of surface No - 0, Yes - 1", GH_ParamAccess.list, 0)

@@ -33,7 +33,7 @@ Namespace Koala
         ''' Registers all the output parameters for this component.
         ''' </summary>
         Protected Overrides Sub RegisterOutputParams(pManager As GH_Component.GH_OutputParamManager)
-            pManager.AddTextParameter("SufraceList", "SufraceList", "", GH_ParamAccess.list)
+            pManager.AddTextParameter("SurfaceSupports", "SurfaceSupports", "", GH_ParamAccess.list)
         End Sub
 
         ''' <summary>
