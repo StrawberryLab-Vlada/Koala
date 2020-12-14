@@ -106,6 +106,7 @@ Namespace Koala
             'If (Not DA.GetData(Of Double)(13, AngleLCS)) Then Return
             If (Not DA.GetDataList(Of Double)(13, AngleLCSs)) Then Return
             Dim j As Long
+            Dim k As Long
 
             AngleLCS = (AngleLCS * Math.PI) / 180
             Dim edgecount As Long, iedge As Long
@@ -215,7 +216,7 @@ Namespace Koala
 
             'loop through all surfaces
             '===========================
-
+            k = 0
             For Each brep In Surfaces
 
                 'check if the surface can be handled to SCIA Engineer: non-planar surfaces may have a maximum of 4 boundary edges
@@ -259,13 +260,13 @@ Namespace Koala
 
                 SE_surfaces(surfacecount - 1, 0) = SurfaceNamePrefix + surfacecount.ToString()
                 SE_surfaces(surfacecount - 1, 1) = SurfType
-                If i <= maxMaterials Then
-                    SE_surfaces(surfacecount - 1, 2) = Material(i)
+                If k <= maxMaterials Then
+                    SE_surfaces(surfacecount - 1, 2) = Material(k)
                 Else
                     SE_surfaces(surfacecount - 1, 2) = Material(maxMaterials)
                 End If
-                If i <= maxThickness Then
-                    SE_surfaces(surfacecount - 1, 3) = Thickness(i)
+                If k <= maxThickness Then
+                    SE_surfaces(surfacecount - 1, 3) = Thickness(k)
                 Else
                     SE_surfaces(surfacecount - 1, 3) = Thickness(maxThickness)
                 End If
@@ -368,40 +369,41 @@ Namespace Koala
                 SE_surfaces(surfacecount - 1, 5) = BoundaryShape
                 SE_surfaces(surfacecount - 1, 6) = "" 'initialize list of internal nodes to empty string
 
-                If i <= maxMemberPlanes Then
-                    MemberPlane = GetStringForMemberSystemLineOrPlane(MemberPlanes(i))
+                If k <= maxMemberPlanes Then
+                    MemberPlane = GetStringForMemberSystemLineOrPlane(MemberPlanes(k))
                 Else
                     MemberPlane = GetStringForMemberSystemLineOrPlane(MemberPlanes(maxMemberPlanes))
                 End If
                 SE_surfaces(surfacecount - 1, 7) = MemberPlane
 
-                If i <= maxEz Then
-                    EccentricityZ = EccentricityZs(i)
+                If k <= maxEz Then
+                    EccentricityZ = EccentricityZs(k)
                 Else
                     EccentricityZ = EccentricityZs(maxEz)
                 End If
                 SE_surfaces(surfacecount - 1, 8) = EccentricityZ
 
-                If i <= maxFEMNLtypes Then
-                    FEMNLType = GetStringForFEMNLType2D(FEMNLTypes(i))
+                If k <= maxFEMNLtypes Then
+                    FEMNLType = GetStringForFEMNLType2D(FEMNLTypes(k))
                 Else
                     FEMNLType = GetStringForFEMNLType2D(FEMNLTypes(maxFEMNLtypes))
                 End If
                 SE_surfaces(surfacecount - 1, 9) = FEMNLType
 
-                If i <= maxSwapOrient Then
-                    SwapOrientation = SwapOrientations(i)
+                If k <= maxSwapOrient Then
+                    SwapOrientation = SwapOrientations(k)
                 Else
                     SwapOrientation = SwapOrientations(maxSwapOrient)
                 End If
                 SE_surfaces(surfacecount - 1, 10) = SwapOrientation
 
-                If i <= maxAngelLCS Then
-                    AngleLCS = (AngleLCSs(i) * Math.PI) / 180
+                If k <= maxAngelLCS Then
+                    AngleLCS = (AngleLCSs(k) * Math.PI) / 180
                 Else
                     AngleLCS = (AngleLCSs(maxAngelLCS) * Math.PI) / 180
                 End If
                 SE_surfaces(surfacecount - 1, 11) = AngleLCS
+                k += 1
             Next brep 'iterate to next surface
 
             'add internal nodes to the surfaces
