@@ -961,13 +961,16 @@ Module HelperTools
 
     End Function
 
+    Private DupNodeDict As Dictionary(Of String, String) = Nothing
+    Private isNodeDuplicate As Dictionary(Of String, Boolean) = Nothing
+
     Public Sub CreateXMLFile(FileName As String, StructureType As String, Materials As List(Of String), UILanguage As String, MeshSize As Double, in_sections As List(Of String), in_nodes As List(Of String), in_beams As List(Of String), in_surfaces As List(Of String),
                              in_openings As List(Of String), in_nodesupports As List(Of String), in_edgesupports As List(Of String), in_lcases As List(Of String), in_lgroups As List(Of String), in_lloads As List(Of String), in_sloads As List(Of String),
                              in_fploads As List(Of String), in_flloads As List(Of String), in_fsloads As List(Of String), in_hinges As List(Of String), in_edgeLoads As List(Of String), in_pointLoadsPoints As List(Of String), in_pointLoadsBeams As List(Of String),
                              Scale As String, in_LinCombinations As List(Of String), in_NonLinCombinations As List(Of String), in_StabCombinations As List(Of String),
                              in_CrossLinks As List(Of String), in_presstensionElem As List(Of String), in_gapElem As List(Of String), in_limitforceElem As List(Of String), projectInfo As List(Of String), in_layers As List(Of String),
                              in_BeamLineSupport As List(Of String), in_PointSupportOnBeam As List(Of String), in_Subsoils As List(Of String), in_SurfaceSupports As List(Of String), in_loadpanels As List(Of String), in_pointMomentPoint As List(Of String),
-                             in_pointMomentBeam As List(Of String), in_lineMomentBeam As List(Of String), in_lineMomentEdge As List(Of String), in_freePointMoment As List(Of String), in_nonlinearfunctions As List(Of String))
+                             in_pointMomentBeam As List(Of String), in_lineMomentBeam As List(Of String), in_lineMomentEdge As List(Of String), in_freePointMoment As List(Of String), in_nonlinearfunctions As List(Of String), RemDuplNodes As Boolean, Tolerance As Double)
         Dim i As Long, j As Long
 
 
@@ -1096,7 +1099,11 @@ Module HelperTools
         End If
 
 
+
+        DupNodeDict = New Dictionary(Of String, String)()
+        isNodeDuplicate = New Dictionary(Of String, Boolean)()
         If (in_nodes IsNot Nothing) Then
+
             nodecount = in_nodes.Count / 4
             Rhino.RhinoApp.WriteLine("Number of nodes: " & nodecount)
             For i = 0 To nodecount - 1
@@ -1104,7 +1111,26 @@ Module HelperTools
                 SE_nodes(i, 1) = in_nodes(1 + i * 4) * Scale
                 SE_nodes(i, 2) = in_nodes(2 + i * 4) * Scale
                 SE_nodes(i, 3) = in_nodes(3 + i * 4) * Scale
+                DupNodeDict.Add(SE_nodes(i, 0), SE_nodes(i, 0))
+                isNodeDuplicate.Add(SE_nodes(i, 0), False)
             Next i
+
+            If (RemDuplNodes) Then
+                For i = 0 To nodecount - 1
+                    For j = i + 1 To nodecount - 1
+                        If (Not isNodeDuplicate(SE_nodes(j, 0))) Then
+                            If System.Math.Abs(SE_nodes(i, 1) - SE_nodes(j, 1)) < Tolerance Then
+                                If System.Math.Abs(SE_nodes(i, 2) - SE_nodes(j, 2)) < Tolerance Then
+                                    If System.Math.Abs(SE_nodes(i, 3) - SE_nodes(j, 3)) < Tolerance Then
+                                        DupNodeDict(SE_nodes(j, 0)) = SE_nodes(i, 0)
+                                        isNodeDuplicate(SE_nodes(j, 0)) = True
+                                    End If
+                                End If
+                            End If
+                        End If
+                    Next
+                Next
+            End If
         End If
 
         If (in_beams IsNot Nothing) Then
@@ -1727,7 +1753,10 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
                 If i > 0 And (i Mod 500 = 0) Then
                     Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... node: " + Str(i))
                 End If
-                Call WriteNode(oSB, i, nodes)
+                If Not isNodeDuplicate(nodes(i, 0)) Then
+                    Call WriteNode(oSB, i, nodes)
+                End If
+
             Next
 
             oSB.AppendLine("</table>")
@@ -2047,11 +2076,11 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
             oSB.AppendLine(ConCat_ht("13", "Stiffness Rz"))
             oSB.AppendLine(ConCat_ht("14", "Angle [deg]"))
             oSB.AppendLine(ConCat_ht("15", "Function X"))
-            oSB.AppendLine(ConCat_ht("16","Function Y"))
+            oSB.AppendLine(ConCat_ht("16", "Function Y"))
             oSB.AppendLine(ConCat_ht("17", "Function Z"))
             oSB.AppendLine(ConCat_ht("18", "Function Rx"))
             oSB.AppendLine(ConCat_ht("19", "Function Ry"))
-            oSB.AppendLine(ConCat_ht("20","Function Rz"))
+            oSB.AppendLine(ConCat_ht("20", "Function Rz"))
             oSB.AppendLine("</h>")
 
             For i = 0 To nodesupportnr - 1
@@ -3092,8 +3121,8 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
 
         Dim ShapeAndNodes As String() = beams(ibeam, 3).Split(New Char() {";"c})
         LineType = ShapeAndNodes.ElementAt(0)
-        nodeStart = ShapeAndNodes.ElementAt(1)
-        nodeEnd = ShapeAndNodes.Last()
+        nodeStart = DupNodeDict(ShapeAndNodes.ElementAt(1))
+        nodeEnd = DupNodeDict(ShapeAndNodes.Last())
 
 
         oSB.AppendLine(ConCat_pn("1", nodeStart)) 'Beg. node
@@ -3139,7 +3168,7 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
         oSB.AppendLine(ConCat_pv("8", beams(ibeam, 12))) 'ez
 
         If LineType = "Arc" Then
-            MiddleNode = ShapeAndNodes.ElementAt(2)
+            MiddleNode = DupNodeDict(ShapeAndNodes.ElementAt(2))
             oSB.AppendLine(ConCat_opentable("9", ""))
             'Table of Geometry
             oSB.AppendLine("<h>")
@@ -3167,12 +3196,12 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
             oSB.AppendLine("</h>")
             For i = 1 To ShapeAndNodes.Count - 2
                 oSB.AppendLine(ConCat_row(i - 1))
-                oSB.AppendLine(ConCat_pn("1", ShapeAndNodes.ElementAt(i)))
+                oSB.AppendLine(ConCat_pn("1", DupNodeDict(ShapeAndNodes.ElementAt(i))))
                 oSB.appendline(ConCat_pv("2", "0"))
                 oSB.AppendLine("</row>")
             Next i
             oSB.AppendLine(ConCat_row(i - 1))
-            oSB.AppendLine(ConCat_pn("1", ShapeAndNodes.ElementAt(i)))
+            oSB.AppendLine(ConCat_pn("1", DupNodeDict(ShapeAndNodes.ElementAt(i))))
             oSB.AppendLine("</row>")
 
             oSB.AppendLine(ConCat_closetable("9"))
@@ -3204,7 +3233,7 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
             oSB.AppendLine("</row>")
             For i = 2 To ShapeAndNodes.Count - 1
                 oSB.AppendLine(ConCat_row(i - 1))
-                oSB.AppendLine(ConCat_pn("1", ShapeAndNodes.ElementAt(i)))
+                oSB.AppendLine(ConCat_pn("1", DupNodeDict(ShapeAndNodes.ElementAt(i))))
                 oSB.AppendLine("</row>")
             Next i
             oSB.AppendLine(ConCat_closetable("9"))
@@ -3473,7 +3502,7 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
             inode = 0
             osb.AppendLine(ConCat_row(row_id))
             osb.AppendLine(ConCat_pv("0", "1")) 'Closed curve
-            osb.AppendLine(ConCat_pn("1", Trim(Split(edges(iedge), ";")(1)))) 'first node
+            osb.AppendLine(ConCat_pn("1", DupNodeDict(Trim(Split(edges(iedge), ";")(1))))) 'first node
             Select Case Strings.Trim(Strings.Split(edges(iedge), ";")(0)) 'curve type
                 Case "Line"
                     osb.AppendLine(ConCat_pvt("2", "0", "Line"))
@@ -3523,7 +3552,7 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
 
                 For inode = 0 To nodes.Count - 1
                     osb.AppendLine(ConCat_row(row_id))
-                    osb.AppendLine(ConCat_pn("0", Trim(nodes(inode))))
+                    osb.AppendLine(ConCat_pn("0", DupNodeDict(Trim(nodes(inode)))))
                     osb.AppendLine("</row>")
                     row_id += 1
 
@@ -4178,7 +4207,7 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
         oSB.AppendLine("<row id=""0"">")
         oSB.AppendLine(ConCat_pv("0", "{39A7F468-A0D4-4DFF-8E5C-5843E1807D13}"))
         oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_StructNode.1"))
-        oSB.AppendLine(ConCat_pv("2", supports(isupport, 0)))
+        oSB.AppendLine(ConCat_pv("2", DupNodeDict(supports(isupport, 0))))
         oSB.AppendLine("</row>")
         oSB.AppendLine("</p1>")
         'End Of reference table
@@ -5044,7 +5073,7 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
         oSB.AppendLine("<row id=""0"">")
         oSB.AppendLine(ConCat_pv("0", "{39A7F468-A0D4-4DFF-8E5C-5843E1807D13}"))
         oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_StructNode.1"))
-        oSB.AppendLine(ConCat_pv("2", loads(iload, 1)))
+        oSB.AppendLine(ConCat_pv("2", DupNodeDict(loads(iload, 1))))
         oSB.AppendLine("</row>")
         oSB.AppendLine("</p2>")
         'end of reference table
@@ -5089,7 +5118,7 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
         oSB.AppendLine("<row id=""0"">")
         oSB.AppendLine(ConCat_pv("0", "{39A7F468-A0D4-4DFF-8E5C-5843E1807D13}"))
         oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_StructNode.1"))
-        oSB.AppendLine(ConCat_pv("2", loads(iload, 1)))
+        oSB.AppendLine(ConCat_pv("2", DupNodeDict(loads(iload, 1))))
         oSB.AppendLine("</row>")
         oSB.AppendLine("</p2>")
         'end of reference table

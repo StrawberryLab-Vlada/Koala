@@ -243,13 +243,13 @@ Namespace Koala
                 End If
             End If
 
-
+            Dim Tolerance As Double = 0.001
 
             CreateXMLFile(FileName, StructureType, Materials, UILanguage, MeshSize, in_sections, in_nodes, in_beams, in_surfaces, in_openings,
                           in_nodesupports, in_edgesupports, in_lcases, in_lgroups, in_lloads, in_sloads, in_fploads, in_flloads, in_fsloads, in_hinges,
                           in_edgeLoads, in_pointLoadsPoints, in_pointLoadsBeams, Scale, in_LinCombinations, in_NonLinCombinations, in_StabCombinations,
                           in_CrossLinks, in_presstensionElem, in_gapElem, in_limitforceElem, projectInfo, in_layers, in_BeamLineSupport, in_PointSupportsOnBeams,
-                          in_Subsoils, in_SurfaceSupports, in_loadpanels, in_pointMomentPoint, in_pointMomentBeam, in_lineMomentBeam, in_lineMomentEdge, in_freePointMoment, in_nonlinearfunctions)
+                          in_Subsoils, in_SurfaceSupports, in_loadpanels, in_pointMomentPoint, in_pointMomentBeam, in_lineMomentBeam, in_lineMomentEdge, in_freePointMoment, in_nonlinearfunctions, RemDuplNodes, Tolerance)
             DA.SetData(0, FileName)
 
 
