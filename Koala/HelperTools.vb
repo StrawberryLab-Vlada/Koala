@@ -1111,8 +1111,13 @@ Module HelperTools
                 SE_nodes(i, 1) = in_nodes(1 + i * 4) * Scale
                 SE_nodes(i, 2) = in_nodes(2 + i * 4) * Scale
                 SE_nodes(i, 3) = in_nodes(3 + i * 4) * Scale
-                DupNodeDict.Add(SE_nodes(i, 0), SE_nodes(i, 0))
-                isNodeDuplicate.Add(SE_nodes(i, 0), False)
+                If Not DupNodeDict.ContainsKey(SE_nodes(i, 0)) Then
+                    DupNodeDict.Add(SE_nodes(i, 0), SE_nodes(i, 0))
+                    isNodeDuplicate.Add(SE_nodes(i, 0), False)
+                Else
+                    Rhino.RhinoApp.WriteLine("Model contains duplicity nodes")
+                End If
+
             Next i
 
             If (RemDuplNodes) Then
@@ -3598,7 +3603,7 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
             inode = 0
             osb.AppendLine(ConCat_row(row_id))
             osb.AppendLine(ConCat_pv("0", "1")) 'Closed curve
-            osb.AppendLine(ConCat_pn("1", Trim(Split(edges(iedge), ";")(1)))) 'first node
+            osb.AppendLine(ConCat_pn("1", DupNodeDict(Trim(Split(edges(iedge), ";")(1))))) 'first node
             Select Case Strings.Trim(Strings.Split(edges(iedge), ";")(0)) 'curve type
                 Case "Line"
                     osb.AppendLine(ConCat_pvt("2", "0", "Line"))
@@ -3702,7 +3707,7 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
             inode = 0
             osb.AppendLine(ConCat_row(row_id))
             osb.AppendLine(ConCat_pv("0", "1")) 'Closed curve
-            osb.AppendLine(ConCat_pn("1", Trim(Split(edges(iedge), ";")(1)))) 'first node
+            osb.AppendLine(ConCat_pn("1", DupNodeDict(Trim(Split(edges(iedge), ";")(1))))) 'first node
             Select Case Strings.Trim(Strings.Split(edges(iedge), ";")(0)) 'curve type
                 Case "Line"
                     osb.AppendLine(ConCat_pvt("2", "0", "Line"))

@@ -26,7 +26,7 @@ Namespace Koala
         ''' </summary>
         Protected Overrides Sub RegisterInputParams(pManager As GH_Component.GH_InputParamManager)
             pManager.AddCurveParameter("ClosedCurves", "ClosedCurves", "List of curves defining opening", GH_ParamAccess.list)
-            pManager.AddTextParameter("Surface", "Surface", "Name of surface where is opening", GH_ParamAccess.item)
+            pManager.AddTextParameter("Surface", "Surface", "Name of surface where is opening", GH_ParamAccess.list)
             pManager.AddTextParameter("NodePrefix", "NodePrefix", "Prefix of nodes defining opening", GH_ParamAccess.item, "NO")
             pManager.AddNumberParameter("Tolerance", "Tolerance", "tolerance for geometry check", GH_ParamAccess.item, 0.001)
             pManager.AddTextParameter("OpeningNamePrefix", "OpeningNamePrefix", "Prefix name of the opening", GH_ParamAccess.item, "O")
@@ -49,15 +49,24 @@ Namespace Koala
 
             Dim ClosedCurves = New List(Of Curve)
             Dim Surface As String = ""
+            Dim Surfaces = New List(Of String)
             Dim NodePrefix As String = "NO"
             Dim Tolerance As Double = 0.001
             Dim OpeningNamePrefix As String = "O"
-
+            Dim maxSurfaceCount As Long = 0
             If (Not DA.GetDataList(Of Curve)(0, ClosedCurves)) Then Return
-            If (Not DA.GetData(Of String)(1, Surface)) Then Return
+            If (Not DA.GetDataList(Of String)(1, Surfaces)) Then Return
             If (Not DA.GetData(Of String)(2, NodePrefix)) Then Return
             If (Not DA.GetData(Of Double)(3, Tolerance)) Then Return
             If (Not DA.GetData(Of String)(4, OpeningNamePrefix)) Then Return
+
+
+            If ClosedCurves.Count < Surfaces.Count Then
+                Rhino.RhinoApp.WriteLine("Openings: More Surfaces are defined than openings.They will be ignored.")
+            ElseIf ClosedCurves.Count < Surfaces.Count Then
+                Rhino.RhinoApp.WriteLine("Openings: Less Materials are defined than beams. The last defined section will be used for the extra beams")
+            End If
+            maxSurfaceCount = Surfaces.Count - 1
 
 
             Dim i As Long, j As Long
@@ -100,7 +109,7 @@ Namespace Koala
 
             'loop through all openings
             '===========================
-
+            Dim k As Long = 0
             For Each curve In ClosedCurves
 
                 'check if the curve is a closed, planar curve
@@ -124,7 +133,15 @@ Namespace Koala
                     BoundaryShape = ""
 
                     SE_openings(openingcount - 1, 0) = OpeningNamePrefix & openingcount
+
+                    If k <= maxSurfaceCount Then
+                        Surface = Surfaces(k)
+                    Else
+                        Surface = Surfaces(maxSurfaceCount)
+                    End If
+                    k += 1
                     SE_openings(openingcount - 1, 1) = Surface
+
 
                     For Each arrPoint In arrPoints
                         inode = inode + 1
@@ -164,6 +181,12 @@ Namespace Koala
                     openingcount = openingcount + 1
 
                     SE_openings(openingcount - 1, 0) = OpeningNamePrefix & openingcount
+                    If k <= maxSurfaceCount Then
+                        Surface = Surfaces(k)
+                    Else
+                        Surface = Surfaces(maxSurfaceCount)
+                    End If
+                    k += 1
                     SE_openings(openingcount - 1, 1) = Surface
 
                     iedge = 0
