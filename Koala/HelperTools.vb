@@ -970,7 +970,7 @@ Module HelperTools
                              Scale As String, in_LinCombinations As List(Of String), in_NonLinCombinations As List(Of String), in_StabCombinations As List(Of String),
                              in_CrossLinks As List(Of String), in_presstensionElem As List(Of String), in_gapElem As List(Of String), in_limitforceElem As List(Of String), projectInfo As List(Of String), in_layers As List(Of String),
                              in_BeamLineSupport As List(Of String), in_PointSupportOnBeam As List(Of String), in_Subsoils As List(Of String), in_SurfaceSupports As List(Of String), in_loadpanels As List(Of String), in_pointMomentPoint As List(Of String),
-                             in_pointMomentBeam As List(Of String), in_lineMomentBeam As List(Of String), in_lineMomentEdge As List(Of String), in_freePointMoment As List(Of String), in_nonlinearfunctions As List(Of String), RemDuplNodes As Boolean, Tolerance As Double)
+                             in_pointMomentBeam As List(Of String), in_lineMomentBeam As List(Of String), in_lineMomentEdge As List(Of String), in_freePointMoment As List(Of String), in_nonlinearfunctions As List(Of String), RemDuplNodes As Boolean, Tolerance As Double, in_slabinternalEdges As List(Of String))
         Dim i As Long, j As Long
 
 
@@ -994,7 +994,7 @@ Module HelperTools
         Dim SE_flloads(100000, 11) As String 'a free line load consists of: load case, validity, selection, coord. system (GCS/LCS), direction (X, Y, Z), value (kN/m), LineShape
         Dim SE_fsloads(100000, 8) As String 'a free surface load consists of: load case, validity, selection, coord. system (GCS/LCS), direction (X, Y, Z), value (kN/m^2), BoundaryShape
         Dim SE_hinges(100000, 14) As String 'a hinge consists of: Beam name, ux, uy, uz, phix, phiy, phiz (0: free, 1: fixed), Position (Begin/End/Both)
-        Dim SE_eLoads(100000, 14) As String 'a hinge consists of: Beam name, ux, uy, uz, phix, phiy, phiz (0: free, 1: fixed), Position (Begin/End/Both)
+        Dim SE_eLoads(100000, 15) As String 'a hinge consists of: Beam name, ux, uy, uz, phix, phiy, phiz (0: free, 1: fixed), Position (Begin/End/Both)
         Dim SE_pointLoadPoint(100000, 6) As String 'a hinge consists of: Beam name, ux, uy, uz, phix, phiy, phiz (0: free, 1: fixed), Position (Begin/End/Both)
         Dim SE_pointLoadBeam(100000, 12) As String 'a hinge consists of: Beam name, ux, uy, uz, phix, phiy, phiz (0: free, 1: fixed), Position (Begin/End/Both)
         Dim SE_lincombinations(100000, 3) As String
@@ -1014,9 +1014,10 @@ Module HelperTools
         Dim SE_PointMomentPointNode(100000, 5) As String
         Dim SE_pointMomentBeam(100000, 10) As String
         Dim SE_lineMomentBeam(100000, 10) As String
-        Dim SE_lineMomentEdge(100000, 12) As String
+        Dim SE_lineMomentEdge(100000, 13) As String
         Dim SE_fMomentPointloads(100000, 10) As String
         Dim SE_NonlinearFunctions(100000, 5) As String
+        Dim SE_SlabInternalEdges(100000, 3) As String
 
         Dim SE_meshsize As Double
 
@@ -1030,7 +1031,7 @@ Module HelperTools
         Dim hingecount As Long, eloadscount As Long, pointLoadpointCount As Long, pointLoadbeamCount As Long, lincominationcount As Long, nonlincominationcount As Long
         Dim stabcombicount As Long, crosslinkscount As Long, gapsnr As Long, ptelemnsnr As Long, lfelemnsnr As Long, nBeamLineSupport As Long, nPointSupportonBeam As Long, nSubsoils As Long, nSurfaceSupports As Long, nloadPanels As Long
 
-        Dim pointMomentpointCount As Long, pointMomentbeamCount As Long, lineMomentBeamCount As Long, lineMomentEdgeCount As Long, fpointmomentloadcount As Long, nlfunctionscount As Long
+        Dim pointMomentpointCount As Long, pointMomentbeamCount As Long, lineMomentBeamCount As Long, lineMomentEdgeCount As Long, fpointmomentloadcount As Long, nlfunctionscount As Long, slabInternalEdgesCount As Long
 
         Dim stopWatch As New System.Diagnostics.Stopwatch()
         Dim time_elapsed As Double
@@ -1179,6 +1180,16 @@ Module HelperTools
             Next i
         End If
 
+        If (in_slabinternalEdges IsNot Nothing) Then
+            slabInternalEdgesCount = in_slabinternalEdges.Count / 3
+            Rhino.RhinoApp.WriteLine("Number of internal edges: " & slabInternalEdgesCount)
+            For i = 0 To slabInternalEdgesCount - 1
+                For j = 0 To 2
+                    SE_SlabInternalEdges(i, j) = in_slabinternalEdges(j + i * 3)
+                Next j
+            Next i
+        End If
+
         If (in_nodesupports IsNot Nothing) Then
             nodesupportcount = in_nodesupports.Count / 20
             Rhino.RhinoApp.WriteLine("Number of node supports: " & nodesupportcount)
@@ -1229,21 +1240,21 @@ Module HelperTools
             Next i
         End If
         If (in_edgeLoads IsNot Nothing) Then
-            eloadscount = in_edgeLoads.Count / 14
+            eloadscount = in_edgeLoads.Count / 15
             Rhino.RhinoApp.WriteLine("Number of beam line loads: " & eloadscount)
             For i = 0 To eloadscount - 1
-                For j = 0 To 13
-                    SE_eLoads(i, j) = in_edgeLoads(j + i * 14)
+                For j = 0 To 14
+                    SE_eLoads(i, j) = in_edgeLoads(j + i * 15)
                 Next j
             Next i
         End If
 
         If (in_lineMomentEdge IsNot Nothing) Then
-            lineMomentEdgeCount = in_lineMomentEdge.Count / 12
+            lineMomentEdgeCount = in_lineMomentEdge.Count / 13
             Rhino.RhinoApp.WriteLine("Number of beam line loads: " & eloadscount)
             For i = 0 To lineMomentEdgeCount - 1
-                For j = 0 To 11
-                    SE_lineMomentEdge(i, j) = in_lineMomentEdge(j + i * 12)
+                For j = 0 To 12
+                    SE_lineMomentEdge(i, j) = in_lineMomentEdge(j + i * 13)
                 Next j
             Next i
         End If
@@ -1510,7 +1521,7 @@ stabcombicount, SE_Crosslinks, crosslinkscount, SE_gapselem, gapsnr, SE_pressten
 lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers, SE_layersCount, SE_beamLineSupports, nBeamLineSupport, SE_pointSupportOnBeam,
 nPointSupportonBeam, SE_subsoil, nSubsoils, SE_surfaceSupport, nSurfaceSupports, SE_LoadPanels, nloadPanels,
 SE_PointMomentPointNode, pointMomentpointCount, SE_pointMomentBeam, pointMomentbeamCount, SE_lineMomentBeam, lineMomentBeamCount, SE_lineMomentEdge, lineMomentEdgeCount,
-SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionscount)
+SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionscount, SE_SlabInternalEdges, slabInternalEdgesCount)
 
         Rhino.RhinoApp.Write(" Done." & Convert.ToChar(13))
 
@@ -1545,7 +1556,8 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
     stabcombi(,), stabcombncount, crosslinks(,), crosslinkscount, gapselem(,), gapsnr, presstensionelems(,), ptelemnsnr, limforceelem(,),
     lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers(,), SE_layersCount, SE_beamLineSupports(,), nbeamLineSupports, SE_pointSupportOnBeam,
     nPointSupportonBeam, SE_subsoil(,), nSubsoils, SE_surfaceSupport(,), nSurfaceSupports, SE_Loadpanels(,), nLoadpanels, SE_PointMomentPointNode(,),
-    pointMomentpointCount, SE_pointMomentBeam(,), pointMomentbeamCount, SE_lineMomentBeam(,), lineMomentBeamCount, SE_lineMomentEdge(,), lineMomentEdgeCount, SE_fMomentPointloads(,), fpointmomentloadcount, SE_NonlinearFunctions(,), nlfunctionscount)
+    pointMomentpointCount, SE_pointMomentBeam(,), pointMomentbeamCount, SE_lineMomentBeam(,), lineMomentBeamCount, SE_lineMomentEdge(,),
+    lineMomentEdgeCount, SE_fMomentPointloads(,), fpointmomentloadcount, SE_NonlinearFunctions(,), nlfunctionscount, SE_SlabInternalEdges(,), slabInternalEdgesCount)
 
         Dim i As Long
         Dim c As String, cid As String, t As String, tid As String
@@ -2017,6 +2029,35 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
             oSB.AppendLine("</container>")
         End If
 
+        If slabInternalEdgesCount > 0 Then
+            c = "{4FCA60AD-9308-468B-BD02-3D4E17830029}"
+            cid = "EP_DSG_Elements.EP_SlabInternalEdge.1"
+            t = "7ECDC58C-28DD-4CDD-8240-1344E77A7E32"
+            tid = "EP_DSG_Elements.EP_SlabInternalEdge.1"
+            oSB.AppendLine("")
+            oSB.AppendLine("<container id=""" & c & """ t=""" & cid & """>")
+            oSB.AppendLine("<table id=""" & t & """ t=""" & tid & """>")
+
+            oSB.AppendLine("<h>")
+            oSB.AppendLine(ConCat_ht("0", "Name"))
+            oSB.AppendLine(ConCat_ht("1", "2D Member"))
+            oSB.AppendLine(ConCat_ht("2", "Shape"))
+            oSB.AppendLine(ConCat_ht("3", "Table of geometry"))
+            oSB.AppendLine("</h>")
+
+
+            For i = 0 To slabInternalEdgesCount - 1
+                If i > 0 And i Mod 100 = 0 Then
+                    Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... opening: " + Str(i))
+                End If
+                Call WriteInternalEdge(oSB, i, SE_SlabInternalEdges)
+
+            Next
+
+            oSB.AppendLine("</table>")
+            oSB.AppendLine("</container>")
+
+        End If
 
 
         If nlfunctionscount > 0 Then
@@ -3172,6 +3213,7 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
         oSB.AppendLine(ConCat_pv("7", beams(ibeam, 11))) 'ey
         oSB.AppendLine(ConCat_pv("8", beams(ibeam, 12))) 'ez
 
+
         If LineType = "Arc" Then
             MiddleNode = DupNodeDict(ShapeAndNodes.ElementAt(2))
             oSB.AppendLine(ConCat_opentable("9", ""))
@@ -3733,6 +3775,101 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
         Next
 
         osb.AppendLine(ConCat_closetable("3"))
+        osb.AppendLine("</obj>")
+
+    End Sub
+
+    Private Sub WriteInternalEdge(ByRef osb, iInternalEdge, SlabInternalEdges(,))
+
+        osb.AppendLine("<obj nm=""" & SlabInternalEdges(iInternalEdge, 0) & """>")
+
+        osb.AppendLine(ConCat_pv("0", SlabInternalEdges(iInternalEdge, 0))) ' name
+        osb.AppendLine(ConCat_pn("1", SlabInternalEdges(iInternalEdge, 1))) ' 2D member
+
+        Dim nodeStart As String, nodeEnd As String, MiddleNode As String
+
+        Dim ShapeAndNodes As String() = SlabInternalEdges(iInternalEdge, 2).Split(New Char() {";"c})
+        Dim LineType = ShapeAndNodes.ElementAt(0)
+        nodeStart = DupNodeDict(ShapeAndNodes.ElementAt(1))
+        nodeEnd = DupNodeDict(ShapeAndNodes.Last())
+        Dim i As Long = 0
+        ' shape
+        osb.AppendLine(ConCat_pv("2", LineType)) ' Shape
+        osb.AppendLine(ConCat_opentable("3", "")) 'table of geometry
+        If LineType = "Arc" Then
+
+            MiddleNode = DupNodeDict(ShapeAndNodes.ElementAt(2))
+
+            'Table of Geometry
+            osb.AppendLine("<h>")
+            osb.AppendLine(ConCat_ht("1", "Node"))
+            osb.AppendLine(ConCat_ht("2", "Edge"))
+            osb.AppendLine("</h>")
+
+            osb.AppendLine(ConCat_row(0))
+            osb.AppendLine(ConCat_pn("1", nodeStart))
+            osb.appendline(ConCat_pv("2", "1"))
+            osb.AppendLine("</row>")
+            osb.AppendLine(ConCat_row(1))
+            osb.AppendLine(ConCat_pn("1", MiddleNode))
+            osb.AppendLine("</row>")
+            osb.AppendLine(ConCat_row(2))
+            osb.AppendLine(ConCat_pn("1", nodeEnd))
+            osb.AppendLine("</row>")
+
+        ElseIf LineType = "Polyline" Then
+
+            'Table of Geometry
+            osb.AppendLine("<h>")
+            osb.AppendLine(ConCat_ht("1", "Node"))
+            osb.AppendLine(ConCat_ht("2", "Edge"))
+            osb.AppendLine("</h>")
+            For i = 1 To ShapeAndNodes.Count - 2
+                osb.AppendLine(ConCat_row(i - 1))
+                osb.AppendLine(ConCat_pn("1", DupNodeDict(ShapeAndNodes.ElementAt(i))))
+                osb.appendline(ConCat_pv("2", "0"))
+                osb.AppendLine("</row>")
+            Next i
+            osb.AppendLine(ConCat_row(i - 1))
+            osb.AppendLine(ConCat_pn("1", DupNodeDict(ShapeAndNodes.ElementAt(i))))
+            osb.AppendLine("</row>")
+
+
+        ElseIf LineType = "Line" Then 'line
+
+            'Table of Geometry
+            osb.AppendLine("<h>")
+            osb.AppendLine(ConCat_ht("1", "Node"))
+            osb.AppendLine(ConCat_ht("2", "Edge"))
+            osb.AppendLine("</h>")
+            osb.AppendLine(ConCat_row(0))
+            osb.AppendLine(ConCat_pn("1", nodeStart))
+            osb.appendline(ConCat_pv("2", "0"))
+            osb.AppendLine("</row>")
+            osb.AppendLine(ConCat_row(1))
+            osb.AppendLine(ConCat_pn("1", nodeEnd))
+            osb.AppendLine("</row>")
+
+        ElseIf LineType = "Spline" Then
+
+            'Table of Geometry
+            osb.AppendLine("<h>")
+            osb.AppendLine(ConCat_ht("1", "Node"))
+            osb.AppendLine(ConCat_ht("2", "Edge"))
+            osb.AppendLine("</h>")
+            osb.AppendLine(ConCat_row(0))
+            osb.AppendLine(ConCat_pn("1", nodeStart))
+            osb.appendline(ConCat_pv("2", "7"))
+            osb.AppendLine("</row>")
+            For i = 2 To ShapeAndNodes.Count - 1
+                osb.AppendLine(ConCat_row(i - 1))
+                osb.AppendLine(ConCat_pn("1", DupNodeDict(ShapeAndNodes.ElementAt(i))))
+                osb.AppendLine("</row>")
+            Next i
+
+        End If
+        osb.AppendLine(ConCat_closetable("3"))
+
         osb.AppendLine("</obj>")
 
     End Sub
@@ -4852,6 +4989,8 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
     Private Sub WriteELoad(ByRef oSB, iload, loads(,)) 'write 1 line load on surface ede  to the XML stream
 
 
+
+
         oSB.AppendLine("<obj id=""" & Trim(Str(iload)) & """ nm=""" & "ESL" & Trim(Str(iload)) & """>")
         oSB.AppendLine(ConCat_pv("0", "ESL" & Trim(Str(iload))))
         oSB.AppendLine(ConCat_pn("1", loads(iload, 0)))
@@ -4863,8 +5002,21 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
         oSB.AppendLine("<h2 t=""Member Name""/>")
         oSB.AppendLine("</h>")
         oSB.AppendLine("<row id=""0"">")
-        oSB.AppendLine(ConCat_pv("0", "{8708ED31-8E66-11D4-AD94-F6F5DE2BE344}"))
-        oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_Plane.1"))
+        Select Case (loads(iload, 14))
+            Case "edge"
+                oSB.AppendLine(ConCat_pv("0", "{8708ED31-8E66-11D4-AD94-F6F5DE2BE344}"))
+                oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_Plane.1"))
+            Case "internal"
+                oSB.AppendLine(ConCat_pv("0", "{4FCA60AD-9308-468B-BD02-3D4E17830029}"))
+                oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_SlabInternalEdge.1"))
+            Case Else
+                oSB.AppendLine(ConCat_pv("0", "{8708ED31-8E66-11D4-AD94-F6F5DE2BE344}"))
+                oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_Plane.1"))
+        End Select
+
+
+
+
         oSB.AppendLine(ConCat_pv("2", loads(iload, 1)))
         oSB.AppendLine("</row>")
         oSB.AppendLine("</p2>")
@@ -4948,8 +5100,17 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
         oSB.AppendLine("<h2 t=""Member Name""/>")
         oSB.AppendLine("</h>")
         oSB.AppendLine("<row id=""0"">")
-        oSB.AppendLine(ConCat_pv("0", "{8708ED31-8E66-11D4-AD94-F6F5DE2BE344}"))
-        oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_Plane.1"))
+        Select Case (loads(iload, 12))
+            Case "edge"
+                oSB.AppendLine(ConCat_pv("0", "{8708ED31-8E66-11D4-AD94-F6F5DE2BE344}"))
+                oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_Plane.1"))
+            Case "internal"
+                oSB.AppendLine(ConCat_pv("0", "{4FCA60AD-9308-468B-BD02-3D4E17830029}"))
+                oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_SlabInternalEdge.1"))
+            Case Else
+                oSB.AppendLine(ConCat_pv("0", "{8708ED31-8E66-11D4-AD94-F6F5DE2BE344}"))
+                oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_Plane.1"))
+        End Select
         oSB.AppendLine(ConCat_pv("2", loads(iload, 1)))
         oSB.AppendLine("</row>")
         oSB.AppendLine("</p2>")

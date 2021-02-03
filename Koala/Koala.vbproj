@@ -106,6 +106,7 @@
   <ItemGroup>
     <Compile Include="2Dmember.vb" />
     <Compile Include="Analysis.vb" />
+    <Compile Include="BeamInternalNode.vb" />
     <Compile Include="BeamLoads.vb" />
     <Compile Include="Beams.vb" />
     <Compile Include="BeamSupport.vb" />
@@ -148,6 +149,8 @@
     </Compile>
     <Compile Include="FreePointLoad.vb" />
     <Compile Include="FreeLineLoad.vb" />
+    <Compile Include="NLCable.vb" />
+    <Compile Include="NodeRigidArm.vb" />
     <Compile Include="Nodes.vb" />
     <Compile Include="NodeSupport.vb" />
     <Compile Include="NonlinearCombination.vb" />
@@ -160,6 +163,7 @@
     <Compile Include="PointSupportOnBeam.vb" />
     <Compile Include="PressTensionOnlyBeamNl.vb" />
     <Compile Include="ProjectInfo.vb" />
+    <Compile Include="SlabInternalEdge.vb" />
     <Compile Include="StabilityCombination.vb" />
     <Compile Include="Subsoil.vb" />
     <Compile Include="SurfaceLoad.vb" />
@@ -196,6 +200,8 @@
     <None Include="Resources\Buckling.bmp" />
     <None Include="Resources\BeamLineMoment.bmp" />
     <None Include="Resources\BeamPointMoment.bmp" />
+    <None Include="Resources\BeamInternalNode.bmp" />
+    <None Include="Resources\Cable.bmp" />
     <Content Include="Resources\CreateXML.bmp" />
     <None Include="Resources\Cross-link.bmp" />
     <Content Include="Resources\Cross-section.bmp" />
@@ -208,6 +214,7 @@
     <Content Include="Resources\Hinge.bmp" />
     <None Include="Resources\LinearCombination.bmp" />
     <None Include="Resources\LimitForceBeamNL.bmp" />
+    <None Include="Resources\InternalSlab.bmp" />
     <Content Include="Resources\koala.xml.def" />
     <None Include="Resources\Layers.bmp" />
     <None Include="Resources\LineEdgeMoment.bmp" />
@@ -229,6 +236,7 @@
     <None Include="Resources\SubSoil.bmp" />
     <None Include="Resources\PointMoment.bmp" />
     <None Include="Resources\NonLinearFunction.bmp" />
+    <None Include="Resources\RigidArms.bmp" />
     <Content Include="Resources\SurfaceLoad.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />

@@ -93,6 +93,16 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property BeamInternalNode() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("BeamInternalNode", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property BeamLineMoment() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("BeamLineMoment", resourceCulture)
@@ -126,6 +136,16 @@ Namespace My.Resources
         Friend ReadOnly Property Buckling() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Buckling", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property Cable() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("Cable", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -226,6 +246,16 @@ Namespace My.Resources
         Friend ReadOnly Property Hinge() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("Hinge", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property InternalSlab() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("InternalSlab", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
@@ -443,6 +473,16 @@ Namespace My.Resources
         Friend ReadOnly Property ProjectInfo() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("ProjectInfo", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property RigidArms() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("RigidArms", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property

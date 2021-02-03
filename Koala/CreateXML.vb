@@ -118,6 +118,10 @@ Namespace Koala
             pManager.Param(44).Optional = True
             pManager.AddTextParameter("NonlinearFunctions", "NonlinearFunctions", "Defined nonlinear functions", GH_ParamAccess.list)
             pManager.Param(45).Optional = True
+            pManager.AddNumberParameter("Tolerance", "Tolerance", "Tolerance for duplicity nodes", GH_ParamAccess.item, 0.001)
+            pManager.Param(46).Optional = True
+            pManager.AddTextParameter("SlabInternalEdges", "SlabInternalEdges", "List of internal edges for slabs", GH_ParamAccess.list)
+            pManager.Param(47).Optional = True
         End Sub
 
         ''' <summary>
@@ -183,6 +187,9 @@ Namespace Koala
             Dim in_lineMomentEdge = New List(Of String)
             Dim in_freePointMoment = New List(Of String)
             Dim in_nonlinearfunctions = New List(Of String)
+            Dim in_slabinternalEdges = New List(Of String)
+            Dim Tolerance As Double = 0.001
+
 
 
             Dim i As Integer = 0
@@ -235,6 +242,8 @@ Namespace Koala
             DA.GetDataList(Of String)(43, in_lineMomentEdge)
             DA.GetDataList(Of String)(44, in_freePointMoment)
             DA.GetDataList(Of String)(45, in_nonlinearfunctions)
+            DA.GetData(Of Double)(46, Tolerance)
+            DA.GetDataList(Of String)(47, in_slabinternalEdges)
 
 
             If AutoUpdate = False Then
@@ -243,13 +252,14 @@ Namespace Koala
                 End If
             End If
 
-            Dim Tolerance As Double = 0.001
+
 
             CreateXMLFile(FileName, StructureType, Materials, UILanguage, MeshSize, in_sections, in_nodes, in_beams, in_surfaces, in_openings,
                           in_nodesupports, in_edgesupports, in_lcases, in_lgroups, in_lloads, in_sloads, in_fploads, in_flloads, in_fsloads, in_hinges,
                           in_edgeLoads, in_pointLoadsPoints, in_pointLoadsBeams, Scale, in_LinCombinations, in_NonLinCombinations, in_StabCombinations,
                           in_CrossLinks, in_presstensionElem, in_gapElem, in_limitforceElem, projectInfo, in_layers, in_BeamLineSupport, in_PointSupportsOnBeams,
-                          in_Subsoils, in_SurfaceSupports, in_loadpanels, in_pointMomentPoint, in_pointMomentBeam, in_lineMomentBeam, in_lineMomentEdge, in_freePointMoment, in_nonlinearfunctions, RemDuplNodes, Tolerance)
+                          in_Subsoils, in_SurfaceSupports, in_loadpanels, in_pointMomentPoint, in_pointMomentBeam, in_lineMomentBeam, in_lineMomentEdge,
+                          in_freePointMoment, in_nonlinearfunctions, RemDuplNodes, Tolerance, in_slabinternalEdges)
             DA.SetData(0, FileName)
 
 

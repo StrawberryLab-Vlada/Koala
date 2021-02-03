@@ -3173,4 +3173,46 @@
 
     </def_table>
   </def_container>
+
+  <def_container id="{4FCA60AD-9308-468B-BD02-3D4E17830029}" clsid="{4FCA60AD-9308-468B-BD02-3D4E17830029}" progid="EP_DSG_Elements.EP_SlabInternalEdge.1">
+    <def_table id="7ECDC58C-28DD-4CDD-8240-1344E77A7E32" name="XML\default" type="vertical" clsid="{4FCA60AD-9308-468B-BD02-3D4E17830029}" progid="EP_DSG_Elements.EP_SlabInternalEdge.1" size="13">
+
+      <def_property x="0" name="Name" type="string" id="{4364BC01-AAB7-11D4-B3D9-00104BC3B531}"/>
+
+
+
+      <def_property x="1" name="2D member" type="ref" id="{BD1408E5-82C9-46E0-B773-2150F618DDA5}">
+        <def_ref id="{8708ED31-8E66-11D4-AD94-F6F5DE2BE344}" progid="EP_DSG_Elements.EP_Plane.1"/>
+      </def_property>
+      <def_property x="2" name="Shape" type="string" id="{EA31B9FE-329C-4DE7-9B0E-397A97799B7C}"/>
+
+      <def_property x="3" name="Table of geometry" type="table" id="{748A0933-F05E-4B33-B4D6-4854FCD612C8}">
+        <def_subtable size="4" type="vertical">
+          <def_property x="0" name="Closed curve" type="bool" id="{E0DD8A0C-8E62-49BF-B2FF-CF737A0B65E5}"/>
+
+          <def_property x="1" name="Node" type="ref" id="{F140E9F9-E8C9-48F1-A305-7F1EB39EEB65}">
+            <def_ref id="{39A7F468-A0D4-4DFF-8E5C-5843E1807D13}" progid="EP_DSG_Elements.EP_StructNode.1"/>
+          </def_property>
+
+          <def_property x="2" name="Edge" type="enum" id="{406832D0-2125-4389-94E2-FD17D97BD027}">
+            <def_enum size="8">
+              <it_enum v="0" t="Line"/>
+              <it_enum v="1" t="Circle arc"/>
+              <it_enum v="2" t="Circle by centre and vertex"/>
+              <it_enum v="4" t="Circle by 3 pts"/>
+              <it_enum v="5" t="Parabolic arc"/>
+              <it_enum v="6" t="Bezier"/>
+              <it_enum v="7" t="Spline"/>
+              <it_enum v="9" t="Linestrip"/>
+            </def_enum>
+          </def_property>
+
+          <def_property x="3" name="Weight" type="real" id="{23292B43-824E-4CC1-9376-83DA8BAC58DB}"/>
+
+        </def_subtable>
+      </def_property>
+
+    </def_table>
+  </def_container>
+  
 </def_project>

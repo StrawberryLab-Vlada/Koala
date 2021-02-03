@@ -26,7 +26,7 @@ Namespace Koala
         ''' </summary>
         Protected Overrides Sub RegisterInputParams(pManager As GH_Component.GH_InputParamManager)
             pManager.AddTextParameter("LoadCase", "LoadCase", "Name of load case", GH_ParamAccess.item, "LC2")
-            pManager.AddTextParameter("2DMemberEdgeList", "2DMemberEdgeList", "List of 2DMembers and their edges names where to apply load:S1;1", GH_ParamAccess.list)
+            pManager.AddTextParameter("2DMemberEdgeList", "2DMemberEdgeList", "List of 2DMembers and their edges names where to apply load:S1;3;edge for slab edge or ELS1;1;internal for internal edge", GH_ParamAccess.list) 'extension to internal edges - S1;1;edge - slab edge, ES1;internal - internal edge
             pManager.AddIntegerParameter("CoordSys", "CoordSys", "Coordinate system: GCS - Length,GCS - Projection, LCS", GH_ParamAccess.item, 0)
             AddOptionsToMenuCoordSysLine(pManager.Param(2))
             pManager.AddIntegerParameter("Direction", "Direction", "Direction of load: X,Y,Z", GH_ParamAccess.item, 2)
@@ -73,6 +73,7 @@ Namespace Koala
             Dim ey As Double = 0.0
             Dim ez As Double = 0.0
             Dim i As Integer
+
 
             If (Not DA.GetData(0, LoadCase)) Then Return
             If (Not DA.GetDataList(Of String)(1, SurfEdgeList)) Then Return
@@ -129,6 +130,7 @@ Namespace Koala
                 SE_loads(itemcount, 11) = Origin
                 SE_loads(itemcount, 12) = ey
                 SE_loads(itemcount, 13) = ez
+                SE_loads(itemcount, 14) = item.Split(";")(2)
                 itemcount += 1
             Next
 
@@ -151,6 +153,7 @@ Namespace Koala
                 FlatList.Add(SE_loads(i, 11))
                 FlatList.Add(SE_loads(i, 12))
                 FlatList.Add(SE_loads(i, 13))
+                FlatList.Add(SE_loads(i, 14))
             Next i
 
             DA.SetDataList(0, FlatList)

@@ -124,6 +124,9 @@
   <data name="Beam" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Beam.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="BeamInternalNode" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BeamInternalNode.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="BeamLineMoment" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\BeamLineMoment.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -135,6 +138,9 @@
   </data>
   <data name="Buckling" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Buckling.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Cable" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Cable.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="CreateXML" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\CreateXML.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -165,6 +171,9 @@
   </data>
   <data name="Hinge" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Hinge.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="InternalSlab" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\InternalSlab.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="koala_xml" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\koala.xml.def;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;utf-16</value>
@@ -228,6 +237,9 @@
   </data>
   <data name="ProjectInfo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\ProjectInfo.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RigidArms" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RigidArms.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="StabilityCombination" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\StabilityCombination.bmp;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

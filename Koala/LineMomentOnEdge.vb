@@ -26,7 +26,7 @@ Namespace Koala
         ''' </summary>
         Protected Overrides Sub RegisterInputParams(pManager As GH_Component.GH_InputParamManager)
             pManager.AddTextParameter("LoadCase", "LoadCase", "Name of load case", GH_ParamAccess.item, "LC2")
-            pManager.AddTextParameter("2DMemberEdgeList", "2DMemberEdgeList", "List of 2DMembers and their edges names where to apply load:S1;1", GH_ParamAccess.list)
+            pManager.AddTextParameter("2DMemberEdgeList", "2DMemberEdgeList", "List of 2DMembers and their edges names where to apply load:S1;1;edge or ELS1;1;internal", GH_ParamAccess.list)
             pManager.AddIntegerParameter("CoordSys", "CoordSys", "Coordinate system: GCS - Length,GCS - Projection, LCS", GH_ParamAccess.item, 0)
             AddOptionsToMenuCoordSysLine(pManager.Param(2))
             pManager.AddIntegerParameter("Direction", "Direction", "Direction of load: Mx,My,Mz", GH_ParamAccess.item, 2)
@@ -97,7 +97,7 @@ Namespace Koala
 
 
 
-            Dim SE_loads(SurfEdgeList.Count, 11)
+            Dim SE_loads(SurfEdgeList.Count, 12)
             Dim FlatList As New List(Of System.Object)()
             'a load consists of: load case, Beam name, coord. system (GCS/LCS), direction (X, Y, Z), value (kN/m)
 
@@ -122,6 +122,7 @@ Namespace Koala
                 SE_loads(itemcount, 9) = Position1
                 SE_loads(itemcount, 10) = Position2
                 SE_loads(itemcount, 11) = Origin
+                SE_loads(itemcount, 12) = item.Split(";")(2)
                 itemcount += 1
             Next
 
@@ -142,7 +143,7 @@ Namespace Koala
                 FlatList.Add(SE_loads(i, 9))
                 FlatList.Add(SE_loads(i, 10))
                 FlatList.Add(SE_loads(i, 11))
-
+                FlatList.Add(SE_loads(i, 12))
 
             Next i
 
