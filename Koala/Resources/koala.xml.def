@@ -3214,5 +3214,29 @@
 
     </def_table>
   </def_container>
+
+  <def_container id="{5A3B44E9-D820-4539-B52E-A2230C78495B}" clsid="{5A3B44E9-D820-4539-B52E-A2230C78495B}" progid="EP_DataAddStructure.EP_RigidArm.1">
+    <def_table id="9D6B46ED-E294-4842-906C-90FBFB716601" name="XML\default" type="vertical" clsid="{5A3B44E9-D820-4539-B52E-A2230C78495B}" progid="EP_DataAddStructure.EP_RigidArm.1" size="16">
+
+      <def_property x="0" name="Name" type="string" id="{4364BC01-AAB7-11D4-B3D9-00104BC3B531}"/>
+
+
+          <def_property x="1" name="Master" type="ref" flag="131072" id="{3B7B7DCA-16DD-48AB-A470-1C585DC5BA42}">
+        <def_ref id="{39A7F468-A0D4-4DFF-8E5C-5843E1807D13}" progid="EP_DSG_Elements.EP_StructNode.1"/>
+      </def_property>
+
+
+      <def_property x="2" name="Slave" type="ref" flag="131072" id="{2E9A9B5C-134C-4F5F-8129-23EA27B6B8D8}">
+        <def_ref id="{39A7F468-A0D4-4DFF-8E5C-5843E1807D13}" progid="EP_DSG_Elements.EP_StructNode.1"/>
+      </def_property>
+
+
+      <def_property x="3" name="Hinge on master" type="bool" id="{4AFE6093-829E-483A-A4D7-EAFEDE85DF60}"/>
+
+
+      <def_property x="4" name="Hinge on slave" type="bool" id="{4AFE6092-829E-483A-A4D7-EAFEDE85DF60}"/>
+
+    </def_table>
+  </def_container>
   
 </def_project>

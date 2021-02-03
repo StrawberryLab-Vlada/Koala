@@ -970,7 +970,8 @@ Module HelperTools
                              Scale As String, in_LinCombinations As List(Of String), in_NonLinCombinations As List(Of String), in_StabCombinations As List(Of String),
                              in_CrossLinks As List(Of String), in_presstensionElem As List(Of String), in_gapElem As List(Of String), in_limitforceElem As List(Of String), projectInfo As List(Of String), in_layers As List(Of String),
                              in_BeamLineSupport As List(Of String), in_PointSupportOnBeam As List(Of String), in_Subsoils As List(Of String), in_SurfaceSupports As List(Of String), in_loadpanels As List(Of String), in_pointMomentPoint As List(Of String),
-                             in_pointMomentBeam As List(Of String), in_lineMomentBeam As List(Of String), in_lineMomentEdge As List(Of String), in_freePointMoment As List(Of String), in_nonlinearfunctions As List(Of String), RemDuplNodes As Boolean, Tolerance As Double, in_slabinternalEdges As List(Of String))
+                             in_pointMomentBeam As List(Of String), in_lineMomentBeam As List(Of String), in_lineMomentEdge As List(Of String), in_freePointMoment As List(Of String), in_nonlinearfunctions As List(Of String),
+                             RemDuplNodes As Boolean, Tolerance As Double, in_slabinternalEdges As List(Of String), in_RigidArms As List(Of String))
         Dim i As Long, j As Long
 
 
@@ -1018,6 +1019,7 @@ Module HelperTools
         Dim SE_fMomentPointloads(100000, 10) As String
         Dim SE_NonlinearFunctions(100000, 5) As String
         Dim SE_SlabInternalEdges(100000, 3) As String
+        Dim SE_RigidArms(100000, 5) As String
 
         Dim SE_meshsize As Double
 
@@ -1031,7 +1033,7 @@ Module HelperTools
         Dim hingecount As Long, eloadscount As Long, pointLoadpointCount As Long, pointLoadbeamCount As Long, lincominationcount As Long, nonlincominationcount As Long
         Dim stabcombicount As Long, crosslinkscount As Long, gapsnr As Long, ptelemnsnr As Long, lfelemnsnr As Long, nBeamLineSupport As Long, nPointSupportonBeam As Long, nSubsoils As Long, nSurfaceSupports As Long, nloadPanels As Long
 
-        Dim pointMomentpointCount As Long, pointMomentbeamCount As Long, lineMomentBeamCount As Long, lineMomentEdgeCount As Long, fpointmomentloadcount As Long, nlfunctionscount As Long, slabInternalEdgesCount As Long
+        Dim pointMomentpointCount As Long, pointMomentbeamCount As Long, lineMomentBeamCount As Long, lineMomentEdgeCount As Long, fpointmomentloadcount As Long, nlfunctionscount As Long, slabInternalEdgesCount As Long, RigidArmsCount As Long
 
         Dim stopWatch As New System.Diagnostics.Stopwatch()
         Dim time_elapsed As Double
@@ -1186,6 +1188,16 @@ Module HelperTools
             For i = 0 To slabInternalEdgesCount - 1
                 For j = 0 To 2
                     SE_SlabInternalEdges(i, j) = in_slabinternalEdges(j + i * 3)
+                Next j
+            Next i
+        End If
+
+        If (in_RigidArms IsNot Nothing) Then
+            RigidArmsCount = in_RigidArms.Count / 5
+            Rhino.RhinoApp.WriteLine("Number of RigidArms: " & RigidArmsCount)
+            For i = 0 To RigidArmsCount - 1
+                For j = 0 To 4
+                    SE_RigidArms(i, j) = in_RigidArms(j + i * 5)
                 Next j
             Next i
         End If
@@ -1521,7 +1533,7 @@ stabcombicount, SE_Crosslinks, crosslinkscount, SE_gapselem, gapsnr, SE_pressten
 lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers, SE_layersCount, SE_beamLineSupports, nBeamLineSupport, SE_pointSupportOnBeam,
 nPointSupportonBeam, SE_subsoil, nSubsoils, SE_surfaceSupport, nSurfaceSupports, SE_LoadPanels, nloadPanels,
 SE_PointMomentPointNode, pointMomentpointCount, SE_pointMomentBeam, pointMomentbeamCount, SE_lineMomentBeam, lineMomentBeamCount, SE_lineMomentEdge, lineMomentEdgeCount,
-SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionscount, SE_SlabInternalEdges, slabInternalEdgesCount)
+SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionscount, SE_SlabInternalEdges, slabInternalEdgesCount, SE_RigidArms, RigidArmsCount)
 
         Rhino.RhinoApp.Write(" Done." & Convert.ToChar(13))
 
@@ -1557,7 +1569,7 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
     lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers(,), SE_layersCount, SE_beamLineSupports(,), nbeamLineSupports, SE_pointSupportOnBeam,
     nPointSupportonBeam, SE_subsoil(,), nSubsoils, SE_surfaceSupport(,), nSurfaceSupports, SE_Loadpanels(,), nLoadpanels, SE_PointMomentPointNode(,),
     pointMomentpointCount, SE_pointMomentBeam(,), pointMomentbeamCount, SE_lineMomentBeam(,), lineMomentBeamCount, SE_lineMomentEdge(,),
-    lineMomentEdgeCount, SE_fMomentPointloads(,), fpointmomentloadcount, SE_NonlinearFunctions(,), nlfunctionscount, SE_SlabInternalEdges(,), slabInternalEdgesCount)
+    lineMomentEdgeCount, SE_fMomentPointloads(,), fpointmomentloadcount, SE_NonlinearFunctions(,), nlfunctionscount, SE_SlabInternalEdges(,), slabInternalEdgesCount, SE_RigidArms(,), RigidArmsCount)
 
         Dim i As Long
         Dim c As String, cid As String, t As String, tid As String
@@ -2051,6 +2063,40 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
                     Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... opening: " + Str(i))
                 End If
                 Call WriteInternalEdge(oSB, i, SE_SlabInternalEdges)
+
+            Next
+
+            oSB.AppendLine("</table>")
+            oSB.AppendLine("</container>")
+
+        End If
+
+        If RigidArmsCount > 0 Then
+
+            c = "{5A3B44E9-D820-4539-B52E-A2230C78495B}"
+            cid = "EP_DataAddStructure.EP_RigidArm.1"
+            t = "9D6B46ED-E294-4842-906C-90FBFB716601"
+            tid = "EP_DataAddStructure.EP_RigidArm.1"
+            oSB.AppendLine("")
+            oSB.AppendLine("<container id=""" & c & """ t=""" & cid & """>")
+            oSB.AppendLine("<table id=""" & t & """ t=""" & tid & """>")
+
+
+
+            oSB.AppendLine("<h>")
+            oSB.AppendLine(ConCat_ht("0", "Name"))
+            oSB.AppendLine(ConCat_ht("1", "Master"))
+            oSB.AppendLine(ConCat_ht("2", "Slave"))
+            oSB.AppendLine(ConCat_ht("1", "Hinge on master"))
+            oSB.AppendLine(ConCat_ht("2", "Hinge on slave"))
+            oSB.AppendLine("</h>")
+
+
+            For i = 0 To RigidArmsCount - 1
+                If i > 0 And i Mod 100 = 0 Then
+                    Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... opening: " + Str(i))
+                End If
+                Call WriteRigidArm(oSB, i, SE_RigidArms)
 
             Next
 
@@ -3871,6 +3917,30 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
         osb.AppendLine(ConCat_closetable("3"))
 
         osb.AppendLine("</obj>")
+
+    End Sub
+
+    Private Sub WriteRigidArm(ByRef osb, iRigidArm, RigidArms(,))
+
+        osb.AppendLine("<obj nm=""" & RigidArms(iRigidArm, 0) & """>")
+
+        osb.appendline(ConCat_pv("0", RigidArms(iRigidArm, 0)))
+        osb.AppendLine(ConCat_pn("1", RigidArms(iRigidArm, 1)))
+        osb.appendline(ConCat_pn("2", RigidArms(iRigidArm, 2)))
+        If (RigidArms(iRigidArm, 3)) Then
+            osb.appendline(ConCat_pv("3", "1"))
+        Else
+            osb.appendline(ConCat_pv("3", "0"))
+        End If
+        If (RigidArms(iRigidArm, 4)) Then
+            osb.appendline(ConCat_pv("4", "1"))
+        Else
+            osb.appendline(ConCat_pv("4", "0"))
+        End If
+
+
+        osb.AppendLine("</obj>")
+
 
     End Sub
 
