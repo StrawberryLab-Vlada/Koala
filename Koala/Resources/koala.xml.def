@@ -3238,5 +3238,61 @@
 
     </def_table>
   </def_container>
+
+  <def_container id="{02AC59F3-478B-44C3-A350-E78DA69D7520}" clsid="{02AC59F3-478B-44C3-A350-E78DA69D7520}" progid="DataAddSupport.EP_NonlinearityInitStress.1">
+    <def_table id="80F27A2A-A741-4C59-8421-C791B85B068F" name="XML\default" type="vertical" clsid="{02AC59F3-478B-44C3-A350-E78DA69D7520}" progid="DataAddSupport.EP_NonlinearityInitStress.1" size="29">
+
+      <def_property x="0" name="Reference Table" type="table" id="{8F96D00B-2125-411D-9218-EF0038D0056F}">
+        <def_subtable size="4" type="vertical">
+          <def_property x="0" name="Member Type" type="string" id="{3334884C-E566-404D-A135-4093CC88257D}"/>
+
+          <def_property x="1" name="Member Type Name" type="string" readonly="yes" id="{FF14758E-BC03-4650-88B5-5EA8F1016952}"/>
+
+         
+
+          <def_property x="2" name="Member Name" type="string" id="{66D67076-ED1C-44EC-BA07-93E993F493CB}"/>
+
+        </def_subtable>
+      </def_property>
+
+
+      <def_property x="1" name="Name" type="string" id="{4364BC01-AAB7-11D4-B3D9-00104BC3B531}"/>
+
+
+     
+
+      <def_property x="2" name="Type" type="enum" id="{B57F8AD0-8877-4102-B317-D8973600DB10}">
+        <def_enum size="6">
+          <it_enum v="0" t="Press only"/>
+          <it_enum v="1" t="Tension only"/>
+          <it_enum v="2" t="Limit force"/>
+          <it_enum v="3" t="Gap"/>
+          <it_enum v="4" t="Initial stress"/>
+          <it_enum v="5" t="Cable"/>
+        </def_enum>
+      </def_property>
+
+
+      <def_property x="3" name="Initial mesh" type="enum" id="{E83580E8-D88D-46CC-A785-8FE2A98B9049}">
+        <def_enum size="2">
+          <it_enum v="0" t="Straight"/>
+          <it_enum v="1" t="Calculated"/>
+        </def_enum>
+      </def_property>
+
+
+      <def_property x="4" name="Self weight" type="bool" flag="167772160" id="{C7717767-C07B-48B8-B990-877956A284FB}"/>
+
+
+      <def_property x="5" name="Normal force" type="param" flag="33619968" id="{B476BB40-015E-4E5A-95E2-2BA22EB3207A}"/>
+
+
+      <def_property x="6" name="Pn" type="param" flag="33619968" id="{9C286199-0DBE-47F2-9CB9-ADBFCCF99C71}"/>
+
+
+      <def_property x="7" name="Alpha x" type="param" flag="33619968" id="{CB08F493-9C9F-4D3B-BFB3-3FFCF805C9F1}"/>
+
+    </def_table>
+  </def_container>
   
 </def_project>

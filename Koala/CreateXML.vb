@@ -124,6 +124,8 @@ Namespace Koala
             pManager.Param(47).Optional = True
             pManager.AddTextParameter("RigidArms", "RigidArms", "Rigid arms", GH_ParamAccess.list)
             pManager.Param(48).Optional = True
+            pManager.AddTextParameter("CableElementsBeamNL", "CableElementsBeamNL", "List of cable beam local NL", GH_ParamAccess.list)
+            pManager.Param(49).Optional = True
         End Sub
 
         ''' <summary>
@@ -192,6 +194,7 @@ Namespace Koala
             Dim in_slabinternalEdges = New List(Of String)
             Dim Tolerance As Double = 0.001
             Dim in_RigidArms = New List(Of String)
+            Dim in_Cables = New List(Of String)
 
 
 
@@ -248,6 +251,7 @@ Namespace Koala
             DA.GetData(Of Double)(46, Tolerance)
             DA.GetDataList(Of String)(47, in_slabinternalEdges)
             DA.GetDataList(Of String)(48, in_RigidArms)
+            DA.GetDataList(Of String)(49, in_Cables)
 
 
             If AutoUpdate = False Then
@@ -263,7 +267,7 @@ Namespace Koala
                           in_edgeLoads, in_pointLoadsPoints, in_pointLoadsBeams, Scale, in_LinCombinations, in_NonLinCombinations, in_StabCombinations,
                           in_CrossLinks, in_presstensionElem, in_gapElem, in_limitforceElem, projectInfo, in_layers, in_BeamLineSupport, in_PointSupportsOnBeams,
                           in_Subsoils, in_SurfaceSupports, in_loadpanels, in_pointMomentPoint, in_pointMomentBeam, in_lineMomentBeam, in_lineMomentEdge,
-                          in_freePointMoment, in_nonlinearfunctions, RemDuplNodes, Tolerance, in_slabinternalEdges, in_RigidArms)
+                          in_freePointMoment, in_nonlinearfunctions, RemDuplNodes, Tolerance, in_slabinternalEdges, in_RigidArms, in_Cables)
             DA.SetData(0, FileName)
 
 

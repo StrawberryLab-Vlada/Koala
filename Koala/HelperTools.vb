@@ -804,6 +804,25 @@ Module HelperTools
                 Return "Flexible"
         End Select
     End Function
+
+
+    Public Sub AddOptionsToMenuBeamNLCableInitialMesh(menuitem As Param_Integer)
+        menuitem.AddNamedValue("Straight", 0)
+        menuitem.AddNamedValue("Calculated", 1)
+
+    End Sub
+
+    Public Function GetStringFromBeamNLCableInitialMesh(item As Integer) As String
+        Select Case item
+            Case 0
+                Return "Straight"
+            Case 1
+                Return "Calculated"
+            Case Else
+                Return "Straight"
+        End Select
+    End Function
+
     Public Function GetExistingNode(arrPoint As Rhino.Geometry.Point3d, nodes(,) As String, nnodes As Long, epsilon As Double)
         Dim currentnode
         'Start with node not found, loop through all the nodes until one is found within tolerance
@@ -971,7 +990,7 @@ Module HelperTools
                              in_CrossLinks As List(Of String), in_presstensionElem As List(Of String), in_gapElem As List(Of String), in_limitforceElem As List(Of String), projectInfo As List(Of String), in_layers As List(Of String),
                              in_BeamLineSupport As List(Of String), in_PointSupportOnBeam As List(Of String), in_Subsoils As List(Of String), in_SurfaceSupports As List(Of String), in_loadpanels As List(Of String), in_pointMomentPoint As List(Of String),
                              in_pointMomentBeam As List(Of String), in_lineMomentBeam As List(Of String), in_lineMomentEdge As List(Of String), in_freePointMoment As List(Of String), in_nonlinearfunctions As List(Of String),
-                             RemDuplNodes As Boolean, Tolerance As Double, in_slabinternalEdges As List(Of String), in_RigidArms As List(Of String))
+                             RemDuplNodes As Boolean, Tolerance As Double, in_slabinternalEdges As List(Of String), in_RigidArms As List(Of String), in_Cables As List(Of String))
         Dim i As Long, j As Long
 
 
@@ -1020,6 +1039,7 @@ Module HelperTools
         Dim SE_NonlinearFunctions(100000, 5) As String
         Dim SE_SlabInternalEdges(100000, 3) As String
         Dim SE_RigidArms(100000, 5) As String
+        Dim SE_Cables(100000, 6) As String
 
         Dim SE_meshsize As Double
 
@@ -1033,7 +1053,7 @@ Module HelperTools
         Dim hingecount As Long, eloadscount As Long, pointLoadpointCount As Long, pointLoadbeamCount As Long, lincominationcount As Long, nonlincominationcount As Long
         Dim stabcombicount As Long, crosslinkscount As Long, gapsnr As Long, ptelemnsnr As Long, lfelemnsnr As Long, nBeamLineSupport As Long, nPointSupportonBeam As Long, nSubsoils As Long, nSurfaceSupports As Long, nloadPanels As Long
 
-        Dim pointMomentpointCount As Long, pointMomentbeamCount As Long, lineMomentBeamCount As Long, lineMomentEdgeCount As Long, fpointmomentloadcount As Long, nlfunctionscount As Long, slabInternalEdgesCount As Long, RigidArmsCount As Long
+        Dim pointMomentpointCount As Long, pointMomentbeamCount As Long, lineMomentBeamCount As Long, lineMomentEdgeCount As Long, fpointmomentloadcount As Long, nlfunctionscount As Long, slabInternalEdgesCount As Long, RigidArmsCount As Long, CablesCount As Long
 
         Dim stopWatch As New System.Diagnostics.Stopwatch()
         Dim time_elapsed As Double
@@ -1463,6 +1483,16 @@ Module HelperTools
             Next i
         End If
 
+        If (in_Cables IsNot Nothing) Then
+            CablesCount = in_Cables.Count / 6
+            Rhino.RhinoApp.WriteLine("Cable elements: " & CablesCount)
+            For i = 0 To CablesCount - 1
+                For j = 0 To 5
+                    SE_Cables(i, j) = in_Cables(j + i * 6)
+                Next j
+            Next i
+        End If
+
         If ((in_BeamLineSupport IsNot Nothing)) Then
             nBeamLineSupport = in_BeamLineSupport.Count / 23
             Rhino.RhinoApp.WriteLine("Number of beam line supports: " & nBeamLineSupport)
@@ -1533,7 +1563,7 @@ stabcombicount, SE_Crosslinks, crosslinkscount, SE_gapselem, gapsnr, SE_pressten
 lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers, SE_layersCount, SE_beamLineSupports, nBeamLineSupport, SE_pointSupportOnBeam,
 nPointSupportonBeam, SE_subsoil, nSubsoils, SE_surfaceSupport, nSurfaceSupports, SE_LoadPanels, nloadPanels,
 SE_PointMomentPointNode, pointMomentpointCount, SE_pointMomentBeam, pointMomentbeamCount, SE_lineMomentBeam, lineMomentBeamCount, SE_lineMomentEdge, lineMomentEdgeCount,
-SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionscount, SE_SlabInternalEdges, slabInternalEdgesCount, SE_RigidArms, RigidArmsCount)
+SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionscount, SE_SlabInternalEdges, slabInternalEdgesCount, SE_RigidArms, RigidArmsCount, SE_Cables, CablesCount)
 
         Rhino.RhinoApp.Write(" Done." & Convert.ToChar(13))
 
@@ -1569,7 +1599,7 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
     lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers(,), SE_layersCount, SE_beamLineSupports(,), nbeamLineSupports, SE_pointSupportOnBeam,
     nPointSupportonBeam, SE_subsoil(,), nSubsoils, SE_surfaceSupport(,), nSurfaceSupports, SE_Loadpanels(,), nLoadpanels, SE_PointMomentPointNode(,),
     pointMomentpointCount, SE_pointMomentBeam(,), pointMomentbeamCount, SE_lineMomentBeam(,), lineMomentBeamCount, SE_lineMomentEdge(,),
-    lineMomentEdgeCount, SE_fMomentPointloads(,), fpointmomentloadcount, SE_NonlinearFunctions(,), nlfunctionscount, SE_SlabInternalEdges(,), slabInternalEdgesCount, SE_RigidArms(,), RigidArmsCount)
+    lineMomentEdgeCount, SE_fMomentPointloads(,), fpointmomentloadcount, SE_NonlinearFunctions(,), nlfunctionscount, SE_SlabInternalEdges(,), slabInternalEdgesCount, SE_RigidArms(,), RigidArmsCount, SE_Cables(,), CablesCount)
 
         Dim i As Long
         Dim c As String, cid As String, t As String, tid As String
@@ -1893,7 +1923,7 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
             oSB.AppendLine("</container>")
         End If
 
-        If lfelemnsnr > 0 Then
+        If CablesCount > 0 Then
             'output beams ---------------------------------------------------------------------
             c = "{02AC59F3-478B-44C3-A350-E78DA69D7520}"
             cid = "DataAddSupport.EP_NonlinearityInitStress.1"
@@ -1908,15 +1938,49 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
             oSB.AppendLine(ConCat_ht("0", "Name"))
             oSB.AppendLine(ConCat_ht("1", "Reference table"))
             oSB.AppendLine(ConCat_ht("2", "Type"))
-            oSB.AppendLine(ConCat_ht("3", "Direction"))
-            oSB.AppendLine(ConCat_ht("4", "Type"))
-            oSB.AppendLine(ConCat_ht("5", "Marginal force"))
+            oSB.AppendLine(ConCat_ht("3", "Initial mesh"))
+            oSB.AppendLine(ConCat_ht("4", "Self weight"))
+            oSB.AppendLine(ConCat_ht("5", "Normal force"))
+            oSB.AppendLine(ConCat_ht("6", "Pn"))
+            oSB.AppendLine(ConCat_ht("7", "Alpha x"))
             oSB.AppendLine("</h>")
             For i = 0 To lfelemnsnr - 1
                 If i > 0 And (i Mod 500 = 0) Then
                     Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... beam: " + Str(i))
                 End If
-                Call WriteLimitForceBeamNL(oSB, i, limforceelem)
+                Call WriteCableBeamNL(oSB, i, SE_Cables)
+            Next
+
+            oSB.AppendLine("</table>")
+            oSB.AppendLine("</container>")
+        End If
+
+
+        If CablesCount > 0 Then
+
+            'output beams ---------------------------------------------------------------------
+            c = "{02AC59F3-478B-44C3-A350-E78DA69D7520}"
+            cid = "DataAddSupport.EP_NonlinearityInitStress.1"
+            t = "80F27A2A-A741-4C59-8421-C791B85B068F"
+            tid = "DataAddSupport.EP_NonlinearityInitStress.1"
+
+            oSB.AppendLine("")
+            oSB.AppendLine("<container id=""" & c & """ t=""" & cid & """>")
+            oSB.AppendLine("<table id=""" & t & """ t=""" & tid & """>")
+
+            oSB.AppendLine("<h>")
+            oSB.AppendLine(ConCat_ht("0", "Name"))
+            oSB.AppendLine(ConCat_ht("1", "Reference table"))
+            oSB.AppendLine(ConCat_ht("2", "Type"))
+            oSB.AppendLine(ConCat_ht("3", "Type"))
+            oSB.AppendLine(ConCat_ht("4", "Displacement"))
+            oSB.AppendLine(ConCat_ht("5", "Position"))
+            oSB.AppendLine("</h>")
+            For i = 0 To gapsnr - 1
+                If i > 0 And (i Mod 500 = 0) Then
+                    Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... beam: " + Str(i))
+                End If
+                Call WriteGapLocalBeamNL(oSB, i, gapselem)
             Next
 
             oSB.AppendLine("</table>")
@@ -3470,6 +3534,46 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
             Case "End"
                 oSB.AppendLine(ConCat_pvt("5", "1", "End"))
         End Select
+        oSB.AppendLine("</obj>")
+    End Sub
+
+    Private Sub WriteCableBeamNL(ByRef oSB, icable, cables(,))
+        oSB.AppendLine("<obj nm=""" & "CBNL" & Trim(Str(icable)) & """>")
+        oSB.AppendLine(ConCat_pv("0", "CBNL" & Trim(Str(icable)))) 'Name
+        'write beam name as reference table
+        oSB.AppendLine("<p1 t="""">")
+        oSB.AppendLine("<h>")
+        oSB.AppendLine("<h0 t=""Member Type""/>")
+        oSB.AppendLine("<h1 t=""Member Type Name""/>")
+        oSB.AppendLine("<h2 t=""Member Name""/>")
+        oSB.AppendLine("</h>")
+        oSB.AppendLine("<row id=""0"">")
+        oSB.AppendLine(ConCat_pv("0", "{ECB5D684-7357-11D4-9F6C-00104BC3B443}"))
+        oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_Beam.1"))
+        oSB.AppendLine(ConCat_pv("2", cables(icable, 0)))
+        oSB.AppendLine("</row>")
+        oSB.AppendLine("</p1>")
+        'end of reference table
+        oSB.AppendLine(ConCat_pvt("2", "5", "Cable"))
+        Select Case cables(icable, 1)
+
+            Case "Straight"
+                oSB.AppendLine(ConCat_pvt("3", "0", "Straight"))
+            Case "Calculated"
+                oSB.AppendLine(ConCat_pvt("3", "1", "Calculated"))
+
+
+        End Select
+        If (cables(icable, 2)) Then
+            oSB.AppendLine(ConCat_pv("4", 1))
+        Else
+            oSB.AppendLine(ConCat_pv("4", 0))
+        End If
+        oSB.AppendLine(ConCat_pv("5", cables(icable, 3)))
+        oSB.AppendLine(ConCat_pv("6", cables(icable, 4)))
+        oSB.AppendLine(ConCat_pv("7", cables(icable, 5)))
+
+
         oSB.AppendLine("</obj>")
     End Sub
 
