@@ -67,7 +67,7 @@ Namespace Koala
 
 
 
-            Dim SE_Cables(BeamList.Count, 4) As String
+            Dim SE_Cables(BeamList.Count, 5) As String
             Dim FlatList As New List(Of System.Object)()
             'a section consists of: Profile name, section definition, material
 
@@ -82,8 +82,8 @@ Namespace Koala
                 SE_Cables(itemcount, 0) = Strings.Trim(item)
                 SE_Cables(itemcount, 1) = InitialMesh
                 SE_Cables(itemcount, 2) = SelfWeigh
-                SE_Cables(itemcount, 3) = NormalForce / 1000
-                SE_Cables(itemcount, 4) = Pn / 1000
+                SE_Cables(itemcount, 3) = NormalForce * 1000
+                SE_Cables(itemcount, 4) = Pn * 1000
                 SE_Cables(itemcount, 5) = (Alphax * Math.PI) / 180
 
                 itemcount += 1

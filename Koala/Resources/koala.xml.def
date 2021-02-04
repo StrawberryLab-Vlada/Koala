@@ -3242,7 +3242,9 @@
   <def_container id="{02AC59F3-478B-44C3-A350-E78DA69D7520}" clsid="{02AC59F3-478B-44C3-A350-E78DA69D7520}" progid="DataAddSupport.EP_NonlinearityInitStress.1">
     <def_table id="80F27A2A-A741-4C59-8421-C791B85B068F" name="XML\default" type="vertical" clsid="{02AC59F3-478B-44C3-A350-E78DA69D7520}" progid="DataAddSupport.EP_NonlinearityInitStress.1" size="29">
 
-      <def_property x="0" name="Reference Table" type="table" id="{8F96D00B-2125-411D-9218-EF0038D0056F}">
+      <def_property x="0" name="Name" type="string" id="{4364BC01-AAB7-11D4-B3D9-00104BC3B531}"/>
+
+      <def_property x="1" name="Reference Table" type="table" id="{8F96D00B-2125-411D-9218-EF0038D0056F}">
         <def_subtable size="4" type="vertical">
           <def_property x="0" name="Member Type" type="string" id="{3334884C-E566-404D-A135-4093CC88257D}"/>
 
@@ -3256,7 +3258,7 @@
       </def_property>
 
 
-      <def_property x="1" name="Name" type="string" id="{4364BC01-AAB7-11D4-B3D9-00104BC3B531}"/>
+      
 
 
      

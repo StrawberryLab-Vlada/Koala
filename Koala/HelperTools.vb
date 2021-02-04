@@ -1927,7 +1927,7 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
             'output beams ---------------------------------------------------------------------
             c = "{02AC59F3-478B-44C3-A350-E78DA69D7520}"
             cid = "DataAddSupport.EP_NonlinearityInitStress.1"
-            t = "5604D64C-4042-4F4D-84C3-9F948AAD465E"
+            t = "80F27A2A-A741-4C59-8421-C791B85B068F"
             tid = "DataAddSupport.EP_NonlinearityInitStress.1"
 
             oSB.AppendLine("")
@@ -1944,7 +1944,7 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
             oSB.AppendLine(ConCat_ht("6", "Pn"))
             oSB.AppendLine(ConCat_ht("7", "Alpha x"))
             oSB.AppendLine("</h>")
-            For i = 0 To lfelemnsnr - 1
+            For i = 0 To CablesCount - 1
                 If i > 0 And (i Mod 500 = 0) Then
                     Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... beam: " + Str(i))
                 End If
@@ -1956,12 +1956,11 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
         End If
 
 
-        If CablesCount > 0 Then
-
+        If lfelemnsnr > 0 Then
             'output beams ---------------------------------------------------------------------
             c = "{02AC59F3-478B-44C3-A350-E78DA69D7520}"
             cid = "DataAddSupport.EP_NonlinearityInitStress.1"
-            t = "80F27A2A-A741-4C59-8421-C791B85B068F"
+            t = "5604D64C-4042-4F4D-84C3-9F948AAD465E"
             tid = "DataAddSupport.EP_NonlinearityInitStress.1"
 
             oSB.AppendLine("")
@@ -1972,20 +1971,23 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
             oSB.AppendLine(ConCat_ht("0", "Name"))
             oSB.AppendLine(ConCat_ht("1", "Reference table"))
             oSB.AppendLine(ConCat_ht("2", "Type"))
-            oSB.AppendLine(ConCat_ht("3", "Type"))
-            oSB.AppendLine(ConCat_ht("4", "Displacement"))
-            oSB.AppendLine(ConCat_ht("5", "Position"))
+            oSB.AppendLine(ConCat_ht("3", "Direction"))
+            oSB.AppendLine(ConCat_ht("4", "Type"))
+            oSB.AppendLine(ConCat_ht("5", "Marginal force"))
             oSB.AppendLine("</h>")
-            For i = 0 To gapsnr - 1
+            For i = 0 To lfelemnsnr - 1
                 If i > 0 And (i Mod 500 = 0) Then
                     Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... beam: " + Str(i))
                 End If
-                Call WriteGapLocalBeamNL(oSB, i, gapselem)
+                Call WriteLimitForceBeamNL(oSB, i, limforceelem)
             Next
 
             oSB.AppendLine("</table>")
             oSB.AppendLine("</container>")
         End If
+
+
+
 
         If surfacenr > 0 Then
             'output surfaces ------------------------------------------------------------------
