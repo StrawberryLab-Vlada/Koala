@@ -990,7 +990,7 @@ Module HelperTools
                              in_CrossLinks As List(Of String), in_presstensionElem As List(Of String), in_gapElem As List(Of String), in_limitforceElem As List(Of String), projectInfo As List(Of String), in_layers As List(Of String),
                              in_BeamLineSupport As List(Of String), in_PointSupportOnBeam As List(Of String), in_Subsoils As List(Of String), in_SurfaceSupports As List(Of String), in_loadpanels As List(Of String), in_pointMomentPoint As List(Of String),
                              in_pointMomentBeam As List(Of String), in_lineMomentBeam As List(Of String), in_lineMomentEdge As List(Of String), in_freePointMoment As List(Of String), in_nonlinearfunctions As List(Of String),
-                             RemDuplNodes As Boolean, Tolerance As Double, in_slabinternalEdges As List(Of String), in_RigidArms As List(Of String), in_Cables As List(Of String))
+                             RemDuplNodes As Boolean, Tolerance As Double, in_slabinternalEdges As List(Of String), in_RigidArms As List(Of String), in_Cables As List(Of String), in_BeamInternalNodes As List(Of String))
         Dim i As Long, j As Long
 
 
@@ -1040,6 +1040,7 @@ Module HelperTools
         Dim SE_SlabInternalEdges(100000, 3) As String
         Dim SE_RigidArms(100000, 5) As String
         Dim SE_Cables(100000, 6) As String
+        Dim SE_nodesInternalBeam(100000, 4) As String 'a node consists of: Name, X, Y, Z
 
         Dim SE_meshsize As Double
 
@@ -1054,6 +1055,7 @@ Module HelperTools
         Dim stabcombicount As Long, crosslinkscount As Long, gapsnr As Long, ptelemnsnr As Long, lfelemnsnr As Long, nBeamLineSupport As Long, nPointSupportonBeam As Long, nSubsoils As Long, nSurfaceSupports As Long, nloadPanels As Long
 
         Dim pointMomentpointCount As Long, pointMomentbeamCount As Long, lineMomentBeamCount As Long, lineMomentEdgeCount As Long, fpointmomentloadcount As Long, nlfunctionscount As Long, slabInternalEdgesCount As Long, RigidArmsCount As Long, CablesCount As Long
+        Dim internalNodesBeamCount As Long = 0
 
         Dim stopWatch As New System.Diagnostics.Stopwatch()
         Dim time_elapsed As Double
@@ -1142,7 +1144,6 @@ Module HelperTools
                 End If
 
             Next i
-
             If (RemDuplNodes) Then
                 For i = 0 To nodecount - 1
                     For j = i + 1 To nodecount - 1
@@ -1152,6 +1153,7 @@ Module HelperTools
                                     If System.Math.Abs(SE_nodes(i, 3) - SE_nodes(j, 3)) < Tolerance Then
                                         DupNodeDict(SE_nodes(j, 0)) = SE_nodes(i, 0)
                                         isNodeDuplicate(SE_nodes(j, 0)) = True
+                                        Rhino.RhinoApp.WriteLine(SE_nodes(j, 0) & "is duplicit and is removed")
                                     End If
                                 End If
                             End If
@@ -1161,7 +1163,25 @@ Module HelperTools
             End If
         End If
 
-        If (in_beams IsNot Nothing) Then
+
+        If (in_BeamInternalNodes IsNot Nothing) Then
+
+                internalNodesBeamCount = in_BeamInternalNodes.Count / 5
+                Rhino.RhinoApp.WriteLine("Number of beam internal nodes: " & nodecount)
+            For i = 0 To internalNodesBeamCount - 1
+                SE_nodesInternalBeam(i, 0) = in_BeamInternalNodes(i * 4)
+                SE_nodesInternalBeam(i, 1) = in_BeamInternalNodes(1 + i * 4) * Scale
+                SE_nodesInternalBeam(i, 2) = in_BeamInternalNodes(2 + i * 4) * Scale
+                SE_nodesInternalBeam(i, 3) = in_BeamInternalNodes(3 + i * 4) * Scale
+                SE_nodesInternalBeam(i, 4) = in_BeamInternalNodes(4 + i * 4)
+
+
+            Next i
+
+
+        End If
+
+            If (in_beams IsNot Nothing) Then
             beamcount = in_beams.Count / 13
             Rhino.RhinoApp.WriteLine("Number of beams: " & beamcount)
             For i = 0 To beamcount - 1
@@ -1563,7 +1583,8 @@ stabcombicount, SE_Crosslinks, crosslinkscount, SE_gapselem, gapsnr, SE_pressten
 lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers, SE_layersCount, SE_beamLineSupports, nBeamLineSupport, SE_pointSupportOnBeam,
 nPointSupportonBeam, SE_subsoil, nSubsoils, SE_surfaceSupport, nSurfaceSupports, SE_LoadPanels, nloadPanels,
 SE_PointMomentPointNode, pointMomentpointCount, SE_pointMomentBeam, pointMomentbeamCount, SE_lineMomentBeam, lineMomentBeamCount, SE_lineMomentEdge, lineMomentEdgeCount,
-SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionscount, SE_SlabInternalEdges, slabInternalEdgesCount, SE_RigidArms, RigidArmsCount, SE_Cables, CablesCount)
+SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionscount, SE_SlabInternalEdges, slabInternalEdgesCount, SE_RigidArms, RigidArmsCount, SE_Cables, CablesCount, SE_nodesInternalBeam, internalNodesBeamCount
+)
 
         Rhino.RhinoApp.Write(" Done." & Convert.ToChar(13))
 
@@ -1599,7 +1620,7 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
     lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers(,), SE_layersCount, SE_beamLineSupports(,), nbeamLineSupports, SE_pointSupportOnBeam,
     nPointSupportonBeam, SE_subsoil(,), nSubsoils, SE_surfaceSupport(,), nSurfaceSupports, SE_Loadpanels(,), nLoadpanels, SE_PointMomentPointNode(,),
     pointMomentpointCount, SE_pointMomentBeam(,), pointMomentbeamCount, SE_lineMomentBeam(,), lineMomentBeamCount, SE_lineMomentEdge(,),
-    lineMomentEdgeCount, SE_fMomentPointloads(,), fpointmomentloadcount, SE_NonlinearFunctions(,), nlfunctionscount, SE_SlabInternalEdges(,), slabInternalEdgesCount, SE_RigidArms(,), RigidArmsCount, SE_Cables(,), CablesCount)
+    lineMomentEdgeCount, SE_fMomentPointloads(,), fpointmomentloadcount, SE_NonlinearFunctions(,), nlfunctionscount, SE_SlabInternalEdges(,), slabInternalEdgesCount, SE_RigidArms(,), RigidArmsCount, SE_Cables(,), CablesCount, SE_nodesInternalBeam(,), internalNodesBeamCount)
 
         Dim i As Long
         Dim c As String, cid As String, t As String, tid As String
@@ -1815,6 +1836,41 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
                 If Not isNodeDuplicate(nodes(i, 0)) Then
                     Call WriteNode(oSB, i, nodes)
                 End If
+
+            Next
+
+            oSB.AppendLine("</table>")
+            oSB.AppendLine("</container>")
+
+        End If
+
+
+        If internalNodesBeamCount > 0 Then
+            'output nodes ---------------------------------------------------------------------
+            c = "{39A7F468-A0D4-4DFF-8E5C-5843E1807D13}"
+            cid = "EP_DSG_Elements.EP_StructNode.1"
+            t = "FCFB763E-A640-42FF-A2DC-2D5FA1A420BF"
+            tid = "EP_DSG_Elements.EP_StructNode.1"
+
+            oSB.AppendLine("")
+            oSB.AppendLine("<container id=""" & c & """ t=""" & cid & """>")
+            oSB.AppendLine("<table id=""" & t & """ t=""" & tid & """>")
+
+            oSB.AppendLine("<h>")
+            oSB.AppendLine(ConCat_ht("0", "Name"))
+            oSB.AppendLine(ConCat_ht("1", "Coord X"))
+            oSB.AppendLine(ConCat_ht("2", "Coord Y"))
+            oSB.AppendLine(ConCat_ht("3", "Coord Z"))
+            oSB.AppendLine(ConCat_ht("4", "Linked node"))
+            oSB.AppendLine("</h>")
+
+            For i = 0 To internalNodesBeamCount - 1
+                If i > 0 And (i Mod 500 = 0) Then
+                    Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... node: " + Str(i))
+                End If
+
+                Call WriteInternalBeamNode(oSB, i, SE_nodesInternalBeam)
+
 
             Next
 
@@ -3265,6 +3321,21 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
         oSB.AppendLine("</obj>")
 
     End Sub
+
+
+    Private Sub WriteInternalBeamNode(ByRef oSB, inode, nodes(,))
+
+        oSB.AppendLine("<obj nm=""" & Trim(nodes(inode, 0)) & """>")
+
+        oSB.AppendLine(ConCat_pv("0", Trim(nodes(inode, 0))))
+        oSB.AppendLine(ConCat_pv("1", CStr(nodes(inode, 1))))
+        oSB.AppendLine(ConCat_pv("2", CStr(nodes(inode, 2))))
+        oSB.AppendLine(ConCat_pv("3", CStr(nodes(inode, 3))))
+        oSB.AppendLine(ConCat_pv("4", "to " & CStr(nodes(inode, 4))))
+
+        oSB.AppendLine("</obj>")
+    End Sub
+
 
     Private Sub WriteBeam(ByRef oSB, ibeam, beams(,)) 'write 1 beam to the XML stream
         'a beam consists of: Name, Section, Layer, LineShape, LCSType, LCSParam1, LCSParam2, LCSParam3

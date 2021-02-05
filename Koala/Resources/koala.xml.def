@@ -3296,5 +3296,28 @@
 
     </def_table>
   </def_container>
+
+  <def_container id="{39A7F468-A0D4-4DFF-8E5C-5843E1807D13}" clsid="{39A7F468-A0D4-4DFF-8E5C-5843E1807D13}" progid="EP_DSG_Elements.EP_StructNode.1">
+    <def_table id="FCFB763E-A640-42FF-A2DC-2D5FA1A420BF" name="XML\default" type="vertical" clsid="{39A7F468-A0D4-4DFF-8E5C-5843E1807D13}" progid="EP_DSG_Elements.EP_StructNode.1" size="12">
+
+    
+
+      <def_property x="0" name="Name" type="string" id="{4364BC01-AAB7-11D4-B3D9-00104BC3B531}"/>
+
+      <def_property x="1" name="Coord X" type="param" flag="33619968" id="{C1DD759A-4291-481B-B819-92E3AA9E04B7}"/>
+
+
+      <def_property x="2" name="Coord Y" type="param" flag="33619968" id="{A84A15AC-FEC2-4C27-84B4-CFA676615934}"/>
+
+
+      <def_property x="3" name="Coord Z" type="param" flag="33619968" id="{1017EA1E-F76B-4D4B-8A4C-7E58FDED1B02}"/>
+
+      <def_property x="4" name="Linked node" type="string" id="{ADF43457-2BF9-4C4E-8DA8-22B072DF5FC5}"/>
+
+
+
+    </def_table>
+  </def_container>
+  
   
 </def_project>
