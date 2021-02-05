@@ -4,6 +4,26 @@ description: Change log of development of Koala - What's  new in the release/
 
 # Changelog
 
+## v3.10
+
+### Added
+
+* Added component for beam internal nodes 
+* Added component for internal edge of slab 
+* Added component for cable element
+* Added component for Rigid arm
+* Added algorithm to remove duplicity nodes on the level of whole model 
+
+### Modified
+
+* Modified edge line load and edge moment load to take into account internal edge
+
+### Fixed
+
+* Load panels fix 
+* Fixed typos and issue with material for 2D member 
+* Fix of thickness issue
+
 ## v3.9
 
 ### Added
