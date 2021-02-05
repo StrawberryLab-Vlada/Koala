@@ -80,7 +80,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="InternalForces1D.cs" />
-    <Compile Include="PRADReinforcement.cs" />
     <Compile Include="PrincipalStresses1D.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
