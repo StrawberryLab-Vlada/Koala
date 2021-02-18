@@ -5731,7 +5731,9 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
             Case "Member LCS"
                 oSB.AppendLine(ConCat_pvt("9", "1", "Member LCS"))
         End Select
-
+        oSB.AppendLine(ConCat_pv("10", ""))
+        oSB.AppendLine(ConCat_pv("11", loads(iload, 9)))
+        oSB.AppendLine(ConCat_pv("12", loads(iload, 10)))
         oSB.AppendLine("</obj>")
 
     End Sub
@@ -5785,6 +5787,11 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
             Case "Member LCS"
                 oSB.AppendLine(ConCat_pvt("9", "1", "Member LCS"))
         End Select
+        oSB.AppendLine(ConCat_pv("10", ""))
+        oSB.AppendLine(ConCat_pv("11", loads(iload, 9)))
+        oSB.AppendLine(ConCat_pv("12", loads(iload, 10)))
+
+
         oSB.AppendLine("</obj>")
 
     End Sub
@@ -5902,6 +5909,9 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
         oSB.AppendLine("</row>")
 
         oSB.AppendLine(ConCat_closetable("10"))
+        oSB.AppendLine(ConCat_pv("11", ""))
+        oSB.AppendLine(ConCat_pv("12", loads(iload, 9)))
+        oSB.AppendLine(ConCat_pv("13", loads(iload, 10)))
 
         oSB.AppendLine("</obj>")
 
@@ -6010,6 +6020,9 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
         Next LineShape
 
         oSB.AppendLine(ConCat_closetable("9"))
+        oSB.AppendLine(ConCat_pv("10", ""))
+        oSB.AppendLine(ConCat_pv("11", loads(iload, 7)))
+        oSB.AppendLine(ConCat_pv("12", loads(iload, 8)))
 
         oSB.AppendLine("</obj>")
 
