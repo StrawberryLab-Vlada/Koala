@@ -3850,7 +3850,7 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
 
         osb.AppendLine("<obj nm=""" & loadpanels(iloadpanel, 0) & """>")
         osb.AppendLine(ConCat_pv("0", loadpanels(iloadpanel, 0))) ' name
-        osb.AppendLine(ConCat_pn("1", loadpanels(iloadpanel, 4))) 'layer
+        osb.AppendLine(ConCat_pn("1", loadpanels(iloadpanel, 1))) 'layer
 
         'table of geometry
         osb.AppendLine(ConCat_opentable("2", ""))
