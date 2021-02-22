@@ -5954,9 +5954,9 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
             Case "From-to"
                 oSB.AppendLine(ConCat_pvt("5", "3", "From-to"))
             Case "Z=0"
-                oSB.AppendLine(ConCat_pvt("4", "4", "Z=0"))
+                oSB.AppendLine(ConCat_pvt("5", "4", "Z=0"))
             Case "-Z"
-                oSB.AppendLine(ConCat_pvt("4", "5", "-Z (incl. 0)"))
+                oSB.AppendLine(ConCat_pvt("5", "5", "-Z (incl. 0)"))
             Case "+Z"
                 oSB.AppendLine(ConCat_pvt("5", "6", "+Z (incl. 0)"))
         End Select
