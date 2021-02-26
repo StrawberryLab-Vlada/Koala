@@ -5351,7 +5351,7 @@ CablesCount, SE_nodesInternalBeam, internalNodesBeamCount, SE_LineHinges, linehi
         oSB.AppendLine("</p1>")
         'end of reference table
 
-        oSB.AppendLine(ConCat_pn("1", loads(iload, 0)))
+        oSB.AppendLine(ConCat_pn("2", loads(iload, 0)))
 
         'direction
 
