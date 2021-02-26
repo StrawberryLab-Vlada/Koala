@@ -126,6 +126,7 @@
     <Compile Include="Layers.vb" />
     <Compile Include="LimitForceLocalBeamNL.vb" />
     <Compile Include="LinearCombination.vb" />
+    <Compile Include="LineHinge.vb" />
     <Compile Include="LineMomentOnBeam.vb" />
     <Compile Include="LineMomentOnEdge.vb" />
     <Compile Include="LoadCasesAndGroups.vb" />
@@ -168,6 +169,8 @@
     <Compile Include="Subsoil.vb" />
     <Compile Include="SurfaceLoad.vb" />
     <Compile Include="SurfaceSupport.vb" />
+    <Compile Include="ThermalLoadOnBeam.vb" />
+    <Compile Include="ThermalLoadOnSurface.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -195,6 +198,8 @@
   <ItemGroup>
     <Content Include="Resources\2DMember.bmp" />
     <Content Include="Resources\Analysis.bmp" />
+    <None Include="Resources\TehrmalLoadSurface.bmp" />
+    <None Include="Resources\ThermalLoadBeam.bmp" />
     <None Include="Resources\SurfaceSupport.bmp" />
     <None Include="Resources\BeamLineSupport.bmp" />
     <None Include="Resources\Buckling.bmp" />
@@ -218,6 +223,7 @@
     <Content Include="Resources\koala.xml.def" />
     <None Include="Resources\Layers.bmp" />
     <None Include="Resources\LineEdgeMoment.bmp" />
+    <None Include="Resources\LineHinge.bmp" />
     <Content Include="Resources\LineLoad.bmp" />
     <Content Include="Resources\LineSupport.bmp" />
     <Content Include="Resources\LoadCases.bmp" />

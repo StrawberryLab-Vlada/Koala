@@ -472,6 +472,23 @@ Module HelperTools
         End Select
     End Function
 
+    Public Sub AddOptionsToMenuThermalDistribution(menuitem As Param_Integer)
+        menuitem.AddNamedValue("Constant", 0)
+        menuitem.AddNamedValue("Linear", 1)
+    End Sub
+
+
+    Public Function GetStringFromMenuThermalDistribution(item As Integer) As String
+        Select Case item
+            Case 0
+                Return "Constant"
+            Case 1
+                Return "Linear"
+
+            Case Else
+                Return "Constant"
+        End Select
+    End Function
 
     Public Sub AddOptionsToMenuCoordSysPoint(menuitem As Param_Integer)
         menuitem.AddNamedValue("GCS", 0)
@@ -990,7 +1007,8 @@ Module HelperTools
                              in_CrossLinks As List(Of String), in_presstensionElem As List(Of String), in_gapElem As List(Of String), in_limitforceElem As List(Of String), projectInfo As List(Of String), in_layers As List(Of String),
                              in_BeamLineSupport As List(Of String), in_PointSupportOnBeam As List(Of String), in_Subsoils As List(Of String), in_SurfaceSupports As List(Of String), in_loadpanels As List(Of String), in_pointMomentPoint As List(Of String),
                              in_pointMomentBeam As List(Of String), in_lineMomentBeam As List(Of String), in_lineMomentEdge As List(Of String), in_freePointMoment As List(Of String), in_nonlinearfunctions As List(Of String),
-                             RemDuplNodes As Boolean, Tolerance As Double, in_slabinternalEdges As List(Of String), in_RigidArms As List(Of String), in_Cables As List(Of String), in_BeamInternalNodes As List(Of String))
+                             RemDuplNodes As Boolean, Tolerance As Double, in_slabinternalEdges As List(Of String), in_RigidArms As List(Of String), in_Cables As List(Of String), in_BeamInternalNodes As List(Of String), in_LineHiges As List(Of String),
+                             in_ThermalLoadBeams As List(Of String), in_ThermalLoadSurfaces As List(Of String))
         Dim i As Long, j As Long
 
 
@@ -1041,6 +1059,9 @@ Module HelperTools
         Dim SE_RigidArms(100000, 5) As String
         Dim SE_Cables(100000, 6) As String
         Dim SE_nodesInternalBeam(100000, 4) As String 'a node consists of: Name, X, Y, Z
+        Dim SE_LineHinges(100000, 13) As String
+        Dim SE_ThermalLoadBeams(100000, 11) As String
+        Dim SE_ThermalLoadSurfaces(100000, 5) As String
 
         Dim SE_meshsize As Double
 
@@ -1055,7 +1076,7 @@ Module HelperTools
         Dim stabcombicount As Long, crosslinkscount As Long, gapsnr As Long, ptelemnsnr As Long, lfelemnsnr As Long, nBeamLineSupport As Long, nPointSupportonBeam As Long, nSubsoils As Long, nSurfaceSupports As Long, nloadPanels As Long
 
         Dim pointMomentpointCount As Long, pointMomentbeamCount As Long, lineMomentBeamCount As Long, lineMomentEdgeCount As Long, fpointmomentloadcount As Long, nlfunctionscount As Long, slabInternalEdgesCount As Long, RigidArmsCount As Long, CablesCount As Long
-        Dim internalNodesBeamCount As Long = 0
+        Dim internalNodesBeamCount As Long = 0, linehingecount As Long = 0, thermalLoadsBeamcount As Long = 0, thermalLoadsSurfacescount As Long = 0
 
         Dim stopWatch As New System.Diagnostics.Stopwatch()
         Dim time_elapsed As Double
@@ -1166,8 +1187,8 @@ Module HelperTools
 
         If (in_BeamInternalNodes IsNot Nothing) Then
 
-                internalNodesBeamCount = in_BeamInternalNodes.Count / 5
-                Rhino.RhinoApp.WriteLine("Number of beam internal nodes: " & nodecount)
+            internalNodesBeamCount = in_BeamInternalNodes.Count / 5
+            Rhino.RhinoApp.WriteLine("Number of beam internal nodes: " & nodecount)
             For i = 0 To internalNodesBeamCount - 1
                 SE_nodesInternalBeam(i, 0) = in_BeamInternalNodes(i * 4)
                 SE_nodesInternalBeam(i, 1) = in_BeamInternalNodes(1 + i * 4) * Scale
@@ -1181,7 +1202,7 @@ Module HelperTools
 
         End If
 
-            If (in_beams IsNot Nothing) Then
+        If (in_beams IsNot Nothing) Then
             beamcount = in_beams.Count / 13
             Rhino.RhinoApp.WriteLine("Number of beams: " & beamcount)
             For i = 0 To beamcount - 1
@@ -1411,6 +1432,27 @@ Module HelperTools
             Next i
         End If
 
+
+        If (in_ThermalLoadBeams IsNot Nothing) Then
+            thermalLoadsBeamcount = in_ThermalLoadBeams.Count / 12
+            Rhino.RhinoApp.WriteLine("Number of surface thermal loads: " & thermalLoadsBeamcount)
+            For i = 0 To thermalLoadsBeamcount - 1
+                For j = 0 To 11
+                    SE_ThermalLoadBeams(i, j) = in_ThermalLoadBeams(j + i * 12)
+                Next j
+            Next i
+        End If
+
+        If (in_ThermalLoadSurfaces IsNot Nothing) Then
+            thermalLoadsSurfacescount = in_ThermalLoadSurfaces.Count / 6
+            Rhino.RhinoApp.WriteLine("Number of surface loads: " & sloadcount)
+            For i = 0 To thermalLoadsSurfacescount - 1
+                For j = 0 To 5
+                    SE_ThermalLoadSurfaces(i, j) = in_ThermalLoadSurfaces(j + i * 6)
+                Next j
+            Next i
+        End If
+
         If (in_hinges IsNot Nothing) Then
             hingecount = in_hinges.Count / 14
             Rhino.RhinoApp.WriteLine("Number of hinges: " & hingecount)
@@ -1427,6 +1469,16 @@ Module HelperTools
             For i = 0 To crosslinkscount - 1
                 For j = 0 To 2
                     SE_Crosslinks(i, j) = in_CrossLinks(j + i * 4)
+                Next j
+            Next i
+        End If
+
+        If (in_LineHiges IsNot Nothing) Then
+            linehingecount = in_LineHiges.Count / 14
+            Rhino.RhinoApp.WriteLine("Number of hinges: " & hingecount)
+            For i = 0 To linehingecount - 1
+                For j = 0 To 13
+                    SE_LineHinges(i, j) = in_LineHiges(j + i * 14)
                 Next j
             Next i
         End If
@@ -1583,8 +1635,8 @@ stabcombicount, SE_Crosslinks, crosslinkscount, SE_gapselem, gapsnr, SE_pressten
 lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers, SE_layersCount, SE_beamLineSupports, nBeamLineSupport, SE_pointSupportOnBeam,
 nPointSupportonBeam, SE_subsoil, nSubsoils, SE_surfaceSupport, nSurfaceSupports, SE_LoadPanels, nloadPanels,
 SE_PointMomentPointNode, pointMomentpointCount, SE_pointMomentBeam, pointMomentbeamCount, SE_lineMomentBeam, lineMomentBeamCount, SE_lineMomentEdge, lineMomentEdgeCount,
-SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionscount, SE_SlabInternalEdges, slabInternalEdgesCount, SE_RigidArms, RigidArmsCount, SE_Cables, CablesCount, SE_nodesInternalBeam, internalNodesBeamCount
-)
+SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionscount, SE_SlabInternalEdges, slabInternalEdgesCount, SE_RigidArms, RigidArmsCount, SE_Cables,
+CablesCount, SE_nodesInternalBeam, internalNodesBeamCount, SE_LineHinges, linehingecount, SE_ThermalLoadBeams, thermalLoadsBeamcount, SE_ThermalLoadSurfaces, thermalLoadsSurfacescount)
 
         Rhino.RhinoApp.Write(" Done." & Convert.ToChar(13))
 
@@ -1620,7 +1672,9 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
     lfelemnsnr, projectInfo, fileNameXMLdef, SE_layers(,), SE_layersCount, SE_beamLineSupports(,), nbeamLineSupports, SE_pointSupportOnBeam,
     nPointSupportonBeam, SE_subsoil(,), nSubsoils, SE_surfaceSupport(,), nSurfaceSupports, SE_Loadpanels(,), nLoadpanels, SE_PointMomentPointNode(,),
     pointMomentpointCount, SE_pointMomentBeam(,), pointMomentbeamCount, SE_lineMomentBeam(,), lineMomentBeamCount, SE_lineMomentEdge(,),
-    lineMomentEdgeCount, SE_fMomentPointloads(,), fpointmomentloadcount, SE_NonlinearFunctions(,), nlfunctionscount, SE_SlabInternalEdges(,), slabInternalEdgesCount, SE_RigidArms(,), RigidArmsCount, SE_Cables(,), CablesCount, SE_nodesInternalBeam(,), internalNodesBeamCount)
+    lineMomentEdgeCount, SE_fMomentPointloads(,), fpointmomentloadcount, SE_NonlinearFunctions(,), nlfunctionscount, SE_SlabInternalEdges(,),
+    slabInternalEdgesCount, SE_RigidArms(,), RigidArmsCount, SE_Cables(,), CablesCount, SE_nodesInternalBeam(,), internalNodesBeamCount,
+    SE_LineHinges(,), linehingecount, SE_ThermalLoadBeams(,), thermalLoadsBeamcount, SE_ThermalLoadSurfaces(,), thermalLoadsSurfacescount)
 
         Dim i As Long
         Dim c As String, cid As String, t As String, tid As String
@@ -3045,6 +3099,83 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
             oSB.AppendLine("</container>")
         End If
 
+        If thermalLoadsBeamcount > 0 Then
+
+            'output beam thermal loads ------------------------------------------------------------------
+            c = "{80A77F86-F6A0-11D4-94D7-000000000000}"
+            cid = "DataAddLoad.EP_LineTemperatureLine.1"
+            t = "FF2259E9-03F6-4CB1-9F61-51D63B1E182C"
+            tid = "DataAddLoad.EP_LineTemperatureLine.1"
+
+            oSB.AppendLine("")
+            oSB.AppendLine("<container id=""" & c & """ t=""" & cid & """>")
+            oSB.AppendLine("<table id=""" & t & """ t=""" & tid & """>")
+
+            oSB.AppendLine("<h>")
+            oSB.AppendLine(ConCat_ht("0", "Name"))
+            oSB.AppendLine(ConCat_ht("1", "Load case"))
+            oSB.AppendLine(ConCat_ht("2", "Reference Table"))
+            oSB.AppendLine(ConCat_ht("3", "Distribution"))
+            oSB.AppendLine(ConCat_ht("4", "Delta"))
+            oSB.AppendLine(ConCat_ht("5", "+y - Left delta"))
+            oSB.AppendLine(ConCat_ht("6", "-y - Right delta"))
+            oSB.AppendLine(ConCat_ht("7", "+z - Top delta"))
+            oSB.AppendLine(ConCat_ht("8", "-z - Bottom delta"))
+            oSB.AppendLine(ConCat_ht("9", "Coord. definition"))
+            oSB.AppendLine(ConCat_ht("10", "Position x1"))
+            oSB.AppendLine(ConCat_ht("11", "Position x2"))
+            oSB.AppendLine(ConCat_ht("12", "Origin"))
+
+            oSB.AppendLine("</h>")
+
+            For i = 0 To thermalLoadsBeamcount - 1
+                If i > 0 And i Mod 100 = 0 Then
+                    Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... surface load: " + Str(i))
+                End If
+                Call WriteBeamThermalLoad(oSB, i, SE_ThermalLoadBeams)
+
+            Next
+
+            oSB.AppendLine("</table>")
+            oSB.AppendLine("</container>")
+        End If
+
+        If thermalLoadsSurfacescount > 0 Then
+
+            'output surface thermal loads ------------------------------------------------------------------
+            c = "{DE1557F2-839A-4816-899A-E8D6D84C1120}"
+            cid = "DataAddLoad.EP_SurfaceTemperature.1"
+            t = "DB021D45-AD3E-4C4D-B190-878FBD113FA8"
+            tid = "DataAddLoad.EP_SurfaceTemperature.1"
+
+            oSB.AppendLine("")
+            oSB.AppendLine("<container id=""" & c & """ t=""" & cid & """>")
+            oSB.AppendLine("<table id=""" & t & """ t=""" & tid & """>")
+
+            oSB.AppendLine("<h>")
+            oSB.AppendLine(ConCat_ht("0", "Name"))
+            oSB.AppendLine(ConCat_ht("1", "Load case"))
+            oSB.AppendLine(ConCat_ht("2", "Reference Table"))
+            oSB.AppendLine(ConCat_ht("3", "Distribution"))
+            oSB.AppendLine(ConCat_ht("4", "Delta"))
+            oSB.AppendLine(ConCat_ht("5", "+z - Top delta"))
+            oSB.AppendLine(ConCat_ht("6", "-z - Bottom delta"))
+
+            oSB.AppendLine("</h>")
+
+            For i = 0 To sloadnr - 1
+                If i > 0 And i Mod 100 = 0 Then
+                    Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... surface load: " + Str(i))
+                End If
+                Call WriteSurfaceThermalLoad(oSB, i, SE_ThermalLoadSurfaces)
+
+            Next
+
+            oSB.AppendLine("</table>")
+            oSB.AppendLine("</container>")
+        End If
+
+
         If fploadnr > 0 Then
 
             'output free point loads ------------------------------------------------------------------
@@ -3283,7 +3414,49 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
             oSB.AppendLine("</container>")
         End If
 
+        If linehingecount > 0 Then
 
+            'output hinges ------------------------------------------------------------------
+            c = "{73A30999-84BB-4326-AB5B-59E401F1EEBA}"
+            cid = "DataAddScia.EP_LineHingeSurface.1"
+            t = "2096E0EF-9738-4216-97E7-C37C80A93B46"
+            tid = "DataAddScia.EP_LineHingeSurface.1"
+
+            oSB.AppendLine("")
+            oSB.AppendLine("<container id=""" & c & """ t=""" & cid & """>")
+            oSB.AppendLine("<table id=""" & t & """ t=""" & tid & """>")
+
+            oSB.AppendLine("<h>")
+            oSB.AppendLine(ConCat_ht("0", "Name"))
+            oSB.AppendLine(ConCat_ht("1", "Reference table"))
+            oSB.AppendLine(ConCat_ht("2", "Edge"))
+            oSB.AppendLine(ConCat_ht("3", "Coord. definition"))
+            oSB.AppendLine(ConCat_ht("4", "Position x1"))
+            oSB.AppendLine(ConCat_ht("5", "Position x2"))
+            oSB.AppendLine(ConCat_ht("6", "Origin"))
+            oSB.AppendLine(ConCat_ht("7", "ux"))
+            oSB.AppendLine(ConCat_ht("8", "uy"))
+            oSB.AppendLine(ConCat_ht("9", "uz"))
+            oSB.AppendLine(ConCat_ht("10", "fix"))
+            oSB.AppendLine(ConCat_ht("11", "Stiff - ux"))
+            oSB.AppendLine(ConCat_ht("12", "Stiff - uy"))
+            oSB.AppendLine(ConCat_ht("13", "Stiff - uz"))
+            oSB.AppendLine(ConCat_ht("14", "Stiff - fix"))
+
+
+            oSB.AppendLine("</h>")
+
+            For i = 0 To linehingecount - 1
+                If i > 0 And i Mod 100 = 0 Then
+                    Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... LineHinge: " + Str(i))
+                End If
+                Call WriteLineHinge(oSB, i, SE_LineHinges)
+
+            Next
+
+            oSB.AppendLine("</table>")
+            oSB.AppendLine("</container>")
+        End If
 
         'close XML file--------------------------------------------------------------------
         oSB.AppendLine("</project>")
@@ -5157,6 +5330,66 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
 
 
 
+    Private Sub WriteBeamThermalLoad(ByRef oSB, iload, loads(,)) 'write 1 line load to the XML stream
+
+        oSB.AppendLine("<obj id=""" & Trim(Str(iload)) & """ nm=""" & "BTLB" & Trim(Str(iload)) & """>")
+        oSB.AppendLine(ConCat_pv("0", "BTLB" & Trim(Str(iload))))
+
+
+        'write beam name as reference table
+        oSB.AppendLine("<p1 t="""">")
+        oSB.AppendLine("<h>")
+        oSB.AppendLine("<h0 t=""Member Type""/>")
+        oSB.AppendLine("<h1 t=""Member Type Name""/>")
+        oSB.AppendLine("<h2 t=""Member Name""/>")
+        oSB.AppendLine("</h>")
+        oSB.AppendLine("<row id=""0"">")
+        oSB.AppendLine(ConCat_pv("0", "{ECB5D684-7357-11D4-9F6C-00104BC3B443}"))
+        oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_Beam.1"))
+        oSB.AppendLine(ConCat_pv("2", loads(iload, 1)))
+        oSB.AppendLine("</row>")
+        oSB.AppendLine("</p1>")
+        'end of reference table
+
+        oSB.AppendLine(ConCat_pn("1", loads(iload, 0)))
+
+        'direction
+
+        Select Case loads(iload, 2)
+            Case "Constant"
+                oSB.AppendLine(ConCat_pvt("3", "0", "Constant"))
+            Case "Linear"
+                oSB.AppendLine(ConCat_pvt("3", "1", "Linear"))
+        End Select
+
+        oSB.AppendLine(ConCat_pv("4", loads(iload, 3)))
+        oSB.AppendLine(ConCat_pv("5", loads(iload, 4)))
+        oSB.AppendLine(ConCat_pv("6", loads(iload, 5)))
+        oSB.AppendLine(ConCat_pv("7", loads(iload, 6)))
+        oSB.AppendLine(ConCat_pv("8", loads(iload, 7)))
+
+        Select Case loads(iload, 8)
+            Case "Rela"
+                oSB.AppendLine(ConCat_pvt("9", "1", "Rela"))
+            Case "Abso"
+                oSB.AppendLine(ConCat_pvt("9", "0", "Abso"))
+        End Select
+        'p12 would be the indication of where the coordinates start: From start or From end
+
+        oSB.AppendLine(ConCat_pv("10", loads(iload, 9)))
+        oSB.AppendLine(ConCat_pv("11", loads(iload, 10)))
+
+        Select Case loads(iload, 11)
+            Case "From start"
+                oSB.AppendLine(ConCat_pvt("12", "0", "From start"))
+            Case "From end"
+                oSB.AppendLine(ConCat_pvt("12", "1", "From end"))
+        End Select
+
+        oSB.AppendLine("</obj>")
+
+    End Sub
+
     Private Sub WriteLineMomentLoadBeam(ByRef oSB, iload, loads(,)) 'write 1 line load to the XML stream
 
         oSB.AppendLine("<obj id=""" & Trim(Str(iload)) & """ nm=""" & "LMLB" & Trim(Str(iload)) & """>")
@@ -5469,6 +5702,43 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
         oSB.AppendLine("</obj>")
 
     End Sub
+
+    Private Sub WriteSurfaceThermalLoad(ByRef oSB, iload, loads(,)) 'write 1 surface load to the XML stream
+
+        oSB.AppendLine("<obj id=""" & Trim(Str(iload)) & """ nm=""" & "STLS" & Trim(Str(iload)) & """>")
+        oSB.AppendLine(ConCat_pv("0", "STLS" & Trim(Str(iload))))
+
+        'write beam name as reference table
+        oSB.AppendLine("<p1 t="""">")
+        oSB.AppendLine("<h>")
+        oSB.AppendLine("<h0 t=""Member Type""/>")
+        oSB.AppendLine("<h1 t=""Member Type Name""/>")
+        oSB.AppendLine("<h2 t=""Member Name""/>")
+        oSB.AppendLine("</h>")
+        oSB.AppendLine("<row id=""0"">")
+        oSB.AppendLine(ConCat_pv("0", "{8708ED31-8E66-11D4-AD94-F6F5DE2BE344}"))
+        oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_Plane.1"))
+        oSB.AppendLine(ConCat_pv("2", loads(iload, 1)))
+        oSB.AppendLine("</row>")
+        oSB.AppendLine("</p1>")
+        'end of reference table
+        oSB.AppendLine(ConCat_pn("1", loads(iload, 0)))
+        'distribution
+        Select Case loads(iload, 2)
+            Case "Constant"
+                oSB.AppendLine(ConCat_pvt("2", "0", "Constant"))
+            Case "Linear"
+                oSB.AppendLine(ConCat_pvt("2", "1", "Linear"))
+        End Select
+        'load value
+         oSB.AppendLine(ConCat_pv("4", loads(iload, 3)))
+        oSB.AppendLine(ConCat_pv("5", loads(iload, 4)))
+        oSB.AppendLine(ConCat_pv("6", loads(iload, 5)))
+
+        oSB.AppendLine("</obj>")
+
+    End Sub
+
     Private Sub WritePLoadsPoint(ByRef oSB, iload, loads(,))
 
         oSB.AppendLine("<obj id=""" & Trim(Str(iload)) & """ nm=""" & "PLP" & Trim(Str(iload)) & """>")
@@ -6103,6 +6373,68 @@ SE_fMomentPointloads, fpointmomentloadcount, SE_NonlinearFunctions, nlfunctionsc
 
         oSB.AppendLine("</obj>")
 
+
+    End Sub
+
+
+
+    Private Sub WriteLineHinge(ByRef oSB, ihinge, hinges(,)) 'write 1 hinge to the XML stream
+        Dim tt As String
+
+        oSB.AppendLine("<obj nm=""LHE" & ihinge & """>")
+        oSB.AppendLine(ConCat_pv("0", "LHE" & ihinge)) 'Hinge name
+        'write beam name as reference table
+        oSB.AppendLine("<p1 t="""">")
+        oSB.AppendLine("<h>")
+        oSB.AppendLine("<h0 t=""Member Type""/>")
+        oSB.AppendLine("<h1 t=""Member Type Name""/>")
+        oSB.AppendLine("<h2 t=""Member Name""/>")
+        oSB.AppendLine("</h>")
+        oSB.AppendLine("<row id=""0"">")
+        oSB.AppendLine(ConCat_pv("0", "{8708ED31-8E66-11D4-AD94-F6F5DE2BE344}"))
+        oSB.AppendLine(ConCat_pv("1", "EP_DSG_Elements.EP_Plane.1"))
+        oSB.AppendLine(ConCat_pv("2", hinges(ihinge, 0)))
+        oSB.AppendLine("</row>")
+        oSB.AppendLine("</p1>")
+        'end of reference table
+        oSB.AppendLine(ConCat_pvt("2", hinges(ihinge, 1) - 1, hinges(ihinge, 1)))
+
+
+        Select Case hinges(ihinge, 2)
+            Case "Rela"
+                oSB.AppendLine(ConCat_pvt("3", "1", "Rela"))
+            Case "Abso"
+                oSB.AppendLine(ConCat_pvt("3", "0", "Abso"))
+        End Select
+        oSB.AppendLine(ConCat_pv("4", hinges(ihinge, 3)))
+        oSB.AppendLine(ConCat_pv("5", hinges(ihinge, 4)))
+
+        Select Case hinges(ihinge, 5)
+            Case "From start"
+                oSB.AppendLine(ConCat_pvt("6", "0", "From start"))
+            Case "From end"
+                oSB.AppendLine(ConCat_pvt("6", "1", "From end"))
+        End Select
+        'p13 & p14 would be the ey and ez eccentricities for the line load
+
+
+
+        tt = GetStringForDOF(hinges(ihinge, 6))
+        oSB.AppendLine(ConCat_pvt("7", hinges(ihinge, 6), tt))
+        tt = GetStringForDOF(hinges(ihinge, 7))
+        oSB.AppendLine(ConCat_pvt("8", hinges(ihinge, 7), tt))
+        tt = GetStringForDOF(hinges(ihinge, 8))
+        oSB.AppendLine(ConCat_pvt("9", hinges(ihinge, 8), tt))
+        tt = GetStringForDOF(hinges(ihinge, 9))
+        oSB.AppendLine(ConCat_pvt("10", hinges(ihinge, 9), tt))
+        oSB.AppendLine(ConCat_pv("11", hinges(ihinge, 10)))
+        oSB.AppendLine(ConCat_pv("12", hinges(ihinge, 11)))
+        oSB.AppendLine(ConCat_pv("13", hinges(ihinge, 12)))
+        oSB.AppendLine(ConCat_pv("14", hinges(ihinge, 13)))
+
+
+
+        oSB.AppendLine("</obj>")
 
     End Sub
 

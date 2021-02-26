@@ -128,6 +128,12 @@ Namespace Koala
             pManager.Param(49).Optional = True
             pManager.AddTextParameter("BeamInternalNodes", "BeamInternalNodes", "List of beam internal nodes", GH_ParamAccess.list)
             pManager.Param(50).Optional = True
+            pManager.AddTextParameter("LineHinges", "LineHinges", "List of line hinges", GH_ParamAccess.list)
+            pManager.Param(51).Optional = True
+            pManager.AddTextParameter("ThermalLoadsOnBeams", "ThermalLoadsOnBeams", "List of thermal load on beams", GH_ParamAccess.list)
+            pManager.Param(52).Optional = True
+            pManager.AddTextParameter("ThermalLoadsOnSurfaces", "ThermalLoadsOnSurfaces", "List of thermal load on surfaces", GH_ParamAccess.list)
+            pManager.Param(53).Optional = True
         End Sub
 
         ''' <summary>
@@ -198,6 +204,10 @@ Namespace Koala
             Dim in_RigidArms = New List(Of String)
             Dim in_Cables = New List(Of String)
             Dim in_BeamInternalNodes = New List(Of String)
+            Dim in_LineHiges = New List(Of String)
+            Dim in_ThermalLoadBeams = New List(Of String)
+            Dim in_ThermalLoadSurfaces = New List(Of String)
+
 
 
 
@@ -256,6 +266,9 @@ Namespace Koala
             DA.GetDataList(Of String)(48, in_RigidArms)
             DA.GetDataList(Of String)(49, in_Cables)
             DA.GetDataList(Of String)(50, in_BeamInternalNodes)
+            DA.GetDataList(Of String)(51, in_LineHiges)
+            DA.GetDataList(Of String)(52, in_ThermalLoadBeams)
+            DA.GetDataList(Of String)(53, in_ThermalLoadSurfaces)
 
 
             If AutoUpdate = False Then
@@ -271,7 +284,7 @@ Namespace Koala
                           in_edgeLoads, in_pointLoadsPoints, in_pointLoadsBeams, Scale, in_LinCombinations, in_NonLinCombinations, in_StabCombinations,
                           in_CrossLinks, in_presstensionElem, in_gapElem, in_limitforceElem, projectInfo, in_layers, in_BeamLineSupport, in_PointSupportsOnBeams,
                           in_Subsoils, in_SurfaceSupports, in_loadpanels, in_pointMomentPoint, in_pointMomentBeam, in_lineMomentBeam, in_lineMomentEdge,
-                          in_freePointMoment, in_nonlinearfunctions, RemDuplNodes, Tolerance, in_slabinternalEdges, in_RigidArms, in_Cables, in_BeamInternalNodes)
+                          in_freePointMoment, in_nonlinearfunctions, RemDuplNodes, Tolerance, in_slabinternalEdges, in_RigidArms, in_Cables, in_BeamInternalNodes, in_LineHiges, in_ThermalLoadBeams, in_ThermalLoadSurfaces)
             DA.SetData(0, FileName)
 
 

@@ -320,6 +320,16 @@ Namespace My.Resources
         '''<summary>
         '''  Looks up a localized resource of type System.Drawing.Bitmap.
         '''</summary>
+        Friend ReadOnly Property LineHinge() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("LineHinge", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
         Friend ReadOnly Property LineLoad() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("LineLoad", resourceCulture)
@@ -523,6 +533,26 @@ Namespace My.Resources
         Friend ReadOnly Property SurfaceSupport() As System.Drawing.Bitmap
             Get
                 Dim obj As Object = ResourceManager.GetObject("SurfaceSupport", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property ThermalLoadBeam() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("ThermalLoadBeam", resourceCulture)
+                Return CType(obj,System.Drawing.Bitmap)
+            End Get
+        End Property
+        
+        '''<summary>
+        '''  Looks up a localized resource of type System.Drawing.Bitmap.
+        '''</summary>
+        Friend ReadOnly Property ThermalLoadSurface() As System.Drawing.Bitmap
+            Get
+                Dim obj As Object = ResourceManager.GetObject("ThermalLoadSurface", resourceCulture)
                 Return CType(obj,System.Drawing.Bitmap)
             End Get
         End Property
