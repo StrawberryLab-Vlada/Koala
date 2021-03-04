@@ -4,6 +4,19 @@ description: Change log of development of Koala - What's  new in the release/
 
 # Changelog
 
+## v3.11
+
+### Added
+
+* Added component for thermal load on beam 
+* Added component for thermal load on surface
+* Added component for line hinge on 2D member edge
+
+### Fixed
+
+* Fixed issue with validity of free loads
+* Fixed issue with layers for load panels
+
 ## v3.10
 
 ### Added
