@@ -17,13 +17,7 @@ It takes Grasshopper geometry and some additional data and based on that it prod
 * Definition of linear as well as nonlinear and stability combinations
 * Beam local nonlinearities such as tension/press only etc.
 
-## Webinar
 
-If you want to know more about Koala plugin, watch this webinar below.
-
-
-
-[Comment] <> {% embed url="https://youtu.be/RY-K4LVAiWw" caption="" %}
 
 ## Disclaimer
 
