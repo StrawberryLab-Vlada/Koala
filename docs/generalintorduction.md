@@ -23,7 +23,7 @@ If you want to know more about Koala plugin, watch this webinar below.
 
 
 
-{% embed url="https://youtu.be/RY-K4LVAiWw" caption="" %}
+[Comment] <> {% embed url="https://youtu.be/RY-K4LVAiWw" caption="" %}
 
 ## Disclaimer
 
