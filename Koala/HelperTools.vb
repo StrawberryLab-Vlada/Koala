@@ -72,6 +72,7 @@ Module HelperTools
         menuItem.AddNamedValue("LIN", 0)
         menuItem.AddNamedValue("NEL", 1)
         menuItem.AddNamedValue("STB", 2)
+        menuItem.AddNamedValue("EIG", 3)
     End Sub
 
     Public Function GetStringForCalculationType(item As Integer) As String
@@ -82,6 +83,8 @@ Module HelperTools
                 Return "NEL"
             Case 2
                 Return "STB"
+            Case 3
+                Return "EIG"
             Case Else
                 Return "LIN"
         End Select

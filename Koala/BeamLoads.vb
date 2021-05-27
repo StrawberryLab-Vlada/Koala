@@ -23,7 +23,7 @@ Namespace Koala
         ''' Registers all the input parameters for this component.
         ''' </summary>
         Protected Overrides Sub RegisterInputParams(pManager As GH_Component.GH_InputParamManager)
-            pManager.AddTextParameter("LoadCase", "LoadCase", "Name of load case", GH_ParamAccess.item, "LC2")
+            pManager.AddTextParameter("LoadCase", "LoadCase", "Name of load case", GH_ParamAccess.list, "LC2")
             pManager.AddTextParameter("BeamList", "BeamList", "List of beam names where to apply load", GH_ParamAccess.list)
             pManager.AddIntegerParameter("CoordSys", "CoordSys", "Coordinate system: GCS or LCS", GH_ParamAccess.item, 0)
             AddOptionsToMenuCoordSysPoint(pManager.Param(2))
@@ -58,7 +58,8 @@ Namespace Koala
         ''' to store data in output parameters.</param>
         Protected Overrides Sub SolveInstance(DA As IGH_DataAccess)
 
-            Dim LoadCase As String = "LC"
+            Dim LoadCase = New List(Of String)
+            Dim LoadCaseList = False
             Dim BeamList = New List(Of String)
             Dim CoordSys As String = "GCS"
             Dim Direction As String = "Z"
@@ -74,7 +75,7 @@ Namespace Koala
             Dim i As Integer
 
 
-            If (Not DA.GetData(0, LoadCase)) Then Return
+            If (Not DA.GetDataList(Of String)(0, LoadCase)) Then Return
             If (Not DA.GetDataList(Of String)(1, BeamList)) Then Return
             If (Not DA.GetData(2, i)) Then Return
             CoordSys = GetStringFromCoordSysPoint(i)
@@ -98,6 +99,9 @@ Namespace Koala
             DA.GetData(11, ey)
             DA.GetData(12, ez)
 
+            If (LoadCase.Count = BeamList.Count) Then
+                LoadCaseList = True
+            End If
 
             Dim SE_loads(BeamList.Count, 13)
             Dim FlatList As New List(Of System.Object)()
@@ -112,24 +116,30 @@ Namespace Koala
             'create load data
             '=================
             For Each item In BeamList
-                SE_loads(itemcount, 0) = LoadCase
-                SE_loads(itemcount, 1) = Strings.Trim(item)
-                SE_loads(itemcount, 2) = CoordSys
-                SE_loads(itemcount, 3) = Direction
-                SE_loads(itemcount, 4) = Distribution
-                SE_loads(itemcount, 5) = LoadValue1
-                SE_loads(itemcount, 6) = LoadValue2
-                SE_loads(itemcount, 7) = CoordDefinition
-                SE_loads(itemcount, 8) = Position1
-                SE_loads(itemcount, 9) = Position2
-                SE_loads(itemcount, 10) = Origin
-                SE_loads(itemcount, 11) = ey
-                SE_loads(itemcount, 12) = ez
                 itemcount += 1
             Next
 
-            'Flatten data for export as simple list
+            For i = 0 To itemcount - 1
+                If LoadCaseList Then
+                    SE_loads(i, 0) = Strings.Trim(LoadCase(i))
+                Else
+                    SE_loads(i, 0) = Strings.Trim(LoadCase(0))
+                End If
+                SE_loads(i, 1) = Strings.Trim(BeamList(i))
+                SE_loads(i, 2) = CoordSys
+                SE_loads(i, 3) = Direction
+                SE_loads(i, 4) = Distribution
+                SE_loads(i, 5) = LoadValue1
+                SE_loads(i, 6) = LoadValue2
+                SE_loads(i, 7) = CoordDefinition
+                SE_loads(i, 8) = Position1
+                SE_loads(i, 9) = Position2
+                SE_loads(i, 10) = Origin
+                SE_loads(i, 11) = ey
+                SE_loads(i, 12) = ez
+            Next i
 
+            'Flatten data for export as simple list
             FlatList.Clear()
 
             For i = 0 To itemcount - 1

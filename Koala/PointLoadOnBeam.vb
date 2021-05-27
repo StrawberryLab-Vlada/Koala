@@ -25,7 +25,7 @@ Namespace Koala
         ''' Registers all the input parameters for this component.
         ''' </summary>
         Protected Overrides Sub RegisterInputParams(pManager As GH_Component.GH_InputParamManager)
-            pManager.AddTextParameter("LoadCase", "LoadCase", "Name of load case", GH_ParamAccess.item, "LC2")
+            pManager.AddTextParameter("LoadCase", "LoadCase", "Name of load case", GH_ParamAccess.list, "LC2")
             pManager.AddTextParameter("BeamList", "BeamList", "List of beam names where to apply load", GH_ParamAccess.list)
             pManager.AddIntegerParameter("CoordSys", "CoordSys", "Coordinate system: GCS or LCS", GH_ParamAccess.item, 0)
             AddOptionsToMenuCoordSysPoint(pManager.Param(2))
@@ -56,7 +56,8 @@ Namespace Koala
         ''' <param name="DA">The DA object can be used to retrieve data from input parameters and 
         ''' to store data in output parameters.</param>
         Protected Overrides Sub SolveInstance(DA As IGH_DataAccess)
-            Dim LoadCase As String = "LC"
+            Dim LoadCase = New List(Of String)
+            Dim LoadCaseList = False
             Dim BeamList = New List(Of String)
             Dim CoordSys As String = "GCS"
             Dim Direction As String = "Z"
@@ -70,7 +71,7 @@ Namespace Koala
             Dim i As Integer
             Dim deltaX As Double = 0.0
 
-            If (Not DA.GetData(Of String)(0, LoadCase)) Then Return
+            If (Not DA.GetDataList(Of String)(0, LoadCase)) Then Return
             If (Not DA.GetDataList(Of String)(1, BeamList)) Then Return
             If (Not DA.GetData(Of Integer)(2, i)) Then Return
             CoordSys = GetStringFromCoordSysPoint(i)
@@ -87,7 +88,9 @@ Namespace Koala
             DA.GetData(Of Double)(10, ez)
             DA.GetData(Of Double)(11, deltaX)
 
-
+            If (LoadCase.Count = BeamList.Count) Then
+                LoadCaseList = True
+            End If
 
             Dim SE_loads(BeamList.Count, 12)
             Dim FlatList As New List(Of System.Object)()
@@ -102,20 +105,27 @@ Namespace Koala
             'create load data
             '=================
             For Each item In BeamList
-                SE_loads(itemcount, 0) = LoadCase
-                SE_loads(itemcount, 1) = Strings.Trim(item)
-                SE_loads(itemcount, 2) = CoordSys
-                SE_loads(itemcount, 3) = Direction
-                SE_loads(itemcount, 4) = LoadValue
-                SE_loads(itemcount, 5) = CoordDefinition
-                SE_loads(itemcount, 6) = Position
-                SE_loads(itemcount, 7) = Origin
-                SE_loads(itemcount, 8) = Repeat
-                SE_loads(itemcount, 9) = ey
-                SE_loads(itemcount, 10) = ez
-                SE_loads(itemcount, 11) = deltaX
                 itemcount += 1
             Next
+
+            For i = 0 To itemcount - 1
+                If LoadCaseList Then
+                    SE_loads(i, 0) = Strings.Trim(LoadCase(i))
+                Else
+                    SE_loads(i, 0) = Strings.Trim(LoadCase(0))
+                End If
+                SE_loads(i, 1) = Strings.Trim(BeamList(i))
+                SE_loads(i, 2) = CoordSys
+                SE_loads(i, 3) = Direction
+                SE_loads(i, 4) = LoadValue
+                SE_loads(i, 5) = CoordDefinition
+                SE_loads(i, 6) = Position
+                SE_loads(i, 7) = Origin
+                SE_loads(i, 8) = Repeat
+                SE_loads(i, 9) = ey
+                SE_loads(i, 10) = ez
+                SE_loads(i, 11) = deltaX
+            Next i
 
             'Flatten data for export as simple list
 
