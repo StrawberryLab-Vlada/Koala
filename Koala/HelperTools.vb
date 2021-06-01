@@ -3157,8 +3157,8 @@ CablesCount, SE_nodesInternalBeam, internalNodesBeamCount, SE_LineHinges, linehi
 
             oSB.AppendLine("<h>")
             oSB.AppendLine(ConCat_ht("0", "Name"))
-            oSB.AppendLine(ConCat_ht("1", "Load case"))
-            oSB.AppendLine(ConCat_ht("2", "Reference Table"))
+            oSB.AppendLine(ConCat_ht("1", "Reference Table"))
+            oSB.AppendLine(ConCat_ht("2", "Load case"))
             oSB.AppendLine(ConCat_ht("3", "Distribution"))
             oSB.AppendLine(ConCat_ht("4", "Delta"))
             oSB.AppendLine(ConCat_ht("5", "+z - Top delta"))
@@ -3166,7 +3166,7 @@ CablesCount, SE_nodesInternalBeam, internalNodesBeamCount, SE_LineHinges, linehi
 
             oSB.AppendLine("</h>")
 
-            For i = 0 To sloadnr - 1
+            For i = 0 To thermalLoadsSurfacescount - 1
                 If i > 0 And i Mod 100 = 0 Then
                     Rhino.RhinoApp.WriteLine("Creating the XML file string in memory... surface load: " + Str(i))
                 End If
@@ -5725,13 +5725,13 @@ CablesCount, SE_nodesInternalBeam, internalNodesBeamCount, SE_LineHinges, linehi
         oSB.AppendLine("</row>")
         oSB.AppendLine("</p1>")
         'end of reference table
-        oSB.AppendLine(ConCat_pn("1", loads(iload, 0)))
+        oSB.AppendLine(ConCat_pn("2", loads(iload, 0)))
         'distribution
         Select Case loads(iload, 2)
             Case "Constant"
-                oSB.AppendLine(ConCat_pvt("2", "0", "Constant"))
+                oSB.AppendLine(ConCat_pvt("3", "0", "Constant"))
             Case "Linear"
-                oSB.AppendLine(ConCat_pvt("2", "1", "Linear"))
+                oSB.AppendLine(ConCat_pvt("3", "1", "Linear"))
         End Select
         'load value
          oSB.AppendLine(ConCat_pv("4", loads(iload, 3)))

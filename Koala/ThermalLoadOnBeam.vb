@@ -108,10 +108,10 @@ Namespace Koala
                 SE_surfloads(itemcount, 1) = Strings.Trim(item)
                 SE_surfloads(itemcount, 2) = Distribution
                 SE_surfloads(itemcount, 3) = Delta
-                SE_surfloads(itemcount, 4) = TopDelta
-                SE_surfloads(itemcount, 5) = BottomDelta
-                SE_surfloads(itemcount, 6) = RightDelta
-                SE_surfloads(itemcount, 7) = LeftDelta
+                SE_surfloads(itemcount, 4) = RightDelta
+                SE_surfloads(itemcount, 5) = LeftDelta
+                SE_surfloads(itemcount, 6) = TopDelta
+                SE_surfloads(itemcount, 7) = BottomDelta
                 SE_surfloads(itemcount, 8) = CoordDefinition
                 SE_surfloads(itemcount, 9) = Position1
                 SE_surfloads(itemcount, 10) = Position2
