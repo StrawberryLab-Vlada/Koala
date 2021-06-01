@@ -1193,11 +1193,11 @@ Module HelperTools
             internalNodesBeamCount = in_BeamInternalNodes.Count / 5
             Rhino.RhinoApp.WriteLine("Number of beam internal nodes: " & nodecount)
             For i = 0 To internalNodesBeamCount - 1
-                SE_nodesInternalBeam(i, 0) = in_BeamInternalNodes(i * 4)
-                SE_nodesInternalBeam(i, 1) = in_BeamInternalNodes(1 + i * 4) * Scale
-                SE_nodesInternalBeam(i, 2) = in_BeamInternalNodes(2 + i * 4) * Scale
-                SE_nodesInternalBeam(i, 3) = in_BeamInternalNodes(3 + i * 4) * Scale
-                SE_nodesInternalBeam(i, 4) = in_BeamInternalNodes(4 + i * 4)
+                SE_nodesInternalBeam(i, 0) = in_BeamInternalNodes(i * 5)
+                SE_nodesInternalBeam(i, 1) = in_BeamInternalNodes(1 + i * 5) * Scale
+                SE_nodesInternalBeam(i, 2) = in_BeamInternalNodes(2 + i * 5) * Scale
+                SE_nodesInternalBeam(i, 3) = in_BeamInternalNodes(3 + i * 5) * Scale
+                SE_nodesInternalBeam(i, 4) = in_BeamInternalNodes(4 + i * 5)
 
 
             Next i

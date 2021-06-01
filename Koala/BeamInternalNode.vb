@@ -85,8 +85,8 @@ Namespace Koala
                 SE_nodes(itemcount, 1) = item.X
                 SE_nodes(itemcount, 2) = item.Y
                 SE_nodes(itemcount, 3) = item.Z
-                If itemcount < maxNames Then
-                    SE_nodes(itemcount, 4) = BeamNames(itemcount)
+                If itemcount - 1 < maxNames Then
+                    SE_nodes(itemcount, 4) = BeamNames(itemcount - 1)
                 Else
                     SE_nodes(itemcount, 4) = BeamNames(maxNames)
                 End If
