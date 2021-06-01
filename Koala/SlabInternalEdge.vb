@@ -78,15 +78,16 @@ Namespace Koala
 
             Dim SE_slabInternalEdges(Lines.Count, 2)
             Dim FlatInternalEdgeList As New List(Of String)()
-            Dim arrPoints As New Rhino.Collections.Point3dList
             Dim EdgeType As String
             Dim nodecount As Long = 0, edgecount As Long = 0
             Dim currentnode As Long
             Dim SE_nodes(100000, 3) As String
             Dim FlatNodeList As New List(Of String)()
-            Dim LineShape As String = "Line", LineType As String = "Line"
 
             For i = 0 To Lines.Count - 1
+
+                Dim arrPoints As New Rhino.Collections.Point3dList
+                Dim LineShape As String = "Line", LineType As String = "Line"
 
                 'extract geometry from the curve
                 GetTypeAndNodes(Lines(i), LineType, arrPoints)
