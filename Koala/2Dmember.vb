@@ -28,7 +28,7 @@ Namespace Koala
             pManager.AddBrepParameter("Surfaces", "Surfaces", "List of definiton curves for beams", GH_ParamAccess.list)
             pManager.AddTextParameter("Material", "Material", "Material", GH_ParamAccess.list, "C20/25")
             pManager.AddTextParameter("Thickness", "Thickness", "Thickness", GH_ParamAccess.list) ', "0.2"
-            pManager.AddTextParameter("SurfLayer", "SurfLayer", "Definition of SurfLayer", GH_ParamAccess.item, "Surflayer")
+            pManager.AddTextParameter("SurfLayer", "SurfLayer", "Definition of SurfLayer", GH_ParamAccess.list, "Surflayer")
             pManager.AddTextParameter("InternalNodes", "InternalNodes", "InternalNodes", GH_ParamAccess.list)
             pManager.Param(4).Optional = True
             pManager.AddTextParameter("NodePrefix", "NodePrefix", "Node prefix", GH_ParamAccess.item, "N2D")
@@ -65,7 +65,7 @@ Namespace Koala
             Dim Surfaces = New List(Of Brep)
             Dim Material As New List(Of String) 'String = "C20/25"
             Dim Thickness As New List(Of String)
-            Dim SurfLayer As String = "Surfaces"
+            Dim SurfLayer As New List(Of String)
             Dim InternalNodes = New List(Of String)
             Dim NodePrefix As String = "NS"
             Dim Tolerance As Double = 0.001
@@ -86,7 +86,7 @@ Namespace Koala
             If (Not DA.GetDataList(Of Brep)(0, Surfaces)) Then Return
             If (Not DA.GetDataList(Of String)(1, Material)) Then Return
             If (Not DA.GetDataList(Of String)(2, Thickness)) Then Return
-            If (Not DA.GetData(Of String)(3, SurfLayer)) Then Return
+            If (Not DA.GetDataList(Of String)(3, SurfLayer)) Then Return
             DA.GetDataList(Of String)(4, InternalNodes)
             If (Not DA.GetData(Of String)(5, NodePrefix)) Then Return
             If (Not DA.GetData(Of Double)(6, Tolerance)) Then Return
@@ -272,7 +272,7 @@ Namespace Koala
                 End If
 
 
-                SE_surfaces(surfacecount - 1, 4) = SurfLayer
+                SE_surfaces(surfacecount - 1, 4) = SurfLayer(k)
 
                 iedge = 0
                 BoundaryShape = ""
